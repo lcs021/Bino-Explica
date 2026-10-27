@@ -2,7 +2,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Gochi+Hand&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Gochi+Hand&family=Poppins:wght@900&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap">
 <style>
 /* Layout: estúdio de papel recortado — painel de criação à esquerda, "palco" do vídeo à direita, abas no topo */
 :root{
@@ -112,6 +112,8 @@ canvas#tela{display:block;max-width:100%;height:auto;border-radius:10px;backgrou
 .meta .row{display:grid;grid-template-columns:110px minmax(0,1fr) auto;gap:10px;align-items:start;padding-block:8px;border-top:1px solid var(--line)}
 .meta .row:first-child{border-top:0}
 .meta .k{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;padding-top:2px}
+.thumb-box{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.thumb-box img{width:100%;max-width:480px;aspect-ratio:16/9;border-radius:10px;border:1px solid var(--line);display:block}
 .meta .v{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.92rem}
 .copy{border:1px solid var(--line);background:var(--paper-2);border-radius:8px;padding:3px 9px;font-size:.78rem;cursor:pointer}
 @media (max-width:560px){.meta .row{grid-template-columns:minmax(0,1fr) auto}.meta .k{grid-column:1/-1}}
@@ -438,6 +440,90 @@ $("#exportar").onclick = async () => {
   catch(e){ if(e.code!=="cancelled") toast("Não foi possível salvar o arquivo."); }
 };
 
+/* ---------------- thumbnail automática do YouTube (1280x720, estilo do Bino) ---------------- */
+const SELO_FORMATO = {quiz:"QUIZ", top5:"TOP 5", mito_ou_verdade:"MITO?", explicacao:"CURIOSIDADE"};
+function textoThumb(e){
+  if (e.miniatura?.texto) return String(e.miniatura.texto).toUpperCase();
+  let b = String(e.curto?.titulo || e.titulo || "").replace(/[^\p{L}\p{N}\s?!,.]/gu,"").trim();
+  b = b.split(/[|:\-–(]/)[0].trim() || b;
+  const p = b.split(/\s+/); if (p.length>4) b = p.slice(0,4).join(" ") + (b.endsWith("?")?"?":"");
+  return b.toUpperCase();
+}
+function desenhoThumb(e){
+  const n = imgs.length; if (!n) return -1;
+  const c = e.miniatura?.cena; if (Number.isInteger(+c) && e.cenas?.[+c]) { const d = e.cenas[+c].img ?? +c; if (imgs[d]) return d; }
+  // senão: o desenho com mais "tinta" (evitando o primeiro)
+  let melhor=-1, idx=0; const t=document.createElement("canvas"); t.width=160; t.height=90; const x=t.getContext("2d",{willReadFrequently:true});
+  imgs.forEach((im,i)=>{ if(!im) return; try{ x.fillStyle="#fff"; x.fillRect(0,0,160,90); x.drawImage(im,0,0,160,90);
+    const d=x.getImageData(0,0,160,90).data; let tinta=0; for(let k=0;k<d.length;k+=4) if(d[k]+d[k+1]+d[k+2]<600) tinta++;
+    if(i===0) tinta*=0.8; if(tinta>melhor){melhor=tinta; idx=i;} }catch(err){} });
+  return idx;
+}
+function quebrar2(g, txt, max){
+  if (g.measureText(txt).width<=max || !txt.includes(" ")) return [txt];
+  const w=txt.split(" "); let melhor=null;
+  for (let k=1;k<w.length;k++){ const a=w.slice(0,k).join(" "), b=w.slice(k).join(" "); const pior=Math.max(g.measureText(a).width,g.measureText(b).width); if(!melhor||pior<melhor[0]) melhor=[pior,[a,b]]; }
+  return melhor[1];
+}
+async function desenharThumb(e){
+  try{ await document.fonts.load('900 120px "Poppins"'); }catch(err){}
+  const W=1280,H=720, cv2=document.createElement("canvas"); cv2.width=W; cv2.height=H; const g=cv2.getContext("2d");
+  const F = t => `900 ${t}px "Poppins", "Arial Black", sans-serif`;
+  g.fillStyle="#FFC93C"; g.fillRect(0,0,W,H);
+  g.strokeStyle="#FFD25C"; g.lineWidth=34; for(let k=0;k<W+H;k+=90){ g.beginPath(); g.moveTo(k,0); g.lineTo(k-H,H); g.stroke(); }
+  // cartão de papel com o desenho
+  const cx0=650, cy0=70, cx1=1240, cy1=650, r=28;
+  const caixa=(x0,y0,x1,y1)=>{ g.beginPath(); g.roundRect ? g.roundRect(x0,y0,x1-x0,y1-y0,r) : g.rect(x0,y0,x1-x0,y1-y0); };
+  g.save(); g.filter="blur(6px)"; g.fillStyle="rgba(0,0,0,.43)"; caixa(cx0+14,cy0+16,cx1+14,cy1+16); g.fill(); g.restore();
+  g.fillStyle="#fff"; caixa(cx0,cy0,cx1,cy1); g.fill(); g.lineWidth=8; g.strokeStyle="#1A1A1A"; g.stroke();
+  const d=desenhoThumb(e), im=imgs[d];
+  if (im){
+    // desenha em 1600x900 (SVG não informa tamanho) e recorta as bordas brancas
+    const base=document.createElement("canvas"); base.width=1600; base.height=900;
+    const bx=base.getContext("2d",{willReadFrequently:true}); bx.fillStyle="#fff"; bx.fillRect(0,0,1600,900); bx.drawImage(im,0,0,1600,900);
+    let sx=0, sy=0, sw=1600, sh=900;
+    try{ const px=bx.getImageData(0,0,1600,900).data; let a=1600,b=900,c=0,dd=0;
+      for(let yy=0;yy<900;yy+=3) for(let xx=0;xx<1600;xx+=3){ const k=(yy*1600+xx)*4; if(px[k]+px[k+1]+px[k+2]<720){ if(xx<a)a=xx; if(yy<b)b=yy; if(xx>c)c=xx; if(yy>dd)dd=yy; } }
+      if(c>a&&dd>b){ const m=40; sx=Math.max(0,a-m); sy=Math.max(0,b-m); sw=Math.min(1600,c+m)-sx; sh=Math.min(900,dd+m)-sy; }
+    }catch(err){}
+    const aw=cx1-cx0-36, ah=cy1-cy0-36, k=Math.min(aw/sw, ah/sh), w=sw*k, h=sh*k;
+    g.drawImage(base, sx,sy,sw,sh, cx0+18+(aw-w)/2, cy0+18+(ah-h)/2, w, h);
+  }
+  // frase principal: até 2 linhas, o maior tamanho que caiba
+  const X=44, LARG=570, txt=textoThumb(e) || "VOCÊ SABIA?";
+  let tam=150, linhas;
+  for(; tam>60; tam-=4){ g.font=F(tam); linhas=quebrar2(g,txt,LARG); if(linhas.length<=2 && linhas.every(l=>g.measureText(l).width<=LARG)) break; }
+  g.font=F(tam); linhas=quebrar2(g,txt,LARG).slice(0,2);
+  let y = (linhas.length===2 ? 80 : 150) + tam*0.92; g.lineJoin="round"; g.textBaseline="alphabetic";
+  linhas.forEach((ln,i)=>{ const fim = i===linhas.length-1 && /[?!]$/.test(ln) ? ln.slice(-1) : ""; const corpo = fim ? ln.slice(0,-1).trimEnd() : ln;
+    g.lineWidth=20; g.strokeStyle="#fff"; g.strokeText(corpo,X,y); g.fillStyle="#1A1A1A"; g.fillText(corpo,X,y);
+    if(fim){ const fx=X+g.measureText(corpo+" ").width-tam*0.12; g.strokeText(fim,fx,y); g.fillStyle="#E0312B"; g.fillText(fim,fx,y); }
+    y+=tam*1.02; });
+  y += 18 - tam*0.92 + 10;
+  // selo vermelho + frase de apoio
+  const selo = String(e.miniatura?.selo || SELO_FORMATO[e.formato] || "").toUpperCase().slice(0,14);
+  if (selo){ g.save(); g.font=F(52); const tw=g.measureText(selo).width; g.translate(X+(tw+70)/2, y+52); g.rotate(-5*Math.PI/180);
+    g.fillStyle="#E0312B"; g.beginPath(); g.roundRect ? g.roundRect(-(tw+54)/2,-44,tw+54,88,22) : g.rect(-(tw+54)/2,-44,tw+54,88); g.fill(); g.lineWidth=7; g.strokeStyle="#1A1A1A"; g.stroke();
+    g.fillStyle="#fff"; g.textAlign="center"; g.textBaseline="middle"; g.fillText(selo,0,4); g.restore(); y+=128; }
+  const frase = String(e.miniatura?.frase||"");
+  if (frase && y < H-60){ g.font=F(40); g.fillStyle="#1A1A1A"; g.textBaseline="top"; quebrar2(g,frase,LARG).slice(0,2).forEach(l=>{ g.fillText(l,X+4,y); y+=48; }); }
+  return cv2;
+}
+let thumbBlob=null;
+async function atualizarThumb(){
+  const img=$("#thumb-img"), txt=$("#thumb-txt"); if(!img||!ep) return;
+  if (!imgs.some(Boolean)) { txt.textContent="Aparece quando os desenhos ficarem prontos."; return; }
+  const cv2 = await desenharThumb(ep);
+  cv2.toBlob(b=>{ thumbBlob=b; if(b){ img.src=URL.createObjectURL(b); txt.textContent="1280×720 · pronta para o YouTube Studio → Miniatura"; } else txt.textContent="Não consegui gerar a thumbnail neste navegador."; }, "image/jpeg", 0.92);
+}
+document.addEventListener("click", async ev=>{
+  if (!ev.target.closest("#thumb-baixar")) return;
+  if (!thumbBlob) return toast("A thumbnail ainda está sendo gerada.");
+  if (!downloads) return toast("Abra o site pelo claude.ai para baixar.");
+  const nome=`thumbnail-${(ep.titulo||"bino").normalize("NFD").replace(/[^\w]+/g,"-").toLowerCase().replace(/^-|-$/g,"").slice(0,40)}.jpg`;
+  try{ await downloads.save({filename:nome, data:thumbBlob}); toast("Thumbnail salva."); }catch(e){ if(e.code!=="cancelled") toast("Não foi possível salvar."); }
+});
+
 /* ---------------- pacote para o robô montar com voz ---------------- */
 $("#com-voz").onclick = async () => {
   if (!ep || !ep.id) return toast("Crie ou abra um episódio da biblioteca primeiro.");
@@ -479,7 +565,9 @@ function renderMeta(){
     const st = ep.status==="publicado";
     h += `<div class="row"><div class="k">Status</div><div class="v"><span class="pill ${ep.status}">${ep.status==="publicado"?"Publicado":ep.status==="rascunho"?"Rascunho":"Pronto"}</span>${ep.revisao?` <span class="small">${esc(ep.revisao)}</span>`:""}</div><button class="copy" id="marcar">${st?"Desmarcar":"Marcar publicado"}</button></div>`;
   }
+  if (ep.id) h += `<div class="row"><div class="k">Thumbnail</div><div class="v thumb-box"><img id="thumb-img" alt="Thumbnail do vídeo para o YouTube"><span class="small" id="thumb-txt">Gerando…</span></div><button class="copy" id="thumb-baixar">Baixar</button></div>`;
   $("#meta").innerHTML=h;
+  if (ep.id) atualizarThumb();
   $("#marcar")?.addEventListener("click", async()=>{ if(!db) return; const novo=ep.status==="publicado"?"pronto":"publicado";
     try{ await db.doc("videos/"+ep.id).update({status:novo, publicadoEm: novo==="publicado"?new Date().toISOString():null}); ep.status=novo; renderMeta(); toast(novo==="publicado"?"Marcado como publicado.":"Status atualizado."); }catch(e){ toast("Você não tem permissão para alterar."); } });
 }
