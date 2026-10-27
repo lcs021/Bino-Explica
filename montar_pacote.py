@@ -9,7 +9,7 @@ import json
 import os
 import shutil
 import sys
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
 
 import main_gratis as mg
 from util import RAIZ, carregar_config, configurar_log, ler_historico, salvar_historico, slug
@@ -54,8 +54,6 @@ def main():
     if not arquivos:
         log.info("Nenhum episódio novo na pasta episodios/.")
         return
-    conectado = pub["youtube"] or pub["tiktok"] or pub["instagram"]
-    agora = datetime.now(timezone.utc)
     falhou = False
     feitos = PASTA / "feitos"
     feitos.mkdir(exist_ok=True)
@@ -68,22 +66,10 @@ def main():
             log.info(f"Pulando {arq.name}: este episódio já foi montado (arquivo repetido).")
             shutil.move(str(arq), feitos / arq.name)
             continue
-        # cronograma: com redes conectadas, só posta quando chega o horário do episódio
-        if conectado and pacote.get("agenda"):
-            try:
-                quando = datetime.fromisoformat(pacote["agenda"].replace("Z", "+00:00"))
-            except ValueError:
-                quando = agora
-            if quando - agora > timedelta(minutes=45):
-                log.info(f"Aguardando o horário: {pacote.get('titulo')} → {quando.astimezone(timezone(timedelta(hours=-3))):%d/%m %H:%M}")
-                continue
         ja_feitos.add(pacote.get("titulo"))
         biblico = pacote.get("modo") == "biblico"
         cfg["canal"]["marca"] = "Turibenção" if biblico else cfg["canal"].get("marca", "@binoexplica")
         pub["feito_para_criancas"] = biblico
-        # no cronograma, o vídeo longo vai ao YouTube só nos episódios longos (19h30);
-        # os do meio-dia sobem só como Shorts/TikTok/Reels
-        pub["youtube_longo"] = bool(pacote.get("longo")) or not pacote.get("agenda")
         pasta = RAIZ / cfg["pastas"]["saida"] / f"{datetime.now():%Y-%m-%d_%H%M}_{slug(tema)}"
         log.info(f"===== Montando episódio do site: {tema} =====")
         try:

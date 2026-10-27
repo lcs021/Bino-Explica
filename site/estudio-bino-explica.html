@@ -150,7 +150,6 @@ canvas#tela{display:block;max-width:100%;height:auto;border-radius:10px;backgrou
     <nav aria-label="Seções">
       <a href="#criar" data-v="criar">Criar vídeo</a>
       <a href="#biblioteca" data-v="biblioteca">Biblioteca</a>
-      <a href="#publicacao" data-v="publicacao">Publicação</a>
     </nav>
   </header>
 
@@ -166,18 +165,14 @@ canvas#tela{display:block;max-width:100%;height:auto;border-radius:10px;backgrou
           <button id="m-viral" aria-pressed="true">🔥 Viral</button>
           <button id="m-biblico" aria-pressed="false">📖 Bíblico</button>
         </div>
-        <div class="note ok" id="prox-box" style="display:flex;flex-direction:column;gap:2px">
-          <span class="eyebrow" style="color:inherit">📅 Próximo horário do cronograma</span>
-          <b id="prox-slot">—</b><span id="prox-pauta" class="small" style="color:inherit"></span>
-        </div>
         <label style="display:flex;gap:10px;align-items:flex-start;font-size:.9rem;cursor:pointer">
-          <input type="checkbox" id="dez" style="margin-top:3px;accent-color:var(--coral);width:18px;height:18px">
-          <span><b>Vídeo do YouTube com 10 minutos</b><br><span class="small">Marcado sozinho no horário das 19h30. Leva uns 15 minutos para criar.</span></span>
+          <input type="checkbox" id="dez" checked style="margin-top:3px;accent-color:var(--coral);width:18px;height:18px">
+          <span><b>Vídeo do YouTube com 10 minutos</b><br><span class="small">Desmarque para um vídeo curto (~2:30). O de 10 minutos leva uns 15 minutos para criar.</span></span>
         </label>
         <div id="formatos-box">
           <div class="small" style="margin-bottom:6px">Formato</div>
           <div class="chips" id="formatos" role="group" aria-label="Formato do vídeo">
-            <button class="chip" data-f="auto" aria-pressed="true">📅 Do cronograma</button>
+            <button class="chip" data-f="auto" aria-pressed="true">🔄 Revezar</button>
             <button class="chip" data-f="explicacao" aria-pressed="false">Explicação</button>
             <button class="chip" data-f="top5" aria-pressed="false">Top 5</button>
             <button class="chip" data-f="mito_ou_verdade" aria-pressed="false">Mito ou verdade</button>
@@ -258,41 +253,7 @@ canvas#tela{display:block;max-width:100%;height:auto;border-radius:10px;backgrou
     <div class="empty" id="lib-empty">Nenhum episódio ainda. Crie o primeiro na aba <b>Criar vídeo</b> e ele aparece aqui.</div>
   </section>
 
-  <!-- ================= PUBLICAÇÃO ================= -->
-  <section id="v-publicacao" hidden class="stack">
-    <div><div class="eyebrow">Publicação</div><h2 style="font-size:1.4rem">Agenda e canais</h2></div>
-    <div class="pub">
-      <div class="panel stack">
-        <h3>Cronograma: 2 vídeos por dia</h3>
-        <div id="crono" style="overflow-x:auto"></div>
-        <p class="small" id="agenda-txt" style="margin:0"></p>
-        <div hidden><div id="dias"></div><input id="hora"><button id="salvar-agenda"></button></div>
-      </div>
-      <div class="panel stack">
-        <div class="net"><b>YouTube</b><span class="pill rascunho status">Postagem manual</span></div>
-        <p class="small" style="margin:0">Vídeo principal + Shorts. Episódios <b>bíblicos</b> vão como "feito para crianças"; os <b>virais</b> vão para o público geral.</p>
-        <div class="net"><b>TikTok</b><span class="pill rascunho status">Postagem manual</span></div>
-        <p class="small" style="margin:0">Corte vertical de 1 minuto, com rótulo de conteúdo feito com IA.</p>
-        <div class="net"><b>Instagram</b><span class="pill rascunho status">Postagem manual</span></div>
-        <p class="small" style="margin:0">O mesmo corte como Reels (9:16) e uma versão 4:5 para o feed, com legenda própria do Instagram.</p>
-      </div>
-      <div class="panel stack">
-        <h3>Como postar hoje</h3>
-        <ol class="checklist">
-          <li>Abra o episódio e clique em <b>Gravar vídeo</b> nos dois formatos.</li>
-          <li>Use os botões <b>Copiar</b> para título, descrição e tags.</li>
-          <li>Suba no YouTube Studio, no TikTok e no Instagram (Reels + feed).</li>
-          <li>Na biblioteca, marque como <b>Publicado</b>.</li>
-        </ol>
-      </div>
-    </div>
-    <div class="panel stack">
-      <h3>Fila de próximos episódios</h3>
-      <p class="small" style="margin:0">Um tema por linha. O site pega o primeiro que ainda não virou episódio.</p>
-      <textarea id="fila-edit" class="field" rows="8"></textarea>
-      <div><button class="btn btn-ghost" id="salvar-fila">Salvar fila</button></div>
-    </div>
-  </section>
+
 </div>
 <div class="toast" id="toast" hidden></div>
 
@@ -327,8 +288,8 @@ let formato = "longo";
 /* ---------------- navegação ---------------- */
 function rota(){
   const v = (location.hash||"#criar").slice(1);
-  const ok = ["criar","biblioteca","publicacao"].includes(v) ? v : "criar";
-  for (const k of ["criar","biblioteca","publicacao"]) $("#v-"+k).hidden = k!==ok;
+  const ok = ["criar","biblioteca"].includes(v) ? v : "criar";
+  for (const k of ["criar","biblioteca"]) $("#v-"+k).hidden = k!==ok;
   document.querySelectorAll("nav a").forEach(a => { if (a.dataset.v!==ok) a.removeAttribute("aria-current"); else a.setAttribute("aria-current","page"); });
 }
 addEventListener("hashchange", rota); rota();
@@ -486,7 +447,7 @@ $("#com-voz").onclick = async () => {
   const svgs = imgs.slice(0, n).map(im => { try { return decodeURIComponent(im.src.split(",").slice(1).join(",")); } catch (e) { return ""; } });
   const pacote = { versao: 1, tema: ep.tema, modo: ep.modo || "viral", formato: ep.formato || "", titulo: ep.titulo, descricao: ep.descricao,
     tags: ep.tags || [], personagens: ep.personagens || "", cenas: ep.cenas.map((c, k) => ({ narracao: c.narracao, legenda_tela: c.legenda_tela || "", img: c.img ?? k })), longo: !!ep.longo,
-    curto: ep.curto, miniatura: ep.miniatura || null, agenda: ep.agenda || null, svgs, criadoEm: new Date().toISOString() };
+    curto: ep.curto, miniatura: ep.miniatura || null, svgs, criadoEm: new Date().toISOString() };
   const nome = `episodio-${(ep.titulo || "bino").normalize("NFD").replace(/[^\w]+/g, "-").toLowerCase().replace(/^-|-$/g, "").slice(0, 40)}-${ep.id}.json`;
   try {
     await downloads.save({ filename: nome, data: JSON.stringify(pacote) });
@@ -533,16 +494,13 @@ async function abrir(epi, svgs){
 
 /* ---------------- fila ---------------- */
 function proximos(){ const feitos=new Set(videos.map(v=>v.tema)); return fila.filter(t=>!feitos.has(t)); }
-function renderFila(){ try{ renderProximo(); }catch(e){}
+function renderFila(){
   $("#fila").innerHTML = proximos().slice(0,5).map(t=>`<button class="chip" data-t="${esc(t)}">${esc(t)}</button>`).join("");
   if(!$("#tema").value) $("#tema").placeholder = proximos()[0] || "Ex.: Jonas e o grande peixe";
-  if(document.activeElement!==$("#fila-edit")) $("#fila-edit").value = fila.join("\n");
 }
 $("#fila").addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(b) $("#tema").value=b.dataset.t; });
-$("#salvar-fila").onclick=async()=>{ filas[modo]=$("#fila-edit").value.split("\n").map(s=>s.trim()).filter(Boolean); fila=filas[modo];
-  if(db){ try{ await db.doc("config/fila").set({viral:filas.viral, biblico:filas.biblico}); toast("Fila salva."); }catch(e){ toast("Sem permissão para salvar."); } } renderFila(); };
 function setModo(m){ modo=m; fila=filas[m]; document.getElementById("formatos-box").hidden = m!=="viral"; $("#m-viral").setAttribute("aria-pressed",m==="viral"); $("#m-biblico").setAttribute("aria-pressed",m==="biblico");
-  $("#tema").placeholder = proximos()[0] || ""; $("#fila-edit").value=fila.join("\n"); renderFila(); renderAgenda(); }
+  $("#tema").placeholder = proximos()[0] || ""; renderFila(); }
 $("#m-viral").onclick=()=>setModo("viral"); $("#m-biblico").onclick=()=>setModo("biblico");
 $("#ideias").onclick=async()=>{ if(!sample) return toast("Abra o site pelo claude.ai para usar o Claude.");
   const b=$("#ideias"); b.disabled=true; b.textContent="Pensando…";
@@ -555,27 +513,13 @@ $("#ideias").onclick=async()=>{ if(!sample) return toast("Abra o site pelo claud
 
 /* ---------------- agenda ---------------- */
 let agenda={dias:["seg","qua","sex"],hora:"18:00"};
-function renderAgenda(){
-  const ordem=[1,2,3,4,5,6,0];
-  const cel=([f,a])=>`<b>${NOME_FORMATO[f]}</b><br><span class="small">${esc(a.replace(/\s*\(.*\)$/,""))}</span>`;
-  const tab=document.getElementById("crono");
-  if(tab) tab.innerHTML=`<table style="border-collapse:collapse;width:100%;font-size:.88rem"><thead><tr><th style="text-align:left;padding:4px 6px">Dia</th><th style="text-align:left;padding:4px 6px">12h</th><th style="text-align:left;padding:4px 6px">19h30</th></tr></thead><tbody>${ordem.map(d=>`<tr style="border-top:1px solid var(--line)"><td style="padding:6px;font-weight:700">${NOME_DIA[d]}</td><td style="padding:6px">${cel(CRONO[d][0])}</td><td style="padding:6px">${cel(CRONO[d][1])}</td></tr>`).join("")}</tbody></table>`;
-  const agendados=videos.filter(v=>v.agenda && new Date(v.agenda)>new Date()).length;
-  $("#agenda-txt").textContent=`${agendados} episódio${agendados===1?"":"s"} já criado${agendados===1?"":"s"} para os próximos horários.`;
-  return;
-  $("#dias").innerHTML = DIAS.map(([k,n])=>`<label><input type="checkbox" id="d-${k}" value="${k}" ${agenda.dias.includes(k)?"checked":""}>${n}</label>`).join("");
-  $("#hora").value=agenda.hora;
-  const nomes=DIAS.filter(([k])=>agenda.dias.includes(k)).map(([,n])=>n).join(", ");
-  $("#agenda-txt").textContent = nomes ? `Meta do canal: ${nomes}, às ${agenda.hora}. Com ${proximos().length} temas na fila.` : "Nenhum dia marcado.";
-}
-$("#salvar-agenda").onclick=async()=>{ agenda={dias:[...document.querySelectorAll("#dias input:checked")].map(i=>i.value), hora:$("#hora").value||"18:00"};
-  renderAgenda(); if(db){ try{ await db.doc("config/agenda").set(agenda); toast("Agenda salva."); }catch(e){ toast("Sem permissão para salvar."); } } };
+function renderAgenda(){}
 
 /* ---------------- biblioteca ---------------- */
 const thumbCache = {};
 async function renderLib(){
   const box=$("#lib"); $("#lib-empty").hidden = videos.length>0; $("#lib-count").textContent = videos.length ? `${videos.length} episódio${videos.length>1?"s":""} · ${videos.filter(v=>v.status==="publicado").length} publicado(s)` : "";
-  box.innerHTML = videos.map(v=>`<button class="card" data-id="${v.id}"><div class="pic" id="pic-${v.id}">${thumbCache[v.id]?`<img alt="" src="${thumbCache[v.id]}">`:"carregando…"}</div><div class="body"><span style="display:flex;gap:6px"><span class="pill ${v.status}">${v.status==="publicado"?"Publicado":v.status==="rascunho"?"Rascunho":"Pronto"}</span><span class="pill modo">${v.modo==="biblico"?"Bíblico":(NOME_FORMATO[v.formato]||"Viral")}</span>${v.agenda?`<span class="pill modo">📅 ${rotuloAgenda(v.agenda)}</span>`:""}</span><h3>${esc(v.titulo)}</h3><span class="small">${esc(v.referencia_biblica||"")} · ${new Date(v.criadoEm).toLocaleDateString("pt-BR")}</span></div></button>`).join("");
+  box.innerHTML = videos.map(v=>`<button class="card" data-id="${v.id}"><div class="pic" id="pic-${v.id}">${thumbCache[v.id]?`<img alt="" src="${thumbCache[v.id]}">`:"carregando…"}</div><div class="body"><span style="display:flex;gap:6px"><span class="pill ${v.status}">${v.status==="publicado"?"Publicado":v.status==="rascunho"?"Rascunho":"Pronto"}</span><span class="pill modo">${v.modo==="biblico"?"Bíblico":(NOME_FORMATO[v.formato]||"Viral")}</span></span><h3>${esc(v.titulo)}</h3><span class="small">${esc(v.referencia_biblica||"")} · ${new Date(v.criadoEm).toLocaleDateString("pt-BR")}</span></div></button>`).join("");
   for (const v of videos){ if(thumbCache[v.id]||!db) continue;
     try{ const s=await db.doc(`videos/${v.id}/cenas/c0`).get(); if(s.exists){ thumbCache[v.id]="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(s.data().svg); const p=$("#pic-"+v.id); if(p) p.innerHTML=`<img alt="" src="${thumbCache[v.id]}">`; } }catch(e){} }
 }
@@ -597,42 +541,7 @@ const FORMATOS = {
 };
 const NOME_FORMATO = {explicacao:"Explicação", top5:"Top 5", mito_ou_verdade:"Mito ou verdade", quiz:"Quiz"};
 let formatoEscolhido = "auto";
-// Cronograma: 2 vídeos por dia. Índice = dia da semana (0 = domingo); [12h, 19h30] = [formato, assunto]
-const CRONO = {
-  1:[["quiz","ciência do dia a dia"],["explicacao","corpo humano"]],
-  2:[["mito_ou_verdade","comida"],["top5","animais"]],
-  3:[["quiz","história"],["explicacao","um cenário \"E se...?\" (pergunta hipotética surpreendente)"]],
-  4:[["mito_ou_verdade","corpo humano"],["explicacao","tecnologia"]],
-  5:[["top5","lugares do mundo"],["quiz","perguntas difíceis no estilo \"só 1% acerta\""]],
-  6:[["explicacao","animais"],["top5","curiosidades bizarras"]],
-  0:[["mito_ou_verdade","espaço"],["explicacao","uma dúvida que muita gente tem no dia a dia (sem dizer que alguém específico perguntou)"]]
-};
-const HORARIOS=[[12,0,"12h"],[19,30,"19h30"]];
-const NOME_DIA=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
-function rotuloAgenda(iso){ if(!iso) return ""; const t=new Date(iso); const h=t.getHours()===12?"12h":"19h30"; return `${NOME_DIA[t.getDay()]} ${String(t.getDate()).padStart(2,"0")}/${String(t.getMonth()+1).padStart(2,"0")} · ${h}`; }
-function proximoHorario(){
-  const ocupados=new Set(videos.map(v=>v.agenda).filter(Boolean));
-  const agora=new Date(), limite=agora.getTime()+40*60000;
-  for(let d=0; d<60; d++) for(let k=0;k<2;k++){
-    const t=new Date(agora.getFullYear(),agora.getMonth(),agora.getDate()+d,HORARIOS[k][0],HORARIOS[k][1]);
-    if(t.getTime()<=limite) continue;
-    const iso=t.toISOString(); if(ocupados.has(iso)) continue;
-    const [formato,assunto]=CRONO[t.getDay()][k];
-    return {iso, formato, assunto, rotulo:rotuloAgenda(iso)};
-  }
-  return null;
-}
-let dezTocado=false;
-function renderProximo(){
-  const box=document.getElementById("prox-box"); if(!box) return;
-  box.hidden = modo!=="viral";
-  const p=proximoHorario(); if(!p) return;
-  document.getElementById("prox-slot").textContent=p.rotulo + (new Date(p.iso).getHours()===19 ? " · vídeo de 10 min" : "");
-  if(!dezTocado) $("#dez").checked = new Date(p.iso).getHours()===19;
-  if(!$("#tema").value) $("#tema").placeholder = formatoEscolhido==="auto" ? "Vazio = o Claude escolhe pelo cronograma" : (proximos()[0]||"");
-  document.getElementById("prox-pauta").textContent=`${NOME_FORMATO[p.formato]} · ${p.assunto.replace(/\s*\(.*\)$/,"")}. Deixe o tema vazio para o Claude escolher.`;
-}
-function formatoDaVez(slot){ if(formatoEscolhido!=="auto") return formatoEscolhido; return slot?.formato || "explicacao"; }
+function formatoDaVez(){ if(formatoEscolhido!=="auto") return formatoEscolhido; const k=Object.keys(FORMATOS); return k[videos.filter(v=>v.modo!=="biblico").length % k.length]; }
 document.getElementById("formatos").addEventListener("click", e=>{ const b=e.target.closest("[data-f]"); if(!b) return; formatoEscolhido=b.dataset.f;
   document.querySelectorAll("#formatos [data-f]").forEach(x=>x.setAttribute("aria-pressed", x===b)); });
 const VIRAL_REGRAS = `Você é roteirista do canal "Bino Explica" (YouTube, TikTok e Instagram @binoexplica), de vídeos desenhados à mão, estilo rabisco de quadro branco, feitos para VIRALIZAR.
@@ -761,16 +670,14 @@ let gerando=false;
 $("#criar").onclick = async () => {
   if (gerando) return;
   if (!sample) return mensagem("O Claude não está disponível nesta visualização. Abra o site pelo claude.ai.");
-  const slot = modo==="viral" ? proximoHorario() : null;
-  let tema = $("#tema").value.trim();
-  assuntoDaVez = slot && formatoEscolhido==="auto" ? slot.assunto : "";
-  if(!tema && !assuntoDaVez) tema = proximos()[0] || "";
-  if(!tema && !assuntoDaVez) return mensagem("Escreva um tema.");
+  let tema = $("#tema").value.trim() || proximos()[0] || "";
+  assuntoDaVez = tema ? "" : "curiosidades surpreendentes";
+  if(!tema && modo!=="viral") return mensagem("Escreva um tema.");
   gerando=true; $("#criar").disabled=true; parar(); mensagem("");
   ["roteiro","revisao","cenas","salvo"].forEach(k=>etapa(k,""));
   try{
     etapa("roteiro","ativo","escrevendo…");
-    const modoEp = modo, formatoEp = modo==="viral" ? formatoDaVez(slot) : ""; if(formatoEp) etapa("roteiro","ativo",NOME_FORMATO[formatoEp]+"…");
+    const modoEp = modo, formatoEp = modo==="viral" ? formatoDaVez() : ""; if(formatoEp) etapa("roteiro","ativo",NOME_FORMATO[formatoEp]+"…");
     const longo = $("#dez").checked;
     let r;
     if (longo) { r = validar(await gerarLongo(tema, formatoEp, t=>etapa("roteiro","ativo",t))); }
@@ -789,7 +696,7 @@ $("#criar").onclick = async () => {
     if(status!=="pronto") mensagem(obs+" O episódio fica como rascunho.");
 
     const id = "v"+Date.now().toString(36);
-    const dados = {tema, modo:modoEp, formato:formatoEp, agenda: slot?.iso || null, titulo:r.titulo, descricao:r.descricao, tags:r.tags, referencia_biblica:r.referencia_biblica||"", personagens:r.personagens,
+    const dados = {tema, modo:modoEp, formato:formatoEp, titulo:r.titulo, descricao:r.descricao, tags:r.tags, referencia_biblica:r.referencia_biblica||"", personagens:r.personagens,
       cenas:r.cenas.map((c,k)=>({narracao:String(c.narracao||""), legenda_tela:String(c.legenda_tela||""), visual:String(c.visual||""), img:c.img ?? k})), longo:!!r.longo, curto:r.curto, miniatura:(r.miniatura&&typeof r.miniatura==="object")?r.miniatura:null, status, revisao:obs, criadoEm:new Date().toISOString(), nCenas:r.cenas.length, nDesenhos:(r.desenhos||r.cenas).length};
     await abrir({id,...dados}, []);
     if (db) await db.doc("videos/"+id).set({...dados, status:"gerando"});
@@ -813,7 +720,6 @@ $("#criar").onclick = async () => {
   }finally{ gerando=false; $("#criar").disabled=false; }
 };
 
-$("#dez").addEventListener("change",()=>{ dezTocado=true; });
 
 /* ---------------- início ---------------- */
 dimensionar(); renderFila(); renderAgenda(); renderLib();
@@ -828,7 +734,6 @@ document.fonts?.ready.then(()=>{ if(!tocando) mostrarPrimeiro(); });
   db.doc("config/fila").onSnapshot(s=>{ if(!s.exists) return; const d=s.data();
     if(Array.isArray(d.viral)) filas.viral=d.viral.slice(); if(Array.isArray(d.biblico)) filas.biblico=d.biblico.slice(); else if(Array.isArray(d.temas)) filas.biblico=d.temas.slice();
     fila=filas[modo]; renderFila(); renderAgenda(); });
-  db.doc("config/agenda").onSnapshot(s=>{ if(s.exists){ agenda={dias:s.data().dias||[],hora:s.data().hora||"18:00"}; renderAgenda(); } });
   db.collection("videos").orderBy("criadoEm","desc").onSnapshot(s=>{
     videos = s.docs.map(d=>({id:d.id,...d.data()})).filter(v=>v.status!=="gerando" || (ep&&ep.id===v.id));
     renderFila(); renderAgenda(); renderLib();

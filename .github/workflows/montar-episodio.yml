@@ -3,10 +3,6 @@ name: Montar episódio do site (com voz)
 on:
   push:
     paths: ["episodios/*.json"]
-  schedule:
-    # Cronograma (horário de Brasília = UTC-3): começa a montar 25 min antes de cada post
-    - cron: "35 14 * * *"     # 11h35 → posta por volta das 12h
-    - cron: "5 22 * * *"      # 19h05 → posta por volta das 19h30
   workflow_dispatch:
 
 permissions:

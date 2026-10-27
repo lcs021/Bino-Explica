@@ -1,8 +1,7 @@
 name: Bino Explica (grátis)
 
 on:
-  # Agendamento desligado: agora quem manda é o cronograma do site (2 vídeos por dia).
-  # Para o Gemini criar sozinho de novo, recoloque aqui:  schedule: - cron: "47 20 * * 1,3,5"
+  # Sem agendamento: só roda quando você clica em "Run workflow".
   workflow_dispatch:          # botão "Run workflow" para rodar na hora
     inputs:
       tema:
