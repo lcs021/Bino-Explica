@@ -76,14 +76,26 @@ def escolher_tema(cfg) -> str:
     return r["tema"]
 
 
-def prompt_roteiro(tema, correcoes=""):
+# Formatos que se alternam a cada vídeo (variedade evita cara de conteúdo repetitivo)
+FORMATOS = {
+    "explicacao": "EXPLICAÇÃO: conte a curiosidade como uma pequena história, com o Bino descobrindo a resposta aos poucos.",
+    "top5": "TOP 5: cinco itens numerados sobre o tema, do menos ao mais surpreendente; o nº 1 é o mais chocante e fica para o final. Diga o número em cada item (\"Número 3...\").",
+    "mito_ou_verdade": "MITO OU VERDADE: apresente 3 a 4 afirmações populares sobre o tema; para cada uma, pergunte \"mito ou verdade?\", dê 1 segundo de suspense e revele com explicação curta.",
+    "quiz": "QUIZ: desafie o público a adivinhar antes do Bino. Faça uma pergunta, dê 3 opções (A, B, C), crie suspense e revele; repita com 2 ou 3 perguntas e peça para comentarem quantas acertaram.",
+}
+NOMES_FORMATO = {"explicacao": "Explicação", "top5": "Top 5", "mito_ou_verdade": "Mito ou verdade", "quiz": "Quiz"}
+
+
+def prompt_roteiro(tema, correcoes="", formato="explicacao"):
     return f"""{REGRAS_VIRAL}
 
 Tema: {tema}
+Formato do vídeo: {FORMATOS.get(formato, FORMATOS["explicacao"])}
 {"Corrija estes problemas apontados pela revisão: " + correcoes if correcoes else ""}
 Crie um vídeo de ~150 segundos (~330 palavras) em EXATAMENTE 8 cenas.
-Crie também um corte vertical de ~55 segundos (~120 palavras, 3 a 4 cenas) com gancho forte,
-reaproveitando as cenas (campo "imagem" = índice de 0 a 7).
+Crie também um corte vertical de ~75 segundos (~190 palavras, 5 cenas) com gancho forte no 1º segundo,
+no mesmo formato, reaproveitando as cenas (campo "imagem" = índice de 0 a 7).
+O corte vertical PRECISA passar de 1 minuto (o TikTok só paga vídeos com mais de 60 segundos).
 O visual é rabisco de quadro branco: cenas SIMPLES, 1 a 3 personagens, uma ação clara.
 "visual": descrição da cena EM INGLÊS (personagens, ação, expressão, objetos).
 "personagens": aparência fixa de cada personagem, em inglês, estilo bonequinho de palito.
@@ -122,12 +134,13 @@ def validar(r):
     return r
 
 
-def criar_roteiro(cfg, tema):
+def criar_roteiro(cfg, tema, formato="explicacao"):
     m = cfg["gemini"]["modelo_texto"]
     obs = ""
     for tentativa in range(2):
-        log.info(f"Escrevendo roteiro (tentativa {tentativa + 1}): {tema}")
-        r = validar(ia.gerar_json(prompt_roteiro(tema, obs), m))
+        log.info(f"Escrevendo roteiro (tentativa {tentativa + 1}, formato {NOMES_FORMATO.get(formato)}): {tema}")
+        r = validar(ia.gerar_json(prompt_roteiro(tema, obs, formato), m))
+        r["formato"] = formato
         rev = ia.gerar_json(prompt_revisao(r), m)
         if rev.get("aprovado"):
             log.info("Roteiro aprovado na revisão.")
@@ -259,13 +272,19 @@ def compor(cena_png, titulo, W, H, marca, destino):
 
 
 # ------------------------------------------------------------------ principal
-def produzir(cfg, tema, pasta):
+def escolher_formato(cfg) -> str:
+    """Revezamento: explicação → top 5 → mito ou verdade → quiz → ..."""
+    ordem = list(FORMATOS)
+    return ordem[len(ler_historico(cfg)) % len(ordem)]
+
+
+def produzir(cfg, tema, pasta, formato="explicacao"):
     pasta.mkdir(parents=True, exist_ok=True)
     arq = pasta / "roteiro.json"
     if arq.exists():
         r = json.loads(arq.read_text(encoding="utf-8"))
     else:
-        r = criar_roteiro(cfg, tema)
+        r = criar_roteiro(cfg, tema, formato)
         r["tema"] = tema
         arq.write_text(json.dumps(r, ensure_ascii=False, indent=2), encoding="utf-8")
 
@@ -291,8 +310,10 @@ def produzir(cfg, tema, pasta):
     aud_curto = narracao.narrar_cenas(cfg, r["curto"]["cenas"], pasta, "curto")
 
     longo = video.montar(cfg, longo_imgs, aud_longo, textos_longo, pasta, "youtube_16x9", 1920, 1080)
-    curto = video.montar(cfg, vert_imgs, aud_curto, textos_curto, pasta, "vertical_shorts_tiktok_reels", 1080, 1920)
-    feed = video.montar(cfg, feed_imgs, aud_curto, textos_curto, pasta, "instagram_feed_4x5", 1080, 1350)
+    # vertical com no mínimo 62s: se a narração ficar curta, segura o último quadro
+    curto = video.montar(cfg, vert_imgs, aud_curto, textos_curto, pasta, "vertical_shorts_tiktok_reels", 1080, 1920,
+                         minimo=62)
+    feed = video.montar(cfg, feed_imgs, aud_curto, textos_curto, pasta, "instagram_feed_4x5", 1080, 1350, minimo=62)
 
     mini = pasta / "miniatura.jpg"
     Image.open(longo_imgs[0]).resize((1280, 720), Image.LANCZOS).save(mini, quality=92)
@@ -307,6 +328,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--tema")
     ap.add_argument("--sem-publicar", action="store_true")
+    ap.add_argument("--formato", choices=["auto"] + list(FORMATOS), default="auto")
     a = ap.parse_args()
     cfg = carregar_config()
     pub = cfg["publicacao"]
@@ -320,10 +342,11 @@ def main():
     pub["feito_para_criancas"] = False      # canal para público geral: monetiza melhor
 
     tema = a.tema or escolher_tema(cfg)
+    formato = escolher_formato(cfg) if a.formato == "auto" else a.formato
     pasta = RAIZ / cfg["pastas"]["saida"] / f"{datetime.now():%Y-%m-%d_%H%M}_{slug(tema)}"
     log.info(f"===== Bino Explica: {tema} =====")
     try:
-        res = produzir(cfg, tema, pasta)
+        res = produzir(cfg, tema, pasta, formato)
     except Exception as e:  # noqa: BLE001
         log.error(f"Produção interrompida: {e}")
         sys.exit(1)

@@ -9,6 +9,11 @@ on:
       tema:
         description: "Tema (vazio = próximo da fila)"
         required: false
+      formato:
+        description: "Formato do vídeo"
+        type: choice
+        default: auto
+        options: [auto, explicacao, top5, mito_ou_verdade, quiz]
       sem_publicar:
         description: "Só criar os vídeos, sem publicar (teste)"
         type: boolean
@@ -59,10 +64,12 @@ jobs:
           ZOOM_VIDEO: "0.06"
           TEMA: ${{ inputs.tema }}
           SEM_PUBLICAR: ${{ inputs.sem_publicar }}
+          FORMATO: ${{ inputs.formato }}
         run: |
           ARGS=()
           if [ -n "$TEMA" ]; then ARGS+=(--tema "$TEMA"); fi
           if [ "$SEM_PUBLICAR" = "true" ]; then ARGS+=(--sem-publicar); fi
+          if [ -n "$FORMATO" ]; then ARGS+=(--formato "$FORMATO"); fi
           python main_gratis.py "${ARGS[@]}"
 
       - name: Guardar os vídeos para baixar (30 dias)

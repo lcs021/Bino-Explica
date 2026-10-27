@@ -87,7 +87,7 @@ def _musica(cfg):
 
 
 def montar(cfg, imagens: list, audios: list, textos: list, pasta: Path, nome: str,
-           w: int, h: int) -> Path:
+           w: int, h: int, minimo: float = 0) -> Path:
     """Monta um vídeo completo a partir de imagens já no formato certo e das narrações."""
     fps = cfg["video"]["fps"]
     trab = pasta / f"_trab_{nome}"
@@ -135,11 +135,22 @@ def montar(cfg, imagens: list, audios: list, textos: list, pasta: Path, nome: st
     else:
         ultimo_a = "0:a"
 
+    final = total
+    if minimo and total < minimo:              # segura o último quadro até a duração mínima
+        extra = minimo - total + 0.2
+        filtros.append(f"{ultimo_v}tpad=stop_mode=clone:stop_duration={extra:.2f}[vpad]")
+        ultimo_v = "[vpad]"
+        origem_a = ultimo_a if ultimo_a.startswith("[") else "[0:a]"
+        filtros.append(f"{origem_a}apad[apad]")
+        ultimo_a = "[apad]"
+        final = minimo
+        log.info(f"[{nome}] narração com {total:.0f}s; estendido para {minimo:.0f}s")
+
     saida = pasta / f"{nome}.mp4"
     rodar_ffmpeg(entradas + ["-filter_complex", ";".join(filtros),
-                             "-map", ultimo_v, "-map", ultimo_a, "-t", f"{total:.3f}",
+                             "-map", ultimo_v, "-map", ultimo_a, "-t", f"{final:.3f}",
                              "-c:v", "libx264", "-preset", "medium", "-crf", "20",
                              "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k",
                              "-movflags", "+faststart", saida.resolve()], cwd=trab)
-    log.info(f"[{nome}] pronto: {saida.name} ({total:.0f}s)")
+    log.info(f"[{nome}] pronto: {saida.name} ({final:.0f}s)")
     return saida

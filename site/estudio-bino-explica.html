@@ -57,6 +57,7 @@ label.lbl{font-weight:700;font-size:.9rem}
 .linha{display:flex;background:var(--paper-2);border:1.5px solid var(--line);border-radius:12px;padding:3px}
 .linha button{flex:1;border:0;background:transparent;border-radius:9px;padding:7px 10px;font-weight:700;cursor:pointer;color:var(--muted)}
 .linha button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-style:solid;border-color:var(--ink)}
 .pill.modo{background:var(--idle-bg);color:var(--idle-fg)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{border:1px dashed var(--line);background:transparent;border-radius:999px;padding:5px 11px;font-size:.84rem;cursor:pointer;color:var(--ink)}
@@ -164,6 +165,16 @@ canvas#tela{display:block;max-width:100%;height:auto;border-radius:10px;backgrou
         <div class="linha" role="group" aria-label="Linha de conteúdo">
           <button id="m-viral" aria-pressed="true">🔥 Viral</button>
           <button id="m-biblico" aria-pressed="false">📖 Bíblico</button>
+        </div>
+        <div id="formatos-box">
+          <div class="small" style="margin-bottom:6px">Formato</div>
+          <div class="chips" id="formatos" role="group" aria-label="Formato do vídeo">
+            <button class="chip" data-f="auto" aria-pressed="true">🔄 Revezar</button>
+            <button class="chip" data-f="explicacao" aria-pressed="false">Explicação</button>
+            <button class="chip" data-f="top5" aria-pressed="false">Top 5</button>
+            <button class="chip" data-f="mito_ou_verdade" aria-pressed="false">Mito ou verdade</button>
+            <button class="chip" data-f="quiz" aria-pressed="false">Quiz</button>
+          </div>
         </div>
         <label class="lbl" for="tema">Tema</label>
         <input id="tema" class="field" placeholder="Ex.: E se a internet acabasse por um dia?">
@@ -419,6 +430,13 @@ async function tocar({gravar=false}={}){
     });
     feito += dur+0.2;
   }
+  // vertical gravado precisa passar de 1 minuto (TikTok): segura o último quadro
+  if (gravar && formato!=="longo" && tocando && minha===rodada && cenas.length){
+    const ultima=cenas[cenas.length-1], falta=62-feito;
+    if (falta>0) await new Promise(res=>{ const t0=performance.now(); const loop=()=>{ if(!tocando||minha!==rodada) return res();
+      const el=(performance.now()-t0)/1000; desenhar(ultima,1,"",99); $("#bar").style.width=Math.min(100,(feito+el)/62*100)+"%";
+      if(el>=falta) return res(); raf=requestAnimationFrame(loop); }; loop(); });
+  }
   const completo = tocando && minha===rodada;
   if (minha===rodada) parar();
   return completo;
@@ -491,7 +509,7 @@ function renderFila(){
 $("#fila").addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(b) $("#tema").value=b.dataset.t; });
 $("#salvar-fila").onclick=async()=>{ filas[modo]=$("#fila-edit").value.split("\n").map(s=>s.trim()).filter(Boolean); fila=filas[modo];
   if(db){ try{ await db.doc("config/fila").set({viral:filas.viral, biblico:filas.biblico}); toast("Fila salva."); }catch(e){ toast("Sem permissão para salvar."); } } renderFila(); };
-function setModo(m){ modo=m; fila=filas[m]; $("#m-viral").setAttribute("aria-pressed",m==="viral"); $("#m-biblico").setAttribute("aria-pressed",m==="biblico");
+function setModo(m){ modo=m; fila=filas[m]; document.getElementById("formatos-box").hidden = m!=="viral"; $("#m-viral").setAttribute("aria-pressed",m==="viral"); $("#m-biblico").setAttribute("aria-pressed",m==="biblico");
   $("#tema").placeholder = proximos()[0] || ""; $("#fila-edit").value=fila.join("\n"); renderFila(); renderAgenda(); }
 $("#m-viral").onclick=()=>setModo("viral"); $("#m-biblico").onclick=()=>setModo("biblico");
 $("#ideias").onclick=async()=>{ if(!sample) return toast("Abra o site pelo claude.ai para usar o Claude.");
@@ -518,7 +536,7 @@ $("#salvar-agenda").onclick=async()=>{ agenda={dias:[...document.querySelectorAl
 const thumbCache = {};
 async function renderLib(){
   const box=$("#lib"); $("#lib-empty").hidden = videos.length>0; $("#lib-count").textContent = videos.length ? `${videos.length} episódio${videos.length>1?"s":""} · ${videos.filter(v=>v.status==="publicado").length} publicado(s)` : "";
-  box.innerHTML = videos.map(v=>`<button class="card" data-id="${v.id}"><div class="pic" id="pic-${v.id}">${thumbCache[v.id]?`<img alt="" src="${thumbCache[v.id]}">`:"carregando…"}</div><div class="body"><span style="display:flex;gap:6px"><span class="pill ${v.status}">${v.status==="publicado"?"Publicado":v.status==="rascunho"?"Rascunho":"Pronto"}</span><span class="pill modo">${v.modo==="biblico"?"Bíblico":"Viral"}</span></span><h3>${esc(v.titulo)}</h3><span class="small">${esc(v.referencia_biblica||"")} · ${new Date(v.criadoEm).toLocaleDateString("pt-BR")}</span></div></button>`).join("");
+  box.innerHTML = videos.map(v=>`<button class="card" data-id="${v.id}"><div class="pic" id="pic-${v.id}">${thumbCache[v.id]?`<img alt="" src="${thumbCache[v.id]}">`:"carregando…"}</div><div class="body"><span style="display:flex;gap:6px"><span class="pill ${v.status}">${v.status==="publicado"?"Publicado":v.status==="rascunho"?"Rascunho":"Pronto"}</span><span class="pill modo">${v.modo==="biblico"?"Bíblico":(NOME_FORMATO[v.formato]||"Viral")}</span></span><h3>${esc(v.titulo)}</h3><span class="small">${esc(v.referencia_biblica||"")} · ${new Date(v.criadoEm).toLocaleDateString("pt-BR")}</span></div></button>`).join("");
   for (const v of videos){ if(thumbCache[v.id]||!db) continue;
     try{ const s=await db.doc(`videos/${v.id}/cenas/c0`).get(); if(s.exists){ thumbCache[v.id]="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(s.data().svg); const p=$("#pic-"+v.id); if(p) p.innerHTML=`<img alt="" src="${thumbCache[v.id]}">`; } }catch(e){} }
 }
@@ -532,6 +550,17 @@ function etapa(k,s,n=""){ const li=document.querySelector(`#steps li[data-k="${k
 function mensagem(t,tipo="warn"){ const m=$("#msg"); m.hidden=!t; m.className="note "+tipo; m.textContent=t||""; }
 
 const BINO = "Bino: a stick figure with a big round head, scribbled spiky black hair, two dot eyes, expressive line mouth, wearing an orange tunic with brown blotches";
+const FORMATOS = {
+  explicacao:"EXPLICAÇÃO: conte a curiosidade como uma pequena história, com o Bino descobrindo a resposta aos poucos.",
+  top5:"TOP 5: cinco itens numerados sobre o tema, do menos ao mais surpreendente; o nº 1 é o mais chocante e fica para o final. Diga o número em cada item (\"Número 3...\").",
+  mito_ou_verdade:"MITO OU VERDADE: apresente 3 a 4 afirmações populares sobre o tema; para cada uma pergunte \"mito ou verdade?\", dê um segundo de suspense e revele com explicação curta.",
+  quiz:"QUIZ: desafie o público a adivinhar antes do Bino. Faça uma pergunta com 3 opções (A, B, C), crie suspense e revele; repita com 2 ou 3 perguntas e peça para comentarem quantas acertaram."
+};
+const NOME_FORMATO = {explicacao:"Explicação", top5:"Top 5", mito_ou_verdade:"Mito ou verdade", quiz:"Quiz"};
+let formatoEscolhido = "auto";
+function formatoDaVez(){ if(formatoEscolhido!=="auto") return formatoEscolhido; const k=Object.keys(FORMATOS); return k[videos.filter(v=>v.modo!=="biblico").length % k.length]; }
+document.getElementById("formatos").addEventListener("click", e=>{ const b=e.target.closest("[data-f]"); if(!b) return; formatoEscolhido=b.dataset.f;
+  document.querySelectorAll("#formatos [data-f]").forEach(x=>x.setAttribute("aria-pressed", x===b)); });
 const VIRAL_REGRAS = `Você é roteirista do canal "Bino Explica" (YouTube, TikTok e Instagram @binoexplica), de vídeos desenhados à mão, estilo rabisco de quadro branco, feitos para VIRALIZAR.
 Público: geral e família (crianças podem assistir). Português do Brasil falado, natural, divertido, frases curtas, ritmo rápido.
 Técnicas obrigatórias de retenção:
@@ -543,7 +572,7 @@ Técnicas obrigatórias de retenção:
 Fatos: use só fatos bem estabelecidos e verificáveis; sem notícias recentes, sem pessoas reais, sem conselhos de saúde arriscados. Nada de medo, violência ou conteúdo impróprio para crianças.
 Título: curioso e chamativo, mas HONESTO (o vídeo entrega o que o título promete).
 Personagem fixo: ${BINO}. Ele aparece na maioria das cenas.`;
-function promptRoteiro(tema, correcoes){ return (modo==="viral" ? VIRAL_REGRAS : `Você é roteirista do canal infantil cristão "Turibenção" no YouTube.
+function promptRoteiro(tema, correcoes, formato){ return (modo==="viral" ? VIRAL_REGRAS + `\nFormato do vídeo: ${FORMATOS[formato]||FORMATOS.explicacao}` : `Você é roteirista do canal infantil cristão "Turibenção" no YouTube.
 Fundamentos obrigatórios: ${FUNDAMENTOS}
 Público: crianças de 3 a 8 anos. Português do Brasil, frases curtas e simples, tom alegre e acolhedor.
 Seja fiel ao texto bíblico. Nada assustador ou violento em detalhe; momentos difíceis com delicadeza.
@@ -552,7 +581,7 @@ Personagem guia fixo: ${TURI}. Ele abre e fecha o vídeo.`) + `
 Tema: ${tema}
 ${correcoes?"Corrija estes problemas apontados pela revisão: "+correcoes+"\n":""}
 Crie um vídeo de ~150 segundos (~330 palavras) em EXATAMENTE 8 cenas, ${modo==="viral"?"com gancho na 1ª frase e revelação + pergunta para os comentários no fim":"terminando com a lição e um convite carinhoso para se inscrever"}.
-Crie também um corte vertical de ~55 segundos (~120 palavras, 3 a 4 cenas) com gancho forte no primeiro segundo, reaproveitando as cenas (campo "imagem" = índice de 0 a 7).
+Crie também um corte vertical de ~75 segundos (~190 palavras, 5 cenas) com gancho forte no primeiro segundo, reaproveitando as cenas (campo "imagem" = índice de 0 a 7). O corte vertical PRECISA passar de 1 minuto (o TikTok só paga vídeos com mais de 60 segundos).
 O visual é desenho à mão estilo quadro branco (bonequinhos de palito, contorno preto, fundo branco, pouca cor), então descreva cenas SIMPLES: 1 a 3 personagens, uma ação clara, poucos objetos.
 Descreva cada cena visualmente EM INGLÊS em "visual" (personagens, ação, expressão, objetos, balão de pensamento se ajudar) e liste em "personagens" a aparência fixa de cada personagem em estilo bonequinho de palito, em inglês (cabelo, barba, cor e forma da roupa), para manter todos iguais nas 8 cenas.
 Em "legenda_tela" escreva um título curto e divertido para a cena, de 2 a 4 palavras, como uma chamada desenhada (ex.: "MISSÃO: CONSTRUIR A ARCA!", "JONAS FUGIU?").
@@ -593,11 +622,12 @@ $("#criar").onclick = async () => {
   ["roteiro","revisao","cenas","salvo"].forEach(k=>etapa(k,""));
   try{
     etapa("roteiro","ativo","escrevendo…");
-    const modoEp = modo; let r = validar(await sample.json(promptRoteiro(tema),{modelTier:"default", cache:false})); r.modo=modoEp; etapa("roteiro","ok",`${r.cenas.length} cenas`);
+    const modoEp = modo, formatoEp = modo==="viral" ? formatoDaVez() : ""; if(formatoEp) etapa("roteiro","ativo",NOME_FORMATO[formatoEp]+"…");
+    let r = validar(await sample.json(promptRoteiro(tema,"",formatoEp),{modelTier:"default", cache:false})); r.modo=modoEp; etapa("roteiro","ok",`${r.cenas.length} cenas`);
     etapa("revisao","ativo","revisando…");
     let rev = await sample.json(promptRevisao(r),{modelTier:"default", cache:false}), status="pronto", obs="Aprovado na revisão";
     if(!rev?.aprovado){ etapa("revisao","ativo","reescrevendo…");
-      r = validar(await sample.json(promptRoteiro(tema, rev?.problemas||""),{modelTier:"default", cache:false})); r.modo=modoEp;
+      r = validar(await sample.json(promptRoteiro(tema, rev?.problemas||"", formatoEp),{modelTier:"default", cache:false})); r.modo=modoEp;
       rev = await sample.json(promptRevisao(r),{modelTier:"default", cache:false});
       if(!rev?.aprovado){ status="rascunho"; obs="Revisão pediu ajustes: "+(rev?.problemas||""); }
     }
@@ -605,7 +635,7 @@ $("#criar").onclick = async () => {
     if(status!=="pronto") mensagem(obs+" O episódio fica como rascunho.");
 
     const id = "v"+Date.now().toString(36);
-    const dados = {tema, modo:modoEp, titulo:r.titulo, descricao:r.descricao, tags:r.tags, referencia_biblica:r.referencia_biblica||"", personagens:r.personagens,
+    const dados = {tema, modo:modoEp, formato:formatoEp, titulo:r.titulo, descricao:r.descricao, tags:r.tags, referencia_biblica:r.referencia_biblica||"", personagens:r.personagens,
       cenas:r.cenas.map(c=>({narracao:String(c.narracao||""), legenda_tela:String(c.legenda_tela||""), visual:String(c.visual||"")})), curto:r.curto, status, revisao:obs, criadoEm:new Date().toISOString(), nCenas:r.cenas.length};
     await abrir({id,...dados}, []);
     if (db) await db.doc("videos/"+id).set({...dados, status:"gerando"});
