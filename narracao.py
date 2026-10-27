@@ -4,6 +4,7 @@ Usa a voz principal do config.yaml; se ela falhar, tenta as reservas na ordem.
 """
 import asyncio
 import re
+import time
 from pathlib import Path
 
 import edge_tts
@@ -11,7 +12,7 @@ import edge_tts
 from util import configurar_log
 
 log = configurar_log()
-RESERVAS = ["pt-BR-ThalitaMultilingualNeural", "pt-BR-AntonioNeural", "pt-BR-FranciscaNeural"]
+RESERVAS = ["pt-BR-FranciscaNeural", "pt-BR-AntonioNeural", "pt-BR-ThalitaMultilingualNeural"]
 
 
 def preparar_texto(texto: str) -> str:
@@ -27,22 +28,48 @@ async def _falar(texto, destino, voz, velocidade, tom):
     await edge_tts.Communicate(texto, voz, rate=velocidade, pitch=tom).save(str(destino))
 
 
+_voz_escolhida = None   # decidida uma vez por execução: o episódio inteiro sai com a mesma voz
+
+
+def _voz_que_funciona(cfg, pasta: Path) -> str:
+    """Testa as vozes com uma frase curta e devolve a primeira que responde (leva ~2s por voz)."""
+    global _voz_escolhida
+    if _voz_escolhida:
+        return _voz_escolhida
+    n = cfg["narracao"]
+    teste = pasta / "_teste_voz.mp3"
+    for voz in [n["voz"]] + [v for v in RESERVAS if v != n["voz"]]:
+        try:
+            teste.unlink(missing_ok=True)
+            asyncio.run(_falar("Olá! Teste de voz.", teste, voz, n["velocidade"], n["tom"]))
+            if teste.exists() and teste.stat().st_size > 0:
+                _voz_escolhida = voz
+                if voz != n["voz"]:
+                    log.warning(f"A voz {n['voz']} não respondeu agora; usando {voz} neste episódio.")
+                else:
+                    log.info(f"Voz da narração: {voz}")
+                return voz
+        except Exception as e:  # noqa: BLE001
+            log.warning(f"Voz {voz} indisponível agora: {e}")
+        finally:
+            teste.unlink(missing_ok=True)
+    raise RuntimeError("Nenhuma voz da Microsoft respondeu agora. Rode de novo em alguns minutos.")
+
+
 def narrar(cfg, texto: str, destino: Path) -> Path:
     if destino.exists() and destino.stat().st_size > 0:
         return destino
     n = cfg["narracao"]
-    vozes = [n["voz"]] + [v for v in RESERVAS if v != n["voz"]]
+    voz = _voz_que_funciona(cfg, destino.parent)
     texto = preparar_texto(texto)
-    for voz in vozes:
-        for tentativa in range(2):
-            try:
-                asyncio.run(_falar(texto, destino, voz, n["velocidade"], n["tom"]))
-                if destino.exists() and destino.stat().st_size > 0:
-                    if voz != n["voz"]:
-                        log.info(f"Narração feita com a voz reserva {voz}.")
-                    return destino
-            except Exception as e:  # noqa: BLE001
-                log.warning(f"Falha na narração com {voz} ({tentativa + 1}/2): {e}")
+    for tentativa in range(4):
+        try:
+            asyncio.run(_falar(texto, destino, voz, n["velocidade"], n["tom"]))
+            if destino.exists() and destino.stat().st_size > 0:
+                return destino
+        except Exception as e:  # noqa: BLE001
+            log.warning(f"Falha na narração ({tentativa + 1}/4): {e}")
+        time.sleep(3 * (tentativa + 1))
     raise RuntimeError(f"Não consegui narrar: {destino.name}")
 
 
