@@ -1,0 +1,69 @@
+# ===========================================================
+#  Turibenção Automático — configurações
+#  Edite este arquivo para mudar o comportamento do sistema.
+# ===========================================================
+
+canal:
+  nome: "Turibenção"
+  idioma: "pt-BR"
+  # Fundamentos que TODO roteiro precisa seguir
+  fundamentos: |
+    Desenhos animados, brincadeiras, músicas infantis e histórias incríveis da Bíblia,
+    tudo preparado para divertir e ensinar os pequenos. Conhecer as histórias bíblicas,
+    aprender sobre Jesus e descobrir valores importantes, como amor, amizade, respeito,
+    bondade e fé. Cantar, brincar, aprender e viver aventuras com personagens divertidos.
+  publico: "crianças de 3 a 8 anos"
+
+# Estilo visual aplicado em TODAS as imagens (mantém a identidade do canal)
+estilo_visual: >
+  hand-drawn whiteboard doodle, thick wobbly black marker outlines on a pure white
+  background, simple stick-figure characters with big round heads, dot eyes and
+  scribbled spiky hair, flat color used sparingly on a few objects (orange tunic with
+  brown blotches, blue sea, red heart), thought bubbles, lots of white space,
+  explainer-video sketch look, no shading, no gradients, no text, no letters, no watermark
+
+# Personagens fixos (aparecem em todos os vídeos e mantêm a mesma aparência)
+personagens_fixos: >
+  Turi, a small doodle lamb drawn with wobbly black marker lines, white scribbly wool,
+  two dot eyes, a small smile and a tiny red-yellow-blue striped scarf,
+  who guides the children through the Bible stories.
+
+roteiro:
+  modelo_claude: "claude-sonnet-5-5"
+  duracao_longo_seg: 150        # vídeo principal ~2:30
+  duracao_curto_seg: 55         # corte vertical (Shorts / TikTok)
+  cenas_longo: 12               # quantas imagens no vídeo principal
+  revisao_automatica: true      # Claude revisa fidelidade bíblica e adequação infantil
+  tentativas_maximas: 2         # se a revisão reprovar, reescreve até N vezes
+
+imagens:
+  modelo: "gpt-image-1"
+  qualidade: "medium"           # low | medium | high  (low = mais barato)
+  tamanho: "1536x1024"          # horizontal 16:9 aproximado
+
+narracao:
+  # Vozes grátis da Microsoft (edge-tts). Outras: pt-BR-AntonioNeural, pt-BR-ThalitaMultilingualNeural
+  voz: "pt-BR-FranciscaNeural"
+  velocidade: "+15%"            # ritmo de vídeo viral (mais rápido e natural)
+  tom: "+0Hz"                   # tom natural (tom alto soa robótico)
+
+video:
+  fps: 30
+  musica_volume: 0.12           # volume da música de fundo (0 a 1)
+  pasta_musicas: "assets/musicas"   # coloque MP3 sem direitos autorais aqui
+  marca_dagua: "assets/marca_dagua.png"  # opcional
+  fonte_legenda: "Arial"
+  legendas: true
+
+publicacao:
+  youtube: true
+  tiktok: true
+  youtube_privacidade: "public"    # public | unlisted | private
+  tiktok_privacidade: "PUBLIC_TO_EVERYONE"  # SELF_ONLY enquanto o app não for auditado
+  youtube_categoria: "27"          # 27 = Educação | 1 = Filmes e animação
+  publicar_curto_no_youtube: true  # o vertical também vai como Shorts
+
+pastas:
+  saida: "saida"
+  temas: "temas.txt"
+  historico: "historico.json"

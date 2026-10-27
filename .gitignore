@@ -1,0 +1,7 @@
+.env
+client_secret.json
+token_*.json
+saida/
+logs/
+.venv/
+__pycache__/

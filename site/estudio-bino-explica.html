@@ -1,0 +1,651 @@
+<title>Estúdio Bino Explica</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Gochi+Hand&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap">
+<style>
+/* Layout: estúdio de papel recortado — painel de criação à esquerda, "palco" do vídeo à direita, abas no topo */
+:root{
+  --sky:#E7F1F7; --paper:#FFFFFF; --paper-2:#F4F8FB; --ink:#1E2940; --muted:#5B6A82; --line:#D3E0EA;
+  --coral:#EE5A4F; --sun:#F6B93B; --leaf:#3FA97C; --berry:#7A4FB5; --stage:#213049;
+  --ok-bg:#E2F5EC; --ok-fg:#1F7A53; --warn-bg:#FFF2D6; --warn-fg:#946100; --idle-bg:#EDF1F6; --idle-fg:#5B6A82;
+  --display:"Fredoka","Baloo 2","Trebuchet MS",system-ui,sans-serif;
+  --body:"Nunito Sans","Segoe UI",system-ui,sans-serif;
+  --shadow:0 1px 0 rgba(30,41,64,.06),0 6px 0 -2px rgba(30,41,64,.07);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --sky:#141C2B; --paper:#1D2738; --paper-2:#192233; --ink:#EEF2F8; --muted:#A3B0C4; --line:#2E3B52;
+  --coral:#FF7A6E; --sun:#FFC85C; --leaf:#5CCB9A; --berry:#B08BEA; --stage:#0E1522;
+  --ok-bg:#173A2C; --ok-fg:#7FE0B2; --warn-bg:#3D3016; --warn-fg:#FFD27A; --idle-bg:#243049; --idle-fg:#A3B0C4;
+  --shadow:0 1px 0 rgba(0,0,0,.3),0 6px 0 -2px rgba(0,0,0,.35); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --sky:#141C2B; --paper:#1D2738; --paper-2:#192233; --ink:#EEF2F8; --muted:#A3B0C4; --line:#2E3B52;
+  --coral:#FF7A6E; --sun:#FFC85C; --leaf:#5CCB9A; --berry:#B08BEA; --stage:#0E1522;
+  --ok-bg:#173A2C; --ok-fg:#7FE0B2; --warn-bg:#3D3016; --warn-fg:#FFD27A; --idle-bg:#243049; --idle-fg:#A3B0C4;
+  --shadow:0 1px 0 rgba(0,0,0,.3),0 6px 0 -2px rgba(0,0,0,.35); color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--sky);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 40px}
+h1,h2,h3{font-family:var(--display);font-weight:600;margin:0;text-wrap:balance;letter-spacing:.005em}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto}
+
+/* topo */
+.top{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding-block:18px 14px}
+.brand{display:flex;align-items:center;gap:12px;margin-right:auto}
+.arc{width:46px;height:28px;position:relative;flex:none}
+.arc i{position:absolute;inset:0;border-radius:46px 46px 0 0;border:5px solid;border-bottom:0}
+.arc i:nth-child(1){border-color:var(--coral)}
+.arc i:nth-child(2){inset:5px 5px 0;border-color:var(--sun)}
+.arc i:nth-child(3){inset:10px 10px 0;border-color:var(--leaf)}
+.brand h1{font-size:1.45rem;line-height:1.1}
+.brand small{display:block;color:var(--muted);font-family:var(--body);font-size:.8rem;font-weight:600;letter-spacing:.04em}
+nav{display:flex;gap:4px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:4px}
+nav a{font-family:var(--display);font-weight:600;text-decoration:none;color:var(--muted);padding:7px 14px;border-radius:10px}
+nav a[aria-current="page"]{background:var(--ink);color:var(--paper)}
+
+/* blocos */
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow);min-width:0}
+.eyebrow{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.grid-criar{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:860px){.grid-criar{grid-template-columns:minmax(0,1fr)}}
+.stack{display:flex;flex-direction:column;gap:14px}
+label.lbl{font-weight:700;font-size:.9rem}
+.field{width:100%;border:1.5px solid var(--line);background:var(--paper-2);border-radius:12px;padding:11px 13px}
+.linha{display:flex;background:var(--paper-2);border:1.5px solid var(--line);border-radius:12px;padding:3px}
+.linha button{flex:1;border:0;background:transparent;border-radius:9px;padding:7px 10px;font-weight:700;cursor:pointer;color:var(--muted)}
+.linha button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.pill.modo{background:var(--idle-bg);color:var(--idle-fg)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px dashed var(--line);background:transparent;border-radius:999px;padding:5px 11px;font-size:.84rem;cursor:pointer;color:var(--ink)}
+.chip:hover{border-color:var(--coral);color:var(--coral)}
+.btn{border:0;border-radius:12px;padding:11px 16px;font-family:var(--display);font-weight:600;font-size:1rem;cursor:pointer;display:inline-flex;align-items:center;gap:8px;justify-content:center}
+.btn-main{background:var(--coral);color:#fff;box-shadow:0 4px 0 -1px color-mix(in srgb,var(--coral) 60%,#000)}
+.btn-main:active{transform:translateY(2px);box-shadow:none}
+.btn-ghost{background:var(--paper-2);border:1.5px solid var(--line);color:var(--ink)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.small{font-size:.84rem;color:var(--muted)}
+
+/* etapas */
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.steps li{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:center;font-size:.92rem}
+.dot{width:14px;height:14px;border-radius:50%;background:var(--idle-bg);border:2px solid var(--line);justify-self:center}
+.steps li[data-s="ativo"] .dot{background:var(--sun);border-color:var(--sun);animation:pulse 1s infinite alternate}
+.steps li[data-s="ok"] .dot{background:var(--leaf);border-color:var(--leaf)}
+.steps li[data-s="erro"] .dot{background:var(--coral);border-color:var(--coral)}
+.steps li span.n{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.82rem}
+@keyframes pulse{to{transform:scale(1.25)}}
+@media (prefers-reduced-motion:reduce){.steps li[data-s="ativo"] .dot{animation:none}}
+.note{border-radius:12px;padding:10px 12px;font-size:.88rem}
+.note.warn{background:var(--warn-bg);color:var(--warn-fg)}
+.note.ok{background:var(--ok-bg);color:var(--ok-fg)}
+
+/* palco */
+.stage{background:var(--stage);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.screen{position:relative;display:flex;justify-content:center;align-items:center;background:#0006;border-radius:12px;overflow:hidden}
+canvas#tela{display:block;max-width:100%;height:auto;border-radius:10px;background:#000}
+.screen.vert canvas#tela{max-height:70vh;width:auto}
+.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.seg{display:flex;background:#ffffff14;border-radius:11px;padding:3px}
+.seg button{background:transparent;border:0;color:#cfd8e6;padding:6px 12px;border-radius:9px;font-weight:700;font-size:.85rem;cursor:pointer}
+.seg button[aria-pressed="true"]{background:#fff;color:#213049}
+.vozes{display:flex;gap:10px;flex-wrap:wrap;align-items:center;color:#cfd8e6;font-size:.85rem;font-weight:700}
+.vozes select{background:#ffffff14;border:1px solid #ffffff2a;color:#fff;border-radius:9px;padding:6px 8px;max-width:100%;min-width:0;flex:1 1 220px}
+.vozes select option{color:#1E2940}
+.vozes input[type=range]{accent-color:var(--sun);width:130px}
+.vozes output{font-variant-numeric:tabular-nums;min-width:3.2em}
+.stage .btn-ghost{background:#ffffff14;border-color:#ffffff22;color:#fff}
+.progress{flex:1;min-width:120px;height:6px;background:#ffffff1f;border-radius:6px;overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:var(--sun)}
+.stage .small{color:#b7c3d6}
+.thumbs{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.thumbs button{flex:none;width:96px;aspect-ratio:16/9;border-radius:8px;border:2px solid transparent;padding:0;overflow:hidden;background:#ffffff10;cursor:pointer;position:relative}
+.thumbs button[aria-current="true"]{border-color:var(--sun)}
+.thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.thumbs .wait{position:absolute;inset:0;display:grid;place-items:center;color:#ffffff88;font-size:.72rem;font-weight:700}
+
+/* metadados */
+.meta{display:grid;gap:10px}
+.meta .row{display:grid;grid-template-columns:110px minmax(0,1fr) auto;gap:10px;align-items:start;padding-block:8px;border-top:1px solid var(--line)}
+.meta .row:first-child{border-top:0}
+.meta .k{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;padding-top:2px}
+.meta .v{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.92rem}
+.copy{border:1px solid var(--line);background:var(--paper-2);border-radius:8px;padding:3px 9px;font-size:.78rem;cursor:pointer}
+@media (max-width:560px){.meta .row{grid-template-columns:minmax(0,1fr) auto}.meta .k{grid-column:1/-1}}
+
+/* biblioteca */
+.lib{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden;cursor:pointer;text-align:left;padding:0;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.card .pic{aspect-ratio:16/9;background:var(--paper-2);display:grid;place-items:center;color:var(--muted);font-size:.8rem}
+.card .pic img{width:100%;height:100%;object-fit:cover}
+.card .body{padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.card h3{font-size:1.02rem;line-height:1.25}
+.pill{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:999px;letter-spacing:.03em}
+.pill.pronto{background:var(--ok-bg);color:var(--ok-fg)}
+.pill.rascunho{background:var(--warn-bg);color:var(--warn-fg)}
+.pill.publicado{background:var(--berry);color:#fff}
+.empty{border:2px dashed var(--line);border-radius:18px;padding:34px 20px;text-align:center;color:var(--muted)}
+
+/* publicação */
+.pub{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.days{display:flex;gap:6px;flex-wrap:wrap}
+.days label{display:flex;align-items:center;gap:5px;border:1.5px solid var(--line);border-radius:10px;padding:6px 10px;cursor:pointer;font-weight:700;font-size:.86rem}
+.days input{accent-color:var(--coral)}
+.net{display:flex;align-items:center;gap:10px}
+.net b{font-family:var(--display);font-size:1.1rem}
+.status{margin-left:auto}
+.checklist{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:.92rem}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:12px;font-weight:700;font-size:.9rem;z-index:20;max-width:calc(100% - 32px)}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="arc" aria-hidden="true"><i></i><i></i><i></i></div>
+      <h1>Bino Explica<small>estúdio de curiosidades em rabisco</small></h1>
+    </div>
+    <nav aria-label="Seções">
+      <a href="#criar" data-v="criar">Criar vídeo</a>
+      <a href="#biblioteca" data-v="biblioteca">Biblioteca</a>
+      <a href="#publicacao" data-v="publicacao">Publicação</a>
+    </nav>
+  </header>
+
+  <!-- ================= CRIAR ================= -->
+  <section id="v-criar" class="grid-criar">
+    <div class="stack">
+      <div class="panel stack">
+        <div>
+          <div class="eyebrow">Novo episódio</div>
+          <h2 style="font-size:1.3rem">Qual história vamos contar?</h2>
+        </div>
+        <div class="linha" role="group" aria-label="Linha de conteúdo">
+          <button id="m-viral" aria-pressed="true">🔥 Viral</button>
+          <button id="m-biblico" aria-pressed="false">📖 Bíblico</button>
+        </div>
+        <label class="lbl" for="tema">Tema</label>
+        <input id="tema" class="field" placeholder="Ex.: E se a internet acabasse por um dia?">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span class="small">Próximos da fila</span><button class="copy" id="ideias" style="margin-left:auto">✨ Ideias novas</button></div>
+          <div class="chips" id="fila"></div>
+        </div>
+        <button class="btn btn-main" id="criar">Criar vídeo</button>
+        <p class="small" id="aviso-ia" style="margin:0">O Claude escreve um roteiro com gancho forte, confere os fatos e desenha 8 cenas no estilo rabisco de quadro branco. Leva uns 5 minutos.</p>
+      </div>
+
+      <div class="panel stack">
+        <div class="eyebrow">Andamento</div>
+        <ol class="steps" id="steps">
+          <li data-k="roteiro"><span class="dot"></span>Roteiro (2:30 + corte de 1 min)<span class="n"></span></li>
+          <li data-k="revisao"><span class="dot"></span>Revisão de fatos e conteúdo<span class="n"></span></li>
+          <li data-k="cenas"><span class="dot"></span>Desenhos estilo quadro branco<span class="n"></span></li>
+          <li data-k="salvo"><span class="dot"></span>Salvo na biblioteca<span class="n"></span></li>
+        </ol>
+        <div id="msg" hidden class="note"></div>
+      </div>
+    </div>
+
+    <div class="stack" style="min-width:0">
+      <div class="stage">
+        <div class="controls">
+          <div class="seg" role="group" aria-label="Formato">
+            <button id="f-longo" aria-pressed="true">YouTube 16:9</button>
+            <button id="f-curto" aria-pressed="false">Shorts · TikTok · Reels 9:16</button>
+            <button id="f-feed" aria-pressed="false">Feed Instagram 4:5</button>
+          </div>
+          <span class="small" id="ep-titulo" style="margin-left:auto;overflow-wrap:anywhere">Exemplo: A Arca de Noé</span>
+        </div>
+        <div class="screen" id="screen"><canvas id="tela" width="1600" height="900"></canvas></div>
+        <div class="controls">
+          <button class="btn btn-ghost" id="play">▶ Assistir com voz</button>
+          <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+          <button class="btn btn-ghost" id="exportar">Gravar vídeo</button>
+        </div>
+        <div class="thumbs" id="thumbs" aria-label="Cenas"></div>
+        <div class="vozes">
+          <label for="voz">Voz</label><select id="voz"></select>
+          <label for="vel">Velocidade</label><input type="range" id="vel" min="0.9" max="1.6" step="0.05" value="1.2"><output id="vel-v">1,20x</output>
+        </div>
+        <p class="small" id="voz-info" style="margin:0"></p>
+      </div>
+
+      <div class="panel">
+        <div class="eyebrow" style="margin-bottom:6px">Para publicar</div>
+        <div class="meta" id="meta"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BIBLIOTECA ================= -->
+  <section id="v-biblioteca" hidden class="stack">
+    <div style="display:flex;align-items:end;gap:12px;flex-wrap:wrap">
+      <div><div class="eyebrow">Biblioteca</div><h2 style="font-size:1.4rem">Episódios do canal</h2></div>
+      <span class="small" id="lib-count" style="margin-left:auto"></span>
+    </div>
+    <div class="lib" id="lib"></div>
+    <div class="empty" id="lib-empty">Nenhum episódio ainda. Crie o primeiro na aba <b>Criar vídeo</b> e ele aparece aqui.</div>
+  </section>
+
+  <!-- ================= PUBLICAÇÃO ================= -->
+  <section id="v-publicacao" hidden class="stack">
+    <div><div class="eyebrow">Publicação</div><h2 style="font-size:1.4rem">Agenda e canais</h2></div>
+    <div class="pub">
+      <div class="panel stack">
+        <h3>Agenda de postagem</h3>
+        <div class="days" id="dias"></div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <label class="lbl" for="hora">Horário</label>
+          <input type="time" id="hora" class="field" style="width:auto" value="18:00">
+          <button class="btn btn-ghost" id="salvar-agenda">Salvar agenda</button>
+        </div>
+        <p class="small" id="agenda-txt" style="margin:0"></p>
+      </div>
+      <div class="panel stack">
+        <div class="net"><b>YouTube</b><span class="pill rascunho status">Postagem manual</span></div>
+        <p class="small" style="margin:0">Vídeo principal + Shorts. Episódios <b>bíblicos</b> vão como "feito para crianças"; os <b>virais</b> vão para o público geral.</p>
+        <div class="net"><b>TikTok</b><span class="pill rascunho status">Postagem manual</span></div>
+        <p class="small" style="margin:0">Corte vertical de 1 minuto, com rótulo de conteúdo feito com IA.</p>
+        <div class="net"><b>Instagram</b><span class="pill rascunho status">Postagem manual</span></div>
+        <p class="small" style="margin:0">O mesmo corte como Reels (9:16) e uma versão 4:5 para o feed, com legenda própria do Instagram.</p>
+      </div>
+      <div class="panel stack">
+        <h3>Como postar hoje</h3>
+        <ol class="checklist">
+          <li>Abra o episódio e clique em <b>Gravar vídeo</b> nos dois formatos.</li>
+          <li>Use os botões <b>Copiar</b> para título, descrição e tags.</li>
+          <li>Suba no YouTube Studio, no TikTok e no Instagram (Reels + feed).</li>
+          <li>Na biblioteca, marque como <b>Publicado</b>.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="panel stack">
+      <h3>Fila de próximos episódios</h3>
+      <p class="small" style="margin:0">Um tema por linha. O site pega o primeiro que ainda não virou episódio.</p>
+      <textarea id="fila-edit" class="field" rows="8"></textarea>
+      <div><button class="btn btn-ghost" id="salvar-fila">Salvar fila</button></div>
+    </div>
+  </section>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(() => {
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const toast = t => { const el=$("#toast"); el.textContent=t; el.hidden=false; clearTimeout(toast.t); toast.t=setTimeout(()=>el.hidden=true,2600); };
+
+const FILA_VIRAL = ["E se a internet acabasse por um dia?","Como as pessoas viviam sem Wi-Fi","Por que bocejar é contagioso?","E se a Terra parasse de girar?","Por que os gatos derrubam coisas da mesa?","O que acontece se você ficar sem dormir","Por que a gente sente cócegas?","E se os dinossauros voltassem?","Como foram construídas as pirâmides","O que existe no ponto mais fundo do mar","Por que o céu é azul?","Como funciona o micro-ondas","O animal mais preguiçoso do mundo","Por que a cebola faz a gente chorar?","E se a gente pudesse respirar debaixo d'água?","Por que o soluço acontece?","Quanto tempo uma formiga vive?","O que tem dentro de um buraco negro","Por que os polvos são tão espertos?","Como era a escola há 100 anos"];
+const FILA_PADRAO = ["A Arca de Noé e o arco-íris da promessa","Davi e Golias","Jonas e o grande peixe","Daniel na cova dos leões","O nascimento de Jesus em Belém","Jesus acalma a tempestade","A multiplicação dos pães e peixes","Zaqueu sobe na árvore","O bom samaritano","A ovelha perdida","José e a túnica colorida","O bebê Moisés no cesto","A abertura do Mar Vermelho","As muralhas de Jericó","Rute e Noemi: uma amizade fiel","O menino Samuel ouve a voz de Deus","Ester, a rainha corajosa","Jesus abençoa as crianças","A casa na rocha","Jesus ressuscitou: a Páscoa"];
+const FUNDAMENTOS = "Desenhos animados, brincadeiras, músicas infantis e histórias incríveis da Bíblia, tudo preparado para divertir e ensinar os pequenos. Conhecer as histórias bíblicas, aprender sobre Jesus e descobrir valores importantes, como amor, amizade, respeito, bondade e fé.";
+const TURI = "Turi: a small doodle lamb drawn with the same wobbly black marker line, body is a white scribbly cloud of loops, simple round face with two black dot eyes and a small curved smile, four stick legs, and a tiny scarf striped red, yellow and blue";
+const ESTILO = `Hand-drawn whiteboard doodle style, like a marker sketch on white paper (explainer-video look):
+- Pure white background (#FFFFFF), almost empty, lots of white space. No gradients, no shadows, no filters, no textures.
+- Every shape outlined with a thick black marker stroke (stroke="#1a1a1a", stroke-width 6 to 8, stroke-linecap="round", stroke-linejoin="round"). Lines slightly wobbly and imperfect, like drawn by hand: build outlines from paths with many small irregular curves, never perfect geometric circles or straight rectangles.
+- People are simple stick figures: big round head, two dot eyes, a small line mouth showing the emotion, spiky scribbled hair (short strokes), thin stick arms and legs, simple hands. Clothes are simple tunic shapes.
+- Color is used sparingly as flat fills inside the black outline, only on a few key objects (e.g. an orange tunic with brown blotches, a blue sea, a green tree, a red heart). Everything else stays white.
+- Use thought bubbles (cloud outline + two small circles leading to the head) and simple symbols (hearts, stars, question marks drawn as shapes) to show ideas and feelings.
+- Composition: 1 to 3 characters, big and centered, readable on a phone. Leave the TOP 18% and BOTTOM 15% of the canvas EMPTY (a handwritten title and subtitles go there).`;
+const DIAS = [["seg","Seg"],["ter","Ter"],["qua","Qua"],["qui","Qui"],["sex","Sex"],["sab","Sáb"],["dom","Dom"]];
+
+let db=null, sample=null, downloads=null;
+let filas = {viral:FILA_VIRAL.slice(), biblico:FILA_PADRAO.slice()};
+let modo = "viral";
+let fila = filas.viral;
+let videos = [];            // [{id,...data}]
+let ep = null;              // episódio aberto
+let imgs = [];              // HTMLImageElement por cena
+let formato = "longo";
+
+/* ---------------- navegação ---------------- */
+function rota(){
+  const v = (location.hash||"#criar").slice(1);
+  const ok = ["criar","biblioteca","publicacao"].includes(v) ? v : "criar";
+  for (const k of ["criar","biblioteca","publicacao"]) $("#v-"+k).hidden = k!==ok;
+  document.querySelectorAll("nav a").forEach(a => { if (a.dataset.v!==ok) a.removeAttribute("aria-current"); else a.setAttribute("aria-current","page"); });
+}
+addEventListener("hashchange", rota); rota();
+
+/* ---------------- exemplo inicial (desenhado à mão, até existir um episódio) ---------------- */
+const EXEMPLO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900"><rect width="1600" height="900" fill="#FFFFFF"/><g fill="none" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M455 300 l-14 -26 M472 282 l-6 -30 M492 272 l2 -32 M514 270 l10 -30 M536 276 l16 -26 M556 290 l22 -18 M446 322 l-24 -12"/><path d="M520 262 q62 2 76 58 q10 60 -40 86 q-52 22 -92 -14 q-36 -36 -14 -88 q22 -42 70 -42z" fill="#FFFFFF"/><path d="M470 368 q18 64 52 70 q36 -4 56 -70 q-22 30 -54 30 q-34 0 -54 -30z" fill="#D9D3C7"/><circle cx="500" cy="330" r="6" fill="#1a1a1a"/><circle cx="548" cy="328" r="6" fill="#1a1a1a"/><path d="M506 368 q20 -8 38 2"/><path d="M470 438 q50 -14 104 2 l40 230 q-30 -14 -46 6 q-22 -20 -40 2 q-20 -22 -40 0 q-20 -20 -44 2 q-16 -18 -42 -6z" fill="#F28C28"/><path d="M492 480 q16 -10 22 8 q-4 18 -22 10 q-8 -8 0 -18z" fill="#7A4A1E" stroke-width="4"/><path d="M546 520 q20 -6 22 12 q-6 16 -24 8 q-8 -10 2 -20z" fill="#7A4A1E" stroke-width="4"/><path d="M478 580 q18 -8 24 10 q-6 18 -24 8 q-8 -10 0 -18z" fill="#7A4A1E" stroke-width="4"/><path d="M566 610 q16 -6 20 10 q-6 14 -22 6z" fill="#7A4A1E" stroke-width="4"/><path d="M478 470 q-50 50 -70 108 q-4 14 12 12"/><path d="M568 470 q46 26 84 60"/><path d="M500 676 q-6 46 -10 78 l-24 4"/><path d="M552 676 q6 44 8 78 l26 2"/><path d="M652 530 l52 -60" stroke="#7A4A1E" stroke-width="12"/><path d="M684 448 q30 -4 46 18 l-14 14 q-20 -20 -44 -16z" fill="#8C8C8C"/><path d="M640 262 q14 -12 26 0 q10 14 -4 24 q-18 8 -24 -8z"/><path d="M682 214 q20 -18 40 -2 q16 20 -4 36 q-26 14 -40 -6 q-8 -16 4 -28z"/><path d="M790 230 q20 -70 100 -60 q40 -52 120 -24 q60 -40 130 6 q86 -10 100 66 q60 40 20 110 q20 80 -66 96 q-40 50 -120 30 q-60 40 -130 4 q-90 20 -120 -50 q-70 -20 -50 -90 q-30 -50 16 -88z" fill="#FFFFFF"/><path d="M880 400 q130 30 290 0 l-40 70 q-110 22 -210 0z" fill="#B5732F"/><path d="M940 400 l0 -64 q80 -8 170 0 l0 64" fill="#E7B07A"/><path d="M926 340 l100 -54 l100 54" fill="#E0312B"/><path d="M968 360 q10 -10 20 0 M1050 360 q10 -10 20 0"/><path d="M840 500 q40 -20 80 0 q40 20 80 0 q40 -20 80 0 q40 20 80 0" stroke="#2C6BE0"/><path d="M1265 300 q4 -48 46 -46 q42 4 38 44 q-4 30 -34 42 q-14 8 -12 34" stroke="#E0312B" stroke-width="12"/><circle cx="1304" cy="410" r="9" fill="#E0312B" stroke="#E0312B"/><path d="M1180 640 q-10 -34 22 -40 q10 -28 42 -16 q24 -24 50 2 q34 -4 32 30 q24 20 0 44 q2 30 -32 28 q-20 22 -48 4 q-30 12 -44 -14 q-34 -6 -22 -38z" fill="#FFFFFF"/><path d="M1160 616 q-14 -40 22 -50 q34 4 30 40 q-6 34 -34 30 q-14 -4 -18 -20z" fill="#FFFFFF"/><circle cx="1180" cy="604" r="5" fill="#1a1a1a"/><circle cx="1198" cy="602" r="5" fill="#1a1a1a"/><path d="M1180 622 q10 8 20 0"/><path d="M1158 640 q30 10 56 -6" stroke="#E0312B" stroke-width="10"/><path d="M1206 700 l-4 56 M1236 704 l0 54 M1278 702 l4 54 M1304 694 l8 56"/></g></svg>`;
+const EXEMPLO = { id:null, titulo:"Exemplo: A Arca de Noé", descricao:"Quando você criar um episódio, o título, a descrição e as tags aparecem aqui prontos para copiar.", tags:["arca de noé","histórias bíblicas","desenho bíblico infantil"],
+  cenas:[{narracao:"Oi, criançada! Eu sou o Turi. Hoje vamos ver como Deus cuidou de Noé e de todos os bichinhos na arca!", legenda_tela:"Missão: construir a arca!"}],
+  curto:{titulo:"O arco-íris da promessa 🌈", legenda_tiktok:"Você sabe o que o arco-íris significa? 🌈 #histórias bíblicas", legenda_instagram:"Você sabia o que o arco-íris significa? 🌈\nSalva e manda pra alguém que precisa ver!\n#historiasbiblicas #arcadenoe #desenho", cenas:[{imagem:0,narracao:"Você sabe o que o arco-íris significa? É a promessa de amor de Deus!"}]},
+  status:"exemplo", nCenas:1 };
+
+/* ---------------- tela ---------------- */
+const cv = $("#tela"), ctx = cv.getContext("2d");
+function carregarImg(svg){ return new Promise(res=>{ const im=new Image(); im.onload=()=>res(im); im.onerror=()=>res(null); im.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg); }); }
+function cenasDoFormato(){ if(!ep) return []; return formato==="longo" ? ep.cenas.map((c,i)=>({img:i, texto:c.narracao, titulo:c.legenda_tela})) : (ep.curto?.cenas||[]).map((c,i)=>({img:c.imagem, texto:c.narracao, titulo: i===0 ? (ep.curto.titulo||"").replace(/[^\p{L}\p{N}\s:?!,.-]/gu,"").trim() : ep.cenas[c.imagem]?.legenda_tela})); }
+function dimensionar(){ if(formato==="longo"){cv.width=1600;cv.height=900;} else if(formato==="feed"){cv.width=1080;cv.height=1350;} else {cv.width=900;cv.height=1600;} $("#screen").classList.toggle("vert", formato!=="longo"); }
+
+function blocos(texto){ const p=texto.split(/\s+/).filter(Boolean), n=formato==="longo"?7:4, out=[]; let pos=0;
+  for(let i=0;i<p.length;i+=n){ const t=p.slice(i,i+n).join(" "); out.push({t, ini:pos, fim:pos+t.length}); pos+=t.length+1; } return out; }
+
+function quebrar(txt, maxW){ const linhas=[]; let l=""; for(const w of txt.split(" ")){ const t=(l+" "+w).trim(); if(ctx.measureText(t).width>maxW && l){linhas.push(l);l=w;} else l=t; } linhas.push(l); return linhas; }
+function desenhar(cena, prog, legenda, el=99){
+  const W=cv.width, H=cv.height, vert=formato!=="longo", feed=formato==="feed"; ctx.fillStyle="#FFFFFF"; ctx.fillRect(0,0,W,H);
+  const im = imgs[cena?.img];
+  const z = 1 + 0.06*prog, modo = (cena?.img ?? 0) % 4;
+  if (im){
+    ctx.save();
+    // efeito "desenhando": a cena aparece da esquerda para a direita no primeiro segundo
+    const rev = Math.min(1, el/0.9); if (rev<1){ ctx.beginPath(); ctx.rect(0,0,W*rev,H); ctx.clip(); }
+    if (!vert){
+      const zz = modo===1 ? 1.06-0.06*prog : z, w=W*zz, h=H*zz; let x=(W-w)/2, y=(H-h)/2;
+      if (modo===2) x=-(w-W)*prog; if (modo===3) x=-(w-W)*(1-prog);
+      ctx.drawImage(im,x,y,w,h);
+    } else {
+      const fw=W*(feed?1.18:1.42)*z, fh=fw*9/16; ctx.drawImage(im,(W-fw)/2+(modo>=2?(modo===2?-1:1)*30*(prog-.5):0),(H-fh)/2-(feed?0:60),fw,fh);
+    }
+    ctx.restore();
+  }
+  // título manuscrito no topo (como "MISSION: WI-FI?")
+  const tit = (cena?.titulo||"").toUpperCase();
+  if (tit){
+    const fs = feed?78:vert?92:84; ctx.font=`400 ${fs}px "Gochi Hand", "Comic Sans MS", cursive`; ctx.textAlign="center"; ctx.textBaseline="top";
+    const ls = quebrar(tit, W-100); const fim = tit.trim().slice(-1);
+    ls.forEach((ln,i)=>{ const y=(feed?40:vert?150:26)+i*fs*1.02;
+      if (i===ls.length-1 && /[?!]/.test(fim)){ const base=ln.slice(0,-1), wb=ctx.measureText(base).width, wl=ctx.measureText(ln).width, x0=W/2-wl/2;
+        ctx.textAlign="left"; ctx.fillStyle="#1a1a1a"; ctx.fillText(base,x0,y); ctx.fillStyle="#E0312B"; ctx.fillText(fim,x0+wb,y); ctx.textAlign="center"; }
+      else { ctx.fillStyle="#1a1a1a"; ctx.fillText(ln,W/2,y); } });
+  }
+  // marca d'água
+  ctx.save(); ctx.font=`400 ${vert?34:30}px "Gochi Hand", cursive`; ctx.textBaseline="bottom"; ctx.fillStyle="rgba(26,26,26,.45)";
+  const marca = ep?.modo==="biblico" ? "Turibenção" : "@binoexplica";
+  if (vert && !feed){ ctx.textAlign="center"; ctx.fillText(marca, W/2, H-290); } else { ctx.textAlign="right"; ctx.fillText(marca, W-24, H-14); } ctx.restore();
+  // legenda manuscrita
+  if (legenda){
+    const fs = feed?62:vert?70:56; ctx.font=`400 ${fs}px "Gochi Hand", "Comic Sans MS", cursive`; ctx.textAlign="center"; ctx.textBaseline="alphabetic";
+    const ls=quebrar(legenda, vert&&!feed ? W-220 : W-140), y = feed ? H-64 : vert ? H-380 : H-36;
+    ls.forEach((ln,i)=>{ const yy=y-(ls.length-1-i)*fs*1.05; ctx.lineJoin="round"; ctx.lineWidth=fs*.28; ctx.strokeStyle="#FFFFFF"; ctx.strokeText(ln,W/2,yy); ctx.fillStyle="#2347C9"; ctx.fillText(ln,W/2,yy); });
+  }
+}
+
+/* ---------------- reprodução com voz ---------------- */
+let tocando=false, rodada=0, raf=0;
+const sintese = "speechSynthesis" in window ? speechSynthesis : null;
+// vozes neurais ("Natural"/"Online") soam humanas; as antigas soam robóticas
+function notaVoz(v){ let n=0; if(/pt-BR/i.test(v.lang)) n+=10; else if(/^pt/i.test(v.lang)) n+=4; if(/natural|online|neural/i.test(v.name)) n+=8; if(/Francisca|Antonio|Thalita|Brenda|Donato|Elza|Fabio|Giovanna|Humberto|Leticia|Manuela|Valerio|Yara/i.test(v.name)) n+=3; if(/google/i.test(v.name)) n+=2; if(v.localService===false) n+=1; return n; }
+function vozesPt(){ if(!sintese) return []; return sintese.getVoices().filter(v=>/^pt/i.test(v.lang)).sort((a,b)=>notaVoz(b)-notaVoz(a)); }
+let vozEscolhida = (()=>{ try{return localStorage.getItem("voz")||"";}catch(e){return "";} })();
+let velocidade = (()=>{ try{return parseFloat(localStorage.getItem("vel"))||1.2;}catch(e){return 1.2;} })();
+function vozPt(){ const vs=vozesPt(); return vs.find(v=>v.name===vozEscolhida) || vs[0] || null; }
+function encurtar(n){ return n.replace(/^Microsoft\s+/,"").replace(/\s*-\s*Portuguese.*$/i,"").replace(/\s*\(.*?\)\s*/g," ").trim(); }
+function infoVoz(){
+  const vs=vozesPt(), sel=$("#voz"), atual=vozPt();
+  sel.innerHTML = vs.length ? vs.map(v=>`<option value="${esc(v.name)}" ${v===atual?"selected":""}>${esc(encurtar(v.name))}${/natural|online|neural/i.test(v.name)?" ★ natural":""}</option>`).join("") : `<option>Sem voz em português</option>`;
+  sel.disabled=!vs.length;
+  const natural = atual && /natural|online|neural/i.test(atual.name);
+  $("#voz-info").textContent = !atual ? "Este navegador não tem voz em português; a prévia mostra só as legendas."
+    : natural ? "Voz natural ativada. No vídeo gravado vão as legendas; a voz entra na edição final."
+    : "Para uma voz bem mais humana, abra este site no Microsoft Edge: ele tem as vozes naturais (Francisca, Antonio, Thalita). No Chrome, escolha a voz do Google.";
+}
+if (sintese) sintese.onvoiceschanged = () => infoVoz();
+infoVoz(); setTimeout(infoVoz, 800);
+$("#vel").value=velocidade; $("#vel-v").textContent=velocidade.toFixed(2).replace(".",",")+"x";
+$("#voz").onchange=e=>{ vozEscolhida=e.target.value; try{localStorage.setItem("voz",vozEscolhida)}catch(err){} infoVoz();
+  if(sintese && !tocando){ sintese.cancel(); const u=new SpeechSynthesisUtterance("Oi! É assim que eu vou narrar os seus vídeos."); u.voice=vozPt(); u.lang="pt-BR"; u.rate=velocidade; sintese.speak(u); } };
+$("#vel").oninput=e=>{ velocidade=parseFloat(e.target.value); $("#vel-v").textContent=velocidade.toFixed(2).replace(".",",")+"x"; try{localStorage.setItem("vel",velocidade)}catch(err){} };
+
+function tempoEstimado(t){ return Math.max(2.5, t.split(/\s+/).length/(2.6*velocidade)); }
+
+async function tocar({gravar=false}={}){
+  const cenas=cenasDoFormato(); if(!cenas.length) return;
+  parar(); tocando=true; const minha=++rodada; $("#play").textContent="■ Parar";
+  const total = cenas.reduce((a,c)=>a+tempoEstimado(c.texto)+0.2,0); let feito=0;
+  for (let i=0;i<cenas.length && tocando && minha===rodada;i++){
+    const c=cenas[i]; marcarThumb(c.img); const bl=blocos(c.texto); const dur=tempoEstimado(c.texto);
+    let char=0, t0=performance.now(), acabou=false;
+    const usaVoz = !gravar && vozPt();
+    if (usaVoz){
+      // fala frase por frase: soa mais natural e evita o corte de falas longas no Chrome
+      const frases = c.texto.match(/[^.!?…]+[.!?…]*\s*/g) || [c.texto]; let base=0;
+      frases.forEach((f,k)=>{ const ini=base; base+=f.length;
+        const u=new SpeechSynthesisUtterance(f.trim()); u.voice=vozPt(); u.lang="pt-BR"; u.rate=velocidade; u.pitch=1;
+        u.onstart=()=>{char=ini}; u.onboundary=e=>{char=ini+e.charIndex};
+        if(k===frases.length-1){ u.onend=()=>acabou=true; } u.onerror=()=>acabou=true; sintese.speak(u); }); }
+    await new Promise(res=>{
+      const loop=()=>{ if(!tocando||minha!==rodada) return res();
+        const el=(performance.now()-t0)/1000, prog=Math.min(1,el/dur);
+        let leg; if(usaVoz){ leg=(bl.find(b=>char<=b.fim)||bl[bl.length-1])?.t; } else { leg=bl[Math.min(bl.length-1,Math.floor(prog*bl.length))]?.t; }
+        desenhar(c, prog, leg, el);
+        $("#bar").style.width = Math.min(100,(feito+Math.min(el,dur))/total*100)+"%";
+        const fim = usaVoz ? (acabou && el>1) : el>=dur;
+        if (fim) { setTimeout(res, 200); return; }
+        raf=requestAnimationFrame(loop); };
+      loop();
+    });
+    feito += dur+0.2;
+  }
+  const completo = tocando && minha===rodada;
+  if (minha===rodada) parar();
+  return completo;
+}
+function parar(){ tocando=false; cancelAnimationFrame(raf); try{sintese?.cancel()}catch(e){} $("#play").textContent="▶ Assistir com voz"; }
+$("#play").onclick=()=>{ if(tocando) parar(); else tocar(); };
+
+/* ---------------- gravar vídeo (canvas -> arquivo) ---------------- */
+$("#exportar").onclick = async () => {
+  if (!ep || !imgs.some(Boolean)) return toast("Abra um episódio com cenas prontas primeiro.");
+  if (!cv.captureStream || !window.MediaRecorder) return toast("Este navegador não grava vídeo. Use o Chrome no computador.");
+  if (!downloads) return toast("Download indisponível nesta visualização.");
+  const tipo = ["video/mp4;codecs=avc1","video/mp4","video/webm;codecs=vp9","video/webm"].find(t=>MediaRecorder.isTypeSupported(t));
+  const ext = tipo.startsWith("video/mp4")?"mp4":"webm";
+  const rec = new MediaRecorder(cv.captureStream(30), {mimeType:tipo, videoBitsPerSecond:6_000_000}); const partes=[];
+  rec.ondataavailable=e=>e.data.size&&partes.push(e.data);
+  const btn=$("#exportar"); btn.disabled=true; btn.textContent="Gravando…";
+  rec.start(1000); const ok = await tocar({gravar:true}); rec.stop();
+  await new Promise(r=>rec.onstop=r); btn.disabled=false; btn.textContent="Gravar vídeo";
+  if(!ok) return toast("Gravação interrompida.");
+  const nome=`turibencao-${(ep.titulo||"episodio").normalize("NFD").replace(/[^\w]+/g,"-").toLowerCase().slice(0,40)}-${formato==="longo"?"youtube":formato==="feed"?"instagram-feed":"vertical-reels-tiktok-shorts"}.${ext}`;
+  try{ await downloads.save({filename:nome, data:new Blob(partes,{type:tipo})}); toast("Vídeo salvo."); }
+  catch(e){ if(e.code!=="cancelled") toast("Não foi possível salvar o arquivo."); }
+};
+
+/* ---------------- formato ---------------- */
+function setFormato(f){ formato=f; parar(); for(const k of ["longo","curto","feed"]) $("#f-"+k).setAttribute("aria-pressed",f===k); dimensionar(); mostrarPrimeiro(); }
+$("#f-longo").onclick=()=>setFormato("longo"); $("#f-curto").onclick=()=>setFormato("curto"); $("#f-feed").onclick=()=>setFormato("feed");
+function mostrarPrimeiro(){ const c=cenasDoFormato()[0]; desenhar(c||{img:0},0,c?blocos(c.texto)[0]?.t:""); $("#bar").style.width="0"; }
+
+/* ---------------- miniaturas e metadados ---------------- */
+function marcarThumb(i){ document.querySelectorAll("#thumbs button").forEach(b=>b.setAttribute("aria-current", +b.dataset.i===i)); }
+function renderThumbs(){
+  const box=$("#thumbs"); box.innerHTML="";
+  const n = ep?.nCenas ?? ep?.cenas?.length ?? 0;
+  for(let i=0;i<n;i++){ const b=document.createElement("button"); b.dataset.i=i; b.setAttribute("aria-label","Cena "+(i+1));
+    b.innerHTML = imgs[i] ? `<img alt="" src="${imgs[i].src}">` : `<span class="wait">cena ${i+1}</span>`;
+    b.onclick=()=>{ parar(); const c={img:i,texto:formato==="longo"?ep.cenas[i].narracao:"",titulo:ep.cenas[i].legenda_tela}; marcarThumb(i); desenhar(c,0,c.texto?blocos(c.texto)[0]?.t:""); };
+    box.appendChild(b); }
+}
+function linha(k,v,copiavel=true){ return `<div class="row"><div class="k">${k}</div><div class="v">${esc(v)}</div>${copiavel?`<button class="copy" data-c="${esc(v)}">Copiar</button>`:"<span></span>"}</div>`; }
+function renderMeta(){
+  if(!ep){ $("#meta").innerHTML=""; return; }
+  let h = linha("Título",ep.titulo)+linha("Descrição",ep.descricao)+linha("Tags",(ep.tags||[]).join(", "));
+  if (ep.curto) h += linha("Shorts",ep.curto.titulo+" #Shorts")+linha("TikTok",ep.curto.legenda_tiktok)+linha("Instagram",ep.curto.legenda_instagram||ep.curto.legenda_tiktok);
+  if (ep.id){
+    const st = ep.status==="publicado";
+    h += `<div class="row"><div class="k">Status</div><div class="v"><span class="pill ${ep.status}">${ep.status==="publicado"?"Publicado":ep.status==="rascunho"?"Rascunho":"Pronto"}</span>${ep.revisao?` <span class="small">${esc(ep.revisao)}</span>`:""}</div><button class="copy" id="marcar">${st?"Desmarcar":"Marcar publicado"}</button></div>`;
+  }
+  $("#meta").innerHTML=h;
+  $("#marcar")?.addEventListener("click", async()=>{ if(!db) return; const novo=ep.status==="publicado"?"pronto":"publicado";
+    try{ await db.doc("videos/"+ep.id).update({status:novo, publicadoEm: novo==="publicado"?new Date().toISOString():null}); ep.status=novo; renderMeta(); toast(novo==="publicado"?"Marcado como publicado.":"Status atualizado."); }catch(e){ toast("Você não tem permissão para alterar."); } });
+}
+$("#meta").addEventListener("click", async e=>{ const b=e.target.closest(".copy[data-c]"); if(!b) return;
+  try{ await navigator.clipboard.writeText(b.dataset.c); b.textContent="Copiado"; setTimeout(()=>b.textContent="Copiar",1500);}catch(err){ const r=document.createRange(); r.selectNodeContents(b.previousElementSibling); const s=getSelection(); s.removeAllRanges(); s.addRange(r); toast("Texto selecionado. Use Ctrl+C."); } });
+
+async function abrir(epi, svgs){
+  parar(); ep=epi; imgs=[]; $("#ep-titulo").textContent=epi.titulo;
+  for (let i=0;i<svgs.length;i++) imgs[i] = svgs[i] ? await carregarImg(svgs[i]) : null;
+  dimensionar(); renderThumbs(); renderMeta(); mostrarPrimeiro();
+}
+
+/* ---------------- fila ---------------- */
+function proximos(){ const feitos=new Set(videos.map(v=>v.tema)); return fila.filter(t=>!feitos.has(t)); }
+function renderFila(){
+  $("#fila").innerHTML = proximos().slice(0,5).map(t=>`<button class="chip" data-t="${esc(t)}">${esc(t)}</button>`).join("");
+  if(!$("#tema").value) $("#tema").placeholder = proximos()[0] || "Ex.: Jonas e o grande peixe";
+  if(document.activeElement!==$("#fila-edit")) $("#fila-edit").value = fila.join("\n");
+}
+$("#fila").addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(b) $("#tema").value=b.dataset.t; });
+$("#salvar-fila").onclick=async()=>{ filas[modo]=$("#fila-edit").value.split("\n").map(s=>s.trim()).filter(Boolean); fila=filas[modo];
+  if(db){ try{ await db.doc("config/fila").set({viral:filas.viral, biblico:filas.biblico}); toast("Fila salva."); }catch(e){ toast("Sem permissão para salvar."); } } renderFila(); };
+function setModo(m){ modo=m; fila=filas[m]; $("#m-viral").setAttribute("aria-pressed",m==="viral"); $("#m-biblico").setAttribute("aria-pressed",m==="biblico");
+  $("#tema").placeholder = proximos()[0] || ""; $("#fila-edit").value=fila.join("\n"); renderFila(); renderAgenda(); }
+$("#m-viral").onclick=()=>setModo("viral"); $("#m-biblico").onclick=()=>setModo("biblico");
+$("#ideias").onclick=async()=>{ if(!sample) return toast("Abra o site pelo claude.ai para usar o Claude.");
+  const b=$("#ideias"); b.disabled=true; b.textContent="Pensando…";
+  try{ const r=await sample.json(modo==="viral"
+      ? `Você cria pautas para um canal de YouTube/TikTok de vídeos curtos desenhados à mão (bonequinhos de palito), para o público geral e família. Sugira 6 temas com alto potencial de viralizar: curiosidades surpreendentes, perguntas "e se...?", "por que...?", ciência do dia a dia, história curiosa, comportamento de animais. Fatos bem estabelecidos, sem notícias recentes, sem pessoas reais, sem saúde arriscada. Evite estes já usados: ${JSON.stringify([...videos.map(v=>v.tema),...fila].slice(0,80))}. Responda SÓ JSON: {"temas":["..."]}`
+      : `Sugira 6 temas de histórias bíblicas ou valores cristãos para crianças pequenas, com títulos chamativos. Evite: ${JSON.stringify([...videos.map(v=>v.tema),...fila].slice(0,80))}. Responda SÓ JSON: {"temas":["..."]}`,
+      {modelTier:"quick", cache:false});
+    const novos=(r.temas||[]).map(String).filter(Boolean); filas[modo]=[...novos,...filas[modo]]; fila=filas[modo]; renderFila(); toast("Ideias adicionadas à fila. Clique em uma para usar.");
+  }catch(e){ toast(ERROS[e?.code]||"Não consegui gerar ideias agora."); } finally{ b.disabled=false; b.textContent="✨ Ideias novas"; } };
+
+/* ---------------- agenda ---------------- */
+let agenda={dias:["seg","qua","sex"],hora:"18:00"};
+function renderAgenda(){
+  $("#dias").innerHTML = DIAS.map(([k,n])=>`<label><input type="checkbox" id="d-${k}" value="${k}" ${agenda.dias.includes(k)?"checked":""}>${n}</label>`).join("");
+  $("#hora").value=agenda.hora;
+  const nomes=DIAS.filter(([k])=>agenda.dias.includes(k)).map(([,n])=>n).join(", ");
+  $("#agenda-txt").textContent = nomes ? `Meta do canal: ${nomes}, às ${agenda.hora}. Com ${proximos().length} temas na fila.` : "Nenhum dia marcado.";
+}
+$("#salvar-agenda").onclick=async()=>{ agenda={dias:[...document.querySelectorAll("#dias input:checked")].map(i=>i.value), hora:$("#hora").value||"18:00"};
+  renderAgenda(); if(db){ try{ await db.doc("config/agenda").set(agenda); toast("Agenda salva."); }catch(e){ toast("Sem permissão para salvar."); } } };
+
+/* ---------------- biblioteca ---------------- */
+const thumbCache = {};
+async function renderLib(){
+  const box=$("#lib"); $("#lib-empty").hidden = videos.length>0; $("#lib-count").textContent = videos.length ? `${videos.length} episódio${videos.length>1?"s":""} · ${videos.filter(v=>v.status==="publicado").length} publicado(s)` : "";
+  box.innerHTML = videos.map(v=>`<button class="card" data-id="${v.id}"><div class="pic" id="pic-${v.id}">${thumbCache[v.id]?`<img alt="" src="${thumbCache[v.id]}">`:"carregando…"}</div><div class="body"><span style="display:flex;gap:6px"><span class="pill ${v.status}">${v.status==="publicado"?"Publicado":v.status==="rascunho"?"Rascunho":"Pronto"}</span><span class="pill modo">${v.modo==="biblico"?"Bíblico":"Viral"}</span></span><h3>${esc(v.titulo)}</h3><span class="small">${esc(v.referencia_biblica||"")} · ${new Date(v.criadoEm).toLocaleDateString("pt-BR")}</span></div></button>`).join("");
+  for (const v of videos){ if(thumbCache[v.id]||!db) continue;
+    try{ const s=await db.doc(`videos/${v.id}/cenas/c0`).get(); if(s.exists){ thumbCache[v.id]="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(s.data().svg); const p=$("#pic-"+v.id); if(p) p.innerHTML=`<img alt="" src="${thumbCache[v.id]}">`; } }catch(e){} }
+}
+$("#lib").addEventListener("click", async e=>{ const c=e.target.closest(".card"); if(!c||!db) return; const v=videos.find(x=>x.id===c.dataset.id); if(!v) return;
+  location.hash="#criar"; $("#ep-titulo").textContent="Abrindo…";
+  const snap=await db.collection(`videos/${v.id}/cenas`).get(); const svgs=[]; snap.docs.forEach(d=>{ svgs[+d.id.slice(1)]=d.data().svg; });
+  await abrir(v, svgs); });
+
+/* ---------------- geração com o Claude ---------------- */
+function etapa(k,s,n=""){ const li=document.querySelector(`#steps li[data-k="${k}"]`); li.dataset.s=s; li.querySelector(".n").textContent=n; }
+function mensagem(t,tipo="warn"){ const m=$("#msg"); m.hidden=!t; m.className="note "+tipo; m.textContent=t||""; }
+
+const BINO = "Bino: a stick figure with a big round head, scribbled spiky black hair, two dot eyes, expressive line mouth, wearing an orange tunic with brown blotches";
+const VIRAL_REGRAS = `Você é roteirista do canal "Bino Explica" (YouTube, TikTok e Instagram @binoexplica), de vídeos desenhados à mão, estilo rabisco de quadro branco, feitos para VIRALIZAR.
+Público: geral e família (crianças podem assistir). Português do Brasil falado, natural, divertido, frases curtas, ritmo rápido.
+Técnicas obrigatórias de retenção:
+- Primeira frase = GANCHO em até 2 segundos: uma pergunta intrigante, um fato chocante ou uma situação engraçada. Nunca comece com "Olá" ou apresentação.
+- Abra uma curiosidade logo no início e só resolva no final ("e o motivo vai te surpreender").
+- Cada cena traz uma informação nova, uma piada ou uma virada. Nada de enrolação.
+- Humor leve com o personagem fixo passando por situações cômicas.
+- Final com uma revelação ou piada e uma pergunta para o público responder nos comentários, depois um convite rápido: "segue o Bino Explica pra mais curiosidades".
+Fatos: use só fatos bem estabelecidos e verificáveis; sem notícias recentes, sem pessoas reais, sem conselhos de saúde arriscados. Nada de medo, violência ou conteúdo impróprio para crianças.
+Título: curioso e chamativo, mas HONESTO (o vídeo entrega o que o título promete).
+Personagem fixo: ${BINO}. Ele aparece na maioria das cenas.`;
+function promptRoteiro(tema, correcoes){ return (modo==="viral" ? VIRAL_REGRAS : `Você é roteirista do canal infantil cristão "Turibenção" no YouTube.
+Fundamentos obrigatórios: ${FUNDAMENTOS}
+Público: crianças de 3 a 8 anos. Português do Brasil, frases curtas e simples, tom alegre e acolhedor.
+Seja fiel ao texto bíblico. Nada assustador ou violento em detalhe; momentos difíceis com delicadeza.
+Personagem guia fixo: ${TURI}. Ele abre e fecha o vídeo.`) + `
+
+Tema: ${tema}
+${correcoes?"Corrija estes problemas apontados pela revisão: "+correcoes+"\n":""}
+Crie um vídeo de ~150 segundos (~330 palavras) em EXATAMENTE 8 cenas, ${modo==="viral"?"com gancho na 1ª frase e revelação + pergunta para os comentários no fim":"terminando com a lição e um convite carinhoso para se inscrever"}.
+Crie também um corte vertical de ~55 segundos (~120 palavras, 3 a 4 cenas) com gancho forte no primeiro segundo, reaproveitando as cenas (campo "imagem" = índice de 0 a 7).
+O visual é desenho à mão estilo quadro branco (bonequinhos de palito, contorno preto, fundo branco, pouca cor), então descreva cenas SIMPLES: 1 a 3 personagens, uma ação clara, poucos objetos.
+Descreva cada cena visualmente EM INGLÊS em "visual" (personagens, ação, expressão, objetos, balão de pensamento se ajudar) e liste em "personagens" a aparência fixa de cada personagem em estilo bonequinho de palito, em inglês (cabelo, barba, cor e forma da roupa), para manter todos iguais nas 8 cenas.
+Em "legenda_tela" escreva um título curto e divertido para a cena, de 2 a 4 palavras, como uma chamada desenhada (ex.: "MISSÃO: CONSTRUIR A ARCA!", "JONAS FUGIU?").
+
+Responda SÓ com JSON:
+{"titulo":"máx 70 caracteres","descricao":"${modo==="viral"?"resumo instigante + pergunta + hashtags":"resumo + referência bíblica + convite"}","tags":["até 12"],"referencia_biblica":"${modo==="viral"?"assunto em 2 palavras":"Livro cap."}","personagens":"...","cenas":[{"narracao":"...","legenda_tela":"...","visual":"..."}],"curto":{"titulo":"com 1-2 emojis","legenda_tiktok":"texto curto + 3 a 5 hashtags","legenda_instagram":"legenda para Reels/feed do Instagram: 1ª linha gancho, 1 a 2 frases, chamada 'salva e manda pra alguém que precisa ver', 3 a 5 hashtags no fim","cenas":[{"imagem":0,"narracao":"..."}]}}`; }
+
+function promptRevisao(r){ return (modo==="viral"
+  ? `Revise este roteiro de vídeo viral para o público geral antes de publicar. Verifique: (1) os fatos estão corretos e são bem estabelecidos — reprove qualquer fato inventado, exagerado ou duvidoso; (2) adequado para todas as idades, sem nada impróprio, assustador ou ofensivo, sem pessoas reais; (3) o título é honesto e o vídeo entrega o que promete; (4) a primeira frase prende a atenção; (5) português correto.`
+  : `Revise este roteiro de um canal infantil cristão antes de publicar. Verifique: (1) fidelidade ao relato bíblico; (2) adequado para crianças de 3 a 8 anos, nada assustador ou inadequado; (3) português correto; (4) segue estes fundamentos: ${FUNDAMENTOS}; (5) título honesto.`) + `
+Roteiro: ${JSON.stringify({titulo:r.titulo,descricao:r.descricao,cenas:r.cenas.map(c=>c.narracao),curto:r.curto})}
+Responda SÓ com JSON: {"aprovado":true|false,"problemas":"vazio se aprovado"}`; }
+
+function promptCena(r,i){ return `Draw ONE illustration as a single SVG for scene ${i+1} of 8 of a ${r.modo==="biblico"?"children's Bible cartoon":"funny, family-friendly viral explainer cartoon"}.
+Scene: ${r.cenas[i].visual}
+Recurring characters (keep exactly this look): ${r.personagens}. ${r.modo==="biblico"?TURI:BINO}.
+${ESTILO}
+Gentle, funny and safe for small children; expressive faces.
+Technical rules: viewBox="0 0 1600 900", xmlns="http://www.w3.org/2000/svg", start with <rect width="1600" height="900" fill="#FFFFFF"/>. No text, letters or numbers (draw a "?" or "!" only as a shape if needed). No <image>, no <script>, no <filter>, no gradients, no external links, no fonts, no CSS animation. Mostly <path> elements. Keep it under 14000 characters.
+Reply with ONLY the SVG code, starting with <svg and ending with </svg>.`; }
+
+function extrairSvg(t){ const m=t.match(/<svg[\s\S]*<\/svg>/i); if(!m) return null;
+  return m[0].replace(/<script[\s\S]*?<\/script>/gi,"").replace(/<foreignObject[\s\S]*?<\/foreignObject>/gi,"").replace(/\son\w+="[^"]*"/gi,"").replace(/(href)="(?!#)[^"]*"/gi,""); }
+
+function validar(r){ if(!r||!r.titulo||!Array.isArray(r.cenas)||r.cenas.length<4) throw {code:"roteiro_invalido"};
+  r.cenas=r.cenas.slice(0,8); const n=r.cenas.length; r.curto=r.curto||{titulo:r.titulo,legenda_tiktok:r.titulo,cenas:[]}; r.curto.legenda_instagram=String(r.curto.legenda_instagram||r.curto.legenda_tiktok||r.titulo);
+  r.curto.cenas=(r.curto.cenas||[]).map(c=>({imagem:Math.max(0,Math.min(n-1,+c.imagem||0)),narracao:String(c.narracao||"")})).filter(c=>c.narracao);
+  r.tags=(r.tags||[]).slice(0,12).map(String); r.personagens=String(r.personagens||""); return r; }
+
+const ERROS = { not_granted:"Você não liberou o Claude para este site. Recarregue e clique em Permitir.", rate_limited:"Muitos pedidos seguidos. Espere um minuto e tente de novo.", roteiro_invalido:"O roteiro veio incompleto. Tente de novo." };
+
+let gerando=false;
+$("#criar").onclick = async () => {
+  if (gerando) return;
+  if (!sample) return mensagem("O Claude não está disponível nesta visualização. Abra o site pelo claude.ai.");
+  const tema = $("#tema").value.trim() || proximos()[0]; if(!tema) return mensagem("Escreva um tema.");
+  gerando=true; $("#criar").disabled=true; parar(); mensagem("");
+  ["roteiro","revisao","cenas","salvo"].forEach(k=>etapa(k,""));
+  try{
+    etapa("roteiro","ativo","escrevendo…");
+    const modoEp = modo; let r = validar(await sample.json(promptRoteiro(tema),{modelTier:"default", cache:false})); r.modo=modoEp; etapa("roteiro","ok",`${r.cenas.length} cenas`);
+    etapa("revisao","ativo","revisando…");
+    let rev = await sample.json(promptRevisao(r),{modelTier:"default", cache:false}), status="pronto", obs="Aprovado na revisão";
+    if(!rev?.aprovado){ etapa("revisao","ativo","reescrevendo…");
+      r = validar(await sample.json(promptRoteiro(tema, rev?.problemas||""),{modelTier:"default", cache:false})); r.modo=modoEp;
+      rev = await sample.json(promptRevisao(r),{modelTier:"default", cache:false});
+      if(!rev?.aprovado){ status="rascunho"; obs="Revisão pediu ajustes: "+(rev?.problemas||""); }
+    }
+    etapa("revisao", status==="pronto"?"ok":"erro", status==="pronto"?"aprovado":"ver nota");
+    if(status!=="pronto") mensagem(obs+" O episódio fica como rascunho.");
+
+    const id = "v"+Date.now().toString(36);
+    const dados = {tema, modo:modoEp, titulo:r.titulo, descricao:r.descricao, tags:r.tags, referencia_biblica:r.referencia_biblica||"", personagens:r.personagens,
+      cenas:r.cenas.map(c=>({narracao:String(c.narracao||""), legenda_tela:String(c.legenda_tela||""), visual:String(c.visual||"")})), curto:r.curto, status, revisao:obs, criadoEm:new Date().toISOString(), nCenas:r.cenas.length};
+    await abrir({id,...dados}, []);
+    if (db) await db.doc("videos/"+id).set({...dados, status:"gerando"});
+
+    for (let i=0;i<r.cenas.length;i++){
+      etapa("cenas","ativo",`${i}/${r.cenas.length}`);
+      let svg=null;
+      for (let t=0;t<2 && !svg;t++){ const {text}=await sample(promptCena(r,i),{modelTier:"default"}); svg=extrairSvg(text); }
+      if(!svg) svg=EXEMPLO_SVG;
+      imgs[i]=await carregarImg(svg); renderThumbs(); if(i===0) mostrarPrimeiro();
+      if (db) await db.doc(`videos/${id}/cenas/c${i}`).set({svg});
+    }
+    etapa("cenas","ok",`${r.cenas.length}/${r.cenas.length}`);
+    if (db){ await db.doc("videos/"+id).update({status}); etapa("salvo","ok"); } else etapa("salvo","erro","sem banco");
+    ep.status=status; renderMeta(); mostrarPrimeiro(); $("#tema").value="";
+    if(status==="pronto") mensagem("Episódio pronto! Assista, grave nos dois formatos e publique.","ok");
+  }catch(e){
+    document.querySelectorAll('#steps li[data-s="ativo"]').forEach(li=>{li.dataset.s="erro"; li.querySelector(".n").textContent="parou";});
+    mensagem(ERROS[e?.code] || "Algo deu errado na geração. Tente de novo em instantes.");
+  }finally{ gerando=false; $("#criar").disabled=false; }
+};
+
+/* ---------------- início ---------------- */
+dimensionar(); renderFila(); renderAgenda(); renderLib();
+carregarImg(EXEMPLO_SVG).then(im=>{ if(!ep){ ep=EXEMPLO; imgs=[im]; renderThumbs(); renderMeta(); mostrarPrimeiro(); } });
+document.fonts?.ready.then(()=>{ if(!tocando) mostrarPrimeiro(); });
+
+(async()=>{
+  if(!window.claude?.use) return;
+  [sample, downloads, db] = await Promise.all([claude.use("sample"), claude.use("downloads"), claude.use("db")]);
+  if(!sample){ $("#aviso-ia").textContent="O Claude só funciona abrindo o site pelo claude.ai."; }
+  if(!db) return;
+  db.doc("config/fila").onSnapshot(s=>{ if(!s.exists) return; const d=s.data();
+    if(Array.isArray(d.viral)) filas.viral=d.viral.slice(); if(Array.isArray(d.biblico)) filas.biblico=d.biblico.slice(); else if(Array.isArray(d.temas)) filas.biblico=d.temas.slice();
+    fila=filas[modo]; renderFila(); renderAgenda(); });
+  db.doc("config/agenda").onSnapshot(s=>{ if(s.exists){ agenda={dias:s.data().dias||[],hora:s.data().hora||"18:00"}; renderAgenda(); } });
+  db.collection("videos").orderBy("criadoEm","desc").onSnapshot(s=>{
+    videos = s.docs.map(d=>({id:d.id,...d.data()})).filter(v=>v.status!=="gerando" || (ep&&ep.id===v.id));
+    renderFila(); renderAgenda(); renderLib();
+  }, ()=>{});
+})();
+})();
+</script>

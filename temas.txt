@@ -1,0 +1,42 @@
+# Um tema por linha. O sistema pega o próximo que ainda não foi publicado.
+# Linhas começando com # são ignoradas. Quando a lista acabar, o Claude sugere novos temas.
+A criação do mundo em sete dias
+Adão e Eva no jardim do Éden
+A Arca de Noé e o arco-íris da promessa
+A Torre de Babel
+Deus chama Abraão e conta as estrelas
+Isaque e Rebeca no poço
+José e a túnica colorida
+José perdoa seus irmãos
+O bebê Moisés no cesto no rio
+Moisés e a sarça ardente
+A abertura do Mar Vermelho
+O maná que caía do céu
+Os Dez Mandamentos
+As muralhas de Jericó
+Rute e Noemi: uma amizade fiel
+O menino Samuel ouve a voz de Deus
+Davi, o pastorzinho corajoso
+Davi e Golias
+A amizade de Davi e Jônatas
+O sábio rei Salomão
+Elias e os corvos que traziam comida
+Naamã e a menina que ajudou
+Jonas e o grande peixe
+Daniel na cova dos leões
+Ester, a rainha corajosa
+O nascimento de Jesus em Belém
+Os pastores e os anjos
+Os reis magos e a estrela
+Jesus menino no templo
+Jesus chama os pescadores
+Jesus acalma a tempestade
+A multiplicação dos pães e peixes
+Jesus abençoa as crianças
+Zaqueu sobe na árvore
+O bom samaritano
+A ovelha perdida
+O filho que voltou para casa
+A casa na rocha
+Jesus ressuscitou: a Páscoa
+O fruto do Espírito: amor, alegria e paz
