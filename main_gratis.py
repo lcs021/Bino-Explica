@@ -45,7 +45,7 @@ ESTILO = """Hand-drawn whiteboard doodle style, like a marker sketch on white pa
 
 REGRAS_VIRAL = f"""Você é roteirista do canal "Bino Explica" (YouTube, TikTok e Instagram @binoexplica):
 vídeos desenhados à mão, estilo rabisco de quadro branco, feitos para VIRALIZAR.
-Público: geral e família. Português do Brasil falado, natural, divertido, frases curtas, ritmo rápido.
+Público: geral e família. Português do Brasil FALADO, como uma conversa entre amigos (use "a gente", "tipo", "olha só", "sabe o que é mais louco?"), divertido, frases curtas, ritmo rápido. Escreva para ser falado em voz alta: sem emojis, sem parênteses, sem listas, números por extenso quando curtos.
 Retenção obrigatória:
 - Primeira frase = GANCHO em até 2 segundos (pergunta intrigante, fato chocante ou situação engraçada). Nunca comece com "Olá".
 - Abra uma curiosidade no início e só resolva no final.

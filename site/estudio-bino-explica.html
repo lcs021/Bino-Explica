@@ -217,7 +217,7 @@ canvas#tela{display:block;max-width:100%;height:auto;border-radius:10px;backgrou
         <div class="thumbs" id="thumbs" aria-label="Cenas"></div>
         <div class="vozes">
           <label for="voz">Voz</label><select id="voz"></select>
-          <label for="vel">Velocidade</label><input type="range" id="vel" min="0.9" max="1.6" step="0.05" value="1.2"><output id="vel-v">1,20x</output>
+          <label for="vel">Velocidade</label><input type="range" id="vel" min="0.9" max="1.6" step="0.05" value="1.1"><output id="vel-v">1,10x</output>
         </div>
         <p class="small" id="voz-info" style="margin:0"></p>
       </div>
@@ -381,7 +381,7 @@ const sintese = "speechSynthesis" in window ? speechSynthesis : null;
 function notaVoz(v){ let n=0; if(/pt-BR/i.test(v.lang)) n+=10; else if(/^pt/i.test(v.lang)) n+=4; if(/natural|online|neural/i.test(v.name)) n+=8; if(/Francisca|Antonio|Thalita|Brenda|Donato|Elza|Fabio|Giovanna|Humberto|Leticia|Manuela|Valerio|Yara/i.test(v.name)) n+=3; if(/google/i.test(v.name)) n+=2; if(v.localService===false) n+=1; return n; }
 function vozesPt(){ if(!sintese) return []; return sintese.getVoices().filter(v=>/^pt/i.test(v.lang)).sort((a,b)=>notaVoz(b)-notaVoz(a)); }
 let vozEscolhida = (()=>{ try{return localStorage.getItem("voz")||"";}catch(e){return "";} })();
-let velocidade = (()=>{ try{return parseFloat(localStorage.getItem("vel"))||1.2;}catch(e){return 1.2;} })();
+let velocidade = (()=>{ try{return parseFloat(localStorage.getItem("vel"))||1.1;}catch(e){return 1.2;} })();
 function vozPt(){ const vs=vozesPt(); return vs.find(v=>v.name===vozEscolhida) || vs[0] || null; }
 function encurtar(n){ return n.replace(/^Microsoft\s+/,"").replace(/\s*-\s*Portuguese.*$/i,"").replace(/\s*\(.*?\)\s*/g," ").trim(); }
 function infoVoz(){
@@ -562,7 +562,7 @@ function formatoDaVez(){ if(formatoEscolhido!=="auto") return formatoEscolhido; 
 document.getElementById("formatos").addEventListener("click", e=>{ const b=e.target.closest("[data-f]"); if(!b) return; formatoEscolhido=b.dataset.f;
   document.querySelectorAll("#formatos [data-f]").forEach(x=>x.setAttribute("aria-pressed", x===b)); });
 const VIRAL_REGRAS = `Você é roteirista do canal "Bino Explica" (YouTube, TikTok e Instagram @binoexplica), de vídeos desenhados à mão, estilo rabisco de quadro branco, feitos para VIRALIZAR.
-Público: geral e família (crianças podem assistir). Português do Brasil falado, natural, divertido, frases curtas, ritmo rápido.
+Público: geral e família (crianças podem assistir). Português do Brasil FALADO, como uma conversa entre amigos ("a gente", "olha só", "sabe o que é mais louco?"), divertido, frases curtas, ritmo rápido. Escreva para ser falado em voz alta: sem emojis, sem parênteses, sem listas.
 Técnicas obrigatórias de retenção:
 - Primeira frase = GANCHO em até 2 segundos: uma pergunta intrigante, um fato chocante ou uma situação engraçada. Nunca comece com "Olá" ou apresentação.
 - Abra uma curiosidade logo no início e só resolva no final ("e o motivo vai te surpreender").

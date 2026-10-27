@@ -49,9 +49,10 @@ imagens:
   tamanho: "1536x1024"          # horizontal 16:9 aproximado
 
 narracao:
-  # Vozes grátis da Microsoft (edge-tts). Outras: pt-BR-AntonioNeural, pt-BR-ThalitaMultilingualNeural
-  voz: "pt-BR-FranciscaNeural"
-  velocidade: "+15%"            # ritmo de vídeo viral (mais rápido e natural)
+  # Thalita Multilingual = voz neural mais nova e natural. Outras: pt-BR-AntonioNeural (masculina),
+  # pt-BR-FranciscaNeural. Se a escolhida falhar, o robô usa as outras sozinho.
+  voz: "pt-BR-ThalitaMultilingualNeural"
+  velocidade: "+8%"             # ritmo de conversa (rápido demais soa artificial)
   tom: "+0Hz"                   # tom natural (tom alto soa robótico)
 
 video:
