@@ -49,9 +49,9 @@ imagens:
   tamanho: "1536x1024"          # horizontal 16:9 aproximado
 
 narracao:
-  # Thalita Multilingual = voz neural mais nova e natural. Outras: pt-BR-AntonioNeural (masculina),
-  # pt-BR-FranciscaNeural. Se a escolhida falhar, o robô usa as outras sozinho.
-  voz: "pt-BR-ThalitaMultilingualNeural"
+  # Francisca = a mais estável. Outras: pt-BR-AntonioNeural (masculina), pt-BR-ThalitaMultilingualNeural
+  # (mais natural, mas instável). Se a escolhida falhar no meio, o robô refaz tudo com a próxima.
+  voz: "pt-BR-FranciscaNeural"
   velocidade: "+8%"             # ritmo de conversa (rápido demais soa artificial)
   tom: "+0Hz"                   # tom natural (tom alto soa robótico)
 

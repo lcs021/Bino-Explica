@@ -56,22 +56,38 @@ def _voz_que_funciona(cfg, pasta: Path) -> str:
     raise RuntimeError("Nenhuma voz da Microsoft respondeu agora. Rode de novo em alguns minutos.")
 
 
-def narrar(cfg, texto: str, destino: Path) -> Path:
+def narrar(cfg, texto: str, destino: Path, voz: str = None) -> Path:
     if destino.exists() and destino.stat().st_size > 0:
         return destino
     n = cfg["narracao"]
-    voz = _voz_que_funciona(cfg, destino.parent)
+    voz = voz or _voz_que_funciona(cfg, destino.parent)
     texto = preparar_texto(texto)
-    for tentativa in range(4):
+    for tentativa in range(3):
         try:
             asyncio.run(_falar(texto, destino, voz, n["velocidade"], n["tom"]))
             if destino.exists() and destino.stat().st_size > 0:
                 return destino
         except Exception as e:  # noqa: BLE001
-            log.warning(f"Falha na narração ({tentativa + 1}/4): {e}")
+            log.warning(f"Falha na narração com {voz} ({tentativa + 1}/3): {e}")
         time.sleep(3 * (tentativa + 1))
     raise RuntimeError(f"Não consegui narrar: {destino.name}")
 
 
 def narrar_cenas(cfg, cenas: list, pasta: Path, prefixo: str) -> list:
-    return [narrar(cfg, c["narracao"], pasta / f"{prefixo}_{i:02d}.mp3") for i, c in enumerate(cenas)]
+    """Narra todas as falas com UMA voz. Se ela falhar no meio, refaz tudo com a próxima voz."""
+    global _voz_escolhida
+    n = cfg["narracao"]
+    ordem = [n["voz"]] + [v for v in RESERVAS if v != n["voz"]]
+    primeira = _voz_que_funciona(cfg, pasta)
+    candidatas = ordem[ordem.index(primeira):] if primeira in ordem else ordem
+    for voz in candidatas:
+        arquivos = [pasta / f"{prefixo}_{i:02d}.mp3" for i in range(len(cenas))]
+        try:
+            feitos = [narrar(cfg, c["narracao"], arq, voz) for c, arq in zip(cenas, arquivos)]
+            _voz_escolhida = voz
+            return feitos
+        except RuntimeError as e:
+            log.warning(f"A voz {voz} falhou no meio ({e}). Refazendo a narração inteira com outra voz.")
+            for arq in arquivos:
+                arq.unlink(missing_ok=True)
+    raise RuntimeError("Nenhuma voz conseguiu narrar o episódio inteiro agora. Rode de novo mais tarde.")
