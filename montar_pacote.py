@@ -21,7 +21,7 @@ PASTA = RAIZ / "episodios"
 def preparar(pacote: dict, pasta):
     """Grava o roteiro e os desenhos do site no formato que o robô já entende."""
     pasta.mkdir(parents=True, exist_ok=True)
-    rot = {k: pacote.get(k) for k in ("titulo", "descricao", "tags", "personagens", "curto", "tema", "modo", "formato", "miniatura", "longo")}
+    rot = {k: pacote.get(k) for k in ("titulo", "descricao", "tags", "personagens", "curto", "tema", "modo", "formato", "miniatura", "longo", "plataforma", "texto_capa")}
     rot["cenas"] = [{"narracao": c.get("narracao", ""), "legenda_tela": c.get("legenda_tela", ""), "visual": ""}
                     for c in pacote["cenas"]]
     rot = mg.validar(rot)
@@ -70,6 +70,9 @@ def main():
         biblico = pacote.get("modo") == "biblico"
         cfg["canal"]["marca"] = "Turibenção" if biblico else cfg["canal"].get("marca", "@binoexplica")
         pub["feito_para_criancas"] = biblico
+        so_tiktok = pacote.get("plataforma") == "tiktok"
+        pub["youtube"] = bool(os.environ.get("YOUTUBE_REFRESH_TOKEN") or os.environ.get("YOUTUBE_TOKEN_JSON")) and not so_tiktok
+        pub["instagram"] = bool(os.environ.get("INSTAGRAM_TOKEN")) and not so_tiktok
         pasta = RAIZ / cfg["pastas"]["saida"] / f"{datetime.now():%Y-%m-%d_%H%M}_{slug(tema)}"
         log.info(f"===== Montando episódio do site: {tema} =====")
         try:

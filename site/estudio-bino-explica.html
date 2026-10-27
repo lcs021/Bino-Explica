@@ -164,11 +164,11 @@ canvas#tela{display:block;max-width:100%;height:auto;border-radius:10px;backgrou
           <h2 style="font-size:1.3rem">Qual história vamos contar?</h2>
         </div>
         <div class="linha" role="group" aria-label="Linha de conteúdo">
-          <button id="m-viral" aria-pressed="true">🔥 Viral</button>
+          <button id="m-viral" aria-pressed="true">🎵 TikTok viral</button>
           <button id="m-biblico" aria-pressed="false">📖 Bíblico</button>
         </div>
-        <label style="display:flex;gap:10px;align-items:flex-start;font-size:.9rem;cursor:pointer">
-          <input type="checkbox" id="dez" checked style="margin-top:3px;accent-color:var(--coral);width:18px;height:18px">
+        <label id="dez-box" hidden style="display:flex;gap:10px;align-items:flex-start;font-size:.9rem;cursor:pointer">
+          <input type="checkbox" id="dez" style="margin-top:3px;accent-color:var(--coral);width:18px;height:18px">
           <span><b>Vídeo do YouTube com 10 minutos</b><br><span class="small">Desmarque para um vídeo curto (~2:30). O de 10 minutos leva uns 15 minutos para criar.</span></span>
         </label>
         <div id="formatos-box">
@@ -182,13 +182,13 @@ canvas#tela{display:block;max-width:100%;height:auto;border-radius:10px;backgrou
           </div>
         </div>
         <label class="lbl" for="tema">Tema</label>
-        <input id="tema" class="field" placeholder="Ex.: E se a internet acabasse por um dia?">
+        <input id="tema" class="field" placeholder="Vazio = o Claude escolhe um tema viral">
         <div>
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span class="small">Próximos da fila</span><button class="copy" id="ideias" style="margin-left:auto">✨ Ideias novas</button></div>
           <div class="chips" id="fila"></div>
         </div>
         <button class="btn btn-main" id="criar">Criar vídeo</button>
-        <p class="small" id="aviso-ia" style="margin:0">O Claude escreve um roteiro com gancho forte, confere os fatos e desenha 8 cenas no estilo rabisco de quadro branco. Leva uns 5 minutos.</p>
+        <p class="small" id="aviso-ia" style="margin:0">O Claude escreve um vídeo de TikTok de 65 a 75 segundos com gancho no 1º segundo, confere os fatos e desenha 7 cenas no estilo rabisco de quadro branco. Leva uns 5 minutos.</p>
       </div>
 
       <div class="panel stack">
@@ -207,8 +207,8 @@ canvas#tela{display:block;max-width:100%;height:auto;border-radius:10px;backgrou
       <div class="stage">
         <div class="controls">
           <div class="seg" role="group" aria-label="Formato">
-            <button id="f-longo" aria-pressed="true">YouTube 16:9</button>
-            <button id="f-curto" aria-pressed="false">Shorts · TikTok · Reels 9:16</button>
+            <button id="f-curto" aria-pressed="true">TikTok 9:16</button>
+            <button id="f-longo" aria-pressed="false">YouTube 16:9</button>
             <button id="f-feed" aria-pressed="false">Feed Instagram 4:5</button>
           </div>
           <span class="small" id="ep-titulo" style="margin-left:auto;overflow-wrap:anywhere">Exemplo: A Arca de Noé</span>
@@ -233,7 +233,7 @@ canvas#tela{display:block;max-width:100%;height:auto;border-radius:10px;backgrou
         <ol class="checklist">
           <li>O arquivo <b id="envio-nome">episodio.json</b> foi salvo no seu aparelho.</li>
           <li>Abra <a href="https://github.com/lcs021/Bino-Explica/upload/main/episodios" target="_blank" rel="noopener">GitHub → pasta episodios → Upload</a>, escolha o arquivo e toque em <b>Commit changes</b>.</li>
-          <li>O robô começa sozinho. Em ~10 min, abra <a href="https://github.com/lcs021/Bino-Explica/actions/workflows/montar-episodio.yml" target="_blank" rel="noopener">Actions → Montar episódio do site</a> e baixe em <b>Artifacts</b>: YouTube, vertical e feed, com voz neural e legendas.</li>
+          <li>O robô começa sozinho. Em ~5 min, abra <a href="https://github.com/lcs021/Bino-Explica/actions/workflows/montar-episodio.yml" target="_blank" rel="noopener">Actions → Montar episódio do site</a> e baixe em <b>Artifacts</b>: YouTube, vertical e feed, com voz neural e legendas.</li>
         </ol>
         <p class="small" style="margin:0">Junto vem a <b>miniatura.jpg</b>, a thumbnail pronta para o YouTube. Se você conectou as redes, ele também publica sozinho.</p>
       </div>
@@ -265,7 +265,7 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const toast = t => { const el=$("#toast"); el.textContent=t; el.hidden=false; clearTimeout(toast.t); toast.t=setTimeout(()=>el.hidden=true,2600); };
 
-const FILA_VIRAL = ["E se a internet acabasse por um dia?","Como as pessoas viviam sem Wi-Fi","Por que bocejar é contagioso?","E se a Terra parasse de girar?","Por que os gatos derrubam coisas da mesa?","O que acontece se você ficar sem dormir","Por que a gente sente cócegas?","E se os dinossauros voltassem?","Como foram construídas as pirâmides","O que existe no ponto mais fundo do mar","Por que o céu é azul?","Como funciona o micro-ondas","O animal mais preguiçoso do mundo","Por que a cebola faz a gente chorar?","E se a gente pudesse respirar debaixo d'água?","Por que o soluço acontece?","Quanto tempo uma formiga vive?","O que tem dentro de um buraco negro","Por que os polvos são tão espertos?","Como era a escola há 100 anos"];
+const FILA_VIRAL = ["Coisas que são mais antigas do que você imagina", "Por que a gente esquece o que ia fazer ao entrar num cômodo?", "Mito ou verdade: a gente só usa 10% do cérebro", "O polvo tem 3 corações e sangue azul", "Por que a gente não consegue fazer cócegas em si mesmo?", "Mito ou verdade: raio não cai duas vezes no mesmo lugar", "Por que os flamingos são cor-de-rosa?", "Quiz: de que cor é a pele do urso-polar?", "Por que a banana é levemente radioativa?", "O som mais alto da história", "Mito ou verdade: peixinho dourado tem memória de 3 segundos", "Por que bebês têm mais ossos que adultos?", "E se você caísse num buraco que atravessa a Terra?", "Por que os gatos caem em pé?", "Mito ou verdade: a Muralha da China dá pra ver do espaço", "O que acontece com o corpo dos astronautas no espaço", "Por que os aviões são quase sempre brancos?", "Top 5 animais mais estranhos que existem de verdade", "Por que o pôr do sol fica laranja?", "Quiz: qual é o maior órgão do corpo humano?", "Mito ou verdade: avestruz enterra a cabeça na terra", "Por que a Coca-Cola começou sendo vendida em farmácia?", "Por que o mar é salgado e o rio não?", "E se os humanos tivessem rabo?", "Por que a gente sonha?", "Top 5 lugares mais frios do universo", "Por que o arco-íris é curvo?", "Mito ou verdade: chiclete engolido fica 7 anos na barriga", "Por que os dedos enrugam na água?", "Quiz: só 1% acerta quantos ossos tem o corpo humano"];
 const FILA_PADRAO = ["A Arca de Noé e o arco-íris da promessa","Davi e Golias","Jonas e o grande peixe","Daniel na cova dos leões","O nascimento de Jesus em Belém","Jesus acalma a tempestade","A multiplicação dos pães e peixes","Zaqueu sobe na árvore","O bom samaritano","A ovelha perdida","José e a túnica colorida","O bebê Moisés no cesto","A abertura do Mar Vermelho","As muralhas de Jericó","Rute e Noemi: uma amizade fiel","O menino Samuel ouve a voz de Deus","Ester, a rainha corajosa","Jesus abençoa as crianças","A casa na rocha","Jesus ressuscitou: a Páscoa"];
 const FUNDAMENTOS = "Desenhos animados, brincadeiras, músicas infantis e histórias incríveis da Bíblia, tudo preparado para divertir e ensinar os pequenos. Conhecer as histórias bíblicas, aprender sobre Jesus e descobrir valores importantes, como amor, amizade, respeito, bondade e fé.";
 const TURI = "Turi: a small doodle lamb drawn with the same wobbly black marker line, body is a white scribbly cloud of loops, simple round face with two black dot eyes and a small curved smile, four stick legs, and a tiny scarf striped red, yellow and blue";
@@ -285,7 +285,7 @@ let fila = filas.viral;
 let videos = [];            // [{id,...data}]
 let ep = null;              // episódio aberto
 let imgs = [];              // HTMLImageElement por cena
-let formato = "longo";
+let formato = "curto";
 
 /* ---------------- navegação ---------------- */
 function rota(){
@@ -532,7 +532,7 @@ $("#com-voz").onclick = async () => {
   if (!downloads) return toast("Abra o site pelo claude.ai para salvar o arquivo.");
   const svgs = imgs.slice(0, n).map(im => { try { return decodeURIComponent(im.src.split(",").slice(1).join(",")); } catch (e) { return ""; } });
   const pacote = { versao: 1, tema: ep.tema, modo: ep.modo || "viral", formato: ep.formato || "", titulo: ep.titulo, descricao: ep.descricao,
-    tags: ep.tags || [], personagens: ep.personagens || "", cenas: ep.cenas.map((c, k) => ({ narracao: c.narracao, legenda_tela: c.legenda_tela || "", img: c.img ?? k })), longo: !!ep.longo,
+    tags: ep.tags || [], personagens: ep.personagens || "", cenas: ep.cenas.map((c, k) => ({ narracao: c.narracao, legenda_tela: c.legenda_tela || "", img: c.img ?? k })), longo: !!ep.longo, plataforma: ep.plataforma || "", texto_capa: ep.texto_capa || "",
     curto: ep.curto, miniatura: ep.miniatura || null, svgs, criadoEm: new Date().toISOString() };
   const nome = `episodio-${(ep.titulo || "bino").normalize("NFD").replace(/[^\w]+/g, "-").toLowerCase().replace(/^-|-$/g, "").slice(0, 40)}-${ep.id}.json`;
   try {
@@ -559,13 +559,15 @@ function renderThumbs(){
 function linha(k,v,copiavel=true){ return `<div class="row"><div class="k">${k}</div><div class="v">${esc(v)}</div>${copiavel?`<button class="copy" data-c="${esc(v)}">Copiar</button>`:"<span></span>"}</div>`; }
 function renderMeta(){
   if(!ep){ $("#meta").innerHTML=""; return; }
-  let h = linha("Título",ep.titulo)+linha("Descrição",ep.descricao)+linha("Tags",(ep.tags||[]).join(", "));
-  if (ep.curto) h += linha("Shorts",ep.curto.titulo+" #Shorts")+linha("TikTok",ep.curto.legenda_tiktok)+linha("Instagram",ep.curto.legenda_instagram||ep.curto.legenda_tiktok);
+  const tk = ep.plataforma==="tiktok";
+  let h = tk ? linha("Legenda TikTok",ep.curto?.legenda_tiktok||ep.descricao)+linha("Texto da capa",ep.texto_capa||"")+(ep.parte2?linha("Ideia da parte 2",ep.parte2):"")
+             : linha("Título",ep.titulo)+linha("Descrição",ep.descricao)+linha("Tags",(ep.tags||[]).join(", "));
+  if (ep.curto && !tk) h += linha("Shorts",ep.curto.titulo+" #Shorts")+linha("TikTok",ep.curto.legenda_tiktok)+linha("Instagram",ep.curto.legenda_instagram||ep.curto.legenda_tiktok);
   if (ep.id){
     const st = ep.status==="publicado";
     h += `<div class="row"><div class="k">Status</div><div class="v"><span class="pill ${ep.status}">${ep.status==="publicado"?"Publicado":ep.status==="rascunho"?"Rascunho":"Pronto"}</span>${ep.revisao?` <span class="small">${esc(ep.revisao)}</span>`:""}</div><button class="copy" id="marcar">${st?"Desmarcar":"Marcar publicado"}</button></div>`;
   }
-  if (ep.id) h += `<div class="row"><div class="k">Thumbnail</div><div class="v thumb-box"><img id="thumb-img" alt="Thumbnail do vídeo para o YouTube"><span class="small" id="thumb-txt">Gerando…</span></div><button class="copy" id="thumb-baixar">Baixar</button></div>`;
+  if (ep.id && !tk) h += `<div class="row"><div class="k">Thumbnail</div><div class="v thumb-box"><img id="thumb-img" alt="Thumbnail do vídeo para o YouTube"><span class="small" id="thumb-txt">Gerando…</span></div><button class="copy" id="thumb-baixar">Baixar</button></div>`;
   $("#meta").innerHTML=h;
   if (ep.id) atualizarThumb();
   $("#marcar")?.addEventListener("click", async()=>{ if(!db) return; const novo=ep.status==="publicado"?"pronto":"publicado";
@@ -575,7 +577,7 @@ $("#meta").addEventListener("click", async e=>{ const b=e.target.closest(".copy[
   try{ await navigator.clipboard.writeText(b.dataset.c); b.textContent="Copiado"; setTimeout(()=>b.textContent="Copiar",1500);}catch(err){ const r=document.createRange(); r.selectNodeContents(b.previousElementSibling); const s=getSelection(); s.removeAllRanges(); s.addRange(r); toast("Texto selecionado. Use Ctrl+C."); } });
 
 async function abrir(epi, svgs){
-  parar(); ep=epi; imgs=[]; $("#ep-titulo").textContent=epi.titulo;
+  parar(); ep=epi; if(epi.plataforma==="tiktok" && formato!=="curto"){ formato="curto"; for(const k of ["longo","curto","feed"]) $("#f-"+k).setAttribute("aria-pressed",k==="curto"); } imgs=[]; $("#ep-titulo").textContent=epi.titulo;
   for (let i=0;i<svgs.length;i++) imgs[i] = svgs[i] ? await carregarImg(svgs[i]) : null;
   dimensionar(); renderThumbs(); renderMeta(); mostrarPrimeiro();
 }
@@ -587,13 +589,13 @@ function renderFila(){
   if(!$("#tema").value) $("#tema").placeholder = proximos()[0] || "Ex.: Jonas e o grande peixe";
 }
 $("#fila").addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(b) $("#tema").value=b.dataset.t; });
-function setModo(m){ modo=m; fila=filas[m]; document.getElementById("formatos-box").hidden = m!=="viral"; $("#m-viral").setAttribute("aria-pressed",m==="viral"); $("#m-biblico").setAttribute("aria-pressed",m==="biblico");
+function setModo(m){ modo=m; fila=filas[m]; document.getElementById("formatos-box").hidden = m!=="viral"; $("#dez-box").hidden = m==="viral"; if(m==="viral") $("#dez").checked=false; $("#m-viral").setAttribute("aria-pressed",m==="viral"); $("#m-biblico").setAttribute("aria-pressed",m==="biblico");
   $("#tema").placeholder = proximos()[0] || ""; renderFila(); }
 $("#m-viral").onclick=()=>setModo("viral"); $("#m-biblico").onclick=()=>setModo("biblico");
 $("#ideias").onclick=async()=>{ if(!sample) return toast("Abra o site pelo claude.ai para usar o Claude.");
   const b=$("#ideias"); b.disabled=true; b.textContent="Pensando…";
   try{ const r=await sample.json(modo==="viral"
-      ? `Você cria pautas para um canal de YouTube/TikTok de vídeos curtos desenhados à mão (bonequinhos de palito), para o público geral e família. Sugira 6 temas com alto potencial de viralizar: curiosidades surpreendentes, perguntas "e se...?", "por que...?", ciência do dia a dia, história curiosa, comportamento de animais. Fatos bem estabelecidos, sem notícias recentes, sem pessoas reais, sem saúde arriscada. Evite estes já usados: ${JSON.stringify([...videos.map(v=>v.tema),...fila].slice(0,80))}. Responda SÓ JSON: {"temas":["..."]}`
+      ? `Você é estrategista de um perfil de TikTok brasileiro de curiosidades desenhadas à mão (bonequinhos de palito, o personagem Bino), para o público geral. Sugira 6 temas com MUITO potencial de viralizar no TikTok: o tipo de assunto que faz a pessoa parar de rolar, comentar "eu não sabia!" e mandar para um amigo — fatos chocantes do dia a dia, "mito ou verdade", "e se...?", "por que...?", quiz "só 1% acerta", coisas que todo mundo faz sem saber por quê, corpo humano, animais bizarros, espaço e história curiosa. Escreva cada tema como o título do vídeo. Fatos bem estabelecidos, sem notícias recentes, sem pessoas reais, sem saúde arriscada. Evite estes já usados: ${JSON.stringify([...videos.map(v=>v.tema),...fila].slice(0,80))}. Responda SÓ JSON: {"temas":["..."]}`
       : `Sugira 6 temas de histórias bíblicas ou valores cristãos para crianças pequenas, com títulos chamativos. Evite: ${JSON.stringify([...videos.map(v=>v.tema),...fila].slice(0,80))}. Responda SÓ JSON: {"temas":["..."]}`,
       {modelTier:"quick", cache:false});
     const novos=(r.temas||[]).map(String).filter(Boolean); filas[modo]=[...novos,...filas[modo]]; fila=filas[modo]; renderFila(); toast("Ideias adicionadas à fila. Clique em uma para usar.");
@@ -684,6 +686,33 @@ function validar(r){ if(!r||!r.titulo||!Array.isArray(r.cenas)||r.cenas.length<4
   r.curto.cenas=(r.curto.cenas||[]).map(c=>({imagem:Math.max(0,Math.min(n-1,+c.imagem||0)),narracao:String(c.narracao||"")})).filter(c=>c.narracao);
   r.tags=(r.tags||[]).slice(0,12).map(String); r.personagens=String(r.personagens||""); return r; }
 
+/* ---------- vídeo de TikTok (65 a 75 segundos, 7 cenas) ---------- */
+function promptTikTok(tema, correcoes, formato){ return `${VIRAL_REGRAS}
+Formato do vídeo: ${FORMATOS[formato]||FORMATOS.explicacao}
+
+Plataforma: TIKTOK (vídeo vertical). Regras do que viraliza no TikTok:
+- Duração de 65 a 75 segundos (~190 palavras no total). PRECISA passar de 60 segundos (o TikTok só paga vídeos com mais de 1 minuto), sem enrolar.
+- 1º segundo: frase de até 10 palavras que faz a pessoa parar de rolar (fato chocante, desafio "aposto que você não sabia", ou pergunta intrigante).
+- Até o 3º segundo: diga o que a pessoa ganha se ficar até o fim ("e o último é o mais louco").
+- Uma virada, número ou informação nova a cada 8 a 10 segundos.
+- Linguagem de TikTok brasileiro: "gente", "olha isso", "sério", "pode comentar aí", sem gíria forçada.
+- Final: pergunta que gera comentário (ex.: "você sabia? comenta aí") e uma última frase que conecta com o começo, para o vídeo rodar de novo (loop).
+- EXATAMENTE 7 cenas. ${VISUAL_REGRA}
+
+Tema: ${tema || `ESCOLHA VOCÊ um tema com MUITO potencial de viralizar no TikTok brasileiro (curiosidade chocante do dia a dia, corpo humano, animais, espaço, mito ou verdade, história curiosa). Não repita: ${JSON.stringify(videos.map(v=>v.tema).slice(0,60))}.`}
+${correcoes?"Corrija estes problemas apontados pela revisão: "+correcoes:""}
+"visual": a cena em inglês. "personagens": aparência fixa de cada personagem, em inglês. "legenda_tela": texto grande da cena, 2 a 4 palavras, que funcione mesmo sem som.
+Responda SÓ JSON:
+{"tema":"o tema","titulo":"título curto do vídeo","texto_capa":"2 a 4 palavras em MAIÚSCULAS para a capa, terminando em ? ou !","legenda_tiktok":"gancho + 1 frase + 4 a 6 hashtags em português (ex.: #curiosidades #vocesabia #aprendanotiktok)","personagens":"...","cenas":[{"narracao":"...","legenda_tela":"...","visual":"..."}],"parte2":"ideia de continuação (parte 2)"}`; }
+function montarTikTok(j){
+  const cenas=(j.cenas||[]).slice(0,8);
+  const leg=String(j.legenda_tiktok||j.titulo||"");
+  return { plataforma:"tiktok", tema:j.tema, titulo:j.titulo, descricao:leg, tags:(leg.match(/#[\p{L}\p{N}_]+/gu)||[]).map(t=>t.slice(1)),
+    personagens:j.personagens, texto_capa:j.texto_capa||"", parte2:j.parte2||"", cenas,
+    curto:{titulo:j.texto_capa||j.titulo, legenda_tiktok:leg, legenda_instagram:leg, cenas:cenas.map((c,i)=>({imagem:i, narracao:c.narracao}))},
+    miniatura:{texto:j.texto_capa||"", cena:0} };
+}
+
 /* ---------- vídeo longo de 10 minutos (4 capítulos, 16 desenhos, 32 falas) ---------- */
 function cabecalho(formato){ return modo==="viral" ? VIRAL_REGRAS + `\nFormato do vídeo: ${FORMATOS[formato]||FORMATOS.explicacao}` : `Você é roteirista do canal infantil cristão "Turibenção" no YouTube.
 Fundamentos obrigatórios: ${FUNDAMENTOS}
@@ -768,14 +797,17 @@ $("#criar").onclick = async () => {
     const modoEp = modo, formatoEp = modo==="viral" ? formatoDaVez() : ""; if(formatoEp) etapa("roteiro","ativo",NOME_FORMATO[formatoEp]+"…");
     const longo = $("#dez").checked;
     let r;
-    if (longo) { r = validar(await gerarLongo(tema, formatoEp, t=>etapa("roteiro","ativo",t))); }
+    const tiktok = modoEp==="viral";
+    if (tiktok) { r = validar(montarTikTok(await sample.json(promptTikTok(tema,"",formatoEp),{modelTier:"default", cache:false}))); }
+    else if (longo) { r = validar(await gerarLongo(tema, formatoEp, t=>etapa("roteiro","ativo",t))); }
     else { r = validar(await sample.json(promptRoteiro(tema,"",formatoEp),{modelTier:"default", cache:false})); }
     r.modo=modoEp; if(!tema) tema = String(r.tema||r.titulo);
-    etapa("roteiro","ok", longo ? `${r.cenas.length} falas · ~10 min` : `${r.cenas.length} cenas`);
+    etapa("roteiro","ok", tiktok ? `${r.cenas.length} cenas · ~70s` : longo ? `${r.cenas.length} falas · ~10 min` : `${r.cenas.length} cenas`);
     etapa("revisao","ativo","revisando…");
     let rev = await sample.json(promptRevisao(r),{modelTier:"default", cache:false}), status="pronto", obs="Aprovado na revisão";
     if(!rev?.aprovado){ etapa("revisao","ativo","reescrevendo…");
-      if (longo) { await corrigirLongo(r, rev?.problemas||""); }
+      if (tiktok) { r = validar(montarTikTok(await sample.json(promptTikTok(tema, rev?.problemas||"", formatoEp),{modelTier:"default", cache:false}))); r.modo=modoEp; }
+      else if (longo) { await corrigirLongo(r, rev?.problemas||""); }
       else { r = validar(await sample.json(promptRoteiro(tema, rev?.problemas||"", formatoEp),{modelTier:"default", cache:false})); r.modo=modoEp; }
       rev = await sample.json(promptRevisao(r),{modelTier:"default", cache:false});
       if(!rev?.aprovado){ status="rascunho"; obs="Revisão pediu ajustes: "+(rev?.problemas||""); }
@@ -784,7 +816,7 @@ $("#criar").onclick = async () => {
     if(status!=="pronto") mensagem(obs+" O episódio fica como rascunho.");
 
     const id = "v"+Date.now().toString(36);
-    const dados = {tema, modo:modoEp, formato:formatoEp, titulo:r.titulo, descricao:r.descricao, tags:r.tags, referencia_biblica:r.referencia_biblica||"", personagens:r.personagens,
+    const dados = {tema, modo:modoEp, formato:formatoEp, plataforma:r.plataforma||"", texto_capa:r.texto_capa||"", parte2:r.parte2||"", titulo:r.titulo, descricao:r.descricao, tags:r.tags, referencia_biblica:r.referencia_biblica||"", personagens:r.personagens,
       cenas:r.cenas.map((c,k)=>({narracao:String(c.narracao||""), legenda_tela:String(c.legenda_tela||""), visual:String(c.visual||""), img:c.img ?? k})), longo:!!r.longo, curto:r.curto, miniatura:(r.miniatura&&typeof r.miniatura==="object")?r.miniatura:null, status, revisao:obs, criadoEm:new Date().toISOString(), nCenas:r.cenas.length, nDesenhos:(r.desenhos||r.cenas).length};
     await abrir({id,...dados}, []);
     if (db) await db.doc("videos/"+id).set({...dados, status:"gerando"});
@@ -820,7 +852,7 @@ document.fonts?.ready.then(()=>{ if(!tocando) mostrarPrimeiro(); });
   if(!sample){ $("#aviso-ia").textContent="O Claude só funciona abrindo o site pelo claude.ai."; }
   if(!db) return;
   db.doc("config/fila").onSnapshot(s=>{ if(!s.exists) return; const d=s.data();
-    if(Array.isArray(d.viral)) filas.viral=d.viral.slice(); if(Array.isArray(d.biblico)) filas.biblico=d.biblico.slice(); else if(Array.isArray(d.temas)) filas.biblico=d.temas.slice();
+    if(Array.isArray(d.biblico)) filas.biblico=d.biblico.slice(); else if(Array.isArray(d.temas)) filas.biblico=d.temas.slice();
     fila=filas[modo]; renderFila(); renderAgenda(); });
   db.collection("videos").orderBy("criadoEm","desc").onSnapshot(s=>{
     videos = s.docs.map(d=>({id:d.id,...d.data()})).filter(v=>v.status!=="gerando" || (ep&&ep.id===v.id));

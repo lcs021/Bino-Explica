@@ -245,12 +245,24 @@ def compor(cena_png, titulo, W, H, marca, destino):
     if W / H > 1.5:                                  # 16:9
         tela.paste(img.resize((W, H), Image.LANCZOS), (0, 0))
         y_tit, tam = 60, 96
+    elif H / W > 1.5:                                # 9:16 (TikTok): recorta as bordas e amplia o desenho
+        from PIL import ImageChops
+        caixa = ImageChops.difference(img, Image.new("RGB", img.size, "white")).convert("L") \
+            .point(lambda x: 255 if x > 20 else 0).getbbox()
+        if caixa:
+            m = int(img.width * 0.03)
+            img = img.crop((max(0, caixa[0] - m), max(0, caixa[1] - m),
+                            min(img.width, caixa[2] + m), min(img.height, caixa[3] + m)))
+        topo, base = 430, H - 640                    # entre o título (em cima) e a legenda (embaixo)
+        esc = min((W - 60) / img.width, (base - topo) / img.height)
+        nova = img.resize((max(1, int(img.width * esc)), max(1, int(img.height * esc))), Image.LANCZOS)
+        tela.paste(nova, ((W - nova.width) // 2, topo + (base - topo - nova.height) // 2))
+        y_tit, tam = 170, 104
     else:
-        larg = int(W * (1.42 if H / W > 1.5 else 1.18))
+        larg = int(W * 1.18)
         alt = int(larg * 9 / 16)
-        dy = -60 if H / W > 1.5 else 0
-        tela.paste(img.resize((larg, alt), Image.LANCZOS), ((W - larg) // 2, (H - alt) // 2 + dy))
-        y_tit, tam = (170, 104) if H / W > 1.5 else (70, 84)
+        tela.paste(img.resize((larg, alt), Image.LANCZOS), ((W - larg) // 2, (H - alt) // 2))
+        y_tit, tam = 70, 84
     d = ImageDraw.Draw(tela)
     if titulo:
         f = fonte(tam)
@@ -294,6 +306,8 @@ def produzir(cfg, tema, pasta, formato="explicacao"):
 
     cenas = desenhar_cenas(cfg, r, pasta)
     marca = cfg["canal"].get("marca", "@binoexplica")
+    if r.get("plataforma") == "tiktok":
+        return _so_tiktok(cfg, r, cenas, pasta, marca)
     textos_longo = [c["narracao"] for c in r["cenas"]]
     textos_curto = [c["narracao"] for c in r["curto"]["cenas"]]
 
@@ -327,6 +341,18 @@ def produzir(cfg, tema, pasta, formato="explicacao"):
         f"SHORTS\n{r['curto']['titulo']} #Shorts\n\nTIKTOK\n{r['curto']['legenda_tiktok']}\n\n"
         f"INSTAGRAM\n{r['curto']['legenda_instagram']}\n", encoding="utf-8")
     return {"roteiro": r, "longo": longo, "curto": curto, "feed": feed, "miniatura": mini}
+
+
+def _so_tiktok(cfg, r, cenas, pasta, marca):
+    """Episódio feito só para o TikTok: monta apenas o vertical 9:16 (mín. 62s) com as cenas do roteiro."""
+    titulos = [re.sub(r"[^\w\s:?!,.\-]", "", r.get("texto_capa") or r["curto"]["titulo"]).strip() if i == 0
+               else c.get("legenda_tela", "") for i, c in enumerate(r["cenas"])]
+    imgs = [compor(cenas[i], t, 1080, 1920, marca, pasta / f"v_{i:02d}.png") for i, t in enumerate(titulos)]
+    auds = narracao.narrar_cenas(cfg, r["cenas"], pasta, "tiktok")
+    vid = video.montar(cfg, imgs, auds, [c["narracao"] for c in r["cenas"]], pasta, "tiktok_9x16", 1080, 1920,
+                       minimo=62)
+    (pasta / "legendas.txt").write_text(f"TIKTOK\n{r['curto']['legenda_tiktok']}\n", encoding="utf-8")
+    return {"roteiro": r, "longo": None, "curto": vid, "feed": None, "miniatura": None}
 
 
 def main():
