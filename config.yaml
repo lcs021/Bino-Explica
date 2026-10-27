@@ -3,7 +3,14 @@
 #  Edite este arquivo para mudar o comportamento do sistema.
 # ===========================================================
 
+# ---- Motor GRÁTIS (main_gratis.py): Gemini sem cartão de crédito ----
+gemini:
+  modelo_texto: "gemini-flash-latest"         # roteiro e revisão
+  modelo_desenho: "gemini-flash-lite-latest"  # desenhos (cota grátis maior)
+  pausa_seg: 5                                # respiro entre pedidos (limite grátis)
+
 canal:
+  marca: "@binoexplica"
   nome: "Turibenção"
   idioma: "pt-BR"
   # Fundamentos que TODO roteiro precisa seguir

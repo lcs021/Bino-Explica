@@ -10,14 +10,18 @@ log = configurar_log()
 PAUSA = 0.5  # respiro entre cenas (segundos)
 
 
+ZOOM = float(os.environ.get("ZOOM_VIDEO", "0.12"))
+
+
 def _movimento(i: int, n: int) -> str:
     """4 movimentos alternados para o vídeo não ficar monótono."""
+    z = ZOOM
     centro = "x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
     return [
-        f"z='1+0.12*on/{n}':{centro}",                                   # aproxima
-        f"z='1.12-0.12*on/{n}':{centro}",                                # afasta
-        f"z='1.12':x='(iw-iw/zoom)*on/{n}':y='ih/2-(ih/zoom/2)'",        # panorâmica →
-        f"z='1.12':x='(iw-iw/zoom)*(1-on/{n})':y='ih/2-(ih/zoom/2)'",    # panorâmica ←
+        f"z='1+{z}*on/{n}':{centro}",                                     # aproxima
+        f"z='{1 + z}-{z}*on/{n}':{centro}",                               # afasta
+        f"z='{1 + z}':x='(iw-iw/zoom)*on/{n}':y='ih/2-(ih/zoom/2)'",       # panorâmica →
+        f"z='{1 + z}':x='(iw-iw/zoom)*(1-on/{n})':y='ih/2-(ih/zoom/2)'",   # panorâmica ←
     ][i % 4]
 
 
@@ -42,17 +46,21 @@ def _tempo_ass(s: float) -> str:
 
 def criar_legendas(textos: list, duracoes: list, destino: Path, w: int, h: int, fonte: str):
     vertical = h > w
-    tam = 78 if vertical else 62
-    margem = 560 if vertical else 70
-    por_bloco = 4 if vertical else 7
+    alto = h / w > 1.5                     # 9:16 (o 4:5 do feed é vertical, mas baixo)
+    tam = 78 if alto else 66 if vertical else 62
+    margem = 560 if alto else 70
+    por_bloco = 4 if alto else 5 if vertical else 7
+    rabisco = os.environ.get("ESTILO_LEGENDA") == "rabisco"
+    # rabisco: letra azul de caneta com contorno branco (combina com o fundo branco)
+    cor, contorno, negrito, borda = ("&H00C94723", "&H00FFFFFF", 0, 7) if rabisco else ("&H00FFFFFF", "&H00862A5B", -1, 6)
     linhas = [
         "[Script Info]", "ScriptType: v4.00+", f"PlayResX: {w}", f"PlayResY: {h}", "",
         "[V4+ Styles]",
         "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, "
         "Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, "
         "Shadow, Alignment, MarginL, MarginR, MarginV, Encoding",
-        f"Style: Padrao,{fonte},{tam},&H00FFFFFF,&H00FFFFFF,&H00862A5B,&H64000000,"
-        f"-1,0,0,0,100,100,0,0,1,6,2,2,60,60,{margem},1",
+        f"Style: Padrao,{fonte},{tam},{cor},{cor},{contorno},&H64000000,"
+        f"{negrito},0,0,0,100,100,0,0,1,{borda},{0 if rabisco else 2},2,60,60,{margem},1",
         "", "[Events]",
         "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text",
     ]
@@ -99,7 +107,8 @@ def montar(cfg, imagens: list, audios: list, textos: list, pasta: Path, nome: st
     filtros_v = "[0:v]"
     if cfg["video"]["legendas"]:
         criar_legendas(textos, duracoes, trab / "legendas.ass", w, h, os.environ.get("FONTE_LEGENDA", cfg["video"]["fonte_legenda"]))
-        filtros_v += "subtitles=legendas.ass"
+        fontes = os.environ.get("FONTES_DIR")
+        filtros_v += "subtitles=legendas.ass" + (f":fontsdir='{fontes}'" if fontes else "")
     else:
         filtros_v += "null"
     filtros_v += "[v0]"

@@ -1,0 +1,344 @@
+"""
+Bino Explica — motor 100% GRÁTIS na nuvem.
+
+Gemini (grátis) escreve o roteiro, revisa os fatos e desenha as cenas em rabisco (SVG).
+edge-tts (grátis) narra com voz neural. ffmpeg (grátis) edita.
+Sai em 3 formatos: YouTube 16:9, vertical 9:16 (Shorts/TikTok/Reels) e feed 4:5 (Instagram).
+Publica no YouTube e no TikTok quando as autorizações estiverem cadastradas.
+
+Uso:  python main_gratis.py [--tema "..."] [--sem-publicar]
+"""
+import argparse
+import json
+import os
+import re
+import shutil
+import subprocess
+import sys
+import time
+from datetime import datetime
+from pathlib import Path
+
+from PIL import Image, ImageDraw, ImageFont
+
+import ia_gemini as ia
+import narracao
+import video
+from util import RAIZ, carregar_config, configurar_log, ler_historico, salvar_historico, slug
+
+log = configurar_log()
+
+BINO = ("Bino: a stick figure with a big round head, scribbled spiky black hair, two dot eyes, "
+        "expressive line mouth, wearing an orange tunic with brown blotches")
+
+ESTILO = """Hand-drawn whiteboard doodle style, like a marker sketch on white paper (explainer-video look):
+- Pure white background, lots of white space. No gradients, no shadows, no filters.
+- Every shape outlined with a thick black marker stroke (stroke="#1a1a1a", stroke-width 6 to 8,
+  stroke-linecap="round", stroke-linejoin="round"), lines slightly wobbly like drawn by hand
+  (paths with small irregular curves, never perfect geometric shapes).
+- People are simple stick figures: big round head, dot eyes, small line mouth showing emotion,
+  spiky scribbled hair, thin stick arms and legs.
+- Color only as flat fills on a few key objects (orange tunic with brown blotches, blue water,
+  green tree, red heart). Everything else white.
+- Thought bubbles and simple symbols (hearts, stars, question marks drawn as shapes) for ideas.
+- 1 to 3 characters, big and centered. Keep the TOP 18% and BOTTOM 15% EMPTY."""
+
+REGRAS_VIRAL = f"""Você é roteirista do canal "Bino Explica" (YouTube, TikTok e Instagram @binoexplica):
+vídeos desenhados à mão, estilo rabisco de quadro branco, feitos para VIRALIZAR.
+Público: geral e família. Português do Brasil falado, natural, divertido, frases curtas, ritmo rápido.
+Retenção obrigatória:
+- Primeira frase = GANCHO em até 2 segundos (pergunta intrigante, fato chocante ou situação engraçada). Nunca comece com "Olá".
+- Abra uma curiosidade no início e só resolva no final.
+- Cada cena traz uma informação nova, uma piada ou uma virada. Sem enrolação.
+- Humor leve com o personagem fixo.
+- Final: revelação ou piada + pergunta para os comentários + "segue o Bino Explica pra mais curiosidades".
+Fatos: só fatos bem estabelecidos e verificáveis; sem notícias recentes, sem pessoas reais,
+sem conselhos de saúde arriscados, nada impróprio. Título curioso mas HONESTO.
+Personagem fixo: {BINO}."""
+
+
+# ------------------------------------------------------------------ roteiro
+def escolher_tema(cfg) -> str:
+    feitos = {h["tema"] for h in ler_historico(cfg)}
+    arq = RAIZ / "temas_virais.txt"
+    if arq.exists():
+        for t in arq.read_text(encoding="utf-8").splitlines():
+            t = t.strip()
+            if t and not t.startswith("#") and t not in feitos:
+                return t
+    log.info("Fila de temas acabou — pedindo um tema novo ao Gemini.")
+    r = ia.gerar_json(
+        "Sugira UM tema de vídeo curto com alto potencial de viralizar para um canal de curiosidades "
+        "desenhadas à mão (público geral/família): curiosidade surpreendente, 'e se...?', 'por que...?', "
+        "ciência do dia a dia, história curiosa ou animais. Fatos bem estabelecidos. "
+        f"Não repita: {json.dumps(sorted(feitos), ensure_ascii=False)}. Responda JSON: {{\"tema\":\"...\"}}",
+        cfg["gemini"]["modelo_texto"])
+    return r["tema"]
+
+
+def prompt_roteiro(tema, correcoes=""):
+    return f"""{REGRAS_VIRAL}
+
+Tema: {tema}
+{"Corrija estes problemas apontados pela revisão: " + correcoes if correcoes else ""}
+Crie um vídeo de ~150 segundos (~330 palavras) em EXATAMENTE 8 cenas.
+Crie também um corte vertical de ~55 segundos (~120 palavras, 3 a 4 cenas) com gancho forte,
+reaproveitando as cenas (campo "imagem" = índice de 0 a 7).
+O visual é rabisco de quadro branco: cenas SIMPLES, 1 a 3 personagens, uma ação clara.
+"visual": descrição da cena EM INGLÊS (personagens, ação, expressão, objetos).
+"personagens": aparência fixa de cada personagem, em inglês, estilo bonequinho de palito.
+"legenda_tela": título curto e divertido da cena, 2 a 4 palavras (ex.: "MISSÃO: ACHAR O WI-FI?").
+
+Responda SÓ JSON:
+{{"titulo":"máx 70 caracteres","descricao":"resumo instigante + pergunta + 3 hashtags","tags":["até 12"],
+"personagens":"...","cenas":[{{"narracao":"...","legenda_tela":"...","visual":"..."}}],
+"curto":{{"titulo":"com 1-2 emojis","legenda_tiktok":"texto curto + 3 a 5 hashtags",
+"legenda_instagram":"gancho + 1-2 frases + 'salva e manda pra alguém' + 3 a 5 hashtags",
+"cenas":[{{"imagem":0,"narracao":"..."}}]}}}}"""
+
+
+def prompt_revisao(r):
+    resumo = {"titulo": r["titulo"], "descricao": r["descricao"],
+              "cenas": [c["narracao"] for c in r["cenas"]], "curto": r["curto"]}
+    return ("Revise este roteiro de vídeo viral para o público geral antes de publicar. Verifique: "
+            "(1) fatos corretos e bem estabelecidos — reprove qualquer fato inventado, exagerado ou duvidoso; "
+            "(2) adequado para todas as idades, sem pessoas reais; (3) título honesto; "
+            "(4) primeira frase prende a atenção; (5) português correto.\n"
+            f"Roteiro: {json.dumps(resumo, ensure_ascii=False)}\n"
+            'Responda SÓ JSON: {"aprovado": true|false, "problemas": "vazio se aprovado"}')
+
+
+def validar(r):
+    assert r.get("titulo") and len(r.get("cenas", [])) >= 4, "roteiro incompleto"
+    r["cenas"] = r["cenas"][:8]
+    n = len(r["cenas"])
+    c = r.setdefault("curto", {})
+    c.setdefault("titulo", r["titulo"])
+    c.setdefault("legenda_tiktok", r["titulo"])
+    c.setdefault("legenda_instagram", c["legenda_tiktok"])
+    c["cenas"] = [{"imagem": max(0, min(n - 1, int(x.get("imagem", 0)))), "narracao": str(x.get("narracao", ""))}
+                  for x in c.get("cenas", []) if x.get("narracao")] or [{"imagem": 0, "narracao": r["cenas"][0]["narracao"]}]
+    r["tags"] = [str(t) for t in r.get("tags", [])][:12]
+    return r
+
+
+def criar_roteiro(cfg, tema):
+    m = cfg["gemini"]["modelo_texto"]
+    obs = ""
+    for tentativa in range(2):
+        log.info(f"Escrevendo roteiro (tentativa {tentativa + 1}): {tema}")
+        r = validar(ia.gerar_json(prompt_roteiro(tema, obs), m))
+        rev = ia.gerar_json(prompt_revisao(r), m)
+        if rev.get("aprovado"):
+            log.info("Roteiro aprovado na revisão.")
+            return r
+        obs = rev.get("problemas", "")
+        log.warning(f"Revisão reprovou: {obs}")
+    raise RuntimeError("Roteiro reprovado duas vezes na revisão. Nada foi publicado.")
+
+
+# ------------------------------------------------------------------ desenhos
+def prompt_cena(r, i):
+    return f"""Draw ONE illustration as a single SVG for scene {i + 1} of 8 of a funny, family-friendly
+viral explainer cartoon.
+Scene: {r['cenas'][i].get('visual', '')}
+Recurring characters (keep exactly this look): {r.get('personagens', '')}. {BINO}.
+{ESTILO}
+Technical rules: viewBox="0 0 1600 900", xmlns="http://www.w3.org/2000/svg", start with
+<rect width="1600" height="900" fill="#FFFFFF"/>. No text, letters or numbers. No <image>, <script>,
+<filter>, gradients, external links or fonts. Mostly <path> elements. Under 14000 characters.
+Reply with ONLY the SVG code, starting with <svg and ending with </svg>."""
+
+
+def limpar_svg(t):
+    m = re.search(r"<svg[\s\S]*</svg>", t, re.I)
+    if not m:
+        return None
+    s = m.group(0)
+    s = re.sub(r"<script[\s\S]*?</script>|<foreignObject[\s\S]*?</foreignObject>|<image[^>]*>", "", s, flags=re.I)
+    if "xmlns=" not in s[:200]:
+        s = s.replace("<svg", '<svg xmlns="http://www.w3.org/2000/svg"', 1)
+    return s
+
+
+def svg_para_png(svg_txt, destino, w=1920, h=1080):
+    fonte = destino.with_suffix(".svg")
+    fonte.write_text(svg_txt, encoding="utf-8")
+    if shutil.which("rsvg-convert"):
+        r = subprocess.run(["rsvg-convert", "-w", str(w), "-h", str(h), "-b", "white", "-o", str(destino), str(fonte)],
+                           capture_output=True)
+    else:
+        r = subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-width", str(w), "-height", str(h),
+                            "-i", str(fonte), str(destino)], capture_output=True)
+    if r.returncode != 0 or not destino.exists():
+        return False
+    img = Image.open(destino).convert("RGBA")
+    fundo = Image.new("RGBA", img.size, "white")
+    fundo.alpha_composite(img)
+    fundo.convert("RGB").save(destino)
+    return True
+
+
+def desenhar_cenas(cfg, r, pasta):
+    caminhos = []
+    for i in range(len(r["cenas"])):
+        destino = pasta / f"cena_{i:02d}.png"
+        if not destino.exists():
+            ok = False
+            for tentativa in range(2):
+                log.info(f"Desenhando cena {i + 1}/{len(r['cenas'])}")
+                svg = limpar_svg(ia.gerar(prompt_cena(r, i), cfg["gemini"]["modelo_desenho"], temperatura=0.7))
+                if svg and svg_para_png(svg, destino):
+                    ok = True
+                    break
+            if not ok:   # cena em branco: o título e a narração seguram
+                Image.new("RGB", (1920, 1080), "white").save(destino)
+            time.sleep(cfg["gemini"].get("pausa_seg", 4))
+        caminhos.append(destino)
+    return caminhos
+
+
+# ------------------------------------------------------------------ composição
+def fonte(tam):
+    for p in [RAIZ / "assets/fontes/GochiHand-Regular.ttf", "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"]:
+        try:
+            return ImageFont.truetype(str(p), tam)
+        except OSError:
+            continue
+    return ImageFont.load_default()
+
+
+def _quebrar(draw, texto, f, largura):
+    linhas, atual = [], ""
+    for p in texto.split():
+        t = (atual + " " + p).strip()
+        if draw.textlength(t, font=f) > largura and atual:
+            linhas.append(atual)
+            atual = p
+        else:
+            atual = t
+    linhas.append(atual)
+    return linhas
+
+
+def compor(cena_png, titulo, W, H, marca, destino):
+    """Monta o quadro final: fundo branco, desenho, título manuscrito em cima e marca d'água."""
+    tela = Image.new("RGB", (W, H), "white")
+    img = Image.open(cena_png).convert("RGB")
+    if W / H > 1.5:                                  # 16:9
+        tela.paste(img.resize((W, H), Image.LANCZOS), (0, 0))
+        y_tit, tam = 60, 96
+    else:
+        larg = int(W * (1.42 if H / W > 1.5 else 1.18))
+        alt = int(larg * 9 / 16)
+        dy = -60 if H / W > 1.5 else 0
+        tela.paste(img.resize((larg, alt), Image.LANCZOS), ((W - larg) // 2, (H - alt) // 2 + dy))
+        y_tit, tam = (170, 104) if H / W > 1.5 else (70, 84)
+    d = ImageDraw.Draw(tela)
+    if titulo:
+        f = fonte(tam)
+        linhas = _quebrar(d, titulo.upper(), f, W - 120)
+        for k, ln in enumerate(linhas):
+            y = y_tit + k * int(tam * 1.05)
+            w = d.textlength(ln, font=f)
+            x = (W - w) / 2
+            if k == len(linhas) - 1 and ln[-1:] in "?!":
+                d.text((x, y), ln[:-1], font=f, fill="#1a1a1a")
+                d.text((x + d.textlength(ln[:-1], font=f), y), ln[-1], font=f, fill="#E0312B")
+            else:
+                d.text((x, y), ln, font=f, fill="#1a1a1a")
+    fm = fonte(34)
+    if H / W > 1.5:
+        w = d.textlength(marca, font=fm)
+        d.text(((W - w) / 2, H - 330), marca, font=fm, fill="#8a8a8a")
+    else:
+        w = d.textlength(marca, font=fm)
+        d.text((W - w - 50, H - 90), marca, font=fm, fill="#8a8a8a")
+    tela.save(destino)
+    return destino
+
+
+# ------------------------------------------------------------------ principal
+def produzir(cfg, tema, pasta):
+    pasta.mkdir(parents=True, exist_ok=True)
+    arq = pasta / "roteiro.json"
+    if arq.exists():
+        r = json.loads(arq.read_text(encoding="utf-8"))
+    else:
+        r = criar_roteiro(cfg, tema)
+        r["tema"] = tema
+        arq.write_text(json.dumps(r, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    cenas = desenhar_cenas(cfg, r, pasta)
+    marca = cfg["canal"].get("marca", "@binoexplica")
+    textos_longo = [c["narracao"] for c in r["cenas"]]
+    textos_curto = [c["narracao"] for c in r["curto"]["cenas"]]
+
+    longo_imgs = [compor(cenas[i], c.get("legenda_tela", ""), 1920, 1080, marca, pasta / f"h_{i:02d}.png")
+                  for i, c in enumerate(r["cenas"])]
+    titulo_curto = re.sub(r"[^\w\s:?!,.\-]", "", r["curto"]["titulo"]).strip()
+
+    def titulos_curto():
+        return [titulo_curto if k == 0 else r["cenas"][c["imagem"]].get("legenda_tela", "")
+                for k, c in enumerate(r["curto"]["cenas"])]
+
+    vert_imgs = [compor(cenas[c["imagem"]], t, 1080, 1920, marca, pasta / f"v_{k:02d}.png")
+                 for k, (c, t) in enumerate(zip(r["curto"]["cenas"], titulos_curto()))]
+    feed_imgs = [compor(cenas[c["imagem"]], t, 1080, 1350, marca, pasta / f"f_{k:02d}.png")
+                 for k, (c, t) in enumerate(zip(r["curto"]["cenas"], titulos_curto()))]
+
+    aud_longo = narracao.narrar_cenas(cfg, r["cenas"], pasta, "longo")
+    aud_curto = narracao.narrar_cenas(cfg, r["curto"]["cenas"], pasta, "curto")
+
+    longo = video.montar(cfg, longo_imgs, aud_longo, textos_longo, pasta, "youtube_16x9", 1920, 1080)
+    curto = video.montar(cfg, vert_imgs, aud_curto, textos_curto, pasta, "vertical_shorts_tiktok_reels", 1080, 1920)
+    feed = video.montar(cfg, feed_imgs, aud_curto, textos_curto, pasta, "instagram_feed_4x5", 1080, 1350)
+
+    mini = pasta / "miniatura.jpg"
+    Image.open(longo_imgs[0]).resize((1280, 720), Image.LANCZOS).save(mini, quality=92)
+    (pasta / "legendas.txt").write_text(
+        f"YOUTUBE\n{r['titulo']}\n\n{r['descricao']}\n\nTags: {', '.join(r['tags'])}\n\n"
+        f"SHORTS\n{r['curto']['titulo']} #Shorts\n\nTIKTOK\n{r['curto']['legenda_tiktok']}\n\n"
+        f"INSTAGRAM\n{r['curto']['legenda_instagram']}\n", encoding="utf-8")
+    return {"roteiro": r, "longo": longo, "curto": curto, "feed": feed, "miniatura": mini}
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--tema")
+    ap.add_argument("--sem-publicar", action="store_true")
+    a = ap.parse_args()
+    cfg = carregar_config()
+    pub = cfg["publicacao"]
+    pub["youtube"] = bool(os.environ.get("YOUTUBE_TOKEN_JSON")) and not a.sem_publicar
+    pub["tiktok"] = bool(os.environ.get("TIKTOK_REFRESH_TOKEN")) and not a.sem_publicar
+    pub["feito_para_criancas"] = False      # canal para público geral: monetiza melhor
+
+    tema = a.tema or escolher_tema(cfg)
+    pasta = RAIZ / cfg["pastas"]["saida"] / f"{datetime.now():%Y-%m-%d_%H%M}_{slug(tema)}"
+    log.info(f"===== Bino Explica: {tema} =====")
+    try:
+        res = produzir(cfg, tema, pasta)
+    except Exception as e:  # noqa: BLE001
+        log.error(f"Produção interrompida: {e}")
+        sys.exit(1)
+
+    estado = {}
+    if pub["youtube"] or pub["tiktok"]:
+        import main as motor
+        estado = motor.publicar(cfg, res, pasta)
+    else:
+        log.info("Sem autorização de postagem cadastrada: vídeos prontos para baixar em Artifacts.")
+
+    if not a.sem_publicar:
+        hist = ler_historico(cfg)
+        hist.append({"tema": tema, "titulo": res["roteiro"]["titulo"], "data": f"{datetime.now():%Y-%m-%d %H:%M}",
+                     "publicacao": estado})
+        salvar_historico(cfg, hist)
+    log.info(f"===== Concluído: {pasta.name} =====")
+    if any(k.endswith("_erro") for k in estado):
+        sys.exit(2)
+
+
+if __name__ == "__main__":
+    main()

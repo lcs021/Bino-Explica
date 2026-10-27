@@ -1,24 +1,24 @@
-name: Turibenção Automático
+name: Bino Explica (grátis)
 
 on:
   schedule:
-    # Horários em UTC. 20:47 UTC = 17:47 em Brasília. Seg, Qua e Sex.
+    # Horários em UTC: 20:47 UTC = 17:47 em Brasília. Segunda, quarta e sexta.
     - cron: "47 20 * * 1,3,5"
   workflow_dispatch:          # botão "Run workflow" para rodar na hora
     inputs:
       tema:
-        description: "Tema (deixe vazio para o próximo da fila)"
+        description: "Tema (vazio = próximo da fila)"
         required: false
       sem_publicar:
-        description: "Só criar os vídeos, sem publicar"
+        description: "Só criar os vídeos, sem publicar (teste)"
         type: boolean
         default: false
 
 permissions:
-  contents: write             # para salvar o historico.json no repositório
+  contents: write             # salvar o histórico (não repetir temas)
 
 concurrency:
-  group: turibencao
+  group: bino-explica
   cancel-in-progress: false
 
 jobs:
@@ -33,50 +33,55 @@ jobs:
           python-version: "3.12"
           cache: pip
 
-      - name: Instalar ffmpeg e fontes
+      - name: Instalar ffmpeg, desenhista de SVG e fontes
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq ffmpeg fonts-dejavu-core
+          sudo apt-get install -y -qq ffmpeg librsvg2-bin fonts-dejavu-core
+          mkdir -p assets/fontes
+          curl -fsSL -o assets/fontes/GochiHand-Regular.ttf \
+            https://github.com/google/fonts/raw/main/ofl/gochihand/GochiHand-Regular.ttf || echo "fonte manuscrita indisponível; usando a padrão"
 
       - name: Instalar dependências
         run: pip install -r requirements.txt
 
-      - name: Criar e publicar vídeo
+      - name: Criar (e publicar) o vídeo
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           YOUTUBE_TOKEN_JSON: ${{ secrets.YOUTUBE_TOKEN_JSON }}
           TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
           TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
           TIKTOK_REFRESH_TOKEN: ${{ secrets.TIKTOK_REFRESH_TOKEN }}
-          FONTE_LEGENDA: "DejaVu Sans"
+          FONTE_LEGENDA: "Gochi Hand"
+          FONTES_DIR: ${{ github.workspace }}/assets/fontes
+          ESTILO_LEGENDA: rabisco
+          ZOOM_VIDEO: "0.06"
           TEMA: ${{ inputs.tema }}
           SEM_PUBLICAR: ${{ inputs.sem_publicar }}
         run: |
           ARGS=()
           if [ -n "$TEMA" ]; then ARGS+=(--tema "$TEMA"); fi
           if [ "$SEM_PUBLICAR" = "true" ]; then ARGS+=(--sem-publicar); fi
-          python main.py "${ARGS[@]}"
+          python main_gratis.py "${ARGS[@]}"
 
-      - name: Guardar vídeos para download (30 dias)
+      - name: Guardar os vídeos para baixar (30 dias)
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: videos-${{ github.run_number }}
+          name: bino-explica-${{ github.run_number }}
           path: |
-            saida/**/video_longo.mp4
-            saida/**/video_curto.mp4
+            saida/**/*.mp4
             saida/**/miniatura.jpg
+            saida/**/legendas.txt
             saida/**/roteiro.json
             saida/**/publicacao.json
             logs/
           retention-days: 30
           if-no-files-found: ignore
 
-      - name: Salvar histórico (para não repetir temas)
+      - name: Salvar histórico
         if: always()
         run: |
-          git config user.name "turibencao-bot"
-          git config user.email "turibencao-bot@users.noreply.github.com"
+          git config user.name "bino-explica-bot"
+          git config user.email "bino-explica-bot@users.noreply.github.com"
           git add historico.json 2>/dev/null || true
           git diff --cached --quiet || (git commit -m "Histórico: novo vídeo" && git push)

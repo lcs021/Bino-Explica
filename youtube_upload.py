@@ -50,8 +50,8 @@ def publicar(cfg, video: Path, titulo: str, descricao: str, tags: list,
         },
         "status": {
             "privacyStatus": pub["youtube_privacidade"],
-            # Obrigatório por lei (COPPA) para conteúdo infantil
-            "selfDeclaredMadeForKids": True,
+            # Infantil (COPPA) = True; Bino Explica (público geral) = False
+            "selfDeclaredMadeForKids": bool(pub.get("feito_para_criancas", True)),
         },
     }
     media = MediaFileUpload(str(video), chunksize=8 * 1024 * 1024, resumable=True, mimetype="video/mp4")

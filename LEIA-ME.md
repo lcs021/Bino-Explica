@@ -1,3 +1,29 @@
+# Bino Explica — criação e postagem automática, 100% grátis ✏️
+
+Toda segunda, quarta e sexta, a nuvem do GitHub (grátis) faz sozinha:
+**escolhe o tema → Gemini escreve o roteiro e confere os fatos → Gemini desenha 8 cenas em rabisco →
+voz neural da Microsoft narra → edita com legendas → posta no YouTube (+ Shorts) e no TikTok.**
+Também gera a versão 4:5 do feed do Instagram para você baixar.
+
+Custo: **R$ 0**. Nenhuma parte pede cartão de crédito.
+
+## Ligar (só 1 chave obrigatória)
+
+1. Entre em **aistudio.google.com/apikey** com sua conta Google → **Create API key** → copie.
+2. No GitHub: **Settings → Secrets and variables → Actions → New repository secret**
+   Nome: `GEMINI_API_KEY` · Valor: a chave copiada → **Add secret**.
+3. **Settings → Actions → General → Workflow permissions → Read and write permissions → Save**.
+4. Teste: aba **Actions → Bino Explica (grátis) → Run workflow** (marque "Só criar" no primeiro teste).
+   Em ~15 min os vídeos aparecem em **Artifacts**, com as legendas prontas em `legendas.txt`.
+
+Sem as autorizações de postagem, o sistema cria tudo e deixa para baixar.
+Para postar sozinho, cadastre também `YOUTUBE_TOKEN_JSON`, `TIKTOK_CLIENT_KEY`, `TIKTOK_CLIENT_SECRET`
+e `TIKTOK_REFRESH_TOKEN` (Parte A abaixo — grátis, feito uma vez em um computador).
+
+Temas: edite `temas_virais.txt`. Horários: `.github/workflows/bino-explica.yml` (linha `cron`, em UTC).
+
+---
+
 # Turibenção Automático 🐑🌈
 
 Sistema que roda **na nuvem (GitHub Actions, grátis)** e, sozinho, **escolhe o tema → escreve o roteiro → revisa → gera as ilustrações → narra → edita → publica** no YouTube (vídeo principal + Shorts) e no TikTok.
