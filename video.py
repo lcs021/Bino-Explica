@@ -149,7 +149,7 @@ def montar(cfg, imagens: list, audios: list, textos: list, pasta: Path, nome: st
     saida = pasta / f"{nome}.mp4"
     rodar_ffmpeg(entradas + ["-filter_complex", ";".join(filtros),
                              "-map", ultimo_v, "-map", ultimo_a, "-t", f"{final:.3f}",
-                             "-c:v", "libx264", "-preset", "medium", "-crf", "20",
+                             "-c:v", "libx264", "-preset", "medium" if total < 300 else "veryfast", "-crf", "20",
                              "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k",
                              "-movflags", "+faststart", saida.resolve()], cwd=trab)
     log.info(f"[{nome}] pronto: {saida.name} ({final:.0f}s)")

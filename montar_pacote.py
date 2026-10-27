@@ -21,18 +21,25 @@ PASTA = RAIZ / "episodios"
 def preparar(pacote: dict, pasta):
     """Grava o roteiro e os desenhos do site no formato que o robô já entende."""
     pasta.mkdir(parents=True, exist_ok=True)
-    rot = {k: pacote.get(k) for k in ("titulo", "descricao", "tags", "personagens", "curto", "tema", "modo", "formato", "miniatura")}
+    rot = {k: pacote.get(k) for k in ("titulo", "descricao", "tags", "personagens", "curto", "tema", "modo", "formato", "miniatura", "longo")}
     rot["cenas"] = [{"narracao": c.get("narracao", ""), "legenda_tela": c.get("legenda_tela", ""), "visual": ""}
                     for c in pacote["cenas"]]
     rot = mg.validar(rot)
     (pasta / "roteiro.json").write_text(json.dumps(rot, ensure_ascii=False, indent=2), encoding="utf-8")
     svgs = pacote.get("svgs", [])
-    for i in range(len(rot["cenas"])):
-        limpo = mg.limpar_svg(svgs[i] if i < len(svgs) and svgs[i] else "")
+    prontos = {}                       # vídeo longo: cada desenho serve a 2 falas seguidas
+    for i, c in enumerate(pacote["cenas"][:len(rot["cenas"])]):
+        d = c.get("img", i)
+        d = d if isinstance(d, int) and 0 <= d < max(len(svgs), 1) else i
         destino = pasta / f"cena_{i:02d}.png"
+        if d in prontos:
+            shutil.copyfile(prontos[d], destino)
+            continue
+        limpo = mg.limpar_svg(svgs[d] if d < len(svgs) and svgs[d] else "")
         if not (limpo and mg.svg_para_png(limpo, destino)):
             from PIL import Image
             Image.new("RGB", (1920, 1080), "white").save(destino)
+        prontos[d] = destino
     return rot
 
 
@@ -74,6 +81,9 @@ def main():
         biblico = pacote.get("modo") == "biblico"
         cfg["canal"]["marca"] = "Turibenção" if biblico else cfg["canal"].get("marca", "@binoexplica")
         pub["feito_para_criancas"] = biblico
+        # no cronograma, o vídeo longo vai ao YouTube só nos episódios longos (19h30);
+        # os do meio-dia sobem só como Shorts/TikTok/Reels
+        pub["youtube_longo"] = bool(pacote.get("longo")) or not pacote.get("agenda")
         pasta = RAIZ / cfg["pastas"]["saida"] / f"{datetime.now():%Y-%m-%d_%H%M}_{slug(tema)}"
         log.info(f"===== Montando episódio do site: {tema} =====")
         try:

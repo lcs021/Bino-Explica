@@ -125,7 +125,8 @@ def prompt_revisao(r):
 
 def validar(r):
     assert r.get("titulo") and len(r.get("cenas", [])) >= 4, "roteiro incompleto"
-    r["cenas"] = r["cenas"][:8]
+    if not r.get("longo"):
+        r["cenas"] = r["cenas"][:8]
     n = len(r["cenas"])
     c = r.setdefault("curto", {})
     c.setdefault("titulo", r["titulo"])

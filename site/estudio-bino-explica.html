@@ -170,6 +170,10 @@ canvas#tela{display:block;max-width:100%;height:auto;border-radius:10px;backgrou
           <span class="eyebrow" style="color:inherit">📅 Próximo horário do cronograma</span>
           <b id="prox-slot">—</b><span id="prox-pauta" class="small" style="color:inherit"></span>
         </div>
+        <label style="display:flex;gap:10px;align-items:flex-start;font-size:.9rem;cursor:pointer">
+          <input type="checkbox" id="dez" style="margin-top:3px;accent-color:var(--coral);width:18px;height:18px">
+          <span><b>Vídeo do YouTube com 10 minutos</b><br><span class="small">Marcado sozinho no horário das 19h30. Leva uns 15 minutos para criar.</span></span>
+        </label>
         <div id="formatos-box">
           <div class="small" style="margin-bottom:6px">Formato</div>
           <div class="chips" id="formatos" role="group" aria-label="Formato do vídeo">
@@ -339,7 +343,7 @@ const EXEMPLO = { id:null, titulo:"Exemplo: A Arca de Noé", descricao:"Quando v
 /* ---------------- tela ---------------- */
 const cv = $("#tela"), ctx = cv.getContext("2d");
 function carregarImg(svg){ return new Promise(res=>{ const im=new Image(); im.onload=()=>res(im); im.onerror=()=>res(null); im.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg); }); }
-function cenasDoFormato(){ if(!ep) return []; return formato==="longo" ? ep.cenas.map((c,i)=>({img:i, texto:c.narracao, titulo:c.legenda_tela})) : (ep.curto?.cenas||[]).map((c,i)=>({img:c.imagem, texto:c.narracao, titulo: i===0 ? (ep.curto.titulo||"").replace(/[^\p{L}\p{N}\s:?!,.-]/gu,"").trim() : ep.cenas[c.imagem]?.legenda_tela})); }
+function cenasDoFormato(){ if(!ep) return []; return formato==="longo" ? ep.cenas.map((c,i)=>({img:c.img ?? i, texto:c.narracao, titulo:c.legenda_tela})) : (ep.curto?.cenas||[]).map((c,i)=>({img:ep.cenas[c.imagem]?.img ?? c.imagem, texto:c.narracao, titulo: i===0 ? (ep.curto.titulo||"").replace(/[^\p{L}\p{N}\s:?!,.-]/gu,"").trim() : ep.cenas[c.imagem]?.legenda_tela})); }
 function dimensionar(){ if(formato==="longo"){cv.width=1600;cv.height=900;} else if(formato==="feed"){cv.width=1080;cv.height=1350;} else {cv.width=900;cv.height=1600;} $("#screen").classList.toggle("vert", formato!=="longo"); }
 
 function blocos(texto){ const p=texto.split(/\s+/).filter(Boolean), n=formato==="longo"?7:4, out=[]; let pos=0;
@@ -476,12 +480,12 @@ $("#exportar").onclick = async () => {
 /* ---------------- pacote para o robô montar com voz ---------------- */
 $("#com-voz").onclick = async () => {
   if (!ep || !ep.id) return toast("Crie ou abra um episódio da biblioteca primeiro.");
-  const n = ep.nCenas ?? ep.cenas.length;
+  const n = ep.nDesenhos ?? ep.nCenas ?? ep.cenas.length;
   if (imgs.filter(Boolean).length < n) return toast("Espere todas as cenas ficarem prontas.");
   if (!downloads) return toast("Abra o site pelo claude.ai para salvar o arquivo.");
   const svgs = imgs.slice(0, n).map(im => { try { return decodeURIComponent(im.src.split(",").slice(1).join(",")); } catch (e) { return ""; } });
   const pacote = { versao: 1, tema: ep.tema, modo: ep.modo || "viral", formato: ep.formato || "", titulo: ep.titulo, descricao: ep.descricao,
-    tags: ep.tags || [], personagens: ep.personagens || "", cenas: ep.cenas.map(c => ({ narracao: c.narracao, legenda_tela: c.legenda_tela || "" })),
+    tags: ep.tags || [], personagens: ep.personagens || "", cenas: ep.cenas.map((c, k) => ({ narracao: c.narracao, legenda_tela: c.legenda_tela || "", img: c.img ?? k })), longo: !!ep.longo,
     curto: ep.curto, miniatura: ep.miniatura || null, agenda: ep.agenda || null, svgs, criadoEm: new Date().toISOString() };
   const nome = `episodio-${(ep.titulo || "bino").normalize("NFD").replace(/[^\w]+/g, "-").toLowerCase().replace(/^-|-$/g, "").slice(0, 40)}-${ep.id}.json`;
   try {
@@ -499,10 +503,10 @@ function mostrarPrimeiro(){ const c=cenasDoFormato()[0]; desenhar(c||{img:0},0,c
 function marcarThumb(i){ document.querySelectorAll("#thumbs button").forEach(b=>b.setAttribute("aria-current", +b.dataset.i===i)); }
 function renderThumbs(){
   const box=$("#thumbs"); box.innerHTML="";
-  const n = ep?.nCenas ?? ep?.cenas?.length ?? 0;
-  for(let i=0;i<n;i++){ const b=document.createElement("button"); b.dataset.i=i; b.setAttribute("aria-label","Cena "+(i+1));
+  const n = ep?.nDesenhos ?? ep?.nCenas ?? ep?.cenas?.length ?? 0;
+  for(let i=0;i<n;i++){ const b=document.createElement("button"); b.dataset.i=i; b.setAttribute("aria-label","Desenho "+(i+1));
     b.innerHTML = imgs[i] ? `<img alt="" src="${imgs[i].src}">` : `<span class="wait">cena ${i+1}</span>`;
-    b.onclick=()=>{ parar(); const c={img:i,texto:formato==="longo"?ep.cenas[i].narracao:"",titulo:ep.cenas[i].legenda_tela}; marcarThumb(i); desenhar(c,0,c.texto?blocos(c.texto)[0]?.t:""); };
+    b.onclick=()=>{ parar(); const ci=Math.max(0,ep.cenas.findIndex((x,k)=>(x.img??k)===i)), ce=ep.cenas[ci]||{}; const c={img:i,texto:formato==="longo"?(ce.narracao||""):"",titulo:ce.legenda_tela}; marcarThumb(i); desenhar(c,0,c.texto?blocos(c.texto)[0]?.t:""); };
     box.appendChild(b); }
 }
 function linha(k,v,copiavel=true){ return `<div class="row"><div class="k">${k}</div><div class="v">${esc(v)}</div>${copiavel?`<button class="copy" data-c="${esc(v)}">Copiar</button>`:"<span></span>"}</div>`; }
@@ -618,11 +622,13 @@ function proximoHorario(){
   }
   return null;
 }
+let dezTocado=false;
 function renderProximo(){
   const box=document.getElementById("prox-box"); if(!box) return;
   box.hidden = modo!=="viral";
   const p=proximoHorario(); if(!p) return;
-  document.getElementById("prox-slot").textContent=p.rotulo;
+  document.getElementById("prox-slot").textContent=p.rotulo + (new Date(p.iso).getHours()===19 ? " · vídeo de 10 min" : "");
+  if(!dezTocado) $("#dez").checked = new Date(p.iso).getHours()===19;
   if(!$("#tema").value) $("#tema").placeholder = formatoEscolhido==="auto" ? "Vazio = o Claude escolhe pelo cronograma" : (proximos()[0]||"");
   document.getElementById("prox-pauta").textContent=`${NOME_FORMATO[p.formato]} · ${p.assunto.replace(/\s*\(.*\)$/,"")}. Deixe o tema vazio para o Claude escolher.`;
 }
@@ -665,8 +671,8 @@ function promptRevisao(r){ return (modo==="viral"
 Roteiro: ${JSON.stringify({titulo:r.titulo,descricao:r.descricao,cenas:r.cenas.map(c=>c.narracao),curto:r.curto})}
 Responda SÓ com JSON: {"aprovado":true|false,"problemas":"vazio se aprovado"}`; }
 
-function promptCena(r,i){ return `Draw ONE illustration as a single SVG for scene ${i+1} of 8 of a ${r.modo==="biblico"?"children's Bible cartoon":"funny, family-friendly viral explainer cartoon"}.
-Scene: ${r.cenas[i].visual}
+function promptCena(r,i,visual,total){ return `Draw ONE illustration as a single SVG for scene ${i+1} of ${total||8} of a ${r.modo==="biblico"?"children's Bible cartoon":"funny, family-friendly viral explainer cartoon"}.
+Scene: ${visual ?? r.cenas[i].visual}
 Recurring characters (keep exactly this look): ${r.personagens}. ${r.modo==="biblico"?TURI:BINO}.
 ${ESTILO}
 Gentle, funny and safe for small children; expressive faces.
@@ -677,9 +683,77 @@ function extrairSvg(t){ const m=t.match(/<svg[\s\S]*<\/svg>/i); if(!m) return nu
   return m[0].replace(/<script[\s\S]*?<\/script>/gi,"").replace(/<foreignObject[\s\S]*?<\/foreignObject>/gi,"").replace(/\son\w+="[^"]*"/gi,"").replace(/(href)="(?!#)[^"]*"/gi,""); }
 
 function validar(r){ if(!r||!r.titulo||!Array.isArray(r.cenas)||r.cenas.length<4) throw {code:"roteiro_invalido"};
-  r.cenas=r.cenas.slice(0,8); const n=r.cenas.length; r.curto=r.curto||{titulo:r.titulo,legenda_tiktok:r.titulo,cenas:[]}; r.curto.legenda_instagram=String(r.curto.legenda_instagram||r.curto.legenda_tiktok||r.titulo);
+  if(!r.longo) r.cenas=r.cenas.slice(0,8); const n=r.cenas.length; r.curto=r.curto||{titulo:r.titulo,legenda_tiktok:r.titulo,cenas:[]}; r.curto.legenda_instagram=String(r.curto.legenda_instagram||r.curto.legenda_tiktok||r.titulo);
   r.curto.cenas=(r.curto.cenas||[]).map(c=>({imagem:Math.max(0,Math.min(n-1,+c.imagem||0)),narracao:String(c.narracao||"")})).filter(c=>c.narracao);
   r.tags=(r.tags||[]).slice(0,12).map(String); r.personagens=String(r.personagens||""); return r; }
+
+/* ---------- vídeo longo de 10 minutos (4 capítulos, 16 desenhos, 32 falas) ---------- */
+function cabecalho(formato){ return modo==="viral" ? VIRAL_REGRAS + `\nFormato do vídeo: ${FORMATOS[formato]||FORMATOS.explicacao}` : `Você é roteirista do canal infantil cristão "Turibenção" no YouTube.
+Fundamentos obrigatórios: ${FUNDAMENTOS}
+Público: crianças de 3 a 8 anos. Português do Brasil, frases curtas e simples, tom alegre e acolhedor.
+Seja fiel ao texto bíblico. Nada assustador ou violento em detalhe; momentos difíceis com delicadeza.
+Personagem guia fixo: ${TURI}. Ele abre e fecha o vídeo.`; }
+const VISUAL_REGRA = "O visual é rabisco de quadro branco (bonequinhos de palito, contorno preto, fundo branco, pouca cor): cenas SIMPLES, 1 a 3 personagens, uma ação clara, poucos objetos.";
+
+async function gerarLongo(tema, formato, avisar){
+  const opt={modelTier:"default", cache:false};
+  avisar("plano dos capítulos…");
+  const plano = await sample.json(`${cabecalho(formato)}
+
+Tema: ${tema || `ESCOLHA VOCÊ um tema específico e com alto potencial de viralizar sobre ${assuntoDaVez||"curiosidades"}, com assunto suficiente para 10 minutos. Não repita: ${JSON.stringify(videos.map(v=>v.tema).slice(0,60))}.`}
+
+Vamos fazer um vídeo LONGO de ~10 minutos para o YouTube (~1.600 palavras de narração), em 4 capítulos.
+Retenção é tudo: gancho forte no início, uma promessa que só é revelada no final, e cada capítulo termina com um mini-gancho para o próximo. Nada de enrolação: cada momento traz informação nova, piada ou virada.
+Nesta etapa faça só o PLANO: 4 capítulos, cada um com EXATAMENTE 4 momentos visuais (16 no total).
+${VISUAL_REGRA}
+Responda SÓ JSON:
+{"tema":"o tema","titulo":"máx 70 caracteres","descricao":"resumo instigante + lista dos capítulos com minutagem aproximada (00:00 ...) + pergunta + 3 hashtags","tags":["até 12"],"personagens":"aparência fixa de cada personagem, em inglês, estilo bonequinho de palito","capitulos":[{"titulo":"...","momentos":[{"ideia":"o que é contado neste momento, 1 frase em português","visual":"a cena em inglês"}]}]}`, opt);
+  const caps=(plano.capitulos||[]).slice(0,4).filter(c=>Array.isArray(c.momentos)&&c.momentos.length);
+  if(caps.length<3) throw {code:"roteiro_invalido"};
+  const resumoPlano = JSON.stringify(caps.map(c=>({titulo:c.titulo, ideias:c.momentos.slice(0,4).map(m=>m.ideia)})));
+  const cenas=[], desenhos=[];
+  for(let k=0;k<caps.length;k++){
+    avisar(`capítulo ${k+1} de ${caps.length}…`);
+    const ultimo = k===caps.length-1, momentos=caps[k].momentos.slice(0,4);
+    const anterior = cenas.slice(-2).map(c=>c.narracao).join(" ");
+    const cap = await sample.json(`${cabecalho(formato)}
+
+Você está escrevendo o capítulo ${k+1} de ${caps.length} ("${caps[k].titulo}") do vídeo "${plano.titulo}" (tema: ${plano.tema||tema}).
+Plano completo do vídeo: ${resumoPlano}
+${k===0 ? "Este é o INÍCIO: a primeira frase é o GANCHO (pergunta intrigante, fato chocante ou situação engraçada). Nunca comece com \"Olá\"." : "Continue a partir de: \""+anterior+"\""}
+${ultimo ? (modo==="viral" ? "Último capítulo: faça a grande revelação prometida, termine com uma pergunta para os comentários e \"segue o Bino Explica pra mais curiosidades\"." : "Último capítulo: termine com a lição e um convite carinhoso para se inscrever.") : "Termine o capítulo com um mini-gancho para o próximo (ex.: \"mas segura essa, que vem coisa mais louca\")."}
+Momentos deste capítulo: ${JSON.stringify(momentos.map(m=>m.ideia))}
+Para CADA um dos ${momentos.length} momentos, escreva 2 falas de ~50 palavras cada (≈ 20 segundos), em português falado, sem emojis, parênteses ou listas. Não repita informações de outros capítulos.
+"legenda_tela": título curto e divertido da fala, 2 a 4 palavras.
+Responda SÓ JSON: {"momentos":[{"falas":[{"narracao":"...","legenda_tela":"..."},{"narracao":"...","legenda_tela":"..."}]}]}`, opt);
+    momentos.forEach((m,j)=>{
+      const d=desenhos.length; desenhos.push({visual:String(m.visual||""), ideia:String(m.ideia||"")});
+      const falas=(cap.momentos?.[j]?.falas||[]).filter(f=>f&&f.narracao);
+      (falas.length?falas:[{narracao:m.ideia,legenda_tela:caps[k].titulo}]).slice(0,3).forEach(f=>cenas.push({narracao:String(f.narracao), legenda_tela:String(f.legenda_tela||""), visual:String(m.visual||""), img:d}));
+    });
+  }
+  avisar("cortes e thumbnail…");
+  const extra = await sample.json(`${cabecalho(formato)}
+
+Do vídeo longo abaixo, crie (1) um corte vertical de ~75 segundos (~190 palavras, 5 cenas) com gancho forte no 1º segundo — ele PRECISA passar de 1 minuto — e (2) os textos da thumbnail.
+Desenhos disponíveis (índice: o que mostram): ${desenhos.map((d,i)=>i+": "+d.ideia).join(" | ")}
+Narração do vídeo: ${cenas.map(c=>c.narracao).join(" ")}
+Responda SÓ JSON: {"curto":{"titulo":"com 1-2 emojis","legenda_tiktok":"texto curto + 3 a 5 hashtags","legenda_instagram":"gancho + 1-2 frases + 'salva e manda pra alguém' + 3 a 5 hashtags","cenas":[{"desenho":0,"narracao":"..."}]},"miniatura":{"texto":"2 a 4 palavras em MAIÚSCULAS terminando em ? ou !","selo":"1 palavra (ex.: QUIZ, DESAFIO, TOP 5)","frase":"até 5 palavras","desenho":0}}`, opt);
+  const cenaDoDesenho = d => { const i=cenas.findIndex(c=>c.img===(+d||0)); return i<0?0:i; };
+  const curto = extra.curto||{};
+  curto.cenas=(curto.cenas||[]).map(c=>({imagem:cenaDoDesenho(c.desenho ?? c.imagem), narracao:String(c.narracao||"")}));
+  const mini = extra.miniatura||null; if(mini) mini.cena = cenaDoDesenho(mini.desenho ?? mini.cena);
+  return { longo:true, tema:plano.tema||tema, titulo:plano.titulo, descricao:plano.descricao, tags:plano.tags, personagens:plano.personagens, cenas, desenhos, curto, miniatura:mini };
+}
+async function corrigirLongo(r, problemas){
+  const res = await sample.json(`Corrija este roteiro de vídeo apontando estes problemas: ${problemas}
+Mantenha EXATAMENTE ${r.cenas.length} falas, na mesma ordem e com tamanho parecido, em português falado.
+Falas: ${JSON.stringify(r.cenas.map(c=>({narracao:c.narracao, legenda_tela:c.legenda_tela})))}
+Responda SÓ JSON: {"falas":[{"narracao":"...","legenda_tela":"..."}]}`, {modelTier:"default", cache:false});
+  const f=res.falas||[]; if(f.length!==r.cenas.length) return false;
+  f.forEach((x,i)=>{ if(x?.narracao){ r.cenas[i].narracao=String(x.narracao); r.cenas[i].legenda_tela=String(x.legenda_tela||r.cenas[i].legenda_tela); } });
+  return true;
+}
 
 const ERROS = { not_granted:"Você não liberou o Claude para este site. Recarregue e clique em Permitir.", rate_limited:"Muitos pedidos seguidos. Espere um minuto e tente de novo.", roteiro_invalido:"O roteiro veio incompleto. Tente de novo." };
 
@@ -697,11 +771,17 @@ $("#criar").onclick = async () => {
   try{
     etapa("roteiro","ativo","escrevendo…");
     const modoEp = modo, formatoEp = modo==="viral" ? formatoDaVez(slot) : ""; if(formatoEp) etapa("roteiro","ativo",NOME_FORMATO[formatoEp]+"…");
-    let r = validar(await sample.json(promptRoteiro(tema,"",formatoEp),{modelTier:"default", cache:false})); r.modo=modoEp; if(!tema) tema = String(r.tema||r.titulo); etapa("roteiro","ok",`${r.cenas.length} cenas`);
+    const longo = $("#dez").checked;
+    let r;
+    if (longo) { r = validar(await gerarLongo(tema, formatoEp, t=>etapa("roteiro","ativo",t))); }
+    else { r = validar(await sample.json(promptRoteiro(tema,"",formatoEp),{modelTier:"default", cache:false})); }
+    r.modo=modoEp; if(!tema) tema = String(r.tema||r.titulo);
+    etapa("roteiro","ok", longo ? `${r.cenas.length} falas · ~10 min` : `${r.cenas.length} cenas`);
     etapa("revisao","ativo","revisando…");
     let rev = await sample.json(promptRevisao(r),{modelTier:"default", cache:false}), status="pronto", obs="Aprovado na revisão";
     if(!rev?.aprovado){ etapa("revisao","ativo","reescrevendo…");
-      r = validar(await sample.json(promptRoteiro(tema, rev?.problemas||"", formatoEp),{modelTier:"default", cache:false})); r.modo=modoEp;
+      if (longo) { await corrigirLongo(r, rev?.problemas||""); }
+      else { r = validar(await sample.json(promptRoteiro(tema, rev?.problemas||"", formatoEp),{modelTier:"default", cache:false})); r.modo=modoEp; }
       rev = await sample.json(promptRevisao(r),{modelTier:"default", cache:false});
       if(!rev?.aprovado){ status="rascunho"; obs="Revisão pediu ajustes: "+(rev?.problemas||""); }
     }
@@ -710,19 +790,20 @@ $("#criar").onclick = async () => {
 
     const id = "v"+Date.now().toString(36);
     const dados = {tema, modo:modoEp, formato:formatoEp, agenda: slot?.iso || null, titulo:r.titulo, descricao:r.descricao, tags:r.tags, referencia_biblica:r.referencia_biblica||"", personagens:r.personagens,
-      cenas:r.cenas.map(c=>({narracao:String(c.narracao||""), legenda_tela:String(c.legenda_tela||""), visual:String(c.visual||"")})), curto:r.curto, miniatura:(r.miniatura&&typeof r.miniatura==="object")?r.miniatura:null, status, revisao:obs, criadoEm:new Date().toISOString(), nCenas:r.cenas.length};
+      cenas:r.cenas.map((c,k)=>({narracao:String(c.narracao||""), legenda_tela:String(c.legenda_tela||""), visual:String(c.visual||""), img:c.img ?? k})), longo:!!r.longo, curto:r.curto, miniatura:(r.miniatura&&typeof r.miniatura==="object")?r.miniatura:null, status, revisao:obs, criadoEm:new Date().toISOString(), nCenas:r.cenas.length, nDesenhos:(r.desenhos||r.cenas).length};
     await abrir({id,...dados}, []);
     if (db) await db.doc("videos/"+id).set({...dados, status:"gerando"});
 
-    for (let i=0;i<r.cenas.length;i++){
-      etapa("cenas","ativo",`${i}/${r.cenas.length}`);
+    const desenhos = r.desenhos || r.cenas.map(c=>({visual:c.visual}));
+    for (let i=0;i<desenhos.length;i++){
+      etapa("cenas","ativo",`${i}/${desenhos.length}`);
       let svg=null;
-      for (let t=0;t<2 && !svg;t++){ const {text}=await sample(promptCena(r,i),{modelTier:"default"}); svg=extrairSvg(text); }
+      for (let t=0;t<2 && !svg;t++){ const {text}=await sample(promptCena(r,i,desenhos[i].visual,desenhos.length),{modelTier:"default"}); svg=extrairSvg(text); }
       if(!svg) svg=EXEMPLO_SVG;
       imgs[i]=await carregarImg(svg); renderThumbs(); if(i===0) mostrarPrimeiro();
       if (db) await db.doc(`videos/${id}/cenas/c${i}`).set({svg});
     }
-    etapa("cenas","ok",`${r.cenas.length}/${r.cenas.length}`);
+    etapa("cenas","ok",`${desenhos.length}/${desenhos.length}`);
     if (db){ await db.doc("videos/"+id).update({status}); etapa("salvo","ok"); } else etapa("salvo","erro","sem banco");
     ep.status=status; renderMeta(); mostrarPrimeiro(); $("#tema").value="";
     if(status==="pronto") mensagem("Episódio pronto! Assista, grave nos dois formatos e publique.","ok");
@@ -731,6 +812,8 @@ $("#criar").onclick = async () => {
     mensagem(ERROS[e?.code] || "Algo deu errado na geração. Tente de novo em instantes.");
   }finally{ gerando=false; $("#criar").disabled=false; }
 };
+
+$("#dez").addEventListener("change",()=>{ dezTocado=true; });
 
 /* ---------------- início ---------------- */
 dimensionar(); renderFila(); renderAgenda(); renderLib();

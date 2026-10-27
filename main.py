@@ -78,8 +78,9 @@ def publicar(cfg, r: dict, pasta: Path) -> dict:
 
     if pub["youtube"]:
         import youtube_upload as yt
-        etapa("youtube_longo", lambda: yt.publicar(
-            cfg, r["longo"], rot["titulo"], rot["descricao"], rot["tags"], r["miniatura"]))
+        if pub.get("youtube_longo", True):
+            etapa("youtube_longo", lambda: yt.publicar(
+                cfg, r["longo"], rot["titulo"], rot["descricao"], rot["tags"], r["miniatura"]))
         if pub["publicar_curto_no_youtube"]:
             titulo_short = f"{rot['curto']['titulo']} #Shorts"
             canal = cfg["canal"].get("marca", "o canal")
