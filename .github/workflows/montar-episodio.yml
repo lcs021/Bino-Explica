@@ -31,6 +31,8 @@ jobs:
           mkdir -p assets/fontes
           curl -fsSL -o assets/fontes/GochiHand-Regular.ttf \
             https://github.com/google/fonts/raw/main/ofl/gochihand/GochiHand-Regular.ttf || echo "fonte manuscrita indisponível; usando a padrão"
+          curl -fsSL -o assets/fontes/Poppins-Black.ttf \
+            https://github.com/google/fonts/raw/main/ofl/poppins/Poppins-Black.ttf || echo "fonte da thumbnail indisponível; usando a padrão"
 
       - name: Instalar dependências
         run: pip install -r requirements.txt

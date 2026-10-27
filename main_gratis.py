@@ -106,7 +106,10 @@ Responda SÓ JSON:
 "personagens":"...","cenas":[{{"narracao":"...","legenda_tela":"...","visual":"..."}}],
 "curto":{{"titulo":"com 1-2 emojis","legenda_tiktok":"texto curto + 3 a 5 hashtags",
 "legenda_instagram":"gancho + 1-2 frases + 'salva e manda pra alguém' + 3 a 5 hashtags",
-"cenas":[{{"imagem":0,"narracao":"..."}}]}}}}"""
+"cenas":[{{"imagem":0,"narracao":"..."}}]}},
+"miniatura":{{"texto":"2 a 4 palavras em MAIÚSCULAS que dão vontade de clicar, terminando em ? ou ! (ex.: BOCEJO PEGA?)",
+"selo":"1 palavra curta para o selo vermelho (ex.: QUIZ, DESAFIO, TOP 5, MITO?)",
+"frase":"frase de apoio curta, até 5 palavras (ex.: Duvido você não bocejar!)","cena":"índice 0-7 da cena mais expressiva"}}}}"""
 
 
 def prompt_revisao(r):
@@ -315,8 +318,9 @@ def produzir(cfg, tema, pasta, formato="explicacao"):
                          minimo=62)
     feed = video.montar(cfg, feed_imgs, aud_curto, textos_curto, pasta, "instagram_feed_4x5", 1080, 1350, minimo=62)
 
-    mini = pasta / "miniatura.jpg"
-    Image.open(longo_imgs[0]).resize((1280, 720), Image.LANCZOS).save(mini, quality=92)
+    import thumbnail
+    mini = thumbnail.para_roteiro(r, cenas, pasta / "miniatura.jpg")
+    log.info("Thumbnail pronta: miniatura.jpg")
     (pasta / "legendas.txt").write_text(
         f"YOUTUBE\n{r['titulo']}\n\n{r['descricao']}\n\nTags: {', '.join(r['tags'])}\n\n"
         f"SHORTS\n{r['curto']['titulo']} #Shorts\n\nTIKTOK\n{r['curto']['legenda_tiktok']}\n\n"

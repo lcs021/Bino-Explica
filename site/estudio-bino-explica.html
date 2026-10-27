@@ -230,7 +230,7 @@ canvas#tela{display:block;max-width:100%;height:auto;border-radius:10px;backgrou
           <li>Abra <a href="https://github.com/lcs021/Bino-Explica/upload/main/episodios" target="_blank" rel="noopener">GitHub → pasta episodios → Upload</a>, escolha o arquivo e toque em <b>Commit changes</b>.</li>
           <li>O robô começa sozinho. Em ~10 min, abra <a href="https://github.com/lcs021/Bino-Explica/actions/workflows/montar-episodio.yml" target="_blank" rel="noopener">Actions → Montar episódio do site</a> e baixe em <b>Artifacts</b>: YouTube, vertical e feed, com voz neural e legendas.</li>
         </ol>
-        <p class="small" style="margin:0">Se você conectou as redes, ele também publica sozinho.</p>
+        <p class="small" style="margin:0">Junto vem a <b>miniatura.jpg</b>, a thumbnail pronta para o YouTube. Se você conectou as redes, ele também publica sozinho.</p>
       </div>
 
       <div class="panel">
@@ -482,7 +482,7 @@ $("#com-voz").onclick = async () => {
   const svgs = imgs.slice(0, n).map(im => { try { return decodeURIComponent(im.src.split(",").slice(1).join(",")); } catch (e) { return ""; } });
   const pacote = { versao: 1, tema: ep.tema, modo: ep.modo || "viral", formato: ep.formato || "", titulo: ep.titulo, descricao: ep.descricao,
     tags: ep.tags || [], personagens: ep.personagens || "", cenas: ep.cenas.map(c => ({ narracao: c.narracao, legenda_tela: c.legenda_tela || "" })),
-    curto: ep.curto, svgs, criadoEm: new Date().toISOString() };
+    curto: ep.curto, miniatura: ep.miniatura || null, svgs, criadoEm: new Date().toISOString() };
   const nome = `episodio-${(ep.titulo || "bino").normalize("NFD").replace(/[^\w]+/g, "-").toLowerCase().replace(/^-|-$/g, "").slice(0, 40)}-${ep.id}.json`;
   try {
     await downloads.save({ filename: nome, data: JSON.stringify(pacote) });
@@ -615,7 +615,8 @@ Descreva cada cena visualmente EM INGLÊS em "visual" (personagens, ação, expr
 Em "legenda_tela" escreva um título curto e divertido para a cena, de 2 a 4 palavras, como uma chamada desenhada (ex.: "MISSÃO: CONSTRUIR A ARCA!", "JONAS FUGIU?").
 
 Responda SÓ com JSON:
-{"titulo":"máx 70 caracteres","descricao":"${modo==="viral"?"resumo instigante + pergunta + hashtags":"resumo + referência bíblica + convite"}","tags":["até 12"],"referencia_biblica":"${modo==="viral"?"assunto em 2 palavras":"Livro cap."}","personagens":"...","cenas":[{"narracao":"...","legenda_tela":"...","visual":"..."}],"curto":{"titulo":"com 1-2 emojis","legenda_tiktok":"texto curto + 3 a 5 hashtags","legenda_instagram":"legenda para Reels/feed do Instagram: 1ª linha gancho, 1 a 2 frases, chamada 'salva e manda pra alguém que precisa ver', 3 a 5 hashtags no fim","cenas":[{"imagem":0,"narracao":"..."}]}}`; }
+{"titulo":"máx 70 caracteres","descricao":"${modo==="viral"?"resumo instigante + pergunta + hashtags":"resumo + referência bíblica + convite"}","tags":["até 12"],"referencia_biblica":"${modo==="viral"?"assunto em 2 palavras":"Livro cap."}","personagens":"...","cenas":[{"narracao":"...","legenda_tela":"...","visual":"..."}],"curto":{"titulo":"com 1-2 emojis","legenda_tiktok":"texto curto + 3 a 5 hashtags","legenda_instagram":"legenda para Reels/feed do Instagram: 1ª linha gancho, 1 a 2 frases, chamada 'salva e manda pra alguém que precisa ver', 3 a 5 hashtags no fim","cenas":[{"imagem":0,"narracao":"..."}]},"miniatura":{"texto":"2 a 4 palavras em MAIÚSCULAS que dão vontade de clicar, terminando em ? ou ! (ex.: BOCEJO PEGA?)","selo":"1 palavra para o selo vermelho (ex.: QUIZ, DESAFIO, TOP 5)","frase":"frase de apoio curta, até 5 palavras","cena":0}}
+Em "miniatura.cena" use o índice (0 a 7) da cena mais expressiva para a thumbnail.`; }
 
 function promptRevisao(r){ return (modo==="viral"
   ? `Revise este roteiro de vídeo viral para o público geral antes de publicar. Verifique: (1) os fatos estão corretos e são bem estabelecidos — reprove qualquer fato inventado, exagerado ou duvidoso; (2) adequado para todas as idades, sem nada impróprio, assustador ou ofensivo, sem pessoas reais; (3) o título é honesto e o vídeo entrega o que promete; (4) a primeira frase prende a atenção; (5) português correto.`
@@ -664,7 +665,7 @@ $("#criar").onclick = async () => {
 
     const id = "v"+Date.now().toString(36);
     const dados = {tema, modo:modoEp, formato:formatoEp, titulo:r.titulo, descricao:r.descricao, tags:r.tags, referencia_biblica:r.referencia_biblica||"", personagens:r.personagens,
-      cenas:r.cenas.map(c=>({narracao:String(c.narracao||""), legenda_tela:String(c.legenda_tela||""), visual:String(c.visual||"")})), curto:r.curto, status, revisao:obs, criadoEm:new Date().toISOString(), nCenas:r.cenas.length};
+      cenas:r.cenas.map(c=>({narracao:String(c.narracao||""), legenda_tela:String(c.legenda_tela||""), visual:String(c.visual||"")})), curto:r.curto, miniatura:(r.miniatura&&typeof r.miniatura==="object")?r.miniatura:null, status, revisao:obs, criadoEm:new Date().toISOString(), nCenas:r.cenas.length};
     await abrir({id,...dados}, []);
     if (db) await db.doc("videos/"+id).set({...dados, status:"gerando"});
 
