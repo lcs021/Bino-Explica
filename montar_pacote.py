@@ -48,9 +48,18 @@ def main():
         log.info("Nenhum episódio novo na pasta episodios/.")
         return
     falhou = False
+    feitos = PASTA / "feitos"
+    feitos.mkdir(exist_ok=True)
+    # episódios já montados antes (pelo título) e nesta rodada: não monta duas vezes
+    ja_feitos = {h.get("titulo") for h in ler_historico(cfg) if h.get("origem") == "site"}
     for arq in arquivos:
         pacote = json.loads(arq.read_text(encoding="utf-8"))
         tema = pacote.get("tema") or pacote.get("titulo") or arq.stem
+        if pacote.get("titulo") in ja_feitos:
+            log.info(f"Pulando {arq.name}: este episódio já foi montado (arquivo repetido).")
+            shutil.move(str(arq), feitos / arq.name)
+            continue
+        ja_feitos.add(pacote.get("titulo"))
         biblico = pacote.get("modo") == "biblico"
         cfg["canal"]["marca"] = "Turibenção" if biblico else cfg["canal"].get("marca", "@binoexplica")
         pub["feito_para_criancas"] = biblico
@@ -67,8 +76,6 @@ def main():
             hist.append({"tema": tema, "titulo": res["roteiro"]["titulo"], "origem": "site",
                          "data": f"{datetime.now():%Y-%m-%d %H:%M}", "publicacao": estado})
             salvar_historico(cfg, hist)
-            feitos = PASTA / "feitos"
-            feitos.mkdir(exist_ok=True)
             shutil.move(str(arq), feitos / arq.name)
         except Exception as e:  # noqa: BLE001
             log.error(f"Não consegui montar {arq.name}: {e}")
