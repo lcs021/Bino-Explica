@@ -1,0 +1,71 @@
+name: Montar episódio do site (com voz)
+
+on:
+  push:
+    paths: ["episodios/*.json"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bino-explica
+  cancel-in-progress: false
+
+jobs:
+  montar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Instalar ffmpeg, desenhista de SVG e fontes
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg librsvg2-bin fonts-dejavu-core
+          mkdir -p assets/fontes
+          curl -fsSL -o assets/fontes/GochiHand-Regular.ttf \
+            https://github.com/google/fonts/raw/main/ofl/gochihand/GochiHand-Regular.ttf || echo "fonte manuscrita indisponível; usando a padrão"
+
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+
+      - name: Montar com voz (e publicar nas redes conectadas)
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          INSTAGRAM_TOKEN: ${{ secrets.INSTAGRAM_TOKEN }}
+          TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
+          TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+          FONTE_LEGENDA: "Gochi Hand"
+          FONTES_DIR: ${{ github.workspace }}/assets/fontes
+          ESTILO_LEGENDA: rabisco
+          ZOOM_VIDEO: "0.06"
+        run: python montar_pacote.py
+
+      - name: Guardar os vídeos para baixar (30 dias)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: episodio-com-voz-${{ github.run_number }}
+          path: |
+            saida/**/*.mp4
+            saida/**/miniatura.jpg
+            saida/**/legendas.txt
+            logs/
+          retention-days: 30
+          if-no-files-found: ignore
+
+      - name: Salvar
+        if: always()
+        run: |
+          git config user.name "bino-explica-bot"
+          git config user.email "bino-explica-bot@users.noreply.github.com"
+          git add -A episodios historico.json tokens/ 2>/dev/null || true
+          git diff --cached --quiet || (git commit -m "Episódio do site montado" && git pull --rebase -q && git push)
