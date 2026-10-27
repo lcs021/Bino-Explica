@@ -308,6 +308,8 @@ def produzir(cfg, tema, pasta, formato="explicacao"):
     marca = cfg["canal"].get("marca", "@binoexplica")
     if r.get("plataforma") == "tiktok":
         return _so_tiktok(cfg, r, cenas, pasta, marca)
+    if cfg["publicacao"].get("apenas_tiktok"):
+        return _tiktok_do_corte(cfg, r, cenas, pasta, marca)
     textos_longo = [c["narracao"] for c in r["cenas"]]
     textos_curto = [c["narracao"] for c in r["curto"]["cenas"]]
 
@@ -351,6 +353,18 @@ def _so_tiktok(cfg, r, cenas, pasta, marca):
     auds = narracao.narrar_cenas(cfg, r["cenas"], pasta, "tiktok")
     vid = video.montar(cfg, imgs, auds, [c["narracao"] for c in r["cenas"]], pasta, "tiktok_9x16", 1080, 1920,
                        minimo=62)
+    (pasta / "legendas.txt").write_text(f"TIKTOK\n{r['curto']['legenda_tiktok']}\n", encoding="utf-8")
+    return {"roteiro": r, "longo": None, "curto": vid, "feed": None, "miniatura": None}
+
+
+def _tiktok_do_corte(cfg, r, cenas, pasta, marca):
+    """Episódios antigos (feitos para o YouTube): monta só o corte vertical de ~75s para o TikTok."""
+    cc = r["curto"]["cenas"]
+    titulo = re.sub(r"[^\w\s:?!,.\-]", "", r["curto"]["titulo"]).strip()
+    titulos = [titulo if k == 0 else r["cenas"][c["imagem"]].get("legenda_tela", "") for k, c in enumerate(cc)]
+    imgs = [compor(cenas[c["imagem"]], t, 1080, 1920, marca, pasta / f"v_{k:02d}.png") for k, (c, t) in enumerate(zip(cc, titulos))]
+    auds = narracao.narrar_cenas(cfg, cc, pasta, "tiktok")
+    vid = video.montar(cfg, imgs, auds, [c["narracao"] for c in cc], pasta, "tiktok_9x16", 1080, 1920, minimo=62)
     (pasta / "legendas.txt").write_text(f"TIKTOK\n{r['curto']['legenda_tiktok']}\n", encoding="utf-8")
     return {"roteiro": r, "longo": None, "curto": vid, "feed": None, "miniatura": None}
 

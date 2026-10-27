@@ -64,6 +64,7 @@ video:
   legendas: true
 
 publicacao:
+  apenas_tiktok: true              # monta e posta só o vídeo vertical do TikTok (mude para false para voltar ao YouTube)
   youtube: true
   tiktok: true
   youtube_privacidade: "public"    # public | unlisted | private

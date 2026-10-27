@@ -70,7 +70,7 @@ def main():
         biblico = pacote.get("modo") == "biblico"
         cfg["canal"]["marca"] = "Turibenção" if biblico else cfg["canal"].get("marca", "@binoexplica")
         pub["feito_para_criancas"] = biblico
-        so_tiktok = pacote.get("plataforma") == "tiktok"
+        so_tiktok = pacote.get("plataforma") == "tiktok" or bool(pub.get("apenas_tiktok"))
         pub["youtube"] = bool(os.environ.get("YOUTUBE_REFRESH_TOKEN") or os.environ.get("YOUTUBE_TOKEN_JSON")) and not so_tiktok
         pub["instagram"] = bool(os.environ.get("INSTAGRAM_TOKEN")) and not so_tiktok
         pasta = RAIZ / cfg["pastas"]["saida"] / f"{datetime.now():%Y-%m-%d_%H%M}_{slug(tema)}"
