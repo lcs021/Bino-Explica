@@ -212,7 +212,8 @@ canvas#tela{display:block;max-width:100%;height:auto;border-radius:10px;backgrou
         <div class="controls">
           <button class="btn btn-ghost" id="play">▶ Assistir com voz</button>
           <div class="progress" aria-hidden="true"><i id="bar"></i></div>
-          <button class="btn btn-ghost" id="exportar">Gravar vídeo</button>
+          <button class="btn btn-ghost" id="exportar" title="Grava só imagem e legendas, sem narração">Gravar sem voz</button>
+          <button class="btn btn-main" id="com-voz">🎙️ Gerar vídeo com voz</button>
         </div>
         <div class="thumbs" id="thumbs" aria-label="Cenas"></div>
         <div class="vozes">
@@ -220,6 +221,16 @@ canvas#tela{display:block;max-width:100%;height:auto;border-radius:10px;backgrou
           <label for="vel">Velocidade</label><input type="range" id="vel" min="0.9" max="1.6" step="0.05" value="1.1"><output id="vel-v">1,10x</output>
         </div>
         <p class="small" id="voz-info" style="margin:0"></p>
+      </div>
+
+      <div class="panel stack" id="envio" hidden>
+        <div><div class="eyebrow">Vídeo com voz</div><h2 style="font-size:1.2rem">Falta 1 passo: entregar ao robô</h2></div>
+        <ol class="checklist">
+          <li>O arquivo <b id="envio-nome">episodio.json</b> foi salvo no seu aparelho.</li>
+          <li>Abra <a href="https://github.com/lcs021/Bino-Explica/upload/main/episodios" target="_blank" rel="noopener">GitHub → pasta episodios → Upload</a>, escolha o arquivo e toque em <b>Commit changes</b>.</li>
+          <li>O robô começa sozinho. Em ~10 min, abra <a href="https://github.com/lcs021/Bino-Explica/actions/workflows/montar-episodio.yml" target="_blank" rel="noopener">Actions → Montar episódio do site</a> e baixe em <b>Artifacts</b>: YouTube, vertical e feed, com voz neural e legendas.</li>
+        </ol>
+        <p class="small" style="margin:0">Se você conectou as redes, ele também publica sozinho.</p>
       </div>
 
       <div class="panel">
@@ -460,6 +471,23 @@ $("#exportar").onclick = async () => {
   const nome=`turibencao-${(ep.titulo||"episodio").normalize("NFD").replace(/[^\w]+/g,"-").toLowerCase().slice(0,40)}-${formato==="longo"?"youtube":formato==="feed"?"instagram-feed":"vertical-reels-tiktok-shorts"}.${ext}`;
   try{ await downloads.save({filename:nome, data:new Blob(partes,{type:tipo})}); toast("Vídeo salvo."); }
   catch(e){ if(e.code!=="cancelled") toast("Não foi possível salvar o arquivo."); }
+};
+
+/* ---------------- pacote para o robô montar com voz ---------------- */
+$("#com-voz").onclick = async () => {
+  if (!ep || !ep.id) return toast("Crie ou abra um episódio da biblioteca primeiro.");
+  const n = ep.nCenas ?? ep.cenas.length;
+  if (imgs.filter(Boolean).length < n) return toast("Espere todas as cenas ficarem prontas.");
+  if (!downloads) return toast("Abra o site pelo claude.ai para salvar o arquivo.");
+  const svgs = imgs.slice(0, n).map(im => { try { return decodeURIComponent(im.src.split(",").slice(1).join(",")); } catch (e) { return ""; } });
+  const pacote = { versao: 1, tema: ep.tema, modo: ep.modo || "viral", formato: ep.formato || "", titulo: ep.titulo, descricao: ep.descricao,
+    tags: ep.tags || [], personagens: ep.personagens || "", cenas: ep.cenas.map(c => ({ narracao: c.narracao, legenda_tela: c.legenda_tela || "" })),
+    curto: ep.curto, svgs, criadoEm: new Date().toISOString() };
+  const nome = `episodio-${(ep.titulo || "bino").normalize("NFD").replace(/[^\w]+/g, "-").toLowerCase().replace(/^-|-$/g, "").slice(0, 40)}-${ep.id}.json`;
+  try {
+    await downloads.save({ filename: nome, data: JSON.stringify(pacote) });
+    $("#envio-nome").textContent = nome; $("#envio").hidden = false; $("#envio").scrollIntoView({ behavior: "smooth", block: "start" });
+  } catch (e) { if (e.code !== "cancelled") toast("Não foi possível salvar o arquivo."); }
 };
 
 /* ---------------- formato ---------------- */

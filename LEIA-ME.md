@@ -20,6 +20,9 @@ Sem as autorizações de postagem, o sistema cria tudo e deixa para baixar.
 Para postar sozinho, cadastre também `YOUTUBE_TOKEN_JSON`, `TIKTOK_CLIENT_KEY`, `TIKTOK_CLIENT_SECRET`
 e `TIKTOK_REFRESH_TOKEN` (Parte A abaixo — grátis, feito uma vez em um computador).
 
+**Vídeo com voz a partir do site:** no Estúdio, toque em **🎙️ Gerar vídeo com voz**, envie o arquivo baixado para a
+pasta `episodios/` (GitHub → Add file → Upload files) e o robô monta sozinho com voz neural (sem usar o Gemini).
+
 Temas: edite `temas_virais.txt`. Horários: `.github/workflows/bino-explica.yml` (linha `cron`, em UTC).
 
 ---
