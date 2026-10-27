@@ -1,9 +1,8 @@
 name: Bino Explica (grátis)
 
 on:
-  schedule:
-    # Horários em UTC: 20:47 UTC = 17:47 em Brasília. Segunda, quarta e sexta.
-    - cron: "47 20 * * 1,3,5"
+  # Agendamento desligado: agora quem manda é o cronograma do site (2 vídeos por dia).
+  # Para o Gemini criar sozinho de novo, recoloque aqui:  schedule: - cron: "47 20 * * 1,3,5"
   workflow_dispatch:          # botão "Run workflow" para rodar na hora
     inputs:
       tema:
