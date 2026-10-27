@@ -1,0 +1,34 @@
+name: Conectar TikTok
+
+on:
+  workflow_dispatch:
+    inputs:
+      codigo:
+        description: "Cole aqui o endereço completo da página que abriu depois de autorizar no TikTok"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  conectar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests cryptography python-dotenv pyyaml
+      - name: Trocar o código pelo token (guardado criptografado)
+        env:
+          CODIGO: ${{ inputs.codigo }}
+          TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
+          TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+          TIKTOK_REDIRECT_URI: ${{ secrets.TIKTOK_REDIRECT_URI }}
+        run: python conectar_tiktok.py
+      - name: Salvar
+        run: |
+          git config user.name "bino-explica-bot"
+          git config user.email "bino-explica-bot@users.noreply.github.com"
+          git add tokens/tiktok.enc
+          git commit -m "TikTok conectado" && git push

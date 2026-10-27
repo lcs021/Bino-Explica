@@ -82,11 +82,16 @@ def publicar(cfg, r: dict, pasta: Path) -> dict:
             cfg, r["longo"], rot["titulo"], rot["descricao"], rot["tags"], r["miniatura"]))
         if pub["publicar_curto_no_youtube"]:
             titulo_short = f"{rot['curto']['titulo']} #Shorts"
-            desc = rot["curto"].get("legenda_tiktok", "") + "\n\nVídeo completo no canal Turibenção!"
+            canal = cfg["canal"].get("marca", "o canal")
+            desc = rot["curto"].get("legenda_tiktok", "") + f"\n\nVídeo completo no canal {canal}!"
             etapa("youtube_short", lambda: yt.publicar(cfg, r["curto"], titulo_short, desc, rot["tags"]))
     if pub["tiktok"]:
         import tiktok_upload as tk
         etapa("tiktok", lambda: tk.publicar(cfg, r["curto"], rot["curto"]["legenda_tiktok"]))
+    if pub.get("instagram"):
+        import instagram_upload as ig
+        legenda = rot["curto"].get("legenda_instagram") or rot["curto"]["legenda_tiktok"]
+        etapa("instagram", lambda: ig.publicar(r["curto"], legenda))
     return estado
 
 

@@ -11,6 +11,20 @@ from util import RAIZ, configurar_log
 log = configurar_log()
 API = "https://open.tiktokapis.com/v2"
 TOKEN = RAIZ / "token_tiktok.json"
+COFRE = RAIZ / "tokens" / "tiktok.enc"     # criptografado com o TIKTOK_CLIENT_SECRET
+
+
+def _fernet():
+    import base64
+    import hashlib
+    from cryptography.fernet import Fernet
+    chave = hashlib.sha256(("bino:" + os.environ["TIKTOK_CLIENT_SECRET"]).encode()).digest()
+    return Fernet(base64.urlsafe_b64encode(chave))
+
+
+def guardar_no_cofre(dados: dict):
+    COFRE.parent.mkdir(exist_ok=True)
+    COFRE.write_bytes(_fernet().encrypt(json.dumps({"refresh_token": dados["refresh_token"]}).encode()))
 
 
 def _salvar_token(dados: dict):
@@ -46,6 +60,12 @@ def _renovar(refresh_token: str) -> dict:
 
 
 def _token() -> str:
+    if COFRE.exists() and os.environ.get("TIKTOK_CLIENT_SECRET"):   # nuvem: conectado pelo guia
+        atual = json.loads(_fernet().decrypt(COFRE.read_bytes()))["refresh_token"]
+        novo = _renovar(atual)
+        if novo.get("refresh_token") and novo["refresh_token"] != atual:
+            guardar_no_cofre(novo)            # o robô salva o token novo no repositório
+        return novo["access_token"]
     if os.environ.get("TIKTOK_REFRESH_TOKEN"):        # nuvem (GitHub Secrets)
         novo = _renovar(os.environ["TIKTOK_REFRESH_TOKEN"])
         if novo.get("refresh_token") and novo["refresh_token"] != os.environ["TIKTOK_REFRESH_TOKEN"]:

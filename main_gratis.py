@@ -310,8 +310,13 @@ def main():
     a = ap.parse_args()
     cfg = carregar_config()
     pub = cfg["publicacao"]
-    pub["youtube"] = bool(os.environ.get("YOUTUBE_TOKEN_JSON")) and not a.sem_publicar
-    pub["tiktok"] = bool(os.environ.get("TIKTOK_REFRESH_TOKEN")) and not a.sem_publicar
+    pub["youtube"] = bool(os.environ.get("YOUTUBE_REFRESH_TOKEN") or os.environ.get("YOUTUBE_TOKEN_JSON")) \
+        and not a.sem_publicar
+    pub["tiktok"] = bool(os.environ.get("TIKTOK_REFRESH_TOKEN") or
+                         ((RAIZ / "tokens/tiktok.enc").exists() and os.environ.get("TIKTOK_CLIENT_SECRET"))) \
+        and not a.sem_publicar
+    pub["instagram"] = bool(os.environ.get("INSTAGRAM_TOKEN")) and not a.sem_publicar
+    log.info(f"Contas conectadas: YouTube={pub['youtube']} TikTok={pub['tiktok']} Instagram={pub['instagram']}")
     pub["feito_para_criancas"] = False      # canal para público geral: monetiza melhor
 
     tema = a.tema or escolher_tema(cfg)
@@ -324,7 +329,7 @@ def main():
         sys.exit(1)
 
     estado = {}
-    if pub["youtube"] or pub["tiktok"]:
+    if pub["youtube"] or pub["tiktok"] or pub["instagram"]:
         import main as motor
         estado = motor.publicar(cfg, res, pasta)
     else:

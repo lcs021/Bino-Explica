@@ -19,6 +19,14 @@ TOKEN = RAIZ / "token_youtube.json"
 
 
 def credenciais(interativo=False) -> Credentials:
+    if os.environ.get("YOUTUBE_REFRESH_TOKEN"):       # nuvem: 3 segredos simples
+        cred = Credentials.from_authorized_user_info({
+            "client_id": os.environ["YOUTUBE_CLIENT_ID"],
+            "client_secret": os.environ["YOUTUBE_CLIENT_SECRET"],
+            "refresh_token": os.environ["YOUTUBE_REFRESH_TOKEN"],
+            "token_uri": "https://oauth2.googleapis.com/token"}, ESCOPOS)
+        cred.refresh(Request())
+        return cred
     if os.environ.get("YOUTUBE_TOKEN_JSON"):          # nuvem (GitHub Secrets)
         cred = Credentials.from_authorized_user_info(json.loads(os.environ["YOUTUBE_TOKEN_JSON"]), ESCOPOS)
         cred.refresh(Request())
