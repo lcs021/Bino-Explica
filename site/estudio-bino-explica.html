@@ -161,16 +161,8 @@ canvas#tela{display:block;max-width:100%;height:auto;border-radius:10px;backgrou
       <div class="panel stack">
         <div>
           <div class="eyebrow">Novo episódio</div>
-          <h2 style="font-size:1.3rem">Qual história vamos contar?</h2>
+          <h2 style="font-size:1.3rem">Qual curiosidade vamos viralizar?</h2>
         </div>
-        <div class="linha" role="group" aria-label="Linha de conteúdo">
-          <button id="m-viral" aria-pressed="true">🎵 TikTok viral</button>
-          <button id="m-biblico" aria-pressed="false">📖 Bíblico</button>
-        </div>
-        <label id="dez-box" hidden style="display:flex;gap:10px;align-items:flex-start;font-size:.9rem;cursor:pointer">
-          <input type="checkbox" id="dez" style="margin-top:3px;accent-color:var(--coral);width:18px;height:18px">
-          <span><b>Vídeo do YouTube com 10 minutos</b><br><span class="small">Desmarque para um vídeo curto (~2:30). O de 10 minutos leva uns 15 minutos para criar.</span></span>
-        </label>
         <div id="formatos-box">
           <div class="small" style="margin-bottom:6px">Formato</div>
           <div class="chips" id="formatos" role="group" aria-label="Formato do vídeo">
@@ -206,18 +198,13 @@ canvas#tela{display:block;max-width:100%;height:auto;border-radius:10px;backgrou
     <div class="stack" style="min-width:0">
       <div class="stage">
         <div class="controls">
-          <div class="seg" role="group" aria-label="Formato">
-            <button id="f-curto" aria-pressed="true">TikTok 9:16</button>
-            <button id="f-longo" aria-pressed="false">YouTube 16:9</button>
-            <button id="f-feed" aria-pressed="false">Feed Instagram 4:5</button>
-          </div>
-          <span class="small" id="ep-titulo" style="margin-left:auto;overflow-wrap:anywhere">Exemplo: A Arca de Noé</span>
+          <span class="small" style="color:#cfd8e6;font-weight:700">🎵 TikTok 9:16</span>
+          <span class="small" id="ep-titulo" style="margin-left:auto;overflow-wrap:anywhere">Exemplo: por que a coruja gira a cabeça?</span>
         </div>
         <div class="screen" id="screen"><canvas id="tela" width="1600" height="900"></canvas></div>
         <div class="controls">
           <button class="btn btn-ghost" id="play">▶ Assistir com voz</button>
           <div class="progress" aria-hidden="true"><i id="bar"></i></div>
-          <button class="btn btn-ghost" id="exportar" title="Grava só imagem e legendas, sem narração">Gravar sem voz</button>
           <button class="btn btn-main" id="com-voz">🎙️ Gerar vídeo com voz</button>
         </div>
         <div class="thumbs" id="thumbs" aria-label="Cenas"></div>
@@ -297,10 +284,75 @@ function rota(){
 addEventListener("hashchange", rota); rota();
 
 /* ---------------- exemplo inicial (desenhado à mão, até existir um episódio) ---------------- */
-const EXEMPLO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900"><rect width="1600" height="900" fill="#FFFFFF"/><g fill="none" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M455 300 l-14 -26 M472 282 l-6 -30 M492 272 l2 -32 M514 270 l10 -30 M536 276 l16 -26 M556 290 l22 -18 M446 322 l-24 -12"/><path d="M520 262 q62 2 76 58 q10 60 -40 86 q-52 22 -92 -14 q-36 -36 -14 -88 q22 -42 70 -42z" fill="#FFFFFF"/><path d="M470 368 q18 64 52 70 q36 -4 56 -70 q-22 30 -54 30 q-34 0 -54 -30z" fill="#D9D3C7"/><circle cx="500" cy="330" r="6" fill="#1a1a1a"/><circle cx="548" cy="328" r="6" fill="#1a1a1a"/><path d="M506 368 q20 -8 38 2"/><path d="M470 438 q50 -14 104 2 l40 230 q-30 -14 -46 6 q-22 -20 -40 2 q-20 -22 -40 0 q-20 -20 -44 2 q-16 -18 -42 -6z" fill="#F28C28"/><path d="M492 480 q16 -10 22 8 q-4 18 -22 10 q-8 -8 0 -18z" fill="#7A4A1E" stroke-width="4"/><path d="M546 520 q20 -6 22 12 q-6 16 -24 8 q-8 -10 2 -20z" fill="#7A4A1E" stroke-width="4"/><path d="M478 580 q18 -8 24 10 q-6 18 -24 8 q-8 -10 0 -18z" fill="#7A4A1E" stroke-width="4"/><path d="M566 610 q16 -6 20 10 q-6 14 -22 6z" fill="#7A4A1E" stroke-width="4"/><path d="M478 470 q-50 50 -70 108 q-4 14 12 12"/><path d="M568 470 q46 26 84 60"/><path d="M500 676 q-6 46 -10 78 l-24 4"/><path d="M552 676 q6 44 8 78 l26 2"/><path d="M652 530 l52 -60" stroke="#7A4A1E" stroke-width="12"/><path d="M684 448 q30 -4 46 18 l-14 14 q-20 -20 -44 -16z" fill="#8C8C8C"/><path d="M640 262 q14 -12 26 0 q10 14 -4 24 q-18 8 -24 -8z"/><path d="M682 214 q20 -18 40 -2 q16 20 -4 36 q-26 14 -40 -6 q-8 -16 4 -28z"/><path d="M790 230 q20 -70 100 -60 q40 -52 120 -24 q60 -40 130 6 q86 -10 100 66 q60 40 20 110 q20 80 -66 96 q-40 50 -120 30 q-60 40 -130 4 q-90 20 -120 -50 q-70 -20 -50 -90 q-30 -50 16 -88z" fill="#FFFFFF"/><path d="M880 400 q130 30 290 0 l-40 70 q-110 22 -210 0z" fill="#B5732F"/><path d="M940 400 l0 -64 q80 -8 170 0 l0 64" fill="#E7B07A"/><path d="M926 340 l100 -54 l100 54" fill="#E0312B"/><path d="M968 360 q10 -10 20 0 M1050 360 q10 -10 20 0"/><path d="M840 500 q40 -20 80 0 q40 20 80 0 q40 -20 80 0 q40 20 80 0" stroke="#2C6BE0"/><path d="M1265 300 q4 -48 46 -46 q42 4 38 44 q-4 30 -34 42 q-14 8 -12 34" stroke="#E0312B" stroke-width="12"/><circle cx="1304" cy="410" r="9" fill="#E0312B" stroke="#E0312B"/><path d="M1180 640 q-10 -34 22 -40 q10 -28 42 -16 q24 -24 50 2 q34 -4 32 30 q24 20 0 44 q2 30 -32 28 q-20 22 -48 4 q-30 12 -44 -14 q-34 -6 -22 -38z" fill="#FFFFFF"/><path d="M1160 616 q-14 -40 22 -50 q34 4 30 40 q-6 34 -34 30 q-14 -4 -18 -20z" fill="#FFFFFF"/><circle cx="1180" cy="604" r="5" fill="#1a1a1a"/><circle cx="1198" cy="602" r="5" fill="#1a1a1a"/><path d="M1180 622 q10 8 20 0"/><path d="M1158 640 q30 10 56 -6" stroke="#E0312B" stroke-width="10"/><path d="M1206 700 l-4 56 M1236 704 l0 54 M1278 702 l4 54 M1304 694 l8 56"/></g></svg>`;
-const EXEMPLO = { id:null, titulo:"Exemplo: A Arca de Noé", descricao:"Quando você criar um episódio, o título, a descrição e as tags aparecem aqui prontos para copiar.", tags:["arca de noé","histórias bíblicas","desenho bíblico infantil"],
-  cenas:[{narracao:"Oi, criançada! Eu sou o Turi. Hoje vamos ver como Deus cuidou de Noé e de todos os bichinhos na arca!", legenda_tela:"Missão: construir a arca!"}],
-  curto:{titulo:"O arco-íris da promessa 🌈", legenda_tiktok:"Você sabe o que o arco-íris significa? 🌈 #histórias bíblicas", legenda_instagram:"Você sabia o que o arco-íris significa? 🌈\nSalva e manda pra alguém que precisa ver!\n#historiasbiblicas #arcadenoe #desenho", cenas:[{imagem:0,narracao:"Você sabe o que o arco-íris significa? É a promessa de amor de Deus!"}]},
+const EXEMPLO_SVG = `<svg viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg"><rect width="1600" height="900" fill="#FFFFFF"/>
+<g stroke="#1a1a1a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none">
+<!-- branch -->
+<path d="M820 700 C900 688 1010 706 1120 692 C1230 680 1340 700 1460 688 C1470 706 1465 722 1450 726 C1340 738 1230 722 1120 738 C1010 750 910 735 830 740 C805 730 805 710 820 700 Z" fill="#c8915a"/>
+<path d="M1300 690 C1330 640 1370 620 1410 610"/>
+<path d="M1000 705 C1010 725 1030 735 1050 738"/>
+<!-- owl legs -->
+<path d="M1070 640 C1068 660 1072 675 1070 692"/>
+<path d="M1050 694 C1060 686 1075 690 1085 696"/>
+<path d="M1170 640 C1172 660 1168 675 1170 692"/>
+<path d="M1150 696 C1160 688 1176 690 1188 696"/>
+<!-- owl body -->
+<path d="M1000 480 C990 400 1050 350 1120 352 C1195 350 1250 405 1245 485 C1252 565 1200 645 1120 650 C1040 648 995 565 1000 480 Z" fill="#ffffff"/>
+<!-- back feather scribbles -->
+<path d="M1050 450 C1065 440 1075 455 1090 445" stroke="#b5835a" stroke-width="5"/>
+<path d="M1150 430 C1165 420 1175 435 1190 425" stroke="#b5835a" stroke-width="5"/>
+<path d="M1060 520 C1075 510 1085 525 1100 515" stroke="#b5835a" stroke-width="5"/>
+<path d="M1150 510 C1165 500 1175 515 1190 505" stroke="#b5835a" stroke-width="5"/>
+<path d="M1100 585 C1115 575 1125 590 1140 580" stroke="#b5835a" stroke-width="5"/>
+<path d="M1120 360 C1118 420 1122 480 1120 540" stroke-width="5"/>
+<!-- wings -->
+<path d="M1010 460 C985 510 1000 570 1040 600 C1050 560 1045 500 1030 455"/>
+<path d="M1235 460 C1260 510 1245 570 1205 600 C1195 560 1200 500 1215 455"/>
+<!-- owl head (turned back, facing left) -->
+<path d="M880 300 C875 230 940 190 1020 195 C1100 192 1160 245 1150 315 C1155 385 1090 420 1015 418 C940 420 878 375 880 300 Z" fill="#ffffff"/>
+<path d="M905 230 C895 195 900 175 915 160 C935 175 950 190 965 205"/>
+<path d="M1100 215 C1115 185 1130 170 1145 165 C1150 190 1145 215 1135 240"/>
+<!-- eyes -->
+<path d="M915 290 C905 255 940 235 965 250 C990 262 990 310 960 325 C935 335 920 315 915 290 Z" fill="#fff"/>
+<path d="M1000 285 C995 250 1030 232 1055 248 C1080 262 1078 310 1050 322 C1025 332 1005 312 1000 285 Z" fill="#fff"/>
+<circle cx="948" cy="290" r="9" fill="#1a1a1a"/>
+<circle cx="1035" cy="287" r="9" fill="#1a1a1a"/>
+<!-- beak -->
+<path d="M960 345 C975 335 1000 338 1010 350 C995 368 975 372 960 345 Z" fill="#f2b630"/>
+<!-- head feather scribbles -->
+<path d="M1070 360 C1085 350 1095 365 1110 355" stroke="#b5835a" stroke-width="5"/>
+<path d="M1050 395 C1065 385 1075 400 1090 390" stroke="#b5835a" stroke-width="5"/>
+<!-- arrow curving around head -->
+<path d="M1120 150 C1200 120 1290 160 1310 250 C1325 330 1290 400 1240 430" stroke="#d93a2b" stroke-width="8"/>
+<path d="M1240 430 C1258 425 1275 415 1285 400" stroke="#d93a2b" stroke-width="8"/>
+<path d="M1240 430 C1243 412 1240 395 1232 382" stroke="#d93a2b" stroke-width="8"/>
+<!-- Bino -->
+<path d="M330 330 C318 255 380 215 450 220 C525 218 580 275 568 345 C560 415 500 450 445 448 C380 450 338 400 330 330 Z" fill="#fff"/>
+<path d="M345 270 L330 225 M375 245 L370 195 M410 232 L412 180 M450 228 L458 175 M490 232 L505 185 M525 248 L552 205 M555 275 L590 245 M340 305 L300 290"/>
+<path d="M355 250 C400 230 480 225 540 255" stroke-width="6"/>
+<circle cx="418" cy="325" r="9" fill="#1a1a1a"/>
+<circle cx="506" cy="325" r="9" fill="#1a1a1a"/>
+<path d="M430 385 C440 375 480 375 490 388 C492 415 470 428 458 428 C440 426 428 410 430 385 Z" fill="#fff"/>
+<!-- body tunic -->
+<path d="M410 455 C390 500 375 570 360 640 C420 665 520 665 580 640 C565 570 545 500 520 455 C490 465 440 465 410 455 Z" fill="#f28c28"/>
+<circle cx="430" cy="540" r="12" fill="#8b5a2b" stroke-width="3"/>
+<circle cx="510" cy="580" r="14" fill="#8b5a2b" stroke-width="3"/>
+<circle cx="460" cy="610" r="9" fill="#8b5a2b" stroke-width="3"/>
+<circle cx="520" cy="510" r="8" fill="#8b5a2b" stroke-width="3"/>
+<!-- arms -->
+<path d="M405 480 C360 470 325 440 305 400"/>
+<path d="M295 400 C300 385 310 380 318 388 M305 400 C315 380 328 385 322 405"/>
+<path d="M525 480 C570 490 610 470 640 430"/>
+<path d="M630 430 C635 415 645 410 652 418 M640 430 C652 410 665 415 658 435"/>
+<!-- legs -->
+<path d="M410 650 C405 720 400 770 395 800 M395 800 C375 802 360 800 345 805"/>
+<path d="M530 650 C535 720 540 770 545 800 M545 800 C565 802 580 800 595 805"/>
+<!-- exclamation -->
+<path d="M690 250 C700 280 698 310 692 335" stroke-width="9"/>
+<path d="M690 365 C695 362 700 366 697 372 C692 375 688 370 690 365 Z" fill="#1a1a1a"/>
+</g></svg>`;
+const EXEMPLO = { id:null, plataforma:"tiktok", titulo:"Exemplo: por que a coruja gira a cabeça?", descricao:"", tags:[], texto_capa:"CORUJA GIRATÓRIA?",
+  cenas:[{narracao:"Você sabia que a coruja consegue virar a cabeça quase até as costas? E o motivo é bem mais louco do que parece!", legenda_tela:"CORUJA GIRATÓRIA?"}],
+  curto:{titulo:"CORUJA GIRATÓRIA?", legenda_tiktok:"A coruja vira a cabeça quase de costas! 🦉 #curiosidades #vocesabia", cenas:[{imagem:0,narracao:"Você sabia que a coruja consegue virar a cabeça quase até as costas? E o motivo é bem mais louco do que parece!"}]},
   status:"exemplo", nCenas:1 };
 
 /* ---------------- tela ---------------- */
@@ -313,6 +365,20 @@ function blocos(texto){ const p=texto.split(/\s+/).filter(Boolean), n=formato===
   for(let i=0;i<p.length;i+=n){ const t=p.slice(i,i+n).join(" "); out.push({t, ini:pos, fim:pos+t.length}); pos+=t.length+1; } return out; }
 
 function quebrar(txt, maxW){ const linhas=[]; let l=""; for(const w of txt.split(" ")){ const t=(l+" "+w).trim(); if(ctx.measureText(t).width>maxW && l){linhas.push(l);l=w;} else l=t; } linhas.push(l); return linhas; }
+// desenho sem as bordas brancas (para ocupar a tela vertical), guardado por imagem
+const cacheRecorte=new Map();
+function recortado(im){
+  if(cacheRecorte.has(im)) return cacheRecorte.get(im);
+  const b=document.createElement("canvas"); b.width=1600; b.height=900; const x=b.getContext("2d",{willReadFrequently:true});
+  x.fillStyle="#fff"; x.fillRect(0,0,1600,900); x.drawImage(im,0,0,1600,900);
+  let out=b;
+  try{ const px=x.getImageData(0,0,1600,900).data; let l=1600,t=900,r=0,bt=0;
+    for(let yy=0;yy<900;yy+=3) for(let xx=0;xx<1600;xx+=3){ const k=(yy*1600+xx)*4; if(px[k]+px[k+1]+px[k+2]<720){ if(xx<l)l=xx; if(yy<t)t=yy; if(xx>r)r=xx; if(yy>bt)bt=yy; } }
+    if(r>l&&bt>t){ const m=40; l=Math.max(0,l-m); t=Math.max(0,t-m); r=Math.min(1600,r+m); bt=Math.min(900,bt+m);
+      out=document.createElement("canvas"); out.width=r-l; out.height=bt-t; out.getContext("2d").drawImage(b,l,t,r-l,bt-t,0,0,r-l,bt-t); }
+  }catch(e){}
+  cacheRecorte.set(im,out); return out;
+}
 function desenhar(cena, prog, legenda, el=99){
   const W=cv.width, H=cv.height, vert=formato!=="longo", feed=formato==="feed"; ctx.fillStyle="#FFFFFF"; ctx.fillRect(0,0,W,H);
   const im = imgs[cena?.img];
@@ -326,7 +392,8 @@ function desenhar(cena, prog, legenda, el=99){
       if (modo===2) x=-(w-W)*prog; if (modo===3) x=-(w-W)*(1-prog);
       ctx.drawImage(im,x,y,w,h);
     } else {
-      const fw=W*(feed?1.18:1.42)*z, fh=fw*9/16; ctx.drawImage(im,(W-fw)/2+(modo>=2?(modo===2?-1:1)*30*(prog-.5):0),(H-fh)/2-(feed?0:60),fw,fh);
+      const rc=recortado(im), topo=H*0.22, base=H*0.67, k=Math.min((W-40)/rc.width,(base-topo)/rc.height)*z, w=rc.width*k, h=rc.height*k;
+      ctx.drawImage(rc,(W-w)/2+(modo>=2?(modo===2?-1:1)*20*(prog-.5):0), topo+(base-topo-h)/2, w, h);
     }
     ctx.restore();
   }
@@ -421,24 +488,6 @@ async function tocar({gravar=false}={}){
 }
 function parar(){ tocando=false; cancelAnimationFrame(raf); try{sintese?.cancel()}catch(e){} $("#play").textContent="▶ Assistir com voz"; }
 $("#play").onclick=()=>{ if(tocando) parar(); else tocar(); };
-
-/* ---------------- gravar vídeo (canvas -> arquivo) ---------------- */
-$("#exportar").onclick = async () => {
-  if (!ep || !imgs.some(Boolean)) return toast("Abra um episódio com cenas prontas primeiro.");
-  if (!cv.captureStream || !window.MediaRecorder) return toast("Este navegador não grava vídeo. Use o Chrome no computador.");
-  if (!downloads) return toast("Download indisponível nesta visualização.");
-  const tipo = ["video/mp4;codecs=avc1","video/mp4","video/webm;codecs=vp9","video/webm"].find(t=>MediaRecorder.isTypeSupported(t));
-  const ext = tipo.startsWith("video/mp4")?"mp4":"webm";
-  const rec = new MediaRecorder(cv.captureStream(30), {mimeType:tipo, videoBitsPerSecond:6_000_000}); const partes=[];
-  rec.ondataavailable=e=>e.data.size&&partes.push(e.data);
-  const btn=$("#exportar"); btn.disabled=true; btn.textContent="Gravando…";
-  rec.start(1000); const ok = await tocar({gravar:true}); rec.stop();
-  await new Promise(r=>rec.onstop=r); btn.disabled=false; btn.textContent="Gravar vídeo";
-  if(!ok) return toast("Gravação interrompida.");
-  const nome=`turibencao-${(ep.titulo||"episodio").normalize("NFD").replace(/[^\w]+/g,"-").toLowerCase().slice(0,40)}-${formato==="longo"?"youtube":formato==="feed"?"instagram-feed":"vertical-reels-tiktok-shorts"}.${ext}`;
-  try{ await downloads.save({filename:nome, data:new Blob(partes,{type:tipo})}); toast("Vídeo salvo."); }
-  catch(e){ if(e.code!=="cancelled") toast("Não foi possível salvar o arquivo."); }
-};
 
 /* ---------------- thumbnail automática do YouTube (1280x720, estilo do Bino) ---------------- */
 const SELO_FORMATO = {quiz:"QUIZ", top5:"TOP 5", mito_ou_verdade:"MITO?", explicacao:"CURIOSIDADE"};
@@ -542,8 +591,7 @@ $("#com-voz").onclick = async () => {
 };
 
 /* ---------------- formato ---------------- */
-function setFormato(f){ formato=f; parar(); for(const k of ["longo","curto","feed"]) $("#f-"+k).setAttribute("aria-pressed",f===k); dimensionar(); mostrarPrimeiro(); }
-$("#f-longo").onclick=()=>setFormato("longo"); $("#f-curto").onclick=()=>setFormato("curto"); $("#f-feed").onclick=()=>setFormato("feed");
+function setFormato(f){ formato=f; parar(); dimensionar(); mostrarPrimeiro(); }
 function mostrarPrimeiro(){ const c=cenasDoFormato()[0]; desenhar(c||{img:0},0,c?blocos(c.texto)[0]?.t:""); $("#bar").style.width="0"; }
 
 /* ---------------- miniaturas e metadados ---------------- */
@@ -577,7 +625,7 @@ $("#meta").addEventListener("click", async e=>{ const b=e.target.closest(".copy[
   try{ await navigator.clipboard.writeText(b.dataset.c); b.textContent="Copiado"; setTimeout(()=>b.textContent="Copiar",1500);}catch(err){ const r=document.createRange(); r.selectNodeContents(b.previousElementSibling); const s=getSelection(); s.removeAllRanges(); s.addRange(r); toast("Texto selecionado. Use Ctrl+C."); } });
 
 async function abrir(epi, svgs){
-  parar(); ep=epi; if(epi.plataforma==="tiktok" && formato!=="curto"){ formato="curto"; for(const k of ["longo","curto","feed"]) $("#f-"+k).setAttribute("aria-pressed",k==="curto"); } imgs=[]; $("#ep-titulo").textContent=epi.titulo;
+  parar(); ep=epi; formato="curto"; imgs=[]; $("#ep-titulo").textContent=epi.titulo;
   for (let i=0;i<svgs.length;i++) imgs[i] = svgs[i] ? await carregarImg(svgs[i]) : null;
   dimensionar(); renderThumbs(); renderMeta(); mostrarPrimeiro();
 }
@@ -589,9 +637,6 @@ function renderFila(){
   if(!$("#tema").value) $("#tema").placeholder = proximos()[0] || "Ex.: Jonas e o grande peixe";
 }
 $("#fila").addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(b) $("#tema").value=b.dataset.t; });
-function setModo(m){ modo=m; fila=filas[m]; document.getElementById("formatos-box").hidden = m!=="viral"; $("#dez-box").hidden = m==="viral"; if(m==="viral") $("#dez").checked=false; $("#m-viral").setAttribute("aria-pressed",m==="viral"); $("#m-biblico").setAttribute("aria-pressed",m==="biblico");
-  $("#tema").placeholder = proximos()[0] || ""; renderFila(); }
-$("#m-viral").onclick=()=>setModo("viral"); $("#m-biblico").onclick=()=>setModo("biblico");
 $("#ideias").onclick=async()=>{ if(!sample) return toast("Abra o site pelo claude.ai para usar o Claude.");
   const b=$("#ideias"); b.disabled=true; b.textContent="Pensando…";
   try{ const r=await sample.json(modo==="viral"
@@ -795,7 +840,7 @@ $("#criar").onclick = async () => {
   try{
     etapa("roteiro","ativo","escrevendo…");
     const modoEp = modo, formatoEp = modo==="viral" ? formatoDaVez() : ""; if(formatoEp) etapa("roteiro","ativo",NOME_FORMATO[formatoEp]+"…");
-    const longo = $("#dez").checked;
+    const longo = false;
     let r;
     const tiktok = modoEp==="viral";
     if (tiktok) { r = validar(montarTikTok(await sample.json(promptTikTok(tema,"",formatoEp),{modelTier:"default", cache:false}))); }
