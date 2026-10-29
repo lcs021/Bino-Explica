@@ -166,7 +166,7 @@ canvas#tela{display:block;max-width:100%;height:auto;border-radius:10px;backgrou
       <div class="panel stack">
         <div>
           <div class="eyebrow">Novo episódio</div>
-          <h2 style="font-size:1.3rem">Qual curiosidade vamos viralizar?</h2>
+          <h2 style="font-size:1.3rem">Qual história vamos contar hoje?</h2>
         </div>
         <label style="display:flex;gap:10px;align-items:flex-start;font-size:.9rem;cursor:pointer">
           <input type="checkbox" id="serie" checked style="margin-top:3px;accent-color:var(--coral);width:18px;height:18px">
@@ -177,24 +177,14 @@ canvas#tela{display:block;max-width:100%;height:auto;border-radius:10px;backgrou
           <span class="small" style="color:inherit">O tema e o estilo já vêm da parte anterior. Toque em <b>Criar vídeo</b>.</span>
           <button class="copy" id="cont-cancelar" type="button" style="align-self:flex-start">Cancelar continuação</button>
         </div>
-        <div id="formatos-box">
-          <div class="small" style="margin-bottom:6px">Formato</div>
-          <div class="chips" id="formatos" role="group" aria-label="Formato do vídeo">
-            <button class="chip" data-f="auto" aria-pressed="true">🔄 Revezar</button>
-            <button class="chip" data-f="explicacao" aria-pressed="false">Explicação</button>
-            <button class="chip" data-f="top5" aria-pressed="false">Top 5</button>
-            <button class="chip" data-f="mito_ou_verdade" aria-pressed="false">Mito ou verdade</button>
-            <button class="chip" data-f="quiz" aria-pressed="false">Quiz</button>
-          </div>
-        </div>
         <label class="lbl" for="tema">Tema</label>
-        <input id="tema" class="field" placeholder="Vazio = o Claude escolhe um tema viral">
+        <input id="tema" class="field" placeholder="Vazio = o Claude escolhe uma história">
         <div>
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span class="small">Próximos da fila</span><button class="copy" id="ideias" style="margin-left:auto">✨ Ideias novas</button></div>
           <div class="chips" id="fila"></div>
         </div>
         <button class="btn btn-main" id="criar">Criar vídeo</button>
-        <p class="small" id="aviso-ia" style="margin:0">O Claude escreve um vídeo de TikTok de 65 a 75 segundos com gancho no 1º segundo, confere os fatos e desenha 7 cenas no estilo rabisco de quadro branco. Leva uns 5 minutos.</p>
+        <p class="small" id="aviso-ia" style="margin:0">O Claude escreve uma história ou fato curioso para o TikTok, de 65 a 75 segundos, com gancho no 1º segundo, confere os fatos e desenha 7 cenas no estilo rabisco de quadro branco. Leva uns 5 minutos.</p>
       </div>
 
       <div class="panel stack">
@@ -266,7 +256,7 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const toast = t => { const el=$("#toast"); el.textContent=t; el.hidden=false; clearTimeout(toast.t); toast.t=setTimeout(()=>el.hidden=true,2600); };
 
-const FILA_VIRAL = ["Coisas que são mais antigas do que você imagina", "Por que a gente esquece o que ia fazer ao entrar num cômodo?", "Mito ou verdade: a gente só usa 10% do cérebro", "O polvo tem 3 corações e sangue azul", "Por que a gente não consegue fazer cócegas em si mesmo?", "Mito ou verdade: raio não cai duas vezes no mesmo lugar", "Por que os flamingos são cor-de-rosa?", "Quiz: de que cor é a pele do urso-polar?", "Por que a banana é levemente radioativa?", "O som mais alto da história", "Mito ou verdade: peixinho dourado tem memória de 3 segundos", "Por que bebês têm mais ossos que adultos?", "E se você caísse num buraco que atravessa a Terra?", "Por que os gatos caem em pé?", "Mito ou verdade: a Muralha da China dá pra ver do espaço", "O que acontece com o corpo dos astronautas no espaço", "Por que os aviões são quase sempre brancos?", "Top 5 animais mais estranhos que existem de verdade", "Por que o pôr do sol fica laranja?", "Quiz: qual é o maior órgão do corpo humano?", "Mito ou verdade: avestruz enterra a cabeça na terra", "Por que a Coca-Cola começou sendo vendida em farmácia?", "Por que o mar é salgado e o rio não?", "E se os humanos tivessem rabo?", "Por que a gente sonha?", "Top 5 lugares mais frios do universo", "Por que o arco-íris é curvo?", "Mito ou verdade: chiclete engolido fica 7 anos na barriga", "Por que os dedos enrugam na água?", "Quiz: só 1% acerta quantos ossos tem o corpo humano"];
+const FILA_VIRAL = ["O homem que sobreviveu às duas bombas atômicas", "O cachorro que esperou o dono por quase 10 anos na estação", "A guerra mais curta da história durou só 38 minutos", "Cleópatra viveu mais perto do iPhone do que das pirâmides", "A cidade inteira que mora dentro de um único prédio", "O golpista que vendeu a Torre Eiffel duas vezes", "A mulher que sobreviveu ao Titanic e a mais dois naufrágios", "O pinguim que virou cavaleiro do exército da Noruega", "A ilha do Japão dominada por coelhos", "O dia em que os EUA planejaram explodir a Lua", "Os tubarões são mais antigos que as árvores", "A onda gigante de melaço que inundou uma cidade", "O galo que viveu 18 meses sem cabeça", "A cidade que o Henry Ford construiu no meio da Amazônia", "O micro-ondas foi inventado por causa de um chocolate derretido", "A mulher que foi atingida por um meteorito no sofá", "A cidade subterrânea escondida debaixo da Turquia", "A Coca-Cola começou sendo vendida como remédio", "A comissária que caiu de 10 mil metros e sobreviveu", "O soldado que continuou lutando 29 anos depois que a guerra acabou", "O picolé foi inventado sem querer por um menino de 11 anos", "O polvo tem 3 corações e sangue azul"];
 const FILA_PADRAO = ["A Arca de Noé e o arco-íris da promessa","Davi e Golias","Jonas e o grande peixe","Daniel na cova dos leões","O nascimento de Jesus em Belém","Jesus acalma a tempestade","A multiplicação dos pães e peixes","Zaqueu sobe na árvore","O bom samaritano","A ovelha perdida","José e a túnica colorida","O bebê Moisés no cesto","A abertura do Mar Vermelho","As muralhas de Jericó","Rute e Noemi: uma amizade fiel","O menino Samuel ouve a voz de Deus","Ester, a rainha corajosa","Jesus abençoa as crianças","A casa na rocha","Jesus ressuscitou: a Páscoa"];
 const FUNDAMENTOS = "Desenhos animados, brincadeiras, músicas infantis e histórias incríveis da Bíblia, tudo preparado para divertir e ensinar os pequenos. Conhecer as histórias bíblicas, aprender sobre Jesus e descobrir valores importantes, como amor, amizade, respeito, bondade e fé.";
 const TURI = "Turi: a small doodle lamb drawn with the same wobbly black marker line, body is a white scribbly cloud of loops, simple round face with two black dot eyes and a small curved smile, four stick legs, and a tiny scarf striped red, yellow and blue";
@@ -659,7 +649,7 @@ $("#fila").addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(b
 $("#ideias").onclick=async()=>{ if(!sample) return toast("Abra o site pelo claude.ai para usar o Claude.");
   const b=$("#ideias"); b.disabled=true; b.textContent="Pensando…";
   try{ const r=await sample.json(modo==="viral"
-      ? `Você é estrategista de um perfil de TikTok brasileiro de curiosidades desenhadas à mão (bonequinhos de palito, o personagem Bino), para o público geral. Sugira 6 temas com MUITO potencial de viralizar no TikTok: o tipo de assunto que faz a pessoa parar de rolar, comentar "eu não sabia!" e mandar para um amigo — fatos chocantes do dia a dia, "mito ou verdade", "e se...?", "por que...?", quiz "só 1% acerta", coisas que todo mundo faz sem saber por quê, corpo humano, animais bizarros, espaço e história curiosa. Escreva cada tema como o título do vídeo. Fatos bem estabelecidos, sem notícias recentes, sem pessoas reais, sem saúde arriscada. Evite estes já usados: ${JSON.stringify([...videos.map(v=>v.tema),...fila].slice(0,80))}. Responda SÓ JSON: {"temas":["..."]}`
+      ? `Você é estrategista de um perfil de TikTok brasileiro de curiosidades desenhadas à mão (bonequinhos de palito, o personagem Bino), para o público geral. Sugira 6 temas com MUITO potencial de viralizar no TikTok: o tipo de assunto que faz a pessoa parar de rolar, comentar "eu não sabia!" e mandar para um amigo — HISTÓRIAS REAIS surpreendentes e FATOS CURIOSOS: acontecimentos históricos inacreditáveis, pessoas que sobreviveram ao impossível, invenções que surgiram por acidente, animais com histórias incríveis, lugares bizarros e fatos que parecem mentira mas são verdade. Escreva cada tema como o título do vídeo. Só fatos bem documentados; sem notícias recentes, sem pessoas vivas, sem saúde arriscada. Evite estes já usados: ${JSON.stringify([...videos.map(v=>v.tema),...fila].slice(0,80))}. Responda SÓ JSON: {"temas":["..."]}`
       : `Sugira 6 temas de histórias bíblicas ou valores cristãos para crianças pequenas, com títulos chamativos. Evite: ${JSON.stringify([...videos.map(v=>v.tema),...fila].slice(0,80))}. Responda SÓ JSON: {"temas":["..."]}`,
       {modelTier:"quick", cache:false});
     const novos=(r.temas||[]).map(String).filter(Boolean); filas[modo]=[...novos,...filas[modo]]; fila=filas[modo]; renderFila(); toast("Ideias adicionadas à fila. Clique em uma para usar.");
@@ -710,16 +700,11 @@ function mensagem(t,tipo="warn"){ const m=$("#msg"); m.hidden=!t; m.className="n
 
 const BINO = "Bino: a stick figure with a big round head, scribbled spiky black hair, two dot eyes, expressive line mouth, wearing an orange tunic with brown blotches";
 const FORMATOS = {
-  explicacao:"EXPLICAÇÃO: conte a curiosidade como uma pequena história, com o Bino descobrindo a resposta aos poucos.",
-  top5:"TOP 5: cinco itens numerados sobre o tema, do menos ao mais surpreendente; o nº 1 é o mais chocante e fica para o final. Diga o número em cada item (\"Número 3...\").",
-  mito_ou_verdade:"MITO OU VERDADE: apresente 3 a 4 afirmações populares sobre o tema; para cada uma pergunte \"mito ou verdade?\", dê um segundo de suspense e revele com explicação curta.",
-  quiz:"QUIZ: desafie o público a adivinhar antes do Bino. Faça uma pergunta com 3 opções (A, B, C), crie suspense e revele; repita com 2 ou 3 perguntas e peça para comentarem quantas acertaram."
+  historia:"HISTÓRIA E FATOS CURIOSOS: conte como uma história envolvente, com começo, meio e fim — um personagem ou situação real, um mistério ou problema, uma reviravolta — recheada de fatos curiosos reais e surpreendentes. O Bino narra e reage à história. Prenda com suspense: a pessoa precisa querer saber como termina."
 };
-const NOME_FORMATO = {explicacao:"Explicação", top5:"Top 5", mito_ou_verdade:"Mito ou verdade", quiz:"Quiz"};
-let formatoEscolhido = "auto";
-function formatoDaVez(){ if(formatoEscolhido!=="auto") return formatoEscolhido; const k=Object.keys(FORMATOS); return k[videos.filter(v=>v.modo!=="biblico").length % k.length]; }
-document.getElementById("formatos").addEventListener("click", e=>{ const b=e.target.closest("[data-f]"); if(!b) return; formatoEscolhido=b.dataset.f;
-  document.querySelectorAll("#formatos [data-f]").forEach(x=>x.setAttribute("aria-pressed", x===b)); });
+const NOME_FORMATO = {historia:"História"};
+let formatoEscolhido = "historia";
+function formatoDaVez(){ return "historia"; }
 const VIRAL_REGRAS = `Você é roteirista do canal "Bino Explica" (YouTube, TikTok e Instagram @binoexplica), de vídeos desenhados à mão, estilo rabisco de quadro branco, feitos para VIRALIZAR.
 Público: geral e família (crianças podem assistir). Português do Brasil FALADO, como uma conversa entre amigos ("a gente", "olha só", "sabe o que é mais louco?"), divertido, frases curtas, ritmo rápido. Escreva para ser falado em voz alta: sem emojis, sem parênteses, sem listas.
 Técnicas obrigatórias de retenção:
@@ -728,7 +713,7 @@ Técnicas obrigatórias de retenção:
 - Cada cena traz uma informação nova, uma piada ou uma virada. Nada de enrolação.
 - Humor leve com o personagem fixo passando por situações cômicas.
 - Final com uma revelação ou piada e uma pergunta para o público responder nos comentários, depois um convite rápido: "segue o Bino Explica pra mais curiosidades".
-Fatos: use só fatos bem estabelecidos e verificáveis; sem notícias recentes, sem pessoas reais, sem conselhos de saúde arriscados. Nada de medo, violência ou conteúdo impróprio para crianças.
+Fatos: use só fatos bem estabelecidos e verificáveis; sem notícias recentes, sem pessoas vivas (personagens e fatos históricos bem documentados podem), sem conselhos de saúde arriscados. Nada de medo, violência ou conteúdo impróprio para crianças.
 Título: curioso e chamativo, mas HONESTO (o vídeo entrega o que o título promete).
 Personagem fixo: ${BINO}. Ele aparece na maioria das cenas.`;
 let assuntoDaVez="";
@@ -751,7 +736,7 @@ Responda SÓ com JSON:
 Em "miniatura.cena" use o índice (0 a 7) da cena mais expressiva para a thumbnail.`; }
 
 function promptRevisao(r){ return (modo==="viral"
-  ? `Revise este roteiro de vídeo viral para o público geral antes de publicar. Verifique: (1) os fatos estão corretos e são bem estabelecidos — reprove qualquer fato inventado, exagerado ou duvidoso; (2) adequado para todas as idades, sem nada impróprio, assustador ou ofensivo, sem pessoas reais; (3) o título é honesto e o vídeo entrega o que promete; (4) a primeira frase prende a atenção; (5) português correto.`
+  ? `Revise este roteiro de vídeo viral para o público geral antes de publicar. Verifique: (1) os fatos estão corretos e são bem estabelecidos — reprove qualquer fato inventado, exagerado ou duvidoso; (2) adequado para todas as idades, sem nada impróprio, assustador ou ofensivo, sem pessoas vivas (figuras históricas bem documentadas podem); (3) o título é honesto e o vídeo entrega o que promete; (4) a primeira frase prende a atenção; (5) português correto.`
   : `Revise este roteiro de um canal infantil cristão antes de publicar. Verifique: (1) fidelidade ao relato bíblico; (2) adequado para crianças de 3 a 8 anos, nada assustador ou inadequado; (3) português correto; (4) segue estes fundamentos: ${FUNDAMENTOS}; (5) título honesto.`) + `
 Roteiro: ${JSON.stringify({titulo:r.titulo,descricao:r.descricao,cenas:r.cenas.map(c=>c.narracao),curto:r.curto})}
 Responda SÓ com JSON: {"aprovado":true|false,"problemas":"vazio se aprovado"}`; }
@@ -791,7 +776,7 @@ ${serieInfo ? (serieInfo.parte>1
   : `- Final: pergunta que gera comentário (ex.: "você sabia? comenta aí") e uma última frase que conecta com o começo, para o vídeo rodar de novo (loop).`}
 - EXATAMENTE 7 cenas. ${VISUAL_REGRA}
 
-Tema: ${tema || `ESCOLHA VOCÊ um tema com MUITO potencial de viralizar no TikTok brasileiro (curiosidade chocante do dia a dia, corpo humano, animais, espaço, mito ou verdade, história curiosa). Não repita: ${JSON.stringify(videos.map(v=>v.tema).slice(0,60))}.`}
+Tema: ${tema || `ESCOLHA VOCÊ uma história real ou um fato curioso com MUITO potencial de viralizar no TikTok brasileiro (acontecimento histórico inacreditável, sobrevivência impossível, invenção por acidente, animal com história incrível, lugar bizarro, fato que parece mentira). Não repita: ${JSON.stringify(videos.map(v=>v.tema).slice(0,60))}.`}
 ${correcoes?"Corrija estes problemas apontados pela revisão: "+correcoes:""}
 "visual": a cena em inglês. "personagens": aparência fixa de cada personagem, em inglês. "legenda_tela": texto grande da cena, 2 a 4 palavras, que funcione mesmo sem som.
 Responda SÓ JSON:
@@ -811,7 +796,6 @@ $("#cont-cancelar").addEventListener("click", pararContinuacao);
 function proximaParte(v){
   const parte=(v.serie?.parte||1)+1, nome=v.serie?.nome||v.titulo;
   continuar={ nome, parte, raiz: v.serie?.raiz || v.id, ideia: v.parte2 || "", anterior: (v.cenas||[]).map(c=>c.narracao).join(" ").slice(0,1500) };
-  if (v.formato && FORMATOS[v.formato]) { formatoEscolhido=v.formato; document.querySelectorAll("#formatos [data-f]").forEach(x=>x.setAttribute("aria-pressed", x.dataset.f===v.formato)); }
   $("#cont-txt").textContent=`Continuando: "${nome}", parte ${parte}`; $("#cont-box").hidden=false; $("#serie").checked=true; $("#serie").disabled=true;
   $("#tema").value=""; location.hash="#criar"; window.scrollTo({top:0,behavior:"smooth"}); toast(`Pronto para criar a parte ${parte}.`);
 }

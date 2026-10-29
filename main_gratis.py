@@ -52,7 +52,7 @@ Retenção obrigatória:
 - Cada cena traz uma informação nova, uma piada ou uma virada. Sem enrolação.
 - Humor leve com o personagem fixo.
 - Final: revelação ou piada + pergunta para os comentários + "segue o Bino Explica pra mais curiosidades".
-Fatos: só fatos bem estabelecidos e verificáveis; sem notícias recentes, sem pessoas reais,
+Fatos: só fatos bem estabelecidos e verificáveis; sem notícias recentes, sem pessoas vivas (personagens e fatos históricos bem documentados podem),
 sem conselhos de saúde arriscados, nada impróprio. Título curioso mas HONESTO.
 Personagem fixo: {BINO}."""
 
@@ -117,7 +117,7 @@ def prompt_revisao(r):
               "cenas": [c["narracao"] for c in r["cenas"]], "curto": r["curto"]}
     return ("Revise este roteiro de vídeo viral para o público geral antes de publicar. Verifique: "
             "(1) fatos corretos e bem estabelecidos — reprove qualquer fato inventado, exagerado ou duvidoso; "
-            "(2) adequado para todas as idades, sem pessoas reais; (3) título honesto; "
+            "(2) adequado para todas as idades, sem pessoas vivas; (3) título honesto; "
             "(4) primeira frase prende a atenção; (5) português correto.\n"
             f"Roteiro: {json.dumps(resumo, ensure_ascii=False)}\n"
             'Responda SÓ JSON: {"aprovado": true|false, "problemas": "vazio se aprovado"}')
