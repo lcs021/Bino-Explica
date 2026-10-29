@@ -238,7 +238,7 @@ def _quebrar(draw, texto, f, largura):
     return linhas
 
 
-def compor(cena_png, titulo, W, H, marca, destino):
+def compor(cena_png, titulo, W, H, marca, destino, selo=None):
     """Monta o quadro final: fundo branco, desenho, título manuscrito em cima e marca d'água."""
     tela = Image.new("RGB", (W, H), "white")
     img = Image.open(cena_png).convert("RGB")
@@ -253,7 +253,7 @@ def compor(cena_png, titulo, W, H, marca, destino):
             m = int(img.width * 0.03)
             img = img.crop((max(0, caixa[0] - m), max(0, caixa[1] - m),
                             min(img.width, caixa[2] + m), min(img.height, caixa[3] + m)))
-        topo, base = 430, H - 640                    # entre o título (em cima) e a legenda (embaixo)
+        topo, base = (520 if selo else 430), H - 640   # entre o título (em cima) e a legenda (embaixo)
         esc = min((W - 60) / img.width, (base - topo) / img.height)
         nova = img.resize((max(1, int(img.width * esc)), max(1, int(img.height * esc))), Image.LANCZOS)
         tela.paste(nova, ((W - nova.width) // 2, topo + (base - topo - nova.height) // 2))
@@ -276,6 +276,13 @@ def compor(cena_png, titulo, W, H, marca, destino):
                 d.text((x + d.textlength(ln[:-1], font=f), y), ln[-1], font=f, fill="#E0312B")
             else:
                 d.text((x, y), ln, font=f, fill="#1a1a1a")
+    if selo and H / W > 1.5:                         # selo fixo da série: "PARTE 2"
+        fs = ImageFont.truetype(str(RAIZ / "assets/fontes/Poppins-Black.ttf"), 52) \
+            if (RAIZ / "assets/fontes/Poppins-Black.ttf").exists() else fonte(52)
+        tw = d.textlength(selo, font=fs)
+        x0, y0 = (W - tw) / 2 - 34, 420
+        d.rounded_rectangle((x0, y0, x0 + tw + 68, y0 + 78), 20, fill="#E0312B", outline="#1A1A1A", width=7)
+        d.text((W / 2, y0 + 39), selo, font=fs, fill="white", anchor="mm")
     fm = fonte(34)
     if H / W > 1.5:
         w = d.textlength(marca, font=fm)
@@ -349,7 +356,9 @@ def _so_tiktok(cfg, r, cenas, pasta, marca):
     """Episódio feito só para o TikTok: monta apenas o vertical 9:16 (mín. 62s) com as cenas do roteiro."""
     titulos = [re.sub(r"[^\w\s:?!,.\-]", "", r.get("texto_capa") or r["curto"]["titulo"]).strip() if i == 0
                else c.get("legenda_tela", "") for i, c in enumerate(r["cenas"])]
-    imgs = [compor(cenas[i], t, 1080, 1920, marca, pasta / f"v_{i:02d}.png") for i, t in enumerate(titulos)]
+    serie = r.get("serie") or {}
+    selo = f"PARTE {serie['parte']}" if serie.get("parte") else None
+    imgs = [compor(cenas[i], t, 1080, 1920, marca, pasta / f"v_{i:02d}.png", selo) for i, t in enumerate(titulos)]
     auds = narracao.narrar_cenas(cfg, r["cenas"], pasta, "tiktok")
     vid = video.montar(cfg, imgs, auds, [c["narracao"] for c in r["cenas"]], pasta, "tiktok_9x16", 1080, 1920,
                        minimo=62)

@@ -168,6 +168,15 @@ canvas#tela{display:block;max-width:100%;height:auto;border-radius:10px;backgrou
           <div class="eyebrow">Novo episódio</div>
           <h2 style="font-size:1.3rem">Qual curiosidade vamos viralizar?</h2>
         </div>
+        <label style="display:flex;gap:10px;align-items:flex-start;font-size:.9rem;cursor:pointer">
+          <input type="checkbox" id="serie" checked style="margin-top:3px;accent-color:var(--coral);width:18px;height:18px">
+          <span><b>📺 Fazer em série</b><br><span class="small">O vídeo vira "Parte 1" e termina com gancho para a parte 2. É o que mais faz as pessoas seguirem.</span></span>
+        </label>
+        <div class="note ok" id="cont-box" hidden style="display:flex;flex-direction:column;gap:6px">
+          <span><b id="cont-txt">Continuando a série</b></span>
+          <span class="small" style="color:inherit">O tema e o estilo já vêm da parte anterior. Toque em <b>Criar vídeo</b>.</span>
+          <button class="copy" id="cont-cancelar" type="button" style="align-self:flex-start">Cancelar continuação</button>
+        </div>
         <div id="formatos-box">
           <div class="small" style="margin-bottom:6px">Formato</div>
           <div class="chips" id="formatos" role="group" aria-label="Formato do vídeo">
@@ -397,11 +406,15 @@ function desenhar(cena, prog, legenda, el=99){
       if (modo===2) x=-(w-W)*prog; if (modo===3) x=-(w-W)*(1-prog);
       ctx.drawImage(im,x,y,w,h);
     } else {
-      const rc=recortado(im), topo=H*0.22, base=H*0.67, k=Math.min((W-40)/rc.width,(base-topo)/rc.height)*z, w=rc.width*k, h=rc.height*k;
+      const rc=recortado(im), topo=H*(ep?.serie?0.27:0.22), base=H*0.67, k=Math.min((W-40)/rc.width,(base-topo)/rc.height)*z, w=rc.width*k, h=rc.height*k;
       ctx.drawImage(rc,(W-w)/2+(modo>=2?(modo===2?-1:1)*20*(prog-.5):0), topo+(base-topo-h)/2, w, h);
     }
     ctx.restore();
   }
+  // selo da série (fica fixo o vídeo todo)
+  if (vert && !feed && ep?.serie?.parte){ const t=`PARTE ${ep.serie.parte}`; ctx.save(); ctx.font='900 46px "Poppins","Arial Black",sans-serif'; ctx.textAlign="center"; ctx.textBaseline="middle";
+    const w=ctx.measureText(t).width+60, y=H*0.235; ctx.fillStyle="#E0312B"; ctx.strokeStyle="#1A1A1A"; ctx.lineWidth=6; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(W/2-w/2,y-34,w,68,18) : ctx.rect(W/2-w/2,y-34,w,68); ctx.fill(); ctx.stroke();
+    ctx.fillStyle="#fff"; ctx.fillText(t,W/2,y+2); ctx.restore(); }
   // título manuscrito no topo (como "MISSION: WI-FI?")
   const tit = (cena?.titulo||"").toUpperCase();
   if (tit){
@@ -586,7 +599,7 @@ $("#com-voz").onclick = async () => {
   if (!downloads) return toast("Abra o site pelo claude.ai para salvar o arquivo.");
   const svgs = imgs.slice(0, n).map(im => { try { return decodeURIComponent(im.src.split(",").slice(1).join(",")); } catch (e) { return ""; } });
   const pacote = { versao: 1, tema: ep.tema, modo: ep.modo || "viral", formato: ep.formato || "", titulo: ep.titulo, descricao: ep.descricao,
-    tags: ep.tags || [], personagens: ep.personagens || "", cenas: ep.cenas.map((c, k) => ({ narracao: c.narracao, legenda_tela: c.legenda_tela || "", img: c.img ?? k })), longo: !!ep.longo, plataforma: ep.plataforma || "", texto_capa: ep.texto_capa || "",
+    tags: ep.tags || [], personagens: ep.personagens || "", cenas: ep.cenas.map((c, k) => ({ narracao: c.narracao, legenda_tela: c.legenda_tela || "", img: c.img ?? k })), longo: !!ep.longo, serie: ep.serie || null, plataforma: ep.plataforma || "", texto_capa: ep.texto_capa || "",
     curto: ep.curto, miniatura: ep.miniatura || null, svgs, criadoEm: new Date().toISOString() };
   const nome = `episodio-${(ep.titulo || "bino").normalize("NFD").replace(/[^\w]+/g, "-").toLowerCase().replace(/^-|-$/g, "").slice(0, 40)}-${ep.id}.json`;
   try {
@@ -613,7 +626,7 @@ function linha(k,v,copiavel=true){ return `<div class="row"><div class="k">${k}<
 function renderMeta(){
   if(!ep){ $("#meta").innerHTML=""; return; }
   const tk = ep.plataforma==="tiktok";
-  let h = tk ? linha("Legenda TikTok",ep.curto?.legenda_tiktok||ep.descricao)+linha("Texto da capa",ep.texto_capa||"")+(ep.parte2?linha("Ideia da parte 2",ep.parte2):"")
+  let h = tk ? (ep.serie?`<div class="row"><div class="k">Série</div><div class="v"><span class="pill modo">📺 ${esc(ep.serie.nome)} · Parte ${ep.serie.parte}</span></div>${ep.id?`<button class="copy" id="meta-parte">➕ Criar parte ${ep.serie.parte+1}</button>`:"<span></span>"}</div>`:"")+linha("Legenda TikTok",ep.curto?.legenda_tiktok||ep.descricao)+linha("Texto da capa",ep.texto_capa||"")+(ep.parte2?linha("Ideia da parte 2",ep.parte2):"")
              : linha("Título",ep.titulo)+linha("Descrição",ep.descricao)+linha("Tags",(ep.tags||[]).join(", "));
   if (ep.curto && !tk) h += linha("Shorts",ep.curto.titulo+" #Shorts")+linha("TikTok",ep.curto.legenda_tiktok)+linha("Instagram",ep.curto.legenda_instagram||ep.curto.legenda_tiktok);
   if (ep.id){
@@ -622,6 +635,7 @@ function renderMeta(){
   }
   if (ep.id && !tk) h += `<div class="row"><div class="k">Thumbnail</div><div class="v thumb-box"><img id="thumb-img" alt="Thumbnail do vídeo para o YouTube"><span class="small" id="thumb-txt">Gerando…</span></div><button class="copy" id="thumb-baixar">Baixar</button></div>`;
   $("#meta").innerHTML=h;
+  $("#meta-parte")?.addEventListener("click",()=>proximaParte(ep));
   if (ep.id) atualizarThumb();
   $("#marcar")?.addEventListener("click", async()=>{ if(!db) return; const novo=ep.status==="publicado"?"pronto":"publicado";
     try{ await db.doc("videos/"+ep.id).update({status:novo, publicadoEm: novo==="publicado"?new Date().toISOString():null}); ep.status=novo; renderMeta(); toast(novo==="publicado"?"Marcado como publicado.":"Status atualizado."); }catch(e){ toast("Você não tem permissão para alterar."); } });
@@ -661,7 +675,7 @@ async function renderLib(){
   const box=$("#lib"); $("#lib-empty").hidden = videos.length>0; $("#lib-count").textContent = videos.length ? `${videos.length} episódio${videos.length>1?"s":""} · ${videos.filter(v=>v.status==="publicado").length} publicado(s)` : "";
   box.innerHTML = videos.map(v=>`<article class="cardw" data-id="${v.id}"><button class="card" data-id="${v.id}"><div class="pic" id="pic-${v.id}">${thumbCache[v.id]?`<img alt="" src="${thumbCache[v.id]}">`:"carregando…"}</div><div class="body"><span style="display:flex;gap:6px"><span class="pill ${v.status}">${v.status==="publicado"?"Publicado":v.status==="rascunho"?"Rascunho":"Pronto"}</span><span class="pill modo">${v.modo==="biblico"?"Bíblico":(NOME_FORMATO[v.formato]||"Viral")}</span></span><h3>${esc(v.titulo)}</h3><span class="small">${v.referencia_biblica?esc(v.referencia_biblica)+" · ":""}${new Date(v.criadoEm).toLocaleDateString("pt-BR")}</span></div></button><div class="card-acoes">${confirmarExcluir===v.id
   ? `<span>Excluir este vídeo para sempre?</span><button class="x sim" data-excluir-sim="${v.id}">Sim, excluir</button><button class="x" data-excluir-nao="${v.id}">Cancelar</button>`
-  : `<button class="x" data-excluir="${v.id}" aria-label="Excluir ${esc(v.titulo)}">🗑 Excluir</button>`}</div></article>`).join("");
+  : `<button class="x" data-parte="${v.id}">➕ Criar parte ${(v.serie?.parte||1)+1}</button><button class="x" data-excluir="${v.id}" aria-label="Excluir ${esc(v.titulo)}">🗑 Excluir</button>`}</div></article>`).join("");
   for (const v of videos){ if(thumbCache[v.id]||!db) continue;
     try{ const s=await db.doc(`videos/${v.id}/cenas/c0`).get(); if(s.exists){ thumbCache[v.id]="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(s.data().svg); const p=$("#pic-"+v.id); if(p) p.innerHTML=`<img alt="" src="${thumbCache[v.id]}">`; } }catch(e){} }
 }
@@ -678,6 +692,7 @@ async function excluirVideo(id){
   }catch(e){ toast("Não foi possível excluir. Tente de novo."); }
 }
 $("#lib").addEventListener("click", async e=>{
+  const pt=e.target.closest("[data-parte]"); if(pt){ e.stopPropagation(); const v=videos.find(x=>x.id===pt.dataset.parte); if(v) proximaParte(v); return; }
   const a=e.target.closest("[data-excluir],[data-excluir-sim],[data-excluir-nao]");
   if(a){ e.stopPropagation();
     if(a.dataset.excluir){ confirmarExcluir=a.dataset.excluir; renderLib(); }
@@ -758,6 +773,7 @@ function validar(r){ if(!r||!r.titulo||!Array.isArray(r.cenas)||r.cenas.length<4
   r.tags=(r.tags||[]).slice(0,12).map(String); r.personagens=String(r.personagens||""); return r; }
 
 /* ---------- vídeo de TikTok (65 a 75 segundos, 7 cenas) ---------- */
+let serieInfo=null, continuar=null;
 function promptTikTok(tema, correcoes, formato){ return `${VIRAL_REGRAS}
 Formato do vídeo: ${FORMATOS[formato]||FORMATOS.explicacao}
 
@@ -767,21 +783,37 @@ Plataforma: TIKTOK (vídeo vertical). Regras do que viraliza no TikTok:
 - Até o 3º segundo: diga o que a pessoa ganha se ficar até o fim ("e o último é o mais louco").
 - Uma virada, número ou informação nova a cada 8 a 10 segundos.
 - Linguagem de TikTok brasileiro: "gente", "olha isso", "sério", "pode comentar aí", sem gíria forçada.
-- Final: pergunta que gera comentário (ex.: "você sabia? comenta aí") e uma última frase que conecta com o começo, para o vídeo rodar de novo (loop).
+- Entre 20 e 30 segundos, um pedido CURTO e natural para seguir, com a promessa do perfil: "se você curte curiosidade assim, segue o Bino, que tem uma nova todo dia". Só uma frase, sem interromper o ritmo.
+${serieInfo ? (serieInfo.parte>1
+  ? `- Este é a PARTE ${serieInfo.parte} da série "${serieInfo.nome}". Comece dizendo que é a parte ${serieInfo.parte} e dê um recado rápido para quem não viu a anterior ("a parte ${serieInfo.parte-1} tá no perfil"). Na parte anterior foi contado: "${serieInfo.anterior}". NÃO repita nada disso; traga fatos novos e ainda mais surpreendentes.`
+  : `- Este é a PARTE 1 de uma série. O título e a capa devem indicar a série.`) + `
+- Final: termine com um gancho para a parte ${serieInfo.parte+1} ("na parte ${serieInfo.parte+1} vem uma ainda mais louca, segue pra não perder") e uma pergunta para os comentários.`
+  : `- Final: pergunta que gera comentário (ex.: "você sabia? comenta aí") e uma última frase que conecta com o começo, para o vídeo rodar de novo (loop).`}
 - EXATAMENTE 7 cenas. ${VISUAL_REGRA}
 
 Tema: ${tema || `ESCOLHA VOCÊ um tema com MUITO potencial de viralizar no TikTok brasileiro (curiosidade chocante do dia a dia, corpo humano, animais, espaço, mito ou verdade, história curiosa). Não repita: ${JSON.stringify(videos.map(v=>v.tema).slice(0,60))}.`}
 ${correcoes?"Corrija estes problemas apontados pela revisão: "+correcoes:""}
 "visual": a cena em inglês. "personagens": aparência fixa de cada personagem, em inglês. "legenda_tela": texto grande da cena, 2 a 4 palavras, que funcione mesmo sem som.
 Responda SÓ JSON:
-{"tema":"o tema","titulo":"título curto do vídeo","texto_capa":"2 a 4 palavras em MAIÚSCULAS para a capa, terminando em ? ou !","legenda_tiktok":"gancho + 1 frase + 4 a 6 hashtags em português (ex.: #curiosidades #vocesabia #aprendanotiktok)","personagens":"...","cenas":[{"narracao":"...","legenda_tela":"...","visual":"..."}],"parte2":"ideia de continuação (parte 2)"}`; }
+{"tema":"o tema","titulo":"título curto do vídeo","texto_capa":"2 a 4 palavras em MAIÚSCULAS para a capa, terminando em ? ou !","legenda_tiktok":"gancho + 1 frase + 4 a 6 hashtags em português (ex.: #curiosidades #vocesabia #aprendanotiktok)","personagens":"...","cenas":[{"narracao":"...","legenda_tela":"...","visual":"..."}],"parte2":"ideia de continuação (próxima parte)","serie":"nome curto da série (ex.: Coisas mais antigas do que você imagina)"}`; }
 function montarTikTok(j){
   const cenas=(j.cenas||[]).slice(0,8);
   const leg=String(j.legenda_tiktok||j.titulo||"");
   return { plataforma:"tiktok", tema:j.tema, titulo:j.titulo, descricao:leg, tags:(leg.match(/#[\p{L}\p{N}_]+/gu)||[]).map(t=>t.slice(1)),
-    personagens:j.personagens, texto_capa:j.texto_capa||"", parte2:j.parte2||"", cenas,
+    personagens:j.personagens, texto_capa:j.texto_capa||"", parte2:j.parte2||"", cenas, serieNome:String(j.serie||""),
     curto:{titulo:j.texto_capa||j.titulo, legenda_tiktok:leg, legenda_instagram:leg, cenas:cenas.map((c,i)=>({imagem:i, narracao:c.narracao}))},
     miniatura:{texto:j.texto_capa||"", cena:0} };
+}
+
+/* ---------- continuar uma série (Criar parte 2, 3...) ---------- */
+function pararContinuacao(){ continuar=null; $("#cont-box").hidden=true; $("#serie").disabled=false; }
+$("#cont-cancelar").addEventListener("click", pararContinuacao);
+function proximaParte(v){
+  const parte=(v.serie?.parte||1)+1, nome=v.serie?.nome||v.titulo;
+  continuar={ nome, parte, raiz: v.serie?.raiz || v.id, ideia: v.parte2 || "", anterior: (v.cenas||[]).map(c=>c.narracao).join(" ").slice(0,1500) };
+  if (v.formato && FORMATOS[v.formato]) { formatoEscolhido=v.formato; document.querySelectorAll("#formatos [data-f]").forEach(x=>x.setAttribute("aria-pressed", x.dataset.f===v.formato)); }
+  $("#cont-txt").textContent=`Continuando: "${nome}", parte ${parte}`; $("#cont-box").hidden=false; $("#serie").checked=true; $("#serie").disabled=true;
+  $("#tema").value=""; location.hash="#criar"; window.scrollTo({top:0,behavior:"smooth"}); toast(`Pronto para criar a parte ${parte}.`);
 }
 
 /* ---------- vídeo longo de 10 minutos (4 capítulos, 16 desenhos, 32 falas) ---------- */
@@ -858,7 +890,9 @@ let gerando=false;
 $("#criar").onclick = async () => {
   if (gerando) return;
   if (!sample) return mensagem("O Claude não está disponível nesta visualização. Abra o site pelo claude.ai.");
-  let tema = $("#tema").value.trim() || proximos()[0] || "";
+  let tema = $("#tema").value.trim() || (continuar ? (continuar.ideia || continuar.nome) : "") || proximos()[0] || "";
+  serieInfo = continuar ? {nome:continuar.nome, parte:continuar.parte, anterior:continuar.anterior}
+            : ($("#serie").checked ? {nome:"", parte:1, anterior:""} : null);
   assuntoDaVez = tema ? "" : "curiosidades surpreendentes";
   if(!tema && modo!=="viral") return mensagem("Escreva um tema.");
   gerando=true; $("#criar").disabled=true; parar(); mensagem("");
@@ -887,7 +921,7 @@ $("#criar").onclick = async () => {
     if(status!=="pronto") mensagem(obs+" O episódio fica como rascunho.");
 
     const id = "v"+Date.now().toString(36);
-    const dados = {tema, modo:modoEp, formato:formatoEp, plataforma:r.plataforma||"", texto_capa:r.texto_capa||"", parte2:r.parte2||"", titulo:r.titulo, descricao:r.descricao, tags:r.tags, referencia_biblica:r.referencia_biblica||"", personagens:r.personagens,
+    const dados = {tema, modo:modoEp, formato:formatoEp, serie: serieInfo ? {nome: serieInfo.nome || r.serieNome || r.titulo, parte: serieInfo.parte, raiz: continuar?.raiz || null} : null, plataforma:r.plataforma||"", texto_capa:r.texto_capa||"", parte2:r.parte2||"", titulo:r.titulo, descricao:r.descricao, tags:r.tags, referencia_biblica:r.referencia_biblica||"", personagens:r.personagens,
       cenas:r.cenas.map((c,k)=>({narracao:String(c.narracao||""), legenda_tela:String(c.legenda_tela||""), visual:String(c.visual||""), img:c.img ?? k})), longo:!!r.longo, curto:r.curto, miniatura:(r.miniatura&&typeof r.miniatura==="object")?r.miniatura:null, status, revisao:obs, criadoEm:new Date().toISOString(), nCenas:r.cenas.length, nDesenhos:(r.desenhos||r.cenas).length};
     await abrir({id,...dados}, []);
     if (db) await db.doc("videos/"+id).set({...dados, status:"gerando"});
@@ -903,7 +937,7 @@ $("#criar").onclick = async () => {
     }
     etapa("cenas","ok",`${desenhos.length}/${desenhos.length}`);
     if (db){ await db.doc("videos/"+id).update({status}); etapa("salvo","ok"); } else etapa("salvo","erro","sem banco");
-    ep.status=status; renderMeta(); mostrarPrimeiro(); $("#tema").value="";
+    ep.status=status; renderMeta(); mostrarPrimeiro(); $("#tema").value=""; pararContinuacao();
     if(status==="pronto") mensagem("Episódio pronto! Assista, grave nos dois formatos e publique.","ok");
   }catch(e){
     document.querySelectorAll('#steps li[data-s="ativo"]').forEach(li=>{li.dataset.s="erro"; li.querySelector(".n").textContent="parou";});

@@ -21,7 +21,7 @@ PASTA = RAIZ / "episodios"
 def preparar(pacote: dict, pasta):
     """Grava o roteiro e os desenhos do site no formato que o robô já entende."""
     pasta.mkdir(parents=True, exist_ok=True)
-    rot = {k: pacote.get(k) for k in ("titulo", "descricao", "tags", "personagens", "curto", "tema", "modo", "formato", "miniatura", "longo", "plataforma", "texto_capa")}
+    rot = {k: pacote.get(k) for k in ("titulo", "descricao", "tags", "personagens", "curto", "tema", "modo", "formato", "miniatura", "longo", "plataforma", "texto_capa", "serie")}
     rot["cenas"] = [{"narracao": c.get("narracao", ""), "legenda_tela": c.get("legenda_tela", ""), "visual": ""}
                     for c in pacote["cenas"]]
     rot = mg.validar(rot)
