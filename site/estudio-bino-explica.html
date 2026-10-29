@@ -120,7 +120,12 @@ canvas#tela{display:block;max-width:100%;height:auto;border-radius:10px;backgrou
 
 /* biblioteca */
 .lib{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
-.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden;cursor:pointer;text-align:left;padding:0;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.cardw{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.card{background:transparent;border:0;cursor:pointer;text-align:left;padding:0;display:flex;flex-direction:column;flex:1}
+.card-acoes{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:8px 14px 12px;border-top:1px dashed var(--line);font-size:.84rem}
+.card-acoes .x{border:1px solid var(--line);background:transparent;border-radius:8px;padding:4px 10px;cursor:pointer;color:var(--muted);font-weight:700;font-size:.82rem}
+.card-acoes .x:hover{border-color:var(--coral);color:var(--coral)}
+.card-acoes .sim{background:var(--coral);border-color:var(--coral);color:#fff}
 .card .pic{aspect-ratio:16/9;background:var(--paper-2);display:grid;place-items:center;color:var(--muted);font-size:.8rem}
 .card .pic img{width:100%;height:100%;object-fit:cover}
 .card .body{padding:12px 14px;display:flex;flex-direction:column;gap:6px}
@@ -654,11 +659,32 @@ function renderAgenda(){}
 const thumbCache = {};
 async function renderLib(){
   const box=$("#lib"); $("#lib-empty").hidden = videos.length>0; $("#lib-count").textContent = videos.length ? `${videos.length} episódio${videos.length>1?"s":""} · ${videos.filter(v=>v.status==="publicado").length} publicado(s)` : "";
-  box.innerHTML = videos.map(v=>`<button class="card" data-id="${v.id}"><div class="pic" id="pic-${v.id}">${thumbCache[v.id]?`<img alt="" src="${thumbCache[v.id]}">`:"carregando…"}</div><div class="body"><span style="display:flex;gap:6px"><span class="pill ${v.status}">${v.status==="publicado"?"Publicado":v.status==="rascunho"?"Rascunho":"Pronto"}</span><span class="pill modo">${v.modo==="biblico"?"Bíblico":(NOME_FORMATO[v.formato]||"Viral")}</span></span><h3>${esc(v.titulo)}</h3><span class="small">${esc(v.referencia_biblica||"")} · ${new Date(v.criadoEm).toLocaleDateString("pt-BR")}</span></div></button>`).join("");
+  box.innerHTML = videos.map(v=>`<article class="cardw" data-id="${v.id}"><button class="card" data-id="${v.id}"><div class="pic" id="pic-${v.id}">${thumbCache[v.id]?`<img alt="" src="${thumbCache[v.id]}">`:"carregando…"}</div><div class="body"><span style="display:flex;gap:6px"><span class="pill ${v.status}">${v.status==="publicado"?"Publicado":v.status==="rascunho"?"Rascunho":"Pronto"}</span><span class="pill modo">${v.modo==="biblico"?"Bíblico":(NOME_FORMATO[v.formato]||"Viral")}</span></span><h3>${esc(v.titulo)}</h3><span class="small">${v.referencia_biblica?esc(v.referencia_biblica)+" · ":""}${new Date(v.criadoEm).toLocaleDateString("pt-BR")}</span></div></button><div class="card-acoes">${confirmarExcluir===v.id
+  ? `<span>Excluir este vídeo para sempre?</span><button class="x sim" data-excluir-sim="${v.id}">Sim, excluir</button><button class="x" data-excluir-nao="${v.id}">Cancelar</button>`
+  : `<button class="x" data-excluir="${v.id}" aria-label="Excluir ${esc(v.titulo)}">🗑 Excluir</button>`}</div></article>`).join("");
   for (const v of videos){ if(thumbCache[v.id]||!db) continue;
     try{ const s=await db.doc(`videos/${v.id}/cenas/c0`).get(); if(s.exists){ thumbCache[v.id]="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(s.data().svg); const p=$("#pic-"+v.id); if(p) p.innerHTML=`<img alt="" src="${thumbCache[v.id]}">`; } }catch(e){} }
 }
-$("#lib").addEventListener("click", async e=>{ const c=e.target.closest(".card"); if(!c||!db) return; const v=videos.find(x=>x.id===c.dataset.id); if(!v) return;
+let confirmarExcluir=null;
+async function excluirVideo(id){
+  if(!db) return toast("Abra o site pelo claude.ai para excluir.");
+  try{
+    const cenas=await db.collection(`videos/${id}/cenas`).get();
+    for(const d of cenas.docs) await db.doc(`videos/${id}/cenas/${d.id}`).delete();
+    await db.doc("videos/"+id).delete();
+    delete thumbCache[id]; confirmarExcluir=null;
+    if(ep?.id===id){ const im=await carregarImg(EXEMPLO_SVG); ep=EXEMPLO; imgs=[im]; $("#ep-titulo").textContent=EXEMPLO.titulo; renderThumbs(); renderMeta(); mostrarPrimeiro(); }
+    toast("Vídeo excluído.");
+  }catch(e){ toast("Não foi possível excluir. Tente de novo."); }
+}
+$("#lib").addEventListener("click", async e=>{
+  const a=e.target.closest("[data-excluir],[data-excluir-sim],[data-excluir-nao]");
+  if(a){ e.stopPropagation();
+    if(a.dataset.excluir){ confirmarExcluir=a.dataset.excluir; renderLib(); }
+    else if(a.dataset.excluirNao){ confirmarExcluir=null; renderLib(); }
+    else { a.disabled=true; a.textContent="Excluindo…"; await excluirVideo(a.dataset.excluirSim); }
+    return; }
+  const c=e.target.closest(".card"); if(!c||!db) return; const v=videos.find(x=>x.id===c.dataset.id); if(!v) return;
   location.hash="#criar"; $("#ep-titulo").textContent="Abrindo…";
   const snap=await db.collection(`videos/${v.id}/cenas`).get(); const svgs=[]; snap.docs.forEach(d=>{ svgs[+d.id.slice(1)]=d.data().svg; });
   await abrir(v, svgs); });
