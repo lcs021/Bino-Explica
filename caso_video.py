@@ -116,7 +116,13 @@ def espacado(d, x, y, texto, fonte, cor, esp, alinhar="l"):
 
 
 # ---------- layout ----------
-def layout(vertical):
+def layout(vertical, reels=False):
+    if vertical and reels:
+        # Instagram Reels: textos fora do topo (14%), da faixa de baixo e dos ícones da direita
+        W, H = 720, 1280
+        return dict(W=W, H=H, floor=H * 0.93, h=650, cx=W * 0.5, foot=H * 0.93 + 16,
+                    head=(W * 0.46, 214, W * 0.74, "m", 0.92), doss=(44, 330, W * 0.8, 0.88),
+                    subs=890, subsz=54, subw=0.92, subfrac=0.84, marca=(W * 0.46, 520, 18, "mm"), blinds=0.42)
     if vertical:
         W, H = 720, 1280
         return dict(W=W, H=H, floor=H * 0.93, h=650, cx=W * 0.5, foot=H * 0.93 + 16,
@@ -255,8 +261,8 @@ def poeira(fr, L, t):
 
 
 class Legenda:
-    def __init__(self, W, tam):
-        self.W, self.fonte, self.tam, self.cache = W, f_display(tam), tam, {}
+    def __init__(self, W, tam, frac=0.86):
+        self.W, self.fonte, self.tam, self.cache, self.frac = int(W), f_display(tam), tam, {}, frac
 
     def imagem(self, texto, prog):
         blocos = blocos_legenda(texto)
@@ -272,7 +278,7 @@ class Legenda:
         partes = [w[0].upper() for w in g]
         tmp = ImageDraw.Draw(Image.new("RGB", (1, 1)))
         esp = tmp.textlength(" ", font=self.fonte)
-        linhas, lw, maxw = [[]], 0, self.W * 0.86
+        linhas, lw, maxw = [[]], 0, self.W * self.frac
         for i, p in enumerate(partes):
             pw = tmp.textlength(p, font=self.fonte)
             if lw + pw > maxw and linhas[-1]:
@@ -342,12 +348,12 @@ def envelope(wav: Path, total_quadros: int):
 
 
 # ---------- montagem ----------
-def montar(caso: dict, arquivos_voz: list, destino: Path, vertical=True, musica: Path = None, volume_musica=0.12):
+def montar(caso: dict, arquivos_voz: list, destino: Path, vertical=True, musica: Path = None, volume_musica=0.12, reels=False):
     pasta = destino.parent
     pasta.mkdir(parents=True, exist_ok=True)
     cenas = caso["cenas"]
     titulo = caso.get("titulo_caso") or "Caso real"
-    L = layout(vertical)
+    L = layout(vertical, reels)
     W, H = L["W"], L["H"]
     wav, tempos = juntar_narracao(arquivos_voz, pasta)
     total = tempos[-1][1] + 0.8
@@ -366,7 +372,7 @@ def montar(caso: dict, arquivos_voz: list, destino: Path, vertical=True, musica:
     ImageDraw.Draw(sombra).ellipse([L["cx"] - fig.width * 0.42, L["foot"] - 2 - L["h"] * 0.02,
                                     L["cx"] + fig.width * 0.42, L["foot"] - 2 + L["h"] * 0.02], fill=(0, 0, 0, 128))
     base.alpha_composite(sombra)
-    leg = Legenda(W, L["subsz"])
+    leg = Legenda(W * L.get("subw", 1), L["subsz"], L.get("subfrac", 0.86))
     rnd = random.Random(7)
 
     cmd = ["ffmpeg", "-y", "-v", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",

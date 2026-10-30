@@ -155,4 +155,5 @@ Mantenha o repositório **privado**. Nunca compartilhe `.env`, `client_secret.js
    no estúdio noir e guarda em **Actions → Caso Ao Vivo (crimes reais) → Artifacts**.
 
 Esses vídeos não são postados sozinhos: confira os fatos do arquivo `post.txt` antes de publicar.
+Formatos: TikTok (vertical), Instagram Reels (vertical com os textos fora das áreas que o Instagram cobre) e YouTube (horizontal).
 Arquivos: `montar_caso.py`, `caso_video.py`, `assets/caso/`, `.github/workflows/caso-ao-vivo.yml`.

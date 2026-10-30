@@ -66,10 +66,11 @@ def main():
             formatos = caso.get("formatos") or [caso.get("aspect") or "9:16"]
             for fmt in formatos:
                 vertical = fmt != "16:9"
-                nome = "video-vertical.mp4" if vertical else "video-horizontal.mp4"
+                reels = vertical and caso.get("layout") == "reels"
+                nome = "video-reels.mp4" if reels else ("video-vertical.mp4" if vertical else "video-horizontal.mp4")
                 log.info(f"Montando {nome}…")
                 _, tempos = caso_video.montar(caso, vozes, pasta / nome, vertical=vertical,
-                                              musica=musica(cfg), volume_musica=cfg["video"].get("musica_volume", 0.12))
+                                              musica=musica(cfg), volume_musica=cfg["video"].get("musica_volume", 0.12), reels=reels)
             (pasta / "legendas.srt").write_text(caso_video.srt(caso["cenas"], tempos), encoding="utf-8")
             post = [titulo, ""]
             for t in caso.get("titulos", []):
