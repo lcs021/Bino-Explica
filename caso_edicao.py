@@ -13,6 +13,8 @@ Tudo é desenhado aqui (Pillow + ffmpeg). Nenhuma imagem de terceiros é usada.
 """
 import array
 import math
+import multiprocessing
+import os
 import random
 import re
 import subprocess
@@ -163,6 +165,12 @@ def colar(base, camada, x, y, alfa=1.0):
     if alfa <= 0.01:
         return
     x, y = int(round(x)), int(round(y))
+    if base.mode == "RGB":
+        mascara = camada.getchannel("A")
+        if alfa < 0.99:
+            mascara = mascara.point(lambda v, a=alfa: int(v * a))
+        base.paste(camada, (x, y), mascara)
+        return
     if alfa < 0.99:
         camada = camada.copy()
         camada.putalpha(camada.getchannel("A").point(lambda v, a=alfa: int(v * a)))
@@ -220,13 +228,14 @@ def vinheta(w, h, forca=175):
     return camada
 
 
-def graos(w, h, n=3):
-    rnd = random.Random(5)
-    out = []
-    for _ in range(n):
-        r = Image.frombytes("L", (w // 2, h // 2), rnd.randbytes((w // 2) * (h // 2))).resize((w, h), Image.NEAREST)
-        out.append(Image.merge("RGBA", (r, r, r, Image.new("L", (w, h), 13))))
-    return out
+def grao(img, forca=11):
+    """Grão de filme fixo (leve na compressão do vídeo)."""
+    w, h = img.size
+    r = Image.frombytes("L", (w // 2, h // 2), random.Random(5).randbytes((w // 2) * (h // 2))).resize((w, h), Image.NEAREST)
+    camada = Image.merge("RGBA", (r, r, r, Image.new("L", (w, h), forca)))
+    base = img.convert("RGBA")
+    base.alpha_composite(camada)
+    return base.convert("RGB")
 
 
 def painel(w, h, raio=16, fundo=(9, 12, 18, 205), borda=(214, 175, 98, 70)):
@@ -351,13 +360,13 @@ def placa_estudio(L, semente):
     img.alpha_composite(aro)
     img = graduar(img)
     img.alpha_composite(vinheta(PW, PH, 150))
-    return img
+    return grao(img)
 
 
 def fundo_grafico(L, estudio, tom="ouro"):
     """Fundo das artes: o estúdio bem desfocado e escuro, grade fina e uma luz de cor."""
     W, H, M = L["W"], L["H"], L["M"]
-    img = estudio.crop((M, M, M + W, M + H)).filter(ImageFilter.GaussianBlur(22))
+    img = estudio.crop((M, M, M + W, M + H)).filter(ImageFilter.GaussianBlur(22)).convert("RGBA")
     img.alpha_composite(Image.new("RGBA", (W, H), (5, 7, 11, 175)))
     grade = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(grade)
@@ -370,7 +379,7 @@ def fundo_grafico(L, estudio, tom="ouro"):
     img.alpha_composite(brilho(W, H, L["gx"], L["gy"], max(W, H) * 0.45, cor, 60))
     img = graduar(img)
     img.alpha_composite(vinheta(W, H, 190))
-    return img
+    return grao(img)
 
 
 class _Zoom:
@@ -379,7 +388,8 @@ class _Zoom:
         self._cz = {}
 
     def zoom(self, img, z, foco=None):
-        chave = (id(img), round(z, 3))
+        chave = (id(img), round(z * 250) / 250)
+        z = chave[1]
         if chave not in self._cz:
             W, H = img.size
             fx, fy = foco or (W / 2, H / 2)
@@ -425,8 +435,8 @@ class Apresentador:
         L, M = self.L, self.L["M"]
         Ze, (fx, fy), (ax, ay) = self._geometria(enq, z_extra)
         # fundo com paralaxe (o mural se move menos que o apresentador)
-        Zb = 1 + (Ze - 1) * 0.30
-        kb = (enq, round(Zb, 4))
+        Zb = round((1 + (Ze - 1) * 0.30) * 500) / 500
+        kb = (enq, Zb)
         if kb not in self._cbg:
             bw, bh = L["W"] / Zb, L["H"] / Zb
             bx = min(max(0.0, M + fx - ax / Zb), self.estudio.width - bw)
@@ -437,7 +447,7 @@ class Apresentador:
                 self._cbg.pop(next(iter(self._cbg)))
         fr = self._cbg[kb].copy()
         # corpo
-        S = round(self.s0 * Ze, 3)
+        S = round(self.s0 * Ze * 200) / 200
         if S not in self._cf:
             self._cf[S] = self.fig.resize((max(1, int(self.fig.width * S)), max(1, int(self.fig.height * S))), Image.BICUBIC)
             self._cb[S] = self.boca.resize((max(1, int(self.boca.width * S)), max(1, int(self.boca.height * S))), Image.BICUBIC)
@@ -566,8 +576,9 @@ class GLocal(_Zoom):
     def __init__(self, L, valor, rotulo, semente):
         super().__init__(L)
         W, H = L["W"], L["H"]
-        self.mapa = graduar(_mapa(W, H, semente).convert("RGBA"))
-        self.mapa.alpha_composite(vinheta(W, H, 210))
+        mapa = graduar(_mapa(W, H, semente).convert("RGBA"))
+        mapa.alpha_composite(vinheta(W, H, 210))
+        self.mapa = grao(mapa)
         self.alvo = (L["gx"], int(L["gy"] + H * (0.06 if L["vertical"] else 0.02)))
         larg = min(L["gw"], max(largura(valor, f_serif(64)), largura(rotulo, f_texto(32))) + 96)
         linhas = quebrar(valor, f_serif(64), larg - 96)[:2]
@@ -676,8 +687,9 @@ class GDocumento(_Zoom):
             d.line([0, y + rnd.randint(-3, 3), W, y + rnd.randint(-3, 3)], fill=(0, 0, 0, rnd.randint(10, 26)), width=2)
         mesa.alpha_composite(veios)
         mesa.alpha_composite(brilho(W, H, W * 0.5, H * 0.32, max(W, H) * 0.55, (255, 196, 130), 70))
-        self.mesa = graduar(mesa)
-        self.mesa.alpha_composite(vinheta(W, H, 200))
+        mesa = graduar(mesa)
+        mesa.alpha_composite(vinheta(W, H, 200))
+        self.mesa = grao(mesa)
         pw = int(W * (0.80 if L["vertical"] else 0.44))
         self.fonte = f_maquina(46 if L["vertical"] else 38)
         self.linhas = quebrar(valor, self.fonte, pw - 120)[:8]
@@ -730,8 +742,7 @@ class GDocumento(_Zoom):
                 break
             resto -= len(l)
             y += 64
-        z = 1 + 0.03 * suave(tl / max(dur, 0.1))
-        pg = pg.resize((int(pg.width * z), int(pg.height * z)), Image.BILINEAR).rotate(2.2, expand=True, resample=Image.BICUBIC)
+        z = 1.0
         cx, cy = L["gx"], L["gy"] + (0 if L["vertical"] else 10)
         colar(fr, self.sombra, cx - self.sombra.width / 2, cy - self.sombra.height / 2)
         e = ease_out(tl / 0.35)
@@ -757,8 +768,9 @@ class GRevelacao(_Zoom):
         W, H = L["W"], L["H"]
         fundo = Image.new("RGBA", (W, H), (7, 6, 9, 255))
         fundo.alpha_composite(brilho(W, H, L["gx"], H * 0.75, max(W, H) * 0.6, (190, 30, 40), 90))
-        self.fundo = graduar(fundo)
-        self.fundo.alpha_composite(vinheta(W, H, 200))
+        fundo = graduar(fundo)
+        fundo.alpha_composite(vinheta(W, H, 200))
+        self.fundo = grao(fundo)
         palavras = valor.upper().replace(".", "").split()[:4]
         fonte = f_impacto(220 if L["vertical"] else 200)
         self.linhas = []
@@ -1292,68 +1304,107 @@ def montar(caso, falas, destino, vertical=True, musica=None, volume_musica=0.12,
         chips[i] = img
     selo = Sprite("CASO REAL", f_mono(24), OURO, esp=5)
     selo_marca = Sprite(marca, f_texto(26), (200, 204, 214)) if marca else None
-    grao = graos(W, H)
     branco = Image.new("RGB", (W, H), (255, 255, 255))
-    leg = Legendas(L, pags)
 
-    cmd = ["ffmpeg", "-y", "-v", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS),
-           "-i", "-", "-i", str(mix), "-map", "0:v", "-map", "1:a",
-           "-c:v", "libx264", "-preset", "veryfast", "-crf", "19", "-profile:v", "high", "-pix_fmt", "yuv420p",
-           "-c:a", "aac", "-b:a", "192k", "-t", f"{total:.2f}", "-movflags", "+faststart", str(destino)]
-    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
-    pi = 0
-    try:
-        for q in range(nq):
-            t = q / FPS
-            while pi < len(planos) - 1 and t >= planos[pi + 1]["ini"]:
-                pi += 1
-                apresentador._cbg.clear()
-            pl = planos[pi]
-            tl, dur = t - pl["ini"], max(0.1, pl["fim"] - pl["ini"])
-            i = pl["cena"]
-            if pl["tipo"] == "apresentador":
-                falando = any(a - 0.05 <= t <= b for a, b in tempos[max(0, i - 1):i + 2])
-                prog = suave(tl / dur)
-                m = (1 + 0.05 * prog) if pl["push"] > 0 else (1.05 - 0.05 * prog)
-                punch = 1 + 0.03 * max(0.0, 1 - tl / 0.25)
-                bob = (math.sin(t * 3.2) * L["alt"] * 0.004) if falando else math.sin(t * 1.2) * L["alt"] * 0.002
-                fr = apresentador.quadro(pl["enq"], m * punch, bob, not (falando and env[q] > 0.3))
-                if i in chips:
-                    e = ease_out((tl - 0.15) / 0.35)
-                    x, y, _ = L["chip"]
-                    colar(fr, chips[i], x - (1 - e) * 50, y, alfa=e)
-            else:
-                fr = artes[i].quadro(tl, dur)
-            # selo do canal e barra de progresso
-            d = ImageDraw.Draw(fr)
-            x0, y0 = (60, L["topo"]) if L["vertical"] else (56, L["topo"])
-            pulsar = 0.55 + 0.45 * abs(math.sin(t * 2.6))
-            d.ellipse([x0, y0 - 22, x0 + 16, y0 - 6], fill=(int(226 * pulsar), int(48 * pulsar), int(62 * pulsar), 255))
-            selo.colar(fr, x0 + 30, y0, "l")
-            if selo_marca:
-                selo_marca.colar(fr, x0 + 30 + selo.larg_texto + 24, y0, "l", alfa=0.85)
-            yb = (L["topo"] - 46) if L["vertical"] else 0
-            xb0, xb1 = (60, W - 60) if L["vertical"] else (0, W)
-            d.rectangle([xb0, yb, xb1, yb + 4], fill=(48, 52, 62, 255))
-            d.rectangle([xb0, yb, xb0 + (xb1 - xb0) * t / total, yb + 4], fill=OURO + (255,))
-            leg.desenhar(fr, t)
-            fr.alpha_composite(grao[(q // 2) % len(grao)])
-            rgb = fr.convert("RGB")
-            if tl < 0.22 and pl["ini"] > 0.05:
-                k = 1 - tl / 0.22
-                forte = pl["tipo"] == "revelacao"
-                dd = int((16 if forte else 10) * k)
-                if dd > 0:
-                    r, g, b = rgb.split()
-                    rgb = Image.merge("RGB", (ImageChops.offset(r, dd, 0), g, ImageChops.offset(b, -dd, 0)))
-                rgb = Image.blend(rgb, branco, (0.5 if forte else 0.18) * k * k)
-            elif q < 6:
-                rgb = Image.blend(rgb, branco, 0.4 * (1 - q / 6) ** 2)
-            proc.stdin.write(rgb.tobytes())
-    finally:
-        proc.stdin.close()
-    if proc.wait() != 0:
-        raise RuntimeError("O ffmpeg falhou ao montar o vídeo do caso.")
+    def quadro(q, estado):
+        t = q / FPS
+        while estado["pi"] < len(planos) - 1 and t >= planos[estado["pi"] + 1]["ini"]:
+            estado["pi"] += 1
+            apresentador._cbg.clear()
+        pl = planos[estado["pi"]]
+        tl, dur = t - pl["ini"], max(0.1, pl["fim"] - pl["ini"])
+        i = pl["cena"]
+        if pl["tipo"] == "apresentador":
+            falando = any(a - 0.05 <= t <= b for a, b in tempos[max(0, i - 1):i + 2])
+            prog = suave(tl / dur)
+            m = (1 + 0.05 * prog) if pl["push"] > 0 else (1.05 - 0.05 * prog)
+            punch = 1 + 0.03 * max(0.0, 1 - tl / 0.25)
+            bob = (math.sin(t * 3.2) * L["alt"] * 0.004) if falando else math.sin(t * 1.2) * L["alt"] * 0.002
+            fr = apresentador.quadro(pl["enq"], m * punch, bob, not (falando and env[q] > 0.3))
+            if fr.mode != "RGB":
+                fr = fr.convert("RGB")
+            if i in chips:
+                e = ease_out((tl - 0.15) / 0.35)
+                x, y, _ = L["chip"]
+                colar(fr, chips[i], x - (1 - e) * 50, y, alfa=e)
+        else:
+            fr = artes[i].quadro(tl, dur)
+            if fr.mode != "RGB":
+                fr = fr.convert("RGB")
+        # selo do canal e barra de progresso
+        d = ImageDraw.Draw(fr)
+        x0, y0 = (60, L["topo"]) if L["vertical"] else (56, L["topo"])
+        pulsar = 0.55 + 0.45 * abs(math.sin(t * 2.6))
+        d.ellipse([x0, y0 - 22, x0 + 16, y0 - 6], fill=(int(226 * pulsar), int(48 * pulsar), int(62 * pulsar)))
+        selo.colar(fr, x0 + 30, y0, "l")
+        if selo_marca:
+            selo_marca.colar(fr, x0 + 30 + selo.larg_texto + 24, y0, "l", alfa=0.85)
+        yb = (L["topo"] - 46) if L["vertical"] else 0
+        xb0, xb1 = (60, W - 60) if L["vertical"] else (0, W)
+        d.rectangle([xb0, yb, xb1, yb + 4], fill=(48, 52, 62))
+        d.rectangle([xb0, yb, xb0 + (xb1 - xb0) * t / total, yb + 4], fill=OURO)
+        estado["leg"].desenhar(fr, t)
+        if tl < 0.22 and pl["ini"] > 0.05:
+            k = 1 - tl / 0.22
+            forte = pl["tipo"] == "revelacao"
+            dd = int((16 if forte else 10) * k)
+            if dd > 0:
+                r, g, b = fr.split()
+                fr = Image.merge("RGB", (ImageChops.offset(r, dd, 0), g, ImageChops.offset(b, -dd, 0)))
+            fr = Image.blend(fr, branco, (0.5 if forte else 0.18) * k * k)
+        elif q < 6:
+            fr = Image.blend(fr, branco, 0.4 * (1 - q / 6) ** 2)
+        return fr
+
+    def faixa(q0, q1, saida, rotulo):
+        """Desenha os quadros [q0, q1) e grava um pedaço de vídeo (sem som). """
+        cmd = ["ffmpeg", "-y", "-v", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS),
+               "-i", "-", "-c:v", "libx264", "-preset", "veryfast", "-crf", "19",
+               "-profile:v", "high", "-pix_fmt", "yuv420p", str(saida)]
+        proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+        estado = {"pi": 0, "leg": Legendas(L, pags)}
+        passo = max(1, (q1 - q0) // 5)
+        try:
+            for q in range(q0, q1):
+                proc.stdin.write(quadro(q, estado).tobytes())
+                if (q - q0) % passo == 0 and q > q0:
+                    print(f"  {rotulo}: {100 * (q - q0) // (q1 - q0)}%", flush=True)
+        finally:
+            proc.stdin.close()
+        if proc.wait() != 0:
+            raise RuntimeError("O ffmpeg falhou ao gravar um pedaço do vídeo.")
+
+    # divide o vídeo entre os núcleos da máquina (cada parte vira um pedaço e no fim tudo é juntado)
+    nucleos = int(os.environ.get("NUCLEOS_VIDEO") or os.cpu_count() or 1)
+    partes = max(1, min(nucleos, 6, nq // (FPS * 8)))
+    limites = [round(nq * k / partes) for k in range(partes + 1)]
+    pedacos = [pasta / f"_parte_{k:02d}.mp4" for k in range(partes)]
+    print(f"  Desenhando {nq} quadros em {partes} parte(s) ao mesmo tempo…", flush=True)
+    if partes == 1:
+        faixa(0, nq, pedacos[0], "parte 1/1")
+    else:
+        ctx = multiprocessing.get_context("fork")
+
+        def trabalho(k):
+            try:
+                faixa(limites[k], limites[k + 1], pedacos[k], f"parte {k + 1}/{partes}")
+            except Exception as e:  # noqa: BLE001
+                print(f"  Falha na parte {k + 1}: {e}", flush=True)
+                os._exit(1)
+            os._exit(0)
+        procs = [ctx.Process(target=trabalho, args=(k,)) for k in range(partes)]
+        for pr in procs:
+            pr.start()
+        for pr in procs:
+            pr.join()
+        if any(pr.exitcode != 0 for pr in procs):
+            raise RuntimeError("Uma das partes do vídeo falhou ao ser desenhada.")
+    lista = pasta / "_partes.txt"
+    lista.write_text("".join(f"file '{p.resolve()}'\n" for p in pedacos), encoding="utf-8")
+    _ff("-f", "concat", "-safe", "0", "-i", str(lista), "-i", str(mix), "-map", "0:v", "-map", "1:a", "-c:v", "copy",
+        "-c:a", "aac", "-b:a", "192k", "-t", f"{total:.2f}", "-movflags", "+faststart", str(destino))
+    for p in pedacos:
+        p.unlink(missing_ok=True)
     return destino, pags
 
 

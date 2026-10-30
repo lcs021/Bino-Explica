@@ -7,7 +7,9 @@ edita o vídeo (caso_edicao.py) e guarda o MP4 para baixar.
 Trilha: coloque MP3 sem direitos autorais em assets/caso/musicas; sem música lá, o robô gera uma trilha sombria.
 """
 import json
+import os
 import random
+import time
 import shutil
 import sys
 from datetime import datetime
@@ -58,7 +60,8 @@ def main():
         titulo = caso.get("titulo_caso") or arq.stem
         pasta = RAIZ / cfg["pastas"]["saida"] / "casos" / f"{datetime.now():%Y-%m-%d_%H%M}_{slug(titulo)}"
         pasta.mkdir(parents=True, exist_ok=True)
-        log.info(f"===== Caso Ao Vivo: {titulo} =====")
+        log.info(f"===== Caso Ao Vivo: {titulo} ({len(caso['cenas'])} cenas) =====")
+        inicio = time.time()
         try:
             falas = narrar_falas(cfg, [c["fala"] for c in caso["cenas"]], pasta)
             formatos = caso.get("formatos") or [caso.get("aspect") or "9:16"]
@@ -66,7 +69,7 @@ def main():
                 vertical = fmt != "16:9"
                 reels = vertical and caso.get("layout") == "reels"
                 nome = "video-reels.mp4" if reels else ("video-vertical.mp4" if vertical else "video-horizontal.mp4")
-                log.info(f"Montando {nome}…")
+                log.info(f"Narração pronta. Editando {nome}…")
                 _, pags = caso_edicao.montar(caso, falas, pasta / nome, vertical=vertical, musica=musica(cfg),
                                              volume_musica=cfg["video"].get("musica_volume", 0.12), reels=reels)
             (pasta / "legendas.srt").write_text(caso_edicao.srt(pags), encoding="utf-8")
@@ -90,10 +93,19 @@ def main():
             for p in pasta.glob("_*"):
                 p.unlink(missing_ok=True)
             shutil.move(str(arq), feitos / arq.name)
-            log.info(f"Pronto: {pasta}")
+            minutos = (time.time() - inicio) / 60
+            log.info(f"Pronto em {minutos:.1f} min: {pasta}")
+            resumo = os.environ.get("GITHUB_STEP_SUMMARY")
+            if resumo:
+                with open(resumo, "a", encoding="utf-8") as f:
+                    f.write(f"- ✅ **{titulo}**: pronto em {minutos:.1f} min. Baixe em *Artifacts*, no fim desta página.\n")
         except Exception as e:  # noqa: BLE001
             log.exception(f"Falha ao montar {arq.name}: {e}")
             falhou = True
+            resumo = os.environ.get("GITHUB_STEP_SUMMARY")
+            if resumo:
+                with open(resumo, "a", encoding="utf-8") as f:
+                    f.write(f"- ❌ **{titulo}**: falhou ({e}). O arquivo continua na pasta casos/ para tentar de novo.\n")
     if falhou:
         sys.exit(1)
 

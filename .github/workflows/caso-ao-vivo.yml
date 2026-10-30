@@ -8,8 +8,10 @@ on:
 permissions:
   contents: write
 
+# Uma montagem por vez. Se você subir vários casos seguidos, o GitHub cancela as execuções que estavam
+# só esperando na fila (aparecem em cinza como "cancelled"): é normal, a próxima que rodar monta todos.
 concurrency:
-  group: bino-explica
+  group: caso-ao-vivo
   cancel-in-progress: false
 
 jobs:
@@ -18,13 +20,25 @@ jobs:
     timeout-minutes: 150
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Ver se há casos na fila
+        id: fila
+        run: |
+          git pull -q --rebase origin main || true
+          n=$(ls casos/*.json 2>/dev/null | wc -l)
+          echo "total=$n" >> "$GITHUB_OUTPUT"
+          if [ "$n" = "0" ]; then echo "Nenhum caso na pasta casos/ (já foram montados ou apagados)."; fi
 
       - uses: actions/setup-python@v5
+        if: steps.fila.outputs.total != '0'
         with:
           python-version: "3.12"
           cache: pip
 
       - name: Instalar ffmpeg e fontes
+        if: steps.fila.outputs.total != '0'
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq ffmpeg fonts-dejavu-core
@@ -39,13 +53,15 @@ jobs:
             "https://github.com/google/fonts/raw/main/ofl/jetbrainsmono/JetBrainsMono%5Bwght%5D.ttf" || echo "fonte mono indisponível; usando a padrão"
 
       - name: Instalar dependências
+        if: steps.fila.outputs.total != '0'
         run: pip install -r requirements.txt
 
-      - name: Narrar com a voz do Bino e montar o vídeo
+      - name: Narrar e editar os vídeos
+        if: steps.fila.outputs.total != '0'
         run: python montar_caso.py
 
       - name: Guardar os vídeos para baixar (30 dias)
-        if: always()
+        if: always() && steps.fila.outputs.total != '0'
         uses: actions/upload-artifact@v4
         with:
           name: caso-ao-vivo-${{ github.run_number }}
@@ -58,9 +74,17 @@ jobs:
           if-no-files-found: ignore
 
       - name: Salvar
-        if: always()
+        if: always() && steps.fila.outputs.total != '0'
         run: |
           git config user.name "bino-explica-bot"
           git config user.email "bino-explica-bot@users.noreply.github.com"
           git add -A casos
-          git diff --cached --quiet || (git commit -m "Caso Ao Vivo montado" && git pull --rebase -q && git push)
+          if ! git diff --cached --quiet; then
+            git commit -q -m "Caso Ao Vivo montado"
+            for i in 1 2 3; do
+              if git pull -q --rebase -X theirs origin main && git push -q; then exit 0; fi
+              git rebase --abort 2>/dev/null || true
+              sleep 5
+            done
+            echo "Não consegui atualizar a pasta casos (alguém mexeu nela ao mesmo tempo). Os vídeos já estão em Artifacts."
+          fi
