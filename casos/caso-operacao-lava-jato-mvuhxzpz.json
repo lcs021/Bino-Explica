@@ -1,0 +1,127 @@
+{
+  "titulo_caso": "Operação Lava Jato",
+  "aspect": "9:16",
+  "layout": "reels",
+  "formatos": [
+    "9:16"
+  ],
+  "marca": "@paposinistro21",
+  "cenas": [
+    {
+      "fala": "Um posto de gasolina com lavagem de carros virou o começo de um dos maiores escândalos do Brasil. Presta atenção.",
+      "tela_titulo": "Começou num posto",
+      "tela_texto": "Brasília, Curitiba, 2014"
+    },
+    {
+      "fala": "Em março de 2014, a Polícia Federal deflagrou a primeira fase da Operação Lava Jato. O nome vem justamente dessa rede de lavagem de carros e posto, usada, segundo as investigações, para movimentar dinheiro.",
+      "tela_titulo": "Primeira fase",
+      "tela_texto": "Março de 2014"
+    },
+    {
+      "fala": "No início, parecia um caso de doleiros e lavagem de dinheiro. Só que, calma que piora, as apurações seguiram um fio que levou a outro lugar.",
+      "tela_titulo": "Doleiros no radar",
+      "tela_texto": "Lavagem de dinheiro"
+    },
+    {
+      "fala": "Esse fio chegou à Petrobras. Segundo o Ministério Público Federal, empreiteiras teriam pago propinas para obter contratos com a estatal.",
+      "tela_titulo": "Chegou à Petrobras",
+      "tela_texto": "Acusação do MPF"
+    },
+    {
+      "fala": "A investigação passou a ter ex-diretores da estatal, executivos de grandes empresas e políticos entre os acusados. Alguns firmaram acordos de colaboração premiada, e foi assim que muita coisa veio à tona.",
+      "tela_titulo": "Delações",
+      "tela_texto": "Colaboração premiada"
+    },
+    {
+      "fala": "Houve prisões, condenações e devolução de dinheiro aos cofres públicos. Mas também houve críticas fortes à condução de parte dos processos.",
+      "tela_titulo": "Dois lados",
+      "tela_texto": "Condenações e críticas"
+    },
+    {
+      "fala": "Anos depois, o Supremo Tribunal Federal anulou decisões de alguns processos, em casos como o do presidente Lula, por questões como a competência da Justiça de Curitiba. Isso não muda o fato de que a operação marcou a história recente do país.",
+      "tela_titulo": "Reviravolta na Justiça",
+      "tela_texto": "Decisões do STF"
+    },
+    {
+      "fala": "Até hoje o assunto divide opiniões. Pra você, a Lava Jato foi um marco no combate à corrupção ou teve falhas que comprometeram o trabalho? Comenta aí!",
+      "tela_titulo": "E você?",
+      "tela_texto": "Comente sua opinião"
+    }
+  ],
+  "titulos": [
+    "Como um posto de gasolina deu nome a uma operação gigante",
+    "Lava Jato: do posto de combustível à Petrobras",
+    "Lava Jato: marco ou polêmica? Entenda o caso"
+  ],
+  "legenda": "Tudo começou com a investigação de doleiros e acabou chegando à Petrobras. A Lava Jato mudou o debate público no Brasil, mas também gerou muitas críticas. Qual é a sua opinião sobre a operação?",
+  "hashtags": [
+    "#crimesreais",
+    "#lavajato",
+    "#curitiba",
+    "#historiadobrasil",
+    "#reels"
+  ],
+  "posts": {
+    "tiktok": {
+      "legenda": "Um posto de gasolina com lavagem de carros foi o ponto de partida de um dos maiores escândalos do Brasil. E o fio dessa história levou até a Petrobras. Pra você, a Lava Jato foi um marco ou teve falhas? Comenta aí!",
+      "hashtags": [
+        "#crimesreais",
+        "#truecrime",
+        "#lavajato",
+        "#petrobras",
+        "#casoreal",
+        "#paposinistro21"
+      ]
+    },
+    "instagram": {
+      "legenda": "Tudo começou em um posto com lavagem de carros e, segundo as investigações, acabou chegando à Petrobras 👀 A Lava Jato teve prisões, condenações e devolução de dinheiro, mas também críticas fortes e decisões anuladas pelo STF. Até hoje o assunto divide opiniões. Pra você, foi um marco no combate à corrupção ou teve falhas que comprometeram o trabalho? Salva e compartilha este post para a conversa continuar.",
+      "hashtags": [
+        "#crimesreais",
+        "#truecrime",
+        "#lavajato",
+        "#petrobras",
+        "#paposinistro21"
+      ]
+    },
+    "youtube": {
+      "titulo": "Lava Jato: do posto de gasolina à Petrobras, o escândalo que dividiu o Brasil",
+      "descricao": "Em março de 2014, a Polícia Federal deflagrou a primeira fase da Operação Lava Jato, que investigava, a princípio, doleiros e lavagem de dinheiro ligados a um posto com lavagem de carros. As apurações seguiram adiante e chegaram à Petrobras, onde, segundo o Ministério Público Federal, empreiteiras teriam pago propinas para obter contratos com a estatal. Entre os acusados estavam ex-diretores da empresa, executivos e políticos, e acordos de colaboração premiada trouxeram muitas informações à tona. Houve prisões, condenações e devolução de dinheiro, mas também críticas à condução de parte dos processos, e o STF anulou decisões em alguns casos, como o do presidente Lula, por questões como a competência da Justiça de Curitiba. Baseado em fatos noticiados pela imprensa. Pra você, a Lava Jato foi um marco no combate à corrupção ou teve falhas que comprometeram o trabalho?",
+      "tags": [
+        "lava jato",
+        "operação lava jato",
+        "petrobras",
+        "corrupção",
+        "crimes reais",
+        "true crime",
+        "polícia federal",
+        "colaboração premiada",
+        "lavagem de dinheiro",
+        "STF",
+        "escândalo político Brasil",
+        "paposinistro21"
+      ]
+    }
+  },
+  "conferir": [
+    {
+      "fato": "A primeira fase da Lava Jato foi deflagrada em março de 2014",
+      "buscar": "Polícia Federal primeira fase Operação Lava Jato março 2014"
+    },
+    {
+      "fato": "O nome da operação vem de uma rede de postos e lavagem de carros usada para movimentar dinheiro",
+      "buscar": "origem do nome Operação Lava Jato posto de combustíveis"
+    },
+    {
+      "fato": "Segundo o MPF, empreiteiras pagaram propinas para obter contratos com a Petrobras",
+      "buscar": "MPF denúncia Lava Jato empreiteiras propina Petrobras"
+    },
+    {
+      "fato": "Uso de acordos de colaboração premiada na operação",
+      "buscar": "Lava Jato colaboração premiada acordos homologados"
+    },
+    {
+      "fato": "O STF anulou decisões de processos envolvendo Lula por questão de competência da Justiça Federal de Curitiba",
+      "buscar": "STF anula condenações Lula competência Curitiba 2021"
+    }
+  ]
+}
