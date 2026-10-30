@@ -191,7 +191,7 @@ def gradiente_v(w, h, topo, base):
 def brilho(w, h, cx, cy, r, cor, alfa):
     """Camada RGBA com luz radial (alfa máximo no centro)."""
     g = Image.radial_gradient("L").resize((max(2, int(r * 2)), max(2, int(r * 2))))
-    g = g.point(lambda v: int(alfa * clamp(1 - v / 255) ** 1.6))
+    g = g.point(lambda v: int(alfa * clamp(1 - v / 181) ** 1.6))
     camada = Image.new("RGBA", (w, h), cor + (0,))
     a = Image.new("L", (w, h), 0)
     a.paste(g, (int(cx - r), int(cy - r)))
