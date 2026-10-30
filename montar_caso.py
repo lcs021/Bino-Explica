@@ -12,11 +12,15 @@ import sys
 from datetime import datetime
 
 import caso_video
+import narracao
 from narracao import narrar_cenas
 from util import RAIZ, carregar_config, configurar_log, slug
 
 log = configurar_log()
 PASTA = RAIZ / "casos"
+# O apresentador é homem: o Caso Ao Vivo narra só com voz masculina.
+# (O Bino Explica continua com a voz do config.yaml.)
+VOZ_CASO = "pt-BR-AntonioNeural"
 
 
 def validar(caso: dict) -> dict:
@@ -37,6 +41,8 @@ def musica(cfg):
 
 def main():
     cfg = carregar_config()
+    cfg["narracao"] = dict(cfg["narracao"], voz=VOZ_CASO)
+    narracao.RESERVAS = [VOZ_CASO]   # sem reserva feminina: se falhar, tenta de novo em vez de trocar de voz
     arquivos = sorted(PASTA.glob("*.json"))
     if not arquivos:
         log.info("Nenhum caso novo na pasta casos/.")

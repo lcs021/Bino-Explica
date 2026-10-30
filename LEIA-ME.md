@@ -151,7 +151,7 @@ Mantenha o repositório **privado**. Nunca compartilhe `.env`, `client_secret.js
 
 1. No site **Caso Ao Vivo**, gere o vídeo e clique em **Baixar caso para narrar**.
 2. Envie o arquivo `caso-....json` para a pasta `casos/` aqui do GitHub (Add file → Upload files).
-3. O robô narra com a mesma voz do Bino (a de `config.yaml > narracao`), monta o vídeo com o apresentador
+3. O robô narra com a voz masculina pt-BR-AntonioNeural (a mesma tecnologia de voz do Bino), monta o vídeo com o apresentador
    na sala de reconhecimento e guarda em **Actions → Caso Ao Vivo (crimes reais) → Artifacts**.
 
 Esses vídeos não são postados sozinhos: confira os fatos do arquivo `post.txt` antes de publicar.
