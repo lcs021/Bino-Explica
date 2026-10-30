@@ -1,0 +1,219 @@
+{
+  "titulo_caso": "Escândalo do Mensalão",
+  "aspect": "9:16",
+  "layout": "padrao",
+  "formatos": [
+    "9:16"
+  ],
+  "marca": "@paposinistro21",
+  "cenas": [
+    {
+      "fala": "Presta atenção: um vídeo gravado num prédio dos Correios derrubou o poder em Brasília.",
+      "tela_titulo": "Mensalão",
+      "tela_texto": "Brasília, 2005",
+      "apoio": {
+        "tipo": "revelacao",
+        "valor": "Tudo começou num vídeo",
+        "rotulo": "Gravação nos Correios"
+      },
+      "destaques": [
+        "vídeo"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Maio de 2005. A revista Veja publica imagens de um funcionário dos Correios recebendo dinheiro. Ele aparece falando de propina.",
+      "tela_titulo": "A gravação",
+      "tela_texto": "Revista Veja, 2005",
+      "apoio": {
+        "tipo": "data",
+        "valor": "Maio de 2005",
+        "rotulo": "Veja divulga vídeo de funcionário dos Correios"
+      },
+      "destaques": [
+        "Veja"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Calma que piora. A partir dali, o deputado Roberto Jefferson, então presidente do PTB, deu uma entrevista e falou em pagamento mensal a parlamentares.",
+      "tela_titulo": "A denúncia",
+      "tela_texto": "Roberto Jefferson, 2005",
+      "apoio": {
+        "tipo": "documento",
+        "valor": "Roberto Jefferson, então presidente do PTB, disse que parlamentares recebiam pagamentos mensais em troca de apoio ao governo.",
+        "rotulo": "Segundo a imprensa"
+      },
+      "destaques": [
+        "mensal"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Daí vem o nome: mensalão. Seria uma mesada para deputados votarem com o governo Lula.",
+      "tela_titulo": "Mensalão",
+      "tela_texto": "Mesada para votos",
+      "apoio": {
+        "tipo": "nenhum",
+        "valor": "",
+        "rotulo": ""
+      },
+      "destaques": [
+        "mensalão",
+        "mesada"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "O Congresso abriu CPIs. A Procuradoria-Geral da República denunciou 40 pessoas ao Supremo Tribunal Federal.",
+      "tela_titulo": "Vai ao Supremo",
+      "tela_texto": "40 denunciados",
+      "apoio": {
+        "tipo": "numero",
+        "valor": "40 pessoas",
+        "rotulo": "Denunciadas ao STF pela PGR"
+      },
+      "destaques": [
+        "40"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "E o julgamento só veio em 2012. Foi transmitido pela TV, e o Supremo condenou vários réus.",
+      "tela_titulo": "O julgamento",
+      "tela_texto": "STF, 2012",
+      "apoio": {
+        "tipo": "local",
+        "valor": "Supremo Tribunal Federal, Brasília",
+        "rotulo": "Julgamento transmitido pela TV"
+      },
+      "destaques": [
+        "2012"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Entre os condenados, estavam José Dirceu, ex-ministro da Casa Civil, e José Genoino, ex-presidente do PT.",
+      "tela_titulo": "Os condenados",
+      "tela_texto": "Dirceu e Genoino",
+      "apoio": {
+        "tipo": "revelacao",
+        "valor": "Políticos na cadeia",
+        "rotulo": "Condenações históricas"
+      },
+      "destaques": [
+        "Dirceu",
+        "Genoino"
+      ],
+      "pausa": true
+    },
+    {
+      "fala": "Os réus sempre negaram a existência do esquema de compra de votos e falaram em caixa dois de campanha. A Justiça não aceitou essa tese.",
+      "tela_titulo": "Versão dos réus",
+      "tela_texto": "Caixa dois",
+      "apoio": {
+        "tipo": "nenhum",
+        "valor": "",
+        "rotulo": ""
+      },
+      "destaques": [
+        "caixa dois"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Foi um dos maiores escândalos políticos do país. Na sua opinião, o Brasil aprendeu alguma coisa com o mensalão? Comenta aí.",
+      "tela_titulo": "E você?",
+      "tela_texto": "Comente",
+      "apoio": {
+        "tipo": "pergunta",
+        "valor": "O Brasil aprendeu algo com o mensalão?",
+        "rotulo": "Comente"
+      },
+      "destaques": [
+        "opinião"
+      ],
+      "pausa": false
+    }
+  ],
+  "titulos": [
+    "O vídeo que abalou Brasília em 2005",
+    "Mensalão: a história em 60 segundos",
+    "Da gravação nos Correios ao STF: o caso do mensalão"
+  ],
+  "legenda": "Um vídeo nos Correios, uma entrevista bombástica e um julgamento histórico no STF. Conto o caso do mensalão em 60 segundos. Você acha que o país mudou depois disso?",
+  "hashtags": [
+    "#crimesreais",
+    "#mensalao",
+    "#politicabrasileira",
+    "#historiadobrasil",
+    "#stf",
+    "#brasilia"
+  ],
+  "posts": {
+    "tiktok": {
+      "legenda": "Um vídeo gravado nos Correios em 2005 abalou o poder em Brasília e deu origem ao nome mensalão. Você acha que o Brasil aprendeu alguma coisa com esse escândalo? Comenta aí!",
+      "hashtags": [
+        "#crimesreais",
+        "#truecrime",
+        "#mensalao",
+        "#politicabrasileira",
+        "#escandalopolitico"
+      ]
+    },
+    "instagram": {
+      "legenda": "Tudo começou em maio de 2005, quando a revista Veja publicou imagens de um funcionário dos Correios recebendo dinheiro. Dali em diante, a denúncia de um pagamento mensal a parlamentares deu nome ao caso: mensalão. O julgamento no Supremo, em 2012, foi transmitido pela TV e terminou com várias condenações. Os réus sempre negaram a compra de votos e falaram em caixa dois, tese que a Justiça não aceitou. Na sua opinião, o Brasil aprendeu algo com o mensalão? Conta nos comentários e salva ou compartilha este post com quem curte entender os bastidores da história. 🗳️",
+      "hashtags": [
+        "#crimesreais",
+        "#truecrime",
+        "#mensalao",
+        "#politicabrasileira",
+        "#paposinistro21"
+      ]
+    },
+    "youtube": {
+      "titulo": "Mensalão: o vídeo nos Correios que abalou Brasília em 2005",
+      "descricao": "Em maio de 2005, a revista Veja publicou imagens de um funcionário dos Correios recebendo dinheiro e falando de propina. Depois, o então presidente do PTB, Roberto Jefferson, falou em pagamento mensal a parlamentares, e daí surgiu o nome mensalão. A Procuradoria-Geral da República denunciou 40 pessoas ao Supremo Tribunal Federal, e o julgamento, transmitido pela TV, aconteceu em 2012, com condenações como as de José Dirceu e José Genoino. Os réus sempre negaram a compra de votos e falaram em caixa dois de campanha, tese que a Justiça não aceitou. Baseado em fatos noticiados pela imprensa. Na sua opinião, o Brasil aprendeu alguma coisa com o mensalão?",
+      "tags": [
+        "mensalão",
+        "escândalo do mensalão",
+        "crimes reais",
+        "true crime",
+        "corrupção no Brasil",
+        "política brasileira",
+        "Roberto Jefferson",
+        "José Dirceu",
+        "José Genoino",
+        "Supremo Tribunal Federal",
+        "CPI dos Correios",
+        "história do Brasil"
+      ]
+    }
+  },
+  "conferir": [
+    {
+      "fato": "Veja publicou o vídeo dos Correios em maio de 2005",
+      "buscar": "Veja vídeo Correios Maurício Marinho maio 2005"
+    },
+    {
+      "fato": "Roberto Jefferson era presidente do PTB e deu entrevista falando em mensalão",
+      "buscar": "Roberto Jefferson entrevista Folha mensalão junho 2005"
+    },
+    {
+      "fato": "PGR denunciou 40 pessoas ao STF",
+      "buscar": "denúncia PGR mensalão 40 denunciados STF"
+    },
+    {
+      "fato": "Julgamento da Ação Penal 470 começou em 2012 e foi transmitido pela TV",
+      "buscar": "Ação Penal 470 julgamento 2012 TV Justiça"
+    },
+    {
+      "fato": "José Dirceu foi ministro da Casa Civil e José Genoino presidente do PT, ambos condenados",
+      "buscar": "condenados Ação Penal 470 José Dirceu José Genoino"
+    },
+    {
+      "fato": "Réus alegaram caixa dois de campanha, tese não aceita pelo STF",
+      "buscar": "mensalão defesa caixa dois tese rejeitada STF"
+    }
+  ]
+}

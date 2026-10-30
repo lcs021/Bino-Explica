@@ -1,0 +1,625 @@
+{
+  "titulo_caso": "Escândalo do Mensalão",
+  "aspect": "16:9",
+  "layout": "padrao",
+  "formatos": [
+    "16:9"
+  ],
+  "marca": "@paposinistro21",
+  "cenas": [
+    {
+      "fala": "Um vídeo gravado escondido. Um funcionário público guardando dinheiro no bolso. E, semanas depois, o homem mais forte do governo estava fora do cargo, e o Brasil aprendia uma palavra que nunca mais ia esquecer.",
+      "tela_titulo": "Um vídeo escondido",
+      "tela_texto": "2005",
+      "apoio": {
+        "tipo": "nenhum",
+        "valor": "",
+        "rotulo": ""
+      },
+      "destaques": [
+        "vídeo"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Fala, pessoal, sejam bem-vindos à live de hoje. Pega seu café, porque o caso é o Mensalão, Brasília, 2005. Presta atenção: aqui não tem boato. Tudo o que eu vou contar foi documentado pela imprensa ou pela Justiça.",
+      "tela_titulo": "O caso de hoje",
+      "tela_texto": "Brasília, 2005",
+      "apoio": {
+        "tipo": "local",
+        "valor": "Brasília",
+        "rotulo": "Centro do poder, 2005"
+      },
+      "destaques": [
+        "Mensalão"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Começa em maio de 2005. A revista Veja publica um vídeo em que um funcionário dos Correios aparece recebendo 3 mil reais, segundo a reportagem, de pessoas que se apresentavam como empresários interessados em contratos.",
+      "tela_titulo": "O vídeo dos correios",
+      "tela_texto": "Maio de 2005",
+      "apoio": {
+        "tipo": "documento",
+        "valor": "Revista divulga vídeo de funcionário dos Correios recebendo dinheiro de supostos empresários interessados em contratos",
+        "rotulo": "Segundo a imprensa"
+      },
+      "destaques": [
+        "3 mil"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "No vídeo, ele fala de um esquema de corrupção nos Correios. E, segundo a reportagem, cita um padrinho político: o deputado Roberto Jefferson, presidente do PTB. Pronto, a bomba caiu no colo dele.",
+      "tela_titulo": "Um nome aparece",
+      "tela_texto": "Roberto Jefferson, PTB",
+      "apoio": {
+        "tipo": "nenhum",
+        "valor": "",
+        "rotulo": ""
+      },
+      "destaques": [
+        "bomba"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Jefferson fica encurralado, e a pressão só cresce. Aí, em 6 de junho de 2005, ele dá uma entrevista à Folha de S.Paulo. Só que, em vez de se defender, ele parte para o ataque.",
+      "tela_titulo": "A entrevista",
+      "tela_texto": "Folha de S.Paulo",
+      "apoio": {
+        "tipo": "data",
+        "valor": "6 de junho de 2005",
+        "rotulo": "Jefferson dá entrevista e faz a denúncia"
+      },
+      "destaques": [
+        "ataque"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Ele diz que o tesoureiro do PT, Delúbio Soares, pagava uma mesada a deputados de partidos aliados, como o PP e o PL. E ele dá um nome pra isso. Mensalão.",
+      "tela_titulo": "Nasce a palavra",
+      "tela_texto": "Delúbio Soares, tesoureiro do PT",
+      "apoio": {
+        "tipo": "revelacao",
+        "valor": "Mensalão",
+        "rotulo": "A acusação de Jefferson"
+      },
+      "destaques": [
+        "Mensalão"
+      ],
+      "pausa": true
+    },
+    {
+      "fala": "Segundo Jefferson, eram R$ 30 mil por mês para cada parlamentar, em troca de votos a favor do governo no Congresso. Guarda esse número, porque é ele que dá nome ao escândalo.",
+      "tela_titulo": "A mesada",
+      "tela_texto": "R$ 30 mil por mês",
+      "apoio": {
+        "tipo": "numero",
+        "valor": "R$ 30 mil",
+        "rotulo": "Mesada mensal, segundo Jefferson"
+      },
+      "destaques": [
+        "R$ 30 mil"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Nas semanas seguintes, um nome começa a aparecer em todas as manchetes: Marcos Valério, um publicitário de Minas Gerais. Calma que piora, porque ele vai virar a peça central dessa história.",
+      "tela_titulo": "O publicitário",
+      "tela_texto": "Marcos Valério",
+      "apoio": {
+        "tipo": "local",
+        "valor": "Minas Gerais",
+        "rotulo": "Base do publicitário"
+      },
+      "destaques": [
+        "Marcos Valério"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "As agências de Valério, a SMP&B e a DNA, tinham contratos de publicidade com órgãos públicos e empresas estatais. Ou seja, dinheiro público passava pelas mãos dele de forma legal. A pergunta era o que acontecia depois.",
+      "tela_titulo": "As agências",
+      "tela_texto": "SMP&B e DNA",
+      "apoio": {
+        "tipo": "documento",
+        "valor": "Agências ligadas a Marcos Valério mantinham contratos de publicidade com órgãos públicos e empresas estatais",
+        "rotulo": "Segundo a imprensa"
+      },
+      "destaques": [
+        "dinheiro público"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Em junho, Jefferson vai depor no Conselho de Ética da Câmara. E ali ele manda um recado público para o ministro da Casa Civil, José Dirceu: que ele saia do governo rápido.",
+      "tela_titulo": "O recado",
+      "tela_texto": "Conselho de Ética",
+      "apoio": {
+        "tipo": "nenhum",
+        "valor": "",
+        "rotulo": ""
+      },
+      "destaques": [
+        "José Dirceu"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Poucos dias depois, em 16 de junho de 2005, José Dirceu deixa a Casa Civil. O ministro mais poderoso do governo estava fora, e o escândalo tinha acabado de começar.",
+      "tela_titulo": "A queda do ministro",
+      "tela_texto": "Casa Civil",
+      "apoio": {
+        "tipo": "data",
+        "valor": "16 de junho de 2005",
+        "rotulo": "Dirceu deixa a Casa Civil"
+      },
+      "destaques": [
+        "deixa"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Ele volta para a Câmara como deputado e nega as acusações. Mas presta atenção nisso, porque essa história ainda vai cobrar a conta, só que bem mais pra frente.",
+      "tela_titulo": "De volta à câmara",
+      "tela_texto": "José Dirceu, deputado",
+      "apoio": {
+        "tipo": "nenhum",
+        "valor": "",
+        "rotulo": ""
+      },
+      "destaques": [
+        "cobrar"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Enquanto isso, o Congresso instala a CPMI dos Correios. Ela nasceu para investigar aquele vídeo, mas logo os parlamentares começam a seguir outro rastro: o caminho do dinheiro.",
+      "tela_titulo": "A investigação",
+      "tela_texto": "CPMI dos Correios",
+      "apoio": {
+        "tipo": "documento",
+        "valor": "Congresso instala CPMI dos Correios para investigar denúncias de corrupção reveladas em 2005",
+        "rotulo": "Segundo a imprensa"
+      },
+      "destaques": [
+        "rastro"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Segundo as investigações, empresas ligadas a Valério pegaram empréstimos nos bancos Rural e BMG. Para a acusação, esses empréstimos eram uma fachada, e o dinheiro abastecia o esquema.",
+      "tela_titulo": "Os empréstimos",
+      "tela_texto": "Banco Rural e BMG",
+      "apoio": {
+        "tipo": "nenhum",
+        "valor": "",
+        "rotulo": ""
+      },
+      "destaques": [
+        "fachada"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Pensa comigo: um publicitário pegando empréstimos milionários, e esse dinheiro indo parar no caixa de um partido. Na época, Valério e Delúbio diziam que era dinheiro de campanha não declarado. O famoso caixa dois.",
+      "tela_titulo": "A versão da defesa",
+      "tela_texto": "Caixa dois",
+      "apoio": {
+        "tipo": "documento",
+        "valor": "Valério e Delúbio afirmaram que os recursos eram dinheiro de campanha não declarado, o chamado caixa dois",
+        "rotulo": "Segundo a imprensa"
+      },
+      "destaques": [
+        "caixa dois"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "E tem um detalhe que deixou o país de queixo caído: os saques em dinheiro vivo numa agência do Banco Rural em Brasília. Quem sacava, segundo a investigação, eram políticos e intermediários.",
+      "tela_titulo": "Dinheiro vivo",
+      "tela_texto": "Banco Rural",
+      "apoio": {
+        "tipo": "local",
+        "valor": "Brasília",
+        "rotulo": "Agência do Banco Rural"
+      },
+      "destaques": [
+        "dinheiro vivo"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Uma ex-secretária de Valério também foi à imprensa. Ela falou sobre a movimentação de dinheiro na empresa e reforçou as suspeitas contra o antigo patrão. O cerco estava fechando.",
+      "tela_titulo": "A ex-secretária",
+      "tela_texto": "2005",
+      "apoio": {
+        "tipo": "documento",
+        "valor": "Ex-secretária de Marcos Valério relata à imprensa movimentação de dinheiro e reforça suspeitas contra o publicitário",
+        "rotulo": "Segundo a imprensa"
+      },
+      "destaques": [
+        "cerco"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "E aí, em julho de 2005, vem uma cena que parece roteiro de filme. Um assessor ligado ao PT é parado no aeroporto de Congonhas, em São Paulo, com dólares escondidos na cueca.",
+      "tela_titulo": "No aeroporto",
+      "tela_texto": "Julho de 2005",
+      "apoio": {
+        "tipo": "local",
+        "valor": "Aeroporto de Congonhas, São Paulo",
+        "rotulo": "Onde o assessor foi parado"
+      },
+      "destaques": [
+        "cueca"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Segundo a polícia, eram cerca de 100 mil dólares, além de dinheiro em reais numa mala. A cena virou piada nacional, mas também virou símbolo da crise política daquele ano.",
+      "tela_titulo": "Os dólares",
+      "tela_texto": "Congonhas, 2005",
+      "apoio": {
+        "tipo": "numero",
+        "valor": "100 mil dólares",
+        "rotulo": "Valor achado com o assessor"
+      },
+      "destaques": [
+        "100 mil"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "O presidente Lula vai à televisão e diz que se sente traído. É importante dizer: Lula não estava entre os acusados no processo do Mensalão. Mas o governo dele estava no centro da tempestade.",
+      "tela_titulo": "O pronunciamento",
+      "tela_texto": "Presidente Lula",
+      "apoio": {
+        "tipo": "nenhum",
+        "valor": "",
+        "rotulo": ""
+      },
+      "destaques": [
+        "traído"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "No Congresso, a conta começa a ser cobrada. Em 14 de setembro de 2005, a Câmara cassa o mandato de Roberto Jefferson. O homem que abriu a caixa-preta foi o primeiro a cair.",
+      "tela_titulo": "Primeira cassação",
+      "tela_texto": "Roberto Jefferson",
+      "apoio": {
+        "tipo": "data",
+        "valor": "14 de setembro de 2005",
+        "rotulo": "Câmara cassa Roberto Jefferson"
+      },
+      "destaques": [
+        "cassa"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "E lembra do Dirceu, que tinha voltado para a Câmara? No fim de 2005, ele também perde o mandato, em votação no plenário. Eu falei que a conta ia chegar.",
+      "tela_titulo": "A conta chegou",
+      "tela_texto": "José Dirceu",
+      "apoio": {
+        "tipo": "documento",
+        "valor": "Câmara dos Deputados cassa o mandato de José Dirceu em votação no plenário no fim de 2005",
+        "rotulo": "Segundo a imprensa"
+      },
+      "destaques": [
+        "perde"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Em 2006, o procurador-geral da República, Antonio Fernando de Souza, apresenta a denúncia ao Supremo. São 40 pessoas acusadas. Políticos, banqueiros, publicitários. Gente de dentro e de fora do governo.",
+      "tela_titulo": "A denúncia",
+      "tela_texto": "2006",
+      "apoio": {
+        "tipo": "numero",
+        "valor": "40 pessoas",
+        "rotulo": "Denunciadas ao Supremo"
+      },
+      "destaques": [
+        "40 pessoas"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Na denúncia, ele descreve o grupo como uma sofisticada organização criminosa. Segundo a acusação, havia um núcleo político, um núcleo operacional, ligado a Valério, e um núcleo financeiro.",
+      "tela_titulo": "Três núcleos",
+      "tela_texto": "Procuradoria-Geral",
+      "apoio": {
+        "tipo": "documento",
+        "valor": "Procurador-geral descreve o esquema como sofisticada organização criminosa dividida em núcleos político, operacional e financeiro",
+        "rotulo": "Segundo a Justiça"
+      },
+      "destaques": [
+        "organização criminosa"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Em 2007, o Supremo aceita a denúncia, e os acusados viram réus. O processo ganha um número que ia ficar famoso: Ação Penal 470. E aí começa a parte mais lenta.",
+      "tela_titulo": "Viram réus",
+      "tela_texto": "Ação Penal 470",
+      "apoio": {
+        "tipo": "nenhum",
+        "valor": "",
+        "rotulo": ""
+      },
+      "destaques": [
+        "réus"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Enquanto o processo andava no Supremo Tribunal Federal, muita gente apostava que tudo ia acabar em pizza, como se diz por aqui. Que os anos iam passar e ninguém ia pagar.",
+      "tela_titulo": "Vai dar em pizza",
+      "tela_texto": "STF",
+      "apoio": {
+        "tipo": "local",
+        "valor": "Supremo Tribunal Federal",
+        "rotulo": "Onde corria a Ação Penal 470"
+      },
+      "destaques": [
+        "pizza"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Foram anos de depoimentos, perícias e recursos. O julgamento só começa em 2 de agosto de 2012, mais de sete anos depois daquela entrevista que balançou Brasília.",
+      "tela_titulo": "Começa o julgamento",
+      "tela_texto": "2012",
+      "apoio": {
+        "tipo": "data",
+        "valor": "2 de agosto de 2012",
+        "rotulo": "Início do julgamento no STF"
+      },
+      "destaques": [
+        "julgamento"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "O relator é o ministro Joaquim Barbosa. As sessões são transmitidas ao vivo pela TV Justiça, e o Brasil inteiro passa a acompanhar ministro por ministro, voto por voto.",
+      "tela_titulo": "Ao vivo na TV",
+      "tela_texto": "Joaquim Barbosa, relator",
+      "apoio": {
+        "tipo": "nenhum",
+        "valor": "",
+        "rotulo": ""
+      },
+      "destaques": [
+        "ao vivo"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Presta atenção no que o Supremo concluiu: parte do dinheiro tinha origem pública. Segundo o julgamento, houve desvio de recursos do fundo Visanet, ligado ao Banco do Brasil.",
+      "tela_titulo": "Dinheiro público",
+      "tela_texto": "Fundo Visanet",
+      "apoio": {
+        "tipo": "documento",
+        "valor": "Supremo concluiu que houve desvio de recursos do fundo Visanet, ligado ao Banco do Brasil",
+        "rotulo": "Segundo a Justiça"
+      },
+      "destaques": [
+        "Visanet"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Depois de meses de sessões, no fim de 2012, sai o resultado. 25 réus condenados.",
+      "tela_titulo": "O veredito",
+      "tela_texto": "Fim de 2012",
+      "apoio": {
+        "tipo": "revelacao",
+        "valor": "25 condenados",
+        "rotulo": "Resultado do julgamento"
+      },
+      "destaques": [
+        "condenados"
+      ],
+      "pausa": true
+    },
+    {
+      "fala": "Entre eles, José Dirceu, Delúbio Soares, José Genoino, que presidia o PT na época do escândalo, e o próprio Roberto Jefferson, o homem que denunciou tudo. Cada um com a sua pena.",
+      "tela_titulo": "Quem foi condenado",
+      "tela_texto": "Dirceu, Delúbio, Genoino, Jefferson",
+      "apoio": {
+        "tipo": "nenhum",
+        "valor": "",
+        "rotulo": ""
+      },
+      "destaques": [
+        "denunciou"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Marcos Valério recebe a maior pena do julgamento: mais de 37 anos de prisão. O publicitário que quase ninguém conhecia em 2005 terminou como o rosto do esquema.",
+      "tela_titulo": "A maior pena",
+      "tela_texto": "Marcos Valério",
+      "apoio": {
+        "tipo": "numero",
+        "valor": "Mais de 37 anos",
+        "rotulo": "Pena de Marcos Valério"
+      },
+      "destaques": [
+        "37 anos"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Em 15 de novembro de 2013, Dirceu, Genoino e Delúbio se entregam à Polícia Federal. Ver políticos desse peso indo para a prisão era algo raro no Brasil.",
+      "tela_titulo": "As prisões",
+      "tela_texto": "Polícia Federal",
+      "apoio": {
+        "tipo": "data",
+        "valor": "15 de novembro de 2013",
+        "rotulo": "Condenados se entregam à PF"
+      },
+      "destaques": [
+        "prisão"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Mas calma que tem mais. O ex-diretor de marketing do Banco do Brasil, Henrique Pizzolato, condenado no processo, foge do país e vai parar na Itália.",
+      "tela_titulo": "A fuga",
+      "tela_texto": "Henrique Pizzolato",
+      "apoio": {
+        "tipo": "local",
+        "valor": "Itália",
+        "rotulo": "Destino da fuga"
+      },
+      "destaques": [
+        "foge"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Ele é preso lá em 2014. Depois de uma longa disputa judicial, a Itália autoriza a extradição, e Pizzolato é mandado de volta ao Brasil em 2015.",
+      "tela_titulo": "Extraditado",
+      "tela_texto": "2015",
+      "apoio": {
+        "tipo": "documento",
+        "valor": "Pizzolato é preso na Itália e, após disputa judicial, extraditado para o Brasil",
+        "rotulo": "Segundo a imprensa"
+      },
+      "destaques": [
+        "extradição"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "E o caso ainda teve reviravolta. Com os chamados embargos infringentes, o Supremo absolveu alguns réus, como Dirceu, do crime de formação de quadrilha. As demais condenações dele foram mantidas.",
+      "tela_titulo": "A reviravolta",
+      "tela_texto": "Embargos infringentes",
+      "apoio": {
+        "tipo": "nenhum",
+        "valor": "",
+        "rotulo": ""
+      },
+      "destaques": [
+        "quadrilha"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Para muitos analistas, o Mensalão virou um marco: mostrou que gente do alto escalão da política podia ser julgada e condenada. Para outros, foi só o começo de crises ainda maiores. E esse debate continua até hoje.",
+      "tela_titulo": "O legado",
+      "tela_texto": "Ação Penal 470",
+      "apoio": {
+        "tipo": "documento",
+        "valor": "Julgamento do Mensalão é visto por analistas como marco no combate à corrupção política no Brasil",
+        "rotulo": "Segundo a imprensa"
+      },
+      "destaques": [
+        "marco"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Agora eu quero saber de você. Na sua opinião, o julgamento do Mensalão mudou de verdade a política brasileira, ou ficou tudo igual? Deixa aqui nos comentários.",
+      "tela_titulo": "E você?",
+      "tela_texto": "Comenta aí",
+      "apoio": {
+        "tipo": "pergunta",
+        "valor": "O julgamento do Mensalão mudou a política brasileira ou ficou tudo igual?",
+        "rotulo": "Responda nos comentários"
+      },
+      "destaques": [
+        "comentários"
+      ],
+      "pausa": false
+    }
+  ],
+  "titulos": [
+    "Mensalão: o vídeo de 3 mil reais que derrubou o ministro mais poderoso do governo",
+    "R$ 30 mil por mês: a história completa do Mensalão",
+    "Da entrevista bomba à prisão: como o Mensalão terminou com 25 condenados"
+  ],
+  "legenda": "Em 2005, um vídeo gravado nos Correios abriu a maior crise política daquele governo. Uma entrevista, uma CPMI, dólares na cueca e um julgamento histórico no Supremo. Hoje eu conto o caso do Mensalão do começo ao fim, só com fatos documentados. Pra você, o Mensalão mudou alguma coisa na política brasileira?",
+  "hashtags": [
+    "#crimesreais",
+    "#mensalao",
+    "#historiadobrasil",
+    "#politicabrasileira",
+    "#stf",
+    "#truecrime",
+    "#brasilia"
+  ],
+  "posts": {
+    "tiktok": {
+      "legenda": "Um vídeo gravado escondido derrubou o homem mais forte do governo e ensinou ao Brasil uma palavra nova: Mensalão. Você acha que o julgamento mudou a política do país?",
+      "hashtags": [
+        "#crimesreais",
+        "#truecrime",
+        "#mensalao",
+        "#politicabrasileira",
+        "#casosreais",
+        "#paposinistro21"
+      ]
+    },
+    "instagram": {
+      "legenda": "Tudo começou com um vídeo gravado nos Correios em 2005 e acabou em um dos julgamentos mais acompanhados da história do Supremo. O caso do Mensalão derrubou ministro, cassou deputados e terminou com 25 réus condenados. Tudo o que está no vídeo foi documentado pela imprensa ou pela Justiça. 🔎 Na sua opinião, o Mensalão mudou de verdade a política brasileira ou ficou tudo igual? Salve este post e compartilhe com quem curte conhecer a história por trás das manchetes.",
+      "hashtags": [
+        "#crimesreais",
+        "#truecrime",
+        "#mensalao",
+        "#historiadobrasil",
+        "#paposinistro21"
+      ]
+    },
+    "youtube": {
+      "titulo": "Mensalão: do vídeo nos Correios à condenação no STF | Caso completo",
+      "descricao": "Em maio de 2005, um vídeo publicado pela revista Veja mostrou um funcionário dos Correios recebendo dinheiro e deu início a uma crise que balançou Brasília. Poucas semanas depois, Roberto Jefferson falou em \"mensalão\" e José Dirceu deixou a Casa Civil. Neste vídeo, você acompanha a CPMI dos Correios, o papel de Marcos Valério, a Ação Penal 470 e o julgamento no Supremo Tribunal Federal, que condenou 25 réus em 2012. Baseado em fatos noticiados pela imprensa. Na sua opinião, o julgamento do Mensalão mudou de verdade a política brasileira?",
+      "tags": [
+        "mensalão",
+        "caso mensalão",
+        "crimes reais",
+        "true crime brasil",
+        "escândalo político",
+        "corrupção no Brasil",
+        "Ação Penal 470",
+        "Marcos Valério",
+        "Roberto Jefferson",
+        "José Dirceu",
+        "julgamento STF",
+        "história do Brasil"
+      ]
+    }
+  },
+  "conferir": [
+    {
+      "fato": "Entrevista de Roberto Jefferson à Folha de S.Paulo em 6 de junho de 2005",
+      "buscar": "Roberto Jefferson entrevista Folha 6 de junho de 2005 mensalão"
+    },
+    {
+      "fato": "José Dirceu deixa a Casa Civil em 16 de junho de 2005",
+      "buscar": "José Dirceu deixa Casa Civil 16 de junho de 2005"
+    },
+    {
+      "fato": "Cassação de Roberto Jefferson em 14 de setembro de 2005",
+      "buscar": "cassação Roberto Jefferson 14 de setembro de 2005"
+    },
+    {
+      "fato": "Assessor parado em Congonhas com cerca de 100 mil dólares na cueca em julho de 2005",
+      "buscar": "assessor PT dólares na cueca Congonhas julho 2005"
+    },
+    {
+      "fato": "Início do julgamento da Ação Penal 470 em 2 de agosto de 2012 e 25 condenados",
+      "buscar": "julgamento mensalão STF 2 de agosto de 2012 25 condenados"
+    },
+    {
+      "fato": "Pena de Marcos Valério de mais de 37 anos e prisões em 15 de novembro de 2013",
+      "buscar": "pena Marcos Valério mensalão 37 anos prisões 15 de novembro de 2013"
+    }
+  ]
+}
