@@ -79,6 +79,13 @@ def main():
                 post += ["", caso["legenda"]]
             if caso.get("hashtags"):
                 post += ["", " ".join(caso["hashtags"])]
+            q = caso.get("posts") or {}
+            if q:
+                t, i, y = q.get("tiktok") or {}, q.get("instagram") or {}, q.get("youtube") or {}
+                post += ["", "===== TIKTOK =====", t.get("legenda", ""), " ".join(t.get("hashtags", [])),
+                         "", "===== INSTAGRAM REELS =====", i.get("legenda", ""), " ".join(i.get("hashtags", [])),
+                         "", "===== YOUTUBE =====", f"Título: {y.get('titulo', '')}", y.get("descricao", ""),
+                         f"Tags: {', '.join(y.get('tags', []))}"]
             if caso.get("conferir"):
                 post += ["", "CONFERIR ANTES DE POSTAR"] + [f"- {x.get('fato')} (buscar: {x.get('buscar')})" for x in caso["conferir"]]
             (pasta / "post.txt").write_text("\n".join(post), encoding="utf-8")
