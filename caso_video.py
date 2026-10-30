@@ -1,8 +1,9 @@
 """
 Monta o vídeo do Caso Ao Vivo (crimes reais) com a mesma voz neural do Bino Explica.
 
-Cena: sala de reconhecimento (régua de altura na parede), refletor, TV de evidências,
-marcadores amarelos no chão e o apresentador em pé, com a boca mexendo pelo volume da voz.
+Cena: estúdio noir (luz de persiana, feixe de refletor com poeira, palco com borda dourada),
+um dossiê de vidro escuro com a evidência de cada cena e o apresentador em pé,
+com a boca mexendo pelo volume da voz.
 Desenha cada quadro com Pillow e entrega para o ffmpeg junto com a narração.
 """
 import array
@@ -94,64 +95,101 @@ def blocos_legenda(texto):
     return out
 
 
+def f_serif(t): return _fonte(["DMSerifDisplay-Regular.ttf", "DejaVuSerif.ttf"], t)
+
+
+OURO = (201, 164, 92)
+
+
+def _h(n):
+    n = (n * 2654435761) & 0xFFFFFFFF
+    return (n ^ (n >> 13)) & 0xFFFFFFFF
+
+
+def espacado(d, x, y, texto, fonte, cor, esp, alinhar="l"):
+    """Texto com espaço entre letras (rótulos em caixa alta)."""
+    larg = sum(d.textlength(ch, font=fonte) for ch in texto) + esp * (len(texto) - 1)
+    x0 = x - larg / 2 if alinhar == "m" else (x - larg if alinhar == "r" else x)
+    for ch in texto:
+        d.text((x0, y), ch, font=fonte, fill=cor, anchor="ls")
+        x0 += d.textlength(ch, font=fonte) + esp
+
+
 # ---------- layout ----------
 def layout(vertical):
     if vertical:
         W, H = 720, 1280
         return dict(W=W, H=H, floor=H * 0.93, h=650, cx=W * 0.5, foot=H * 0.93 + 16,
-                    tv=(36, 150, W - 72, 340), tape=74,
-                    markers=[(W * 0.16, H * 0.93 + 26, 1.1, 1), (W * 0.85, H * 0.93 + 30, 1.1, 2)],
-                    subs=1055, subsz=58, marca=(W / 2, H - 34, 22, "mm"))
+                    head=(W / 2, 78, W - 120, "m", 1.0), doss=(48, 230, W - 96, 1.0),
+                    subs=1055, subsz=58, marca=(W / 2, H - 34, 22, "mm"), blinds=0.42)
     W, H = 1280, 720
     return dict(W=W, H=H, floor=H * 0.86, h=560, cx=W * 0.3, foot=H * 0.86 + 12,
-                tv=(W * 0.5, 70, W * 0.46, W * 0.46 * 0.58), tape=None,
-                markers=[(W * 0.06, H * 0.86 + 34, 0.9, 1), (W * 0.93, H * 0.86 + 34, 0.9, 2)],
-                subs=H - 46, subsz=48, marca=(W - 30, H - 22, 18, "rm"))
+                head=(W * 0.54, 70, W * 0.42, "l", 0.9), doss=(W * 0.54, 200, W * 0.41, 0.86),
+                subs=H - 46, subsz=48, marca=(W - 30, H - 22, 18, "rm"), blinds=0.5)
 
 
 def fundo(L, titulo, marca):
-    """Sala de reconhecimento sem as partes animadas."""
+    """Estúdio noir: grafite, luz de persiana, feixe do refletor, palco com borda dourada."""
     W, H = L["W"], L["H"]
-    img = Image.new("RGBA", (W, H))
     grad = Image.linear_gradient("L").resize((W, H))
-    topo, base = (26, 31, 43), (16, 19, 27)
-    img = Image.merge("RGB", [grad.point(lambda v, a=a, b=b: int(a + (b - a) * v / 255)) for a, b in zip(topo, base)]).convert("RGBA")
+    def cor_em(v):
+        p = v / 255
+        if p < 0.62:
+            a, b, q = (11, 15, 23), (18, 26, 40), p / 0.62
+        else:
+            a, b, q = (18, 26, 40), (8, 10, 16), (p - 0.62) / 0.38
+        return [int(a[i] + (b[i] - a[i]) * q) for i in range(3)]
+    tab = [cor_em(v) for v in range(256)]
+    img = Image.merge("RGB", [grad.point([tab[v][i] for v in range(256)]) for i in range(3)]).convert("RGBA")
+    # persiana
     ov = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(ov)
-    ppc = L["h"] / 178
-    fm = f_mono(15 if H > W else 14)
-    for cm in range(30, 235, 5):
-        y = L["floor"] - cm * ppc
-        if y < 0:
-            break
-        grande = cm % 10 == 0
-        d.rectangle([0, y, W, y + (2 if grande else 1)], fill=(220, 228, 240, 41 if grande else 18))
-        if grande:
-            d.text((12, y - 10), str(cm), font=fm, fill=(220, 228, 240, 107), anchor="lm")
-            d.text((W - 12, y - 10), str(cm), font=fm, fill=(220, 228, 240, 107), anchor="rm")
+    bw, sl = W * 0.035, H * 0.55
+    for k in range(9):
+        x0 = W * L["blinds"] + k * bw * 1.9
+        d.polygon([(x0, 0), (x0 + bw, 0), (x0 + bw - sl * 0.55, sl), (x0 - sl * 0.55, sl)], fill=(255, 206, 150, 11))
     img.alpha_composite(ov)
-    img.alpha_composite(radial(W, H, L["cx"], L["floor"] - L["h"] * 0.6, L["h"] * 0.85, (255, 236, 200), 52))
-    # chão
-    chao = Image.new("RGBA", (W, int(H - L["floor"]) + 1), (13, 15, 21, 255))
-    img.alpha_composite(chao, (0, int(L["floor"])))
+    # feixe do refletor
+    fl, half, cx = L["floor"], L["h"] * 0.42, L["cx"]
+    mask = Image.new("L", (W, H), 0)
+    ImageDraw.Draw(mask).polygon([(cx - 26, 0), (cx + 26, 0), (cx + half, fl), (cx - half, fl)], fill=255)
+    g = Image.linear_gradient("L").resize((W, H)).point(lambda v: int(41 - 36 * min(1, v / 255 * H / fl)))
+    feixe = Image.new("RGBA", (W, H), (255, 236, 205, 0))
+    a = Image.new("L", (W, H), 0)
+    a.paste(g, (0, 0), mask)
+    feixe.putalpha(a)
+    img.alpha_composite(feixe)
+    # chão e palco
+    chao = Image.new("RGBA", (W, int(H - fl) + 1), (12, 15, 22, 255))
+    img.alpha_composite(chao, (0, int(fl)))
+    rx, ry = L["h"] * 0.36, L["h"] * 0.055
+    brilho = radial(int(rx * 2), int(rx * 2), rx, rx, rx, (255, 230, 190), 51).resize((int(rx * 2), max(2, int(ry * 2))))
+    img.alpha_composite(brilho, (int(cx - rx), int(fl + ry * 0.2 - ry)))
     ov = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    ImageDraw.Draw(ov).rectangle([0, L["floor"], W, L["floor"] + 2], fill=(255, 255, 255, 20))
+    ImageDraw.Draw(ov).ellipse([cx - rx, fl + ry * 0.2 - ry, cx + rx, fl + ry * 0.2 + ry], outline=OURO + (140,), width=2)
     img.alpha_composite(ov)
-    img.alpha_composite(radial(W, H, L["cx"], L["floor"] + 6, L["h"] * 0.45, (255, 236, 200), 30))
     # vinheta
     vin = Image.radial_gradient("L").resize((int(W * 1.5), int(H * 1.5)))
-    vin = vin.point(lambda v: int(min(140, max(0, (v - 110) * 1.4))))
+    vin = vin.point(lambda v: int(min(153, max(0, (v - 100) * 1.3))))
     vc = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    a = vin.crop((int(W * 0.25), int(H * 0.25), int(W * 0.25) + W, int(H * 0.25) + H))
-    vc.putalpha(a)
+    vc.putalpha(vin.crop((int(W * 0.25), int(H * 0.2), int(W * 0.25) + W, int(H * 0.2) + H)))
     img.alpha_composite(vc)
-    # marcadores de evidência
-    for x, y, s, n in L["markers"]:
-        marcador(img, x, y, s, n)
-    # fita do topo (vertical)
-    if L["tape"]:
-        fita(img, W, L["tape"], titulo)
-    # marca d'água
+    # grão de filme
+    ruido = Image.frombytes("L", (W, H), bytes(random.Random(3).getrandbits(8) for _ in range(W * H)))
+    gr = Image.merge("RGBA", [ruido, ruido, ruido, Image.new("L", (W, H), 16)])
+    img.alpha_composite(gr)
+    # cabeçalho
+    x, y, maxw, al, s = L["head"]
+    d = ImageDraw.Draw(img)
+    espacado(d, x, y, "CASO REAL", f_mono(13 * s), OURO, 3 * s, al)
+    fs = f_serif(38 * s)
+    yy = y + 44 * s
+    for l in quebrar(d, titulo, fs, maxw)[:2]:
+        d.text((x, yy), l, font=fs, fill=(242, 239, 232), anchor=al + "s")
+        yy += 42 * s
+    lw = 56 * s
+    x0 = x - lw / 2 if al == "m" else x
+    d.rectangle([x0, yy - 24 * s, x0 + lw, yy - 24 * s + 2], fill=OURO)
     if marca:
         x, y, tam, anc = L["marca"]
         ov = Image.new("RGBA", (W, H), (0, 0, 0, 0))
@@ -160,75 +198,60 @@ def fundo(L, titulo, marca):
     return img
 
 
-def marcador(img, x, y, s, n):
-    ov = Image.new("RGBA", img.size, (0, 0, 0, 0))
-    ImageDraw.Draw(ov).ellipse([x - 26 * s, y - 3 * s, x + 26 * s, y + 7 * s], fill=(0, 0, 0, 100))
-    img.alpha_composite(ov)
+def dossie(L, cena, idx, n, titulo):
+    """Cartão de vidro escuro com cantos dourados: a evidência da cena."""
+    x, y, w, s = L["doss"]
+    w = int(w)
+    pad = 28 * s
+    tem = cena and (cena.get("tela_titulo") or cena.get("tela_texto"))
+    cab = cena.get("tela_titulo") if cena and cena.get("tela_titulo") else titulo
+    sub = cena.get("tela_texto", "") if cena else ""
+    tmp = ImageDraw.Draw(Image.new("RGB", (1, 1)))
+    fs = 46 * s
+    fsf = f_serif(fs)
+    linhas = quebrar(tmp, cab, fsf, w - 2 * pad)
+    if len(linhas) > 2:
+        fs = 36 * s
+        fsf = f_serif(fs)
+        linhas = quebrar(tmp, cab, fsf, w - 2 * pad)[:3]
+    fb = f_body(21 * s)
+    subl = quebrar(tmp, sub, fb, w - 2 * pad)[:2]
+    h = int(pad + 30 * s + fs * 0.9 + (len(linhas) - 1) * fs * 1.08 + 18 * s + (32 * s + (len(subl) - 1) * 27 * s if subl else 0) + pad * 0.9)
+    img = Image.new("RGBA", (w, h), (9, 12, 19, 199))
     d = ImageDraw.Draw(img)
-    d.polygon([(x - 22 * s, y), (x - 12 * s, y - 42 * s), (x + 12 * s, y - 42 * s), (x + 22 * s, y)], fill=(242, 194, 48))
-    d.polygon([(x + 4 * s, y - 42 * s), (x + 12 * s, y - 42 * s), (x + 22 * s, y), (x + 10 * s, y)], fill=(201, 154, 18))
-    d.text((x - 2 * s, y - 18 * s), str(n), font=f_display(24 * s), fill=(27, 26, 34), anchor="mm")
-
-
-def fita(img, W, y, titulo):
-    faixa = Image.new("RGBA", (int(W * 1.4), 52), (245, 197, 66, 255))
-    d = ImageDraw.Draw(faixa)
-    unidade = f"  CASO REAL  •  {titulo.upper()}  •"
-    fonte = f_display(26)
-    uw = d.textlength(unidade, font=fonte)
-    x = -uw * 0.3
-    while x < faixa.width:
-        d.text((x, 27), unidade, font=fonte, fill=(27, 26, 34), anchor="lm")
-        x += uw
-    faixa = faixa.rotate(2, expand=True, resample=Image.BICUBIC)
-    img.alpha_composite(faixa, (int(W / 2 - faixa.width / 2), int(y - faixa.height / 2)))
-
-
-def tv(L, cena, idx, titulo, conteudo=True):
-    x, y, w, h = [int(v) for v in L["tv"]]
-    img = Image.new("RGBA", (w + 12, h + 14), (0, 0, 0, 0))
-    ImageDraw.Draw(img).rounded_rectangle([6, 10, w + 6, h + 10], 14, fill=(0, 0, 0, 120))
-    d = ImageDraw.Draw(img)
-    d.rounded_rectangle([0, 0, w, h], 14, fill=(7, 8, 12), outline=(43, 49, 66), width=2)
-    p = max(10, int(w * 0.025))
-    sw, sh = w - 2 * p, h - 2 * p
-    tela = Image.linear_gradient("L").resize((sw, sh))
-    tela = Image.merge("RGB", [tela.point(lambda v, a=a, b=b: int(a + (b - a) * v / 255)) for a, b in zip((15, 32, 50), (10, 20, 32))])
-    m = Image.new("L", (sw, sh), 0)
-    ImageDraw.Draw(m).rounded_rectangle([0, 0, sw - 1, sh - 1], 8, fill=255)
-    img.paste(tela, (p, p), m)
-    if conteudo:
-        s2 = sw / 600
-        pad = 26 * s2
-        tem = cena and (cena.get("tela_titulo") or cena.get("tela_texto"))
-        rotulo = f"EVIDÊNCIA #{idx + 1:02d}" if tem else "CASO REAL"
-        d.ellipse([p + pad, p + pad + 2 * s2, p + pad + 12 * s2, p + pad + 14 * s2], fill=(255, 59, 85))
-        d.text((p + pad + 20 * s2, p + pad + 9 * s2), rotulo, font=f_mono(15 * s2), fill=(255, 107, 126), anchor="lm")
-        d.text((p + sw - pad, p + pad + 9 * s2), "ARQUIVO", font=f_mono(15 * s2), fill=(120, 132, 150), anchor="rm")
-        cab = (cena.get("tela_titulo") if cena and cena.get("tela_titulo") else titulo or "").upper()
-        sub = cena.get("tela_texto", "") if cena else ""
-        fs = 64 * s2
-        fd = f_display(fs)
-        linhas = quebrar(d, cab, fd, sw - 2 * pad)
-        if len(linhas) > 2:
-            fs = 48 * s2
-            fd = f_display(fs)
-            linhas = quebrar(d, cab, fd, sw - 2 * pad)[:3]
-        yy = p + pad + 40 * s2
-        for l in linhas:
-            d.text((p + pad, yy), l, font=fd, fill=(255, 255, 255))
+    d.rectangle([0, 0, w - 1, h - 1], outline=(70, 64, 52, 255), width=1)
+    k = int(18 * s)
+    for cx, cy, dx, dy in ((0, 0, 1, 1), (w - 1, 0, -1, 1), (0, h - 1, 1, -1), (w - 1, h - 1, -1, -1)):
+        d.line([(cx + dx * k, cy), (cx, cy), (cx, cy + dy * k)], fill=OURO, width=2)
+    fm = f_mono(13 * s)
+    espacado(d, pad, pad + 9 * s, f"EVIDÊNCIA {idx + 1:02d}" if tem else "DOSSIÊ", fm, OURO, 2.5 * s)
+    d.text((w - pad, pad + 9 * s), f"{idx + 1:02d} / {n:02d}", font=fm, fill=(120, 122, 128), anchor="rs")
+    yy = pad + 30 * s + fs * 0.9
+    for i, l in enumerate(linhas):
+        d.text((pad, yy), l, font=fsf, fill=(242, 239, 232), anchor="ls")
+        if i < len(linhas) - 1:
             yy += fs * 1.08
-        fb = f_body(24 * s2)
-        for l in quebrar(d, sub, fb, sw - 2 * pad)[:2]:
-            yy += 6 * s2
-            d.text((p + pad, yy), l, font=fb, fill=(185, 198, 214))
-            yy += 24 * s2
-    ov = Image.new("RGBA", img.size, (0, 0, 0, 0))
-    do = ImageDraw.Draw(ov)
-    for yy in range(p, p + sh, 4):
-        do.line([(p, yy), (p + sw, yy)], fill=(255, 255, 255, 9))
-    img.alpha_composite(ov)
-    return img, (x, y)
+    yy += 18 * s
+    d.rectangle([pad, yy, pad + 44 * s, yy + 2], fill=OURO)
+    yy += 32 * s
+    for l in subl:
+        d.text((pad, yy), l, font=fb, fill=(169, 178, 195), anchor="ls")
+        yy += 27 * s
+    return img, (int(x), int(y))
+
+
+def poeira(fr, L, t):
+    fl, half, cx = L["floor"], L["h"] * 0.42, L["cx"]
+    ov = Image.new("RGBA", fr.size, (0, 0, 0, 0))
+    d = ImageDraw.Draw(ov)
+    for k in range(46):
+        h1, h2 = _h(k * 13 + 5), _h(k * 29 + 11)
+        yy = ((h1 % 1000) / 1000 * (fl - 40) + t * (6 + h2 % 10)) % (fl - 40) + 20
+        spread = (yy / fl) * half
+        xx = cx + ((h2 % 2000) / 1000 - 1) * spread * 0.9 + math.sin(t * 0.6 + k) * 6
+        r = 0.8 + (h2 % 3) * 0.6
+        d.ellipse([xx - r, yy - r, xx + r, yy + r], fill=(255, 240, 215, int(255 * (0.12 + ((h1 >> 5) % 30) / 100))))
+    fr.alpha_composite(ov)
 
 
 class Legenda:
@@ -265,7 +288,7 @@ class Legenda:
             x = (self.W - tw) / 2
             y = alt / 2 + (li - (len(linhas) - 1) / 2) * self.tam * 1.12
             for i in ln:
-                cor = (245, 197, 66) if i == ativo else (255, 255, 255)
+                cor = (232, 194, 122) if i == ativo else (255, 255, 255)
                 d.text((x, y), partes[i], font=self.fonte, fill=cor, anchor="lm",
                        stroke_width=max(3, int(self.tam * 0.09)), stroke_fill=(0, 0, 0))
                 x += tmp.textlength(partes[i], font=self.fonte) + esp
@@ -332,10 +355,7 @@ def montar(caso: dict, arquivos_voz: list, destino: Path, vertical=True, musica:
     env = envelope(wav, nq)
 
     base = fundo(L, titulo, caso.get("marca") or "")
-    sir_esq = lateral(W, H, "esq", (255, 40, 70), 46)
-    sir_dir = lateral(W, H, "dir", (50, 110, 255), 51)
-    tv_vazia, tv_pos = tv(L, None, 0, titulo, conteudo=False)
-    tvs = [tv(L, c, i, titulo)[0] for i, c in enumerate(cenas)]
+    cartoes = [dossie(L, c, i, len(cenas), titulo) for i, c in enumerate(cenas)]
     fig = Image.open(ASSETS / "apresentador.png").convert("RGBA")
     boca = Image.open(ASSETS / "boca_fechada.png").convert("RGBA")
     k = L["h"] / fig.height
@@ -369,25 +389,17 @@ def montar(caso: dict, arquivos_voz: list, destino: Path, vertical=True, musica:
         el = t - ini
         prog = max(0.0, min(1.0, el / max(0.1, fim - ini - 0.1)))
         fr = base.copy()
-        ph = math.sin(t * 5.5)
-        if ph > 0.05:
-            fr.alpha_composite(Image.blend(Image.new("RGBA", (W, H), (0, 0, 0, 0)), sir_esq, ph))
-        elif ph < -0.05:
-            fr.alpha_composite(Image.blend(Image.new("RGBA", (W, H), (0, 0, 0, 0)), sir_dir, -ph))
-        # TV
-        a = max(0.0, min(1.0, el / 0.4))
-        if a >= 1:
-            fr.alpha_composite(tvs[si], tv_pos)
-        else:
-            fr.alpha_composite(Image.blend(tv_vazia, tvs[si], a), tv_pos)
-            if a < 0.45:
-                x0, y0, w0, h0 = [int(v) for v in L["tv"]]
-                ru = Image.new("RGBA", (w0, h0), (0, 0, 0, 0))
-                d = ImageDraw.Draw(ru)
-                for _ in range(60):
-                    xx, yy = rnd.randint(14, w0 - 50), rnd.randint(14, h0 - 16)
-                    d.rectangle([xx, yy, xx + rnd.randint(2, 40), yy + 2], fill=(200, 220, 255, rnd.randint(0, 64)))
-                fr.alpha_composite(ru, (x0, y0))
+        poeira(fr, L, t)
+        # dossiê da cena (entra subindo e aparecendo)
+        card, pos = cartoes[si]
+        a = max(0.0, min(1.0, el / 0.45))
+        e = 1 - (1 - a) ** 3
+        if e >= 1:
+            fr.alpha_composite(card, pos)
+        elif e > 0.02:
+            c2 = card.copy()
+            c2.putalpha(card.getchannel("A").point(lambda v, e=e: int(v * e)))
+            fr.alpha_composite(c2, (pos[0], int(pos[1] + (1 - e) * 16)))
         # apresentador
         falando = ini <= t <= fim
         bob = (math.sin(t * 3.2) * L["h"] * 0.004) if falando else math.sin(t * 1.2) * L["h"] * 0.002

@@ -31,6 +31,8 @@ jobs:
           mkdir -p assets/fontes
           curl -fsSL -o assets/fontes/Anton-Regular.ttf \
             https://github.com/google/fonts/raw/main/ofl/anton/Anton-Regular.ttf || echo "fonte Anton indisponível; usando a padrão"
+          curl -fsSL -o assets/fontes/DMSerifDisplay-Regular.ttf \
+            https://github.com/google/fonts/raw/main/ofl/dmserifdisplay/DMSerifDisplay-Regular.ttf || echo "fonte serifada indisponível; usando a padrão"
           curl -fsSL -o "assets/fontes/Rubik[wght].ttf" \
             "https://github.com/google/fonts/raw/main/ofl/rubik/Rubik%5Bwght%5D.ttf" || echo "fonte Rubik indisponível; usando a padrão"
           curl -fsSL -o assets/fontes/JetBrainsMono-Bold.ttf \
