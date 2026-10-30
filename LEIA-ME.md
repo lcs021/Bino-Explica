@@ -151,9 +151,13 @@ Mantenha o repositório **privado**. Nunca compartilhe `.env`, `client_secret.js
 
 1. No site **Caso Ao Vivo**, gere o vídeo e clique em **Baixar caso para narrar**.
 2. Envie o arquivo `caso-....json` para a pasta `casos/` aqui do GitHub (Add file → Upload files).
-3. O robô narra com a voz masculina pt-BR-AntonioNeural (a mesma tecnologia de voz do Bino), monta o vídeo com o apresentador
-   no estúdio noir e guarda em **Actions → Caso Ao Vivo (crimes reais) → Artifacts**.
+3. O robô narra com a voz masculina pt-BR-AntonioNeural, edita o vídeo e guarda em
+   **Actions → Caso Ao Vivo (crimes reais) → Artifacts** (MP4 em 1080p, legendas .srt e post.txt).
 
-Esses vídeos não são postados sozinhos: confira os fatos do arquivo `post.txt` antes de publicar.
+Edição (`caso_edicao.py`): planos alternados do apresentador com movimento de câmera, artes de apoio
+(número, mapa, linha do tempo, documento, revelação e pergunta final), cortes com flash, color grading,
+grão de filme, legendas por palavra sincronizadas com a voz, efeitos sonoros e trilha com ducking.
+Trilha: coloque MP3 sem direitos autorais em `assets/caso/musicas/`; sem nada lá, o robô gera uma trilha sombria.
 Formatos: TikTok (vertical), Instagram Reels (vertical com os textos fora das áreas que o Instagram cobre) e YouTube (horizontal).
-Arquivos: `montar_caso.py`, `caso_video.py`, `assets/caso/`, `.github/workflows/caso-ao-vivo.yml`.
+Esses vídeos não são postados sozinhos: confira os fatos do `post.txt` antes de publicar.
+Arquivos: `montar_caso.py`, `caso_voz.py`, `caso_edicao.py`, `assets/caso/`, `.github/workflows/caso-ao-vivo.yml`.
