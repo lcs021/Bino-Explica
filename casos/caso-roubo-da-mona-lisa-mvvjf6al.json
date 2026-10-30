@@ -1,0 +1,226 @@
+{
+  "titulo_caso": "Roubo da Mona Lisa",
+  "aspect": "9:16",
+  "layout": "padrao",
+  "formatos": [
+    "9:16"
+  ],
+  "marca": "@paposinistro21",
+  "cenas": [
+    {
+      "fala": "A pintura mais famosa do mundo sumiu do Louvre. E ninguém percebeu na hora.",
+      "tela_titulo": "Sumiu do Louvre",
+      "tela_texto": "Paris, 1911",
+      "apoio": {
+        "tipo": "revelacao",
+        "valor": "Ninguém percebeu",
+        "rotulo": "O quadro sumiu sem alarde"
+      },
+      "destaques": [
+        "sumiu",
+        "percebeu"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Presta atenção. Foi em agosto de 1911, em Paris. O museu estava fechado numa segunda-feira, e o roubo só foi notado no dia seguinte.",
+      "tela_titulo": "O dia do roubo",
+      "tela_texto": "21 de agosto de 1911",
+      "apoio": {
+        "tipo": "data",
+        "valor": "21 de agosto de 1911",
+        "rotulo": "Data em que o roubo ocorreu"
+      },
+      "destaques": [
+        "agosto",
+        "segunda-feira"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Um pintor, que foi ao Louvre para trabalhar, deu falta do quadro. Os seguranças acharam que ele tinha sido levado para ser fotografado.",
+      "tela_titulo": "A falta é notada",
+      "tela_texto": "Louvre, Paris",
+      "apoio": {
+        "tipo": "local",
+        "valor": "Museu do Louvre, Paris",
+        "rotulo": "Onde a Mona Lisa ficava exposta"
+      },
+      "destaques": [
+        "pintor",
+        "fotografado"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Só depois a ficha caiu: o quadro tinha sido roubado. O museu fechou por alguns dias e a notícia correu o mundo.",
+      "tela_titulo": "A notícia explode",
+      "tela_texto": "Imprensa mundial",
+      "apoio": {
+        "tipo": "documento",
+        "valor": "A imprensa da época noticiou o roubo e a busca pela obra em vários países.",
+        "rotulo": "Segundo a imprensa"
+      },
+      "destaques": [
+        "roubado",
+        "mundo"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Calma que piora. A polícia chegou a suspeitar do poeta Guillaume Apollinaire, que foi preso e depois solto. O pintor Pablo Picasso também foi interrogado.",
+      "tela_titulo": "Suspeitos famosos",
+      "tela_texto": "Apollinaire e Picasso",
+      "apoio": {
+        "tipo": "nenhum",
+        "valor": "",
+        "rotulo": ""
+      },
+      "destaques": [
+        "Apollinaire",
+        "Picasso"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Passaram-se mais de dois anos. Nenhuma pista levou ao quadro.",
+      "tela_titulo": "Anos sem resposta",
+      "tela_texto": "1911 a 1913",
+      "apoio": {
+        "tipo": "revelacao",
+        "valor": "Dois anos sumido",
+        "rotulo": "O quadro continuava desaparecido"
+      },
+      "destaques": [
+        "dois anos",
+        "pista"
+      ],
+      "pausa": true
+    },
+    {
+      "fala": "Até que, em 1913, em Florença, na Itália, um homem procurou um antiquário oferecendo a obra. Era Vincenzo Peruggia, ex-funcionário do Louvre.",
+      "tela_titulo": "Peruggia aparece",
+      "tela_texto": "Florença, 1913",
+      "apoio": {
+        "tipo": "local",
+        "valor": "Florença, Itália",
+        "rotulo": "Onde o quadro reapareceu em 1913"
+      },
+      "destaques": [
+        "Florença",
+        "Peruggia"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "Peruggia foi preso, julgado e condenado. Segundo a imprensa da época, ele disse que queria devolver a obra à Itália. O quadro voltou ao Louvre.",
+      "tela_titulo": "Fim do caso",
+      "tela_texto": "Peruggia condenado",
+      "apoio": {
+        "tipo": "documento",
+        "valor": "Peruggia foi condenado pelo roubo; a obra foi recuperada na Itália e devolvida ao Louvre.",
+        "rotulo": "Segundo a imprensa"
+      },
+      "destaques": [
+        "condenado",
+        "devolvida"
+      ],
+      "pausa": false
+    },
+    {
+      "fala": "E aí, você acha que o motivo dele era mesmo patriotismo? Conta aqui nos comentários.",
+      "tela_titulo": "Sua opinião",
+      "tela_texto": "Comente",
+      "apoio": {
+        "tipo": "pergunta",
+        "valor": "Peruggia agiu por patriotismo ou por dinheiro?",
+        "rotulo": "Responda nos comentários"
+      },
+      "destaques": [
+        "patriotismo",
+        "comentários"
+      ],
+      "pausa": false
+    }
+  ],
+  "titulos": [
+    "O dia em que a Mona Lisa sumiu do Louvre",
+    "Roubaram o quadro mais famoso do mundo e ninguém viu",
+    "Mona Lisa: o roubo que durou mais de dois anos"
+  ],
+  "legenda": "Em 1911, a Mona Lisa foi roubada do Louvre e só reapareceu em 1913, na Itália. O ladrão foi condenado. Você acha que ele agiu por patriotismo ou por dinheiro?",
+  "hashtags": [
+    "#crimesreais",
+    "#monalisa",
+    "#louvre",
+    "#historia",
+    "#casosreais",
+    "#curiosidades"
+  ],
+  "posts": {
+    "tiktok": {
+      "legenda": "A pintura mais famosa do mundo sumiu do Louvre e ninguém percebeu na hora. Você acha que o motivo do ladrão era mesmo patriotismo? Conta nos comentários!",
+      "hashtags": [
+        "#crimesreais",
+        "#truecrime",
+        "#monalisa",
+        "#louvre",
+        "#historiasreais"
+      ]
+    },
+    "instagram": {
+      "legenda": "Em agosto de 1911, a Mona Lisa desapareceu do Louvre, e o sumiço só foi notado no dia seguinte. 🎨 A polícia chegou a suspeitar do poeta Guillaume Apollinaire, que foi preso e depois solto, e o pintor Pablo Picasso também foi interrogado. Mais de dois anos depois, um antiquário em Florença recebeu a oferta da obra, e o caso teve o desfecho que você viu no vídeo. Você acredita que foi mesmo patriotismo? Salva e compartilha com quem curte um bom caso real. 🔎",
+      "hashtags": [
+        "#crimesreais",
+        "#truecrime",
+        "#monalisa",
+        "#louvre",
+        "#paposinistro21"
+      ]
+    },
+    "youtube": {
+      "titulo": "O roubo da Mona Lisa: o sumiço no Louvre que ninguém notou na hora",
+      "descricao": "Em agosto de 1911, a Mona Lisa desapareceu do Louvre, em Paris, e o sumiço só foi percebido no dia seguinte. A polícia chegou a suspeitar do poeta Guillaume Apollinaire, que foi preso e depois solto, e o pintor Pablo Picasso também foi interrogado. Mais de dois anos depois, em 1913, em Florença, o ex-funcionário do museu Vincenzo Peruggia ofereceu a obra a um antiquário. Ele foi preso, julgado e condenado, e, segundo a imprensa da época, disse que queria devolver a obra à Itália. Baseado em fatos noticiados pela imprensa. Você acha que o motivo dele era mesmo patriotismo?",
+      "tags": [
+        "mona lisa",
+        "roubo da mona lisa",
+        "louvre",
+        "crimes reais",
+        "true crime",
+        "vincenzo peruggia",
+        "1911",
+        "paris",
+        "casos famosos",
+        "história",
+        "Apollinaire",
+        "Picasso"
+      ]
+    }
+  },
+  "conferir": [
+    {
+      "fato": "Roubo ocorreu em 21 de agosto de 1911",
+      "buscar": "Mona Lisa roubo 21 agosto 1911 Louvre"
+    },
+    {
+      "fato": "O roubo só foi notado no dia seguinte, e o Louvre estava fechado às segundas",
+      "buscar": "Louvre Mona Lisa theft discovered Tuesday closed Monday"
+    },
+    {
+      "fato": "Um pintor deu falta do quadro e os seguranças acharam que estava sendo fotografado",
+      "buscar": "Mona Lisa theft painter noticed missing guards photographed"
+    },
+    {
+      "fato": "Apollinaire foi preso e depois solto; Picasso foi interrogado",
+      "buscar": "Apollinaire Picasso questioned Mona Lisa theft 1911"
+    },
+    {
+      "fato": "Peruggia tentou vender a obra em Florença em 1913, ex-funcionário do Louvre",
+      "buscar": "Vincenzo Peruggia Florença 1913 Mona Lisa antiquário"
+    },
+    {
+      "fato": "Condenação de Peruggia e alegação de patriotismo",
+      "buscar": "Peruggia condenado Mona Lisa pena patriotismo"
+    }
+  ]
+}
