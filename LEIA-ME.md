@@ -158,6 +158,6 @@ Edição (`caso_edicao.py`): planos alternados do apresentador com movimento de 
 (número, mapa, linha do tempo, documento, revelação e pergunta final), cortes com flash, color grading,
 grão de filme, legendas por palavra sincronizadas com a voz, efeitos sonoros e trilha com ducking.
 Trilha: coloque MP3 sem direitos autorais em `assets/caso/musicas/`; sem nada lá, o robô gera uma trilha sombria.
-Formatos: TikTok (vertical), Instagram Reels (vertical com os textos fora das áreas que o Instagram cobre) e YouTube (horizontal).
+Formatos: YouTube Shorts (até 1 min ou até 3 min; o robô encurta pausas e acelera a voz até 15% para caber), TikTok (vertical), Instagram Reels (vertical com os textos fora das áreas que o Instagram cobre) e YouTube (horizontal).
 Esses vídeos não são postados sozinhos: confira os fatos do `post.txt` antes de publicar.
 Arquivos: `montar_caso.py`, `caso_voz.py`, `caso_edicao.py`, `assets/caso/`, `.github/workflows/caso-ao-vivo.yml`.

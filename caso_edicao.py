@@ -1092,15 +1092,39 @@ def duracao(arq):
     return float(r.stdout.strip() or 0)
 
 
-def juntar_narracao(falas, cenas, apoios, pasta):
+def _pausa(i, cenas, apoios, curta=False):
+    if i == 0:
+        return 0.12
+    longa = (apoios[i] and apoios[i]["tipo"] == "revelacao") or cenas[i].get("pausa")
+    return (0.45 if longa else 0.18) if curta else (0.75 if longa else 0.32)
+
+
+def ajuste_tempo(falas, cenas, apoios, max_dur):
+    """Para caber no limite (ex.: Shorts de 1 min): encurta as pausas e, se precisar, acelera a voz até 15%."""
+    if not max_dur:
+        return 1.0, False
+    voz = sum(duracao(f["arquivo"]) for f in falas)
+    def total(fator, curta):
+        return voz / fator + sum(_pausa(i, cenas, apoios, curta) for i in range(len(falas))) + 1.0
+    if total(1.0, False) <= max_dur:
+        return 1.0, False
+    if total(1.0, True) <= max_dur:
+        return 1.0, True
+    pausas = sum(_pausa(i, cenas, apoios, True) for i in range(len(falas))) + 1.0
+    fator = voz / max(1.0, max_dur - pausas)
+    return min(1.15, fator), True
+
+
+def juntar_narracao(falas, cenas, apoios, pasta, fator=1.0, curta=False):
     """Junta as falas com pausas (maiores antes de uma revelação). Devolve (wav, [(ini, fim)])."""
     lista, tempos, t = [], [], 0.0
     for i, f in enumerate(falas):
-        pausa = 0.12 if i == 0 else (0.75 if (apoios[i] and apoios[i]["tipo"] == "revelacao") or cenas[i].get("pausa") else 0.32)
+        pausa = _pausa(i, cenas, apoios, curta)
         sil = pasta / f"_pausa_{i:02d}.wav"
         _ff("-f", "lavfi", "-i", "anullsrc=r=48000:cl=mono", "-t", f"{pausa:.2f}", str(sil))
         wav = pasta / f"_fala_{i:02d}.wav"
-        _ff("-i", str(f["arquivo"]), "-ar", "48000", "-ac", "1", str(wav))
+        extra = ["-af", f"atempo={fator:.4f}"] if fator > 1.001 else []
+        _ff("-i", str(f["arquivo"]), *extra, "-ar", "48000", "-ac", "1", str(wav))
         t += pausa
         dur = duracao(wav)
         tempos.append((t, t + dur))
@@ -1208,7 +1232,7 @@ def mixar(voz, eventos, total, pasta, musica=None, volume_musica=0.12):
 # =====================================================================
 # montagem
 # =====================================================================
-def montar(caso, falas, destino, vertical=True, musica=None, volume_musica=0.12, reels=False):
+def montar(caso, falas, destino, vertical=True, musica=None, volume_musica=0.12, reels=False, max_dur=None):
     """
     caso: roteiro (cenas com fala, tela_titulo, tela_texto, apoio, destaques).
     falas: [{"arquivo": mp3, "texto": texto narrado, "marcas": [{"ini","fim","texto"}]}], uma por cena.
@@ -1224,13 +1248,19 @@ def montar(caso, falas, destino, vertical=True, musica=None, volume_musica=0.12,
     W, H = L["W"], L["H"]
     apoios = [apoio_da_cena(c, i, n) for i, c in enumerate(cenas)]
 
-    voz, tempos = juntar_narracao(falas, cenas, apoios, pasta)
-    total = tempos[-1][1] + 1.4
+    fator, curta = ajuste_tempo(falas, cenas, apoios, max_dur)
+    if fator > 1.001 or curta:
+        print(f"  Ajustando para caber em {max_dur:.0f} s: pausas menores" + (f" e voz {100 * (fator - 1):.0f}% mais rápida" if fator > 1.001 else ""), flush=True)
+    voz, tempos = juntar_narracao(falas, cenas, apoios, pasta, fator, curta)
+    total = tempos[-1][1] + (1.0 if max_dur else 1.4)
+    if max_dur and total > max_dur + 0.5:
+        print(f"  Aviso: o vídeo ficou com {total:.0f} s, acima de {max_dur:.0f} s. Encurte o roteiro para ficar dentro do limite.", flush=True)
     nq = int(total * FPS)
     env = envelope(voz, nq)
     palavras = []
     for i, (f, (a, b)) in enumerate(zip(falas, tempos)):
-        for p in tempos_palavras(f["texto"], f.get("marcas"), a, b):
+        marcas = [{**mk, "ini": mk["ini"] / fator, "fim": mk["fim"] / fator} for mk in (f.get("marcas") or [])]
+        for p in tempos_palavras(f["texto"], marcas, a, b):
             p["cena"] = i
             palavras.append(p)
     marcar_chaves(palavras, cenas)
