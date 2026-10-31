@@ -278,7 +278,7 @@ def _tem_rosto(arquivo):
     esc = 900 / max(img.shape)
     if esc < 1:
         img = cv2.resize(img, None, fx=esc, fy=esc)
-    lado = max(40, int(min(img.shape) * 0.09))
+    lado = max(36, int(min(img.shape) * 0.06))
     for c in _rostos:
         if len(c.detectMultiScale(img, scaleFactor=1.1, minNeighbors=8, minSize=(lado, lado))):
             return True
@@ -290,7 +290,15 @@ def buscar_imagens(termo, limite=8):
                          "srnamespace": 6, "srlimit": 15})
     titulos = [s["title"] for s in res.get("query", {}).get("search", [])]
     out = [x for x in (_aceitavel(p) for p in _info_arquivos(titulos)) if x]
-    out.sort(key=lambda x: -(x["largura"] or 0))
+    palavras = {w for w in re.findall(r"[a-z]{4,}", _sem_acento(termo))}
+    arte = ("sketch", "study", "studie", "drawing", "painting", "illustration", "engraving", "watercolor", "lithograph", "caricature")
+
+    def nota(x):
+        t = _sem_acento(x["titulo"] + " " + x["descricao"])
+        n = 2 * sum(1 for w in palavras if w in t) + (1 if "photo" in t or "fotografia" in t else 0)
+        n -= 3 * sum(1 for a in arte if a in t and a not in palavras)
+        return (n, x["largura"] or 0)
+    out.sort(key=nota, reverse=True)
     return out[:limite]
 
 
@@ -355,13 +363,24 @@ def pesquisar(caso, pasta, log=print):
     for a in artigos:
         termos_artigo += [f"File:{n}" for n in a.get("imagens", [])[:25]]
     pool_artigo = [x for x in (_aceitavel(p) for p in _info_arquivos(termos_artigo)) if x]
+    def anos(t):
+        return {int(a) for a in re.findall(r"\b(1[5-9]\d\d|20[0-4]\d)\b", str(t))}
+
+    contexto = None
     MOTIVOS.clear()
     for i, c in enumerate(caso["cenas"]):
+        da_cena = anos(c["fala"])
+        if da_cena:
+            contexto = max(da_cena)
         termo = str(c.get("busca_imagem", "")).strip()
         cand = buscar_imagens(termo) if termo else []
         log(f"Imagens da cena {i + 1} ('{termo}'): {len(cand)} candidatas aceitas pela licença e descrição")
         for img in cand + pool_artigo:
             if img["pagina"] in usados:
+                continue
+            ano_img = anos(img["titulo"] + " " + img.get("data", "") + " " + img.get("descricao", ""))
+            if ano_img and contexto and not any(abs(a - contexto) <= 1 for a in ano_img):
+                _nao("época diferente da cena")
                 continue
             arq = baixar(img, imgs_dir, f"cena_{i + 1:02d}")
             usados.add(img["pagina"])
