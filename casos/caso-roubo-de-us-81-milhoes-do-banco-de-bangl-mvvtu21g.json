@@ -1,0 +1,226 @@
+{
+  "titulo_caso": "Roubo de US$ 81 milhões do Banco de Bangladesh",
+  "aspect": "9:16",
+  "formato": "tiktok",
+  "duracao_max": 60,
+  "layout": "padrao",
+  "formatos": [
+    "9:16"
+  ],
+  "marca": "@paposinistro21",
+  "cenas": [
+    {
+      "fala": "Hackers tentaram desviar quase um bilhão de dólares.",
+      "tela_titulo": "Quase um bilhão",
+      "tela_texto": "Tentativa em 2016",
+      "apoio": {
+        "tipo": "revelacao",
+        "valor": "Quase US$ 1 bilhão",
+        "rotulo": "Valor total dos pedidos falsos"
+      },
+      "destaques": [
+        "bilhão"
+      ],
+      "pausa": true,
+      "info": "fato",
+      "busca_imagem": "",
+      "prompt_imagem": "Dark room with glowing computer screens showing streams of code, silhouette of a generic hacker seen from behind, cinematic 2D illustration, vertical framing, no text"
+    },
+    {
+      "fala": "Fevereiro de 2016: o alvo era o banco central de Bangladesh. Ordens falsas foram enviadas pelo sistema SWIFT.",
+      "tela_titulo": "O alvo",
+      "tela_texto": "Dhaka, 2016",
+      "apoio": {
+        "tipo": "local",
+        "valor": "Dhaka, Bangladesh",
+        "rotulo": "Sede do banco central"
+      },
+      "destaques": [
+        "SWIFT"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": "Bangladesh Bank building Dhaka",
+      "prompt_imagem": "Exterior of a tall central bank building in Dhaka at dusk, busy street below, cinematic 2D illustration, vertical framing, no text"
+    },
+    {
+      "fala": "Foram 35 pedidos, somando US$ 951 milhões, contra a conta no Fed de Nova York.",
+      "tela_titulo": "35 pedidos",
+      "tela_texto": "US$ 951 milhões",
+      "apoio": {
+        "tipo": "numero",
+        "valor": "35 pedidos",
+        "rotulo": "Ordens de transferência falsas"
+      },
+      "destaques": [
+        "35",
+        "951"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": "Federal Reserve Bank of New York building",
+      "prompt_imagem": "Stylized stack of digital payment orders flying toward a skyscraper in New York financial district, cinematic 2D illustration, vertical framing, no text"
+    },
+    {
+      "fala": "Cinco passaram: cerca de US$ 101 milhões. Um erro de digitação, \"fandation\", fez o Deutsche Bank suspeitar de outro pedido.",
+      "tela_titulo": "Um erro de grafia",
+      "tela_texto": "\"Fandation\"",
+      "apoio": {
+        "tipo": "documento",
+        "valor": "Um pedido tinha a palavra \"fandation\" no lugar de \"foundation\", o que levantou suspeitas em um banco intermediário.",
+        "rotulo": "Segundo a imprensa"
+      },
+      "destaques": [
+        "fandation"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": "SWIFT banking message",
+      "prompt_imagem": "Close-up of a bank payment form on a desk with a red circle around a misspelled word, bank employee silhouette in the background, cinematic 2D illustration, vertical framing, no text"
+    },
+    {
+      "fala": "US$ 81 milhões chegaram às Filipinas e sumiram em cassinos de Manila.",
+      "tela_titulo": "Rota do dinheiro",
+      "tela_texto": "Filipinas, 2016",
+      "apoio": {
+        "tipo": "nenhum",
+        "valor": "",
+        "rotulo": ""
+      },
+      "destaques": [
+        "Filipinas",
+        "cassinos"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": "Manila casino",
+      "prompt_imagem": "Luxurious casino interior in Manila at night, generic gamblers at tables, warm lights, cinematic 2D illustration, vertical framing, no text"
+    },
+    {
+      "fala": "Em setembro de 2018, os EUA acusaram o norte-coreano Park Jin Hyok, ligado ao grupo Lazarus. Ele não foi julgado.",
+      "tela_titulo": "A acusação",
+      "tela_texto": "EUA, 2018",
+      "apoio": {
+        "tipo": "data",
+        "valor": "Setembro de 2018",
+        "rotulo": "EUA acusam formalmente um suspeito"
+      },
+      "destaques": [
+        "acusaram",
+        "Lazarus"
+      ],
+      "pausa": false,
+      "info": "alegacao",
+      "busca_imagem": "United States Department of Justice building",
+      "prompt_imagem": "US federal courthouse exterior with generic investigators carrying case folders, cinematic 2D illustration, vertical framing, no text"
+    },
+    {
+      "fala": "Só uma pequena parte do dinheiro foi recuperada, segundo a imprensa.",
+      "tela_titulo": "Dinheiro perdido",
+      "tela_texto": "Maior parte sumiu",
+      "apoio": {
+        "tipo": "nenhum",
+        "valor": "",
+        "rotulo": ""
+      },
+      "destaques": [
+        "recuperada"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": "",
+      "prompt_imagem": "Empty open vault in a bank with a few scattered banknotes on the floor, cinematic 2D illustration, vertical framing, no text"
+    },
+    {
+      "fala": "Um erro de ortografia barrou centenas de milhões. Qual falha digital te assusta mais?",
+      "tela_titulo": "E você?",
+      "tela_texto": "Comente",
+      "apoio": {
+        "tipo": "pergunta",
+        "valor": "Qual falha digital te assusta mais?",
+        "rotulo": "Responda nos comentários"
+      },
+      "destaques": [
+        "ortografia"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": "",
+      "prompt_imagem": "Person silhouette looking at a glowing screen with a padlock icon in a dark room, cinematic 2D illustration, vertical framing, no text"
+    }
+  ],
+  "capa": "US$ 81 milhões e uma letra errada",
+  "wikipedia": {
+    "pt": "",
+    "en": "Bangladesh Bank robbery"
+  },
+  "titulos": [
+    "US$ 81 milhões sumiram por causa de um erro",
+    "O maior assalto digital a um banco central",
+    "Hackers tentaram roubar quase US$ 1 bilhão"
+  ],
+  "legenda": "Em 2016, hackers tentaram desviar US$ 951 milhões do banco central de Bangladesh. US$ 81 milhões sumiram. Qual falha digital te assusta mais?",
+  "hashtags": [
+    "#crimesreais",
+    "#truecrime",
+    "#hacker",
+    "#bangladesh",
+    "#documentario",
+    "#cibercrime"
+  ],
+  "posts": {
+    "shorts": {
+      "titulo": "",
+      "descricao": "",
+      "hashtags": []
+    },
+    "tiktok": {
+      "titulo": "Um erro de digitação barrou quase US$ 1 bilhão em hackers",
+      "legenda": "Hackers tentaram desviar US$ 951 milhões do banco central de Bangladesh, mas um erro de ortografia entregou o golpe. 😱 Qual falha digital te assusta mais?",
+      "hashtags": [
+        "#crimesreais",
+        "#truecrime",
+        "#bancodebangladesh",
+        "#swift",
+        "#lazarus",
+        "#crimecibernetico"
+      ],
+      "comentario_fixado": "Uma única palavra escrita errada barrou centenas de milhões de dólares. Qual falha digital te assusta mais? Conta aqui! 👇"
+    },
+    "instagram": {
+      "legenda": "",
+      "hashtags": []
+    },
+    "youtube": {
+      "titulo": "",
+      "descricao": "",
+      "tags": []
+    }
+  },
+  "conferir": [
+    {
+      "fato": "35 pedidos que somavam US$ 951 milhões",
+      "buscar": "Bangladesh Bank robbery 35 payment instructions $951 million"
+    },
+    {
+      "fato": "Cinco pedidos aprovados, cerca de US$ 101 milhões",
+      "buscar": "Bangladesh Bank heist five transfers $101 million"
+    },
+    {
+      "fato": "Erro de digitação \"fandation\" apontado pelo Deutsche Bank",
+      "buscar": "Bangladesh Bank heist fandation typo Deutsche Bank"
+    },
+    {
+      "fato": "US$ 81 milhões enviados às Filipinas e lavados em cassinos",
+      "buscar": "Bangladesh Bank heist Philippines casinos RCBC $81 million"
+    },
+    {
+      "fato": "Acusação dos EUA contra Park Jin Hyok em setembro de 2018",
+      "buscar": "Park Jin Hyok criminal complaint Justice Department September 2018"
+    },
+    {
+      "fato": "Valor recuperado do dinheiro roubado",
+      "buscar": "Bangladesh Bank heist money recovered Philippines"
+    }
+  ]
+}
