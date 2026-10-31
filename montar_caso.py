@@ -15,6 +15,7 @@ import shutil
 import sys
 from datetime import datetime
 
+import caso_capa
 import caso_edicao
 import caso_pacote
 import caso_pesquisa
@@ -38,7 +39,8 @@ def validar(caso: dict) -> dict:
                       "info": str(c.get("info", "")).strip().lower(),
                       "busca_imagem": str(c.get("busca_imagem", "")).strip()[:120],
                       "img3d": c.get("img3d") if isinstance(c.get("img3d"), str) and c["img3d"].startswith("data:image") else "",
-                      "prompt_3d": str(c.get("prompt_3d", "")).strip()} for c in cenas]
+                      "prompt_3d": str(c.get("prompt_3d", "")).strip(),
+                      "prompt_imagem": str(c.get("prompt_imagem", "")).strip()} for c in cenas]
     return caso
 
 
@@ -100,7 +102,14 @@ def main():
                                                    max_dur=caso.get("duracao_max") if vertical else None,
                                                    imagens=pesquisa.get("imagens"), cenas3d=cenas3d)
             (pasta / "legendas.srt").write_text(caso_edicao.srt(pags), encoding="utf-8")
-            (pasta / "pacote-de-producao.md").write_text(caso_pacote.gerar(caso, pesquisa, info, falas, pags, nome), encoding="utf-8")
+            capa = None
+            try:
+                foto = next((m["arquivo"] for _, m in sorted(pesquisa.get("imagens", {}).items()) if m.get("arquivo")), None)
+                caso_capa.gerar(caso, info["apoios"], pasta / "capa.jpg", foto)
+                capa = "capa.jpg"
+            except Exception as e:  # noqa: BLE001
+                log.warning(f"Não consegui gerar a capa ({e}).")
+            (pasta / "pacote-de-producao.md").write_text(caso_pacote.gerar(caso, pesquisa, info, falas, pags, nome, capa), encoding="utf-8")
             imgs = pesquisa.get("imagens", {})
             (pasta / "imagens" / "creditos.txt").write_text(
                 "\n".join(f"Cena {i + 1}: {m['titulo']} — {m['autor']} — {m['licenca']} — {m['pagina']}" for i, m in sorted(imgs.items()))
@@ -119,6 +128,12 @@ def main():
             if sh.get("titulo"):
                 post += ["", "===== YOUTUBE SHORTS =====", f"Título: {sh.get('titulo', '')}", sh.get("descricao", ""),
                          " ".join(sh.get("hashtags", []))]
+            elif (q.get("tiktok") or {}).get("legenda"):
+                t = q["tiktok"]
+                post += ["", "===== TIKTOK =====", f"Título: {t.get('titulo') or (caso.get('titulos') or [titulo])[0]}",
+                         f"Frase da capa: {caso.get('capa') or caso_capa.frase_da_capa(caso, info['apoios'])}",
+                         "", t.get("legenda", ""), " ".join(t.get("hashtags", [])),
+                         "", f"Comentário fixado: {t.get('comentario_fixado') or 'Você já conhecia esse caso? Comenta aqui 👇'}"]
             elif q:
                 t, i, y = q.get("tiktok") or {}, q.get("instagram") or {}, q.get("youtube") or {}
                 post += ["", "===== TIKTOK =====", t.get("legenda", ""), " ".join(t.get("hashtags", [])),

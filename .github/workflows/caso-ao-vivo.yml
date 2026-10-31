@@ -75,6 +75,7 @@ jobs:
             saida/casos/**/*.mp4
             saida/casos/**/legendas.srt
             saida/casos/**/post.txt
+            saida/casos/**/capa.jpg
             saida/casos/**/pacote-de-producao.md
             saida/casos/**/imagens/*
             logs/
@@ -85,7 +86,7 @@ jobs:
         if: always() && steps.fila.outputs.total != '0'
         run: |
           d=$(ls -d saida/casos/*/ | head -1)
-          mkdir -p /tmp/rel && cp "$d"pacote-de-producao.md "$d"legendas.srt "$d"imagens/creditos.txt /tmp/rel/ 2>/dev/null || true
+          mkdir -p /tmp/rel && cp "$d"pacote-de-producao.md "$d"legendas.srt "$d"post.txt "$d"capa.jpg "$d"imagens/creditos.txt /tmp/rel/ 2>/dev/null || true
           cp logs/*.log /tmp/rel/ 2>/dev/null || true
           v=$(ls "$d"*.mp4 | head -1)
           for t in 1 4 7 10 13 16 19 22 25 28 31 34; do ffmpeg -v error -y -ss $t -i "$v" -frames:v 1 -vf scale=360:640 /tmp/rel/q_$t.jpg || true; done

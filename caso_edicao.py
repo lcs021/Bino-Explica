@@ -1053,10 +1053,16 @@ def _limpa(p):
     return re.sub(r"[^\wÀ-ÿ$%]", "", p.lower())
 
 
+CHAVES_CANAL = {"desapareceu", "desapareceram", "desaparecimento", "sumiu", "crime", "crimes", "milhões", "milhão", "bilhões",
+                "mistério", "misterioso", "investigação", "investigar", "segredo", "golpe", "golpes", "golpista", "fraude",
+                "roubo", "furto", "assalto", "preso", "presa", "presos", "condenado", "condenada", "morto", "morta", "morte",
+                "assassinato", "polícia", "ninguém", "nunca", "verdade"}
+
+
 def marcar_chaves(palavras, cenas):
     for p in palavras:
         c = cenas[p["cena"]]
-        chaves = {_limpa(x) for d in c.get("destaques", []) for x in str(d).split()}
+        chaves = {_limpa(x) for d in c.get("destaques", []) for x in str(d).split()} | CHAVES_CANAL
         lp = _limpa(p["texto"])
         p["chave"] = bool(lp and (lp in chaves or re.search(r"\d", lp) or "r$" in p["texto"].lower()))
 
@@ -1067,7 +1073,7 @@ def paginas(palavras):
         if cur:
             ant = cur[-1]
             chars = sum(len(x["texto"]) + 1 for x in cur)
-            if (len(cur) >= 3 or chars + len(p["texto"]) > 19 or p["cena"] != ant["cena"]
+            if (len(cur) >= 5 or chars + len(p["texto"]) > 26 or p["cena"] != ant["cena"]
                     or re.search(r"[.!?;:]$", ant["texto"]) or (ant["texto"].endswith(",") and len(cur) >= 2)
                     or p["ini"] - ant["fim"] > 0.45):
                 pags.append(cur)
@@ -1075,6 +1081,15 @@ def paginas(palavras):
         cur.append(p)
     if cur:
         pags.append(cur)
+    juntas = []                                   # não deixa uma palavra sozinha no fim da frase
+    for pg in pags:
+        ant = juntas[-1] if juntas else None
+        if (ant and len(pg) == 1 and len(ant) <= 5 and pg[0]["cena"] == ant[-1]["cena"]
+                and not re.search(r"[.!?;:]$", ant[-1]["texto"]) and pg[0]["ini"] - ant[-1]["fim"] < 0.45):
+            ant.append(pg[0])
+        else:
+            juntas.append(pg)
+    pags = juntas
     res = []
     for i, pg in enumerate(pags):
         a, b = pg[0]["ini"] - 0.04, pg[-1]["fim"] + 0.25
@@ -1085,7 +1100,10 @@ def paginas(palavras):
 
 
 class Legendas:
-    """Legenda em blocos de até 3 palavras, palavra falada em caixa vermelha, palavras-chave em dourado."""
+    """Legenda do canal: texto branco em caixa alta, palavras-chave em vermelho, até 2 linhas.
+    As palavras ainda não faladas aparecem mais apagadas (animação discreta, sincronizada com a voz)."""
+
+    VERMELHO = (232, 52, 64)
 
     def __init__(self, L, pags):
         self.L, self.pags, self.cache, self.i = L, pags, {}, 0
@@ -1100,34 +1118,39 @@ class Legendas:
         tam = L["leg_tam"]
         while True:
             f = f_impacto(tam)
-            esp = largura(" ", f) * 1.15
-            total = sum(largura(p, f) for p in partes) + esp * (len(partes) - 1)
-            if total <= L["leg_larg"] or tam <= 44:
+            esp = largura(" ", f) * 1.1
+            larg = [largura(p, f) for p in partes]
+            linha = lambda a, b: sum(larg[a:b]) + esp * max(0, b - a - 1)
+            if len(partes) > 1 and linha(0, len(partes)) > L["leg_larg"] * 0.62:
+                corte = min(range(1, len(partes)), key=lambda k: max(linha(0, k), linha(k, len(partes))))
+                linhas = [(0, corte), (corte, len(partes))]
+            else:
+                linhas = [(0, len(partes))]
+            if max(linha(a, b) for a, b in linhas) <= L["leg_larg"] or tam <= 44:
                 break
             tam -= 4
         asc, desc = f.getmetrics()
-        pad = 40
-        w, h = int(total) + 2 * pad, asc + desc + 2 * pad
-        base = pad + asc
+        alt_l = int((asc + desc) * 1.02)
+        pad = 36
+        w = int(max(linha(a, b) for a, b in linhas)) + 2 * pad
+        h = alt_l * len(linhas) + 2 * pad
         sombra = Image.new("RGBA", (w, h), (0, 0, 0, 0))
         img = Image.new("RGBA", (w, h), (0, 0, 0, 0))
         ds, d = ImageDraw.Draw(sombra), ImageDraw.Draw(img)
-        x = pad
-        for k, p in enumerate(partes):
-            pw = largura(p, f)
-            if k == ativo:
-                bx = [x - 14, base - asc * 0.80 - 10, x + pw + 14, base + 12]
-                ds.rounded_rectangle([bx[0], bx[1] + 8, bx[2], bx[3] + 8], 10, fill=(0, 0, 0, 170))
-                d.rounded_rectangle(bx, 10, fill=(176, 24, 38, 255))
-                d.text((x, base), p, font=f, fill=(255, 255, 255, 255), anchor="ls")
-            else:
-                cor = OURO_VIVO if pg[k].get("chave") else (255, 255, 255)
-                ds.text((x, base + 7), p, font=f, fill=(0, 0, 0, 190), anchor="ls", stroke_width=7, stroke_fill=(0, 0, 0, 190))
-                d.text((x, base), p, font=f, fill=cor + (255,), anchor="ls", stroke_width=6, stroke_fill=(0, 0, 0, 255))
-            x += pw + esp
+        for li, (a, b) in enumerate(linhas):
+            base = pad + asc + li * alt_l
+            x = (w - linha(a, b)) / 2
+            for k in range(a, b):
+                p = partes[k]
+                cor = self.VERMELHO if pg[k].get("chave") else (255, 255, 255)
+                alfa = 255 if k <= ativo else 130
+                ds.text((x, base + 6), p, font=f, fill=(0, 0, 0, int(alfa * 0.7)), anchor="ls", stroke_width=7, stroke_fill=(0, 0, 0, int(alfa * 0.7)))
+                d.text((x, base), p, font=f, fill=cor + (alfa,), anchor="ls", stroke_width=6, stroke_fill=(0, 0, 0, alfa))
+                x += larg[k] + esp
         sombra = sombra.filter(ImageFilter.GaussianBlur(8))
         sombra.alpha_composite(img)
-        self.cache[chave] = (sombra, base)
+        base_ref = pad + asc + (len(linhas) - 1) * alt_l
+        self.cache[chave] = (sombra, base_ref)
         if len(self.cache) > 200:
             self.cache.pop(next(iter(self.cache)))
         return self.cache[chave]
@@ -1545,6 +1568,19 @@ def montar(caso, falas, destino, vertical=True, musica=None, volume_musica=0.12,
     selo_marca = Sprite(marca, f_texto(26), (200, 204, 214)) if marca else None
     branco = Image.new("RGB", (W, H), (255, 255, 255))
 
+    preto = Image.new("RGB", (W, H), (0, 0, 0))
+    t_chaves = [w["ini"] for pg in pags for w in pg["palavras"] if w.get("chave")]
+    primeiro_ap = next((k for k, p in enumerate(planos) if p["tipo"] == "apresentador"), -1)
+
+    def aproximacao(t):
+        """Aproximação suave do apresentador quando ele fala uma palavra-chave."""
+        v = 0.0
+        for tc in t_chaves:
+            d = t - tc
+            if -0.25 < d < 1.2:
+                v = max(v, suave((d + 0.25) / 0.25) if d < 0 else 1 - suave(d / 1.2))
+        return 1 + 0.035 * v
+
     def quadro(q, estado):
         t = q / FPS
         while estado["pi"] < len(planos) - 1 and t >= planos[estado["pi"] + 1]["ini"]:
@@ -1557,7 +1593,11 @@ def montar(caso, falas, destino, vertical=True, musica=None, volume_musica=0.12,
             falando = any(a - 0.05 <= t <= b for a, b in tempos[max(0, i - 1):i + 2])
             prog = suave(tl / dur)
             m = (1 + 0.05 * prog) if pl["push"] > 0 else (1.05 - 0.05 * prog)
-            punch = 1 + 0.03 * max(0.0, 1 - tl / 0.25)
+            if estado["pi"] == primeiro_ap:          # entrada do apresentador: chega de mais perto e assenta
+                punch = 1 + 0.08 * (1 - ease_out(min(1.0, tl / 0.6)))
+            else:
+                punch = 1 + 0.03 * max(0.0, 1 - tl / 0.25)
+            punch *= aproximacao(t)
             bob = (math.sin(t * 3.2) * L["alt"] * 0.004) if falando else math.sin(t * 1.2) * L["alt"] * 0.002
             fr = apresentador.quadro(pl["enq"], m * punch, bob, not (falando and env[q] > 0.3))
             if fr.mode != "RGB":
@@ -1573,6 +1613,14 @@ def montar(caso, falas, destino, vertical=True, musica=None, volume_musica=0.12,
                 fr = (fotos[i] if pl["tipo"] == "foto" else artes[i]).quadro(tl, dur)
             if fr.mode != "RGB":
                 fr = fr.convert("RGB")
+        # transição por movimento: o novo plano entra com um leve zoom que assenta (sem flash)
+        if tl < 0.3 and pl["ini"] > 0.05 and pl["tipo"] != "apresentador":
+            k = 1 - ease_out(tl / 0.3)
+            z = 1 + 0.06 * k
+            cw, ch = int(W / z), int(H / z)
+            fr = fr.crop(((W - cw) // 2, (H - ch) // 2, (W - cw) // 2 + cw, (H - ch) // 2 + ch)).resize((W, H), Image.BILINEAR)
+            if pl["tipo"] == "revelacao":
+                fr = Image.blend(fr, preto, 0.55 * k * k)
         # selo do canal e barra de progresso
         d = ImageDraw.Draw(fr)
         x0, y0 = (60, L["topo"]) if L["vertical"] else (56, L["topo"])
@@ -1586,18 +1634,8 @@ def montar(caso, falas, destino, vertical=True, musica=None, volume_musica=0.12,
         d.rectangle([xb0, yb, xb1, yb + 4], fill=(48, 52, 62))
         d.rectangle([xb0, yb, xb0 + (xb1 - xb0) * t / total, yb + 4], fill=OURO)
         estado["leg"].desenhar(fr, t)
-        # transições discretas: só a revelação ganha flash; artes e fotos entram com um leve clarão
-        if tl < 0.2 and pl["ini"] > 0.05 and pl["tipo"] != "apresentador":
-            k = 1 - tl / 0.2
-            forte = pl["tipo"] == "revelacao"
-            if forte:
-                dd = int(12 * k)
-                if dd > 0:
-                    r, g, b = fr.split()
-                    fr = Image.merge("RGB", (ImageChops.offset(r, dd, 0), g, ImageChops.offset(b, -dd, 0)))
-            fr = Image.blend(fr, branco, (0.35 if forte else 0.08) * k * k)
-        elif q < 5 and planos[0]["tipo"] == "revelacao":
-            fr = Image.blend(fr, branco, 0.3 * (1 - q / 5) ** 2)
+        if q < 9:                                   # abertura sai do preto, sem clarão
+            fr = Image.blend(fr, preto, (1 - q / 9) ** 2)
         return fr
 
     def faixa(q0, q1, saida, rotulo):
