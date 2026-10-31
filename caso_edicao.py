@@ -470,6 +470,48 @@ class Apresentador:
 # =====================================================================
 # artes de apoio
 # =====================================================================
+class G3D(_Zoom):
+    """Cena em animação 3D (imagem gerada pelo criador): tela cheia, câmera em movimento e selo de dramatização."""
+
+    def __init__(self, L, arquivo, idx):
+        super().__init__(L)
+        from PIL import ImageEnhance
+        W, H = L["W"], L["H"]
+        img = Image.open(arquivo).convert("RGB")
+        esc = max(W * 1.18 / img.width, H * 1.18 / img.height)
+        img = img.resize((int(img.width * esc), int(img.height * esc)), Image.LANCZOS)
+        img = ImageEnhance.Contrast(img).enhance(1.05)
+        base = img.convert("RGBA")
+        base.alpha_composite(vinheta(base.width, base.height, 120))
+        self.img = base.convert("RGB")
+        self.idx = idx
+        self.selo = Sprite("DRAMATIZAÇÃO", f_mono(20), (235, 235, 238), esp=4)
+
+    def quadro(self, tl, dur, variante=0):
+        L = self.L
+        W, H = L["W"], L["H"]
+        p = suave(tl / max(dur, 0.1))
+        iw, ih = self.img.size
+        # variante 0: plano geral com zoom lento; variante 1: corte mais fechado no centro da ação
+        z0, z1 = (1.0, 1.08) if variante == 0 else (1.32, 1.42)
+        if (self.idx + variante) % 2:
+            z0, z1 = z1, z0
+        z = z0 + (z1 - z0) * p
+        fx = iw * (0.5 + (0.04 if self.idx % 2 else -0.04) * (p - 0.5))
+        fy = ih * (0.48 if variante == 0 else 0.44)
+        cw, ch = iw / 1.18 / z, ih / 1.18 / z
+        x0 = min(max(0, fx - cw / 2), iw - cw)
+        y0 = min(max(0, fy - ch / 2), ih - ch)
+        chave = (variante, round(z * 400) / 400, round(x0), round(y0))
+        if chave not in self._cz:
+            self._cz[chave] = self.img.resize((W, H), Image.BILINEAR, box=(x0, y0, x0 + cw, y0 + ch))
+            if len(self._cz) > 40:
+                self._cz.pop(next(iter(self._cz)))
+        fr = self._cz[chave].copy()
+        self.selo.colar(fr, 60, L["topo"] + 52, "l", alfa=0.8)
+        return fr
+
+
 class GArquivo(_Zoom):
     """Foto de arquivo real (licença livre): preto e branco, movimento lento e crédito do autor na tela."""
 
@@ -1105,9 +1147,10 @@ class Legendas:
         colar(fr, img, self.L["leg_x"] - img.width / 2, self.L["leg_y"] - base + (1 - e) * 16, alfa=e)
 
 
-def planejar(cenas, apoios, inicios, total, palavras, fotos=None):
+def planejar(cenas, apoios, inicios, total, palavras, fotos=None, cenas3d=None):
     """Decide os cortes: arte de apoio, foto de arquivo e enquadramento do apresentador, trocando a cada 2-4 s."""
     fotos = fotos or {}
+    cenas3d = cenas3d or {}
     ciclo = ["medio", "aberto", "fechado", "medio", "fechado", "aberto"]
     planos = []
     inicios_palavras = [p["ini"] for p in palavras]
@@ -1132,6 +1175,14 @@ def planejar(cenas, apoios, inicios, total, palavras, fotos=None):
         ap = apoios[i]
         if ap and ap["tipo"] == "pergunta":
             planos.append({"ini": a, "fim": b, "cena": i, "tipo": "pergunta"})
+            continue
+        if i in cenas3d:
+            if dur > 4.2:
+                meio = no_corte(a + dur * 0.5, a, b)
+                planos.append({"ini": a, "fim": meio, "cena": i, "tipo": "3d", "var": 0})
+                planos.append({"ini": meio, "fim": b, "cena": i, "tipo": "3d", "var": 1})
+            else:
+                planos.append({"ini": a, "fim": b, "cena": i, "tipo": "3d", "var": i % 2})
             continue
         visuais = (["arte"] if ap else []) + (["foto"] if i in fotos else [])
         if i == 0:
@@ -1324,7 +1375,7 @@ def mixar(voz, eventos, total, pasta, musica=None, volume_musica=0.12):
 # =====================================================================
 # montagem
 # =====================================================================
-def montar(caso, falas, destino, vertical=True, musica=None, volume_musica=0.12, reels=False, max_dur=None, imagens=None):
+def montar(caso, falas, destino, vertical=True, musica=None, volume_musica=0.12, reels=False, max_dur=None, imagens=None, cenas3d=None):
     """
     caso: roteiro (cenas com fala, tela_titulo, tela_texto, apoio, destaques).
     falas: [{"arquivo": mp3, "texto": texto narrado, "marcas": [{"ini","fim","texto"}]}], uma por cena.
@@ -1359,7 +1410,14 @@ def montar(caso, falas, destino, vertical=True, musica=None, volume_musica=0.12,
     pags = paginas(palavras)
     inicios = [0.0] + [max(0.0, tempos[i][0] - 0.12) for i in range(1, n)]
     imagens = {int(k): v for k, v in (imagens or {}).items() if v and v.get("arquivo")}
-    planos = planejar(cenas, apoios, inicios, total, palavras, imagens)
+    cenas3d = {int(k): v for k, v in (cenas3d or {}).items() if v}
+    tres_d = {}
+    for i, arq in cenas3d.items():
+        try:
+            tres_d[i] = G3D(L, arq, i)
+        except Exception as e:  # noqa: BLE001
+            print(f"  Imagem 3D da cena {i + 1} ignorada ({e}).", flush=True)
+    planos = planejar(cenas, apoios, inicios, total, palavras, imagens, tres_d)
 
     semente = sum(ord(ch) for ch in titulo)
     estudio = placa_estudio(L, semente)
@@ -1460,7 +1518,10 @@ def montar(caso, falas, destino, vertical=True, musica=None, volume_musica=0.12,
                 x, y, _ = L["chip"]
                 colar(fr, chips[i], x - (1 - e) * 50, y, alfa=e)
         else:
-            fr = (fotos[i] if pl["tipo"] == "foto" else artes[i]).quadro(tl, dur)
+            if pl["tipo"] == "3d":
+                fr = tres_d[i].quadro(tl, dur, pl.get("var", 0))
+            else:
+                fr = (fotos[i] if pl["tipo"] == "foto" else artes[i]).quadro(tl, dur)
             if fr.mode != "RGB":
                 fr = fr.convert("RGB")
         # selo do canal e barra de progresso

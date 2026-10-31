@@ -6,6 +6,7 @@ do GitHub e este script narra com a voz masculina (pt-BR-AntonioNeural, mesma te
 edita o vídeo (caso_edicao.py) e guarda o MP4 para baixar.
 Trilha: coloque MP3 sem direitos autorais em assets/caso/musicas; sem música lá, o robô gera uma trilha sombria.
 """
+import base64
 import json
 import os
 import random
@@ -35,7 +36,9 @@ def validar(caso: dict) -> dict:
                       "destaques": [str(x) for x in c.get("destaques", []) if str(x).strip()][:3],
                       "pausa": bool(c.get("pausa")),
                       "info": str(c.get("info", "")).strip().lower(),
-                      "busca_imagem": str(c.get("busca_imagem", "")).strip()[:120]} for c in cenas]
+                      "busca_imagem": str(c.get("busca_imagem", "")).strip()[:120],
+                      "img3d": c.get("img3d") if isinstance(c.get("img3d"), str) and c["img3d"].startswith("data:image") else "",
+                      "prompt_3d": str(c.get("prompt_3d", "")).strip()} for c in cenas]
     return caso
 
 
@@ -73,6 +76,16 @@ def main():
                 log.warning(f"A pesquisa automática falhou ({e}); o vídeo sai só com artes ilustrativas.")
                 pesquisa = {"data": "", "artigos": [], "fontes": [], "checagem": [], "imagens": {},
                             "limitacoes": [f"A pesquisa automática falhou ({e}). Confira todos os fatos à mão."]}
+            cenas3d = {}
+            for i, c in enumerate(caso["cenas"]):
+                if c.get("img3d"):
+                    arq3d = pasta / "imagens" / f"cena_{i + 1:02d}_3d.jpg"
+                    arq3d.parent.mkdir(parents=True, exist_ok=True)
+                    arq3d.write_bytes(base64.b64decode(c["img3d"].split(",", 1)[1]))
+                    cenas3d[i] = arq3d
+                    c["img3d"] = ""
+            if cenas3d:
+                log.info(f"{len(cenas3d)} cena(s) em animação 3D enviadas pelo site.")
             falas = narrar_falas(cfg, [c["fala"] for c in caso["cenas"]], pasta)
             formatos = caso.get("formatos") or [caso.get("aspect") or "9:16"]
             for fmt in formatos:
@@ -85,7 +98,7 @@ def main():
                 _, pags, info = caso_edicao.montar(caso, falas, pasta / nome, vertical=vertical, musica=musica(cfg),
                                                    volume_musica=cfg["video"].get("musica_volume", 0.12), reels=reels,
                                                    max_dur=caso.get("duracao_max") if vertical else None,
-                                                   imagens=pesquisa.get("imagens"))
+                                                   imagens=pesquisa.get("imagens"), cenas3d=cenas3d)
             (pasta / "legendas.srt").write_text(caso_edicao.srt(pags), encoding="utf-8")
             (pasta / "pacote-de-producao.md").write_text(caso_pacote.gerar(caso, pesquisa, info, falas, pags, nome), encoding="utf-8")
             imgs = pesquisa.get("imagens", {})

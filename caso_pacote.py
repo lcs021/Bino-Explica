@@ -6,6 +6,7 @@ NOMES_PLANO = {
     "numero": "Arte: número em destaque", "cartao": "Arte: cartão de evidência", "local": "Arte: mapa ilustrativo com alvo",
     "data": "Arte: linha do tempo", "documento": "Arte: documento (reconstrução ilustrativa)",
     "revelacao": "Arte: revelação em tipografia", "pergunta": "Arte: pergunta final", "foto": "Foto de arquivo",
+    "3d": "Cena em animação 3D (dramatização)",
 }
 ENQ = {"aberto": "plano aberto", "medio": "plano médio", "fechado": "close"}
 INFO = {"fato": "Fato (segundo o roteiro)", "alegacao": "Alegação", "testemunho": "Testemunho", "hipotese": "Hipótese",
@@ -82,6 +83,8 @@ def gerar(caso, pesquisa, info, falas, pags, nome_video):
         i = p["cena"]
         if p["tipo"] == "apresentador":
             o_que = f"Apresentador em {ENQ.get(p.get('enq'), 'plano')}, movimento lento de câmera"
+        elif p["tipo"] == "3d":
+            o_que = "Dramatização em 3D (imagem gerada por IA pelo criador): " + (cenas[i].get("prompt_3d", "")[:160] or "cena do roteiro")
         elif p["tipo"] == "foto" and i in imagens:
             o_que = f"Foto de arquivo: {imagens[i]['titulo']} (preto e branco, zoom lento, crédito na tela)"
         else:
