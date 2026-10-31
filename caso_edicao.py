@@ -1321,15 +1321,45 @@ def _sfx_arquivo(pasta, nome, dur=None):
     return p
 
 
-def trilha_sombria(pasta, total):
-    """Trilha atmosférica gerada aqui (sem direitos autorais): grave pulsante, textura e batida de coração."""
+def climas_das_cenas(apoios, inicios, total):
+    """Clima da trilha em cada cena: suspense no gancho, investigação, tensão, revelação e encerramento."""
+    n = len(inicios)
+    out = []
+    for i, a in enumerate(inicios):
+        ap = apoios[i] or {}
+        if i == 0:
+            out.append("Suspense")
+        elif i == n - 1:
+            out.append("Encerramento dramático")
+        elif ap.get("tipo") == "revelacao":
+            out.append("Revelação")
+        elif a < total * 0.4:
+            out.append("Investigação")
+        else:
+            out.append("Tensão")
+    return out
+
+
+def trilha_sombria(pasta, total, faixas=None):
+    """Trilha original gerada aqui (sem direitos autorais). Muda de clima ao longo do vídeo:
+    suspense/investigação (grave pulsante), tensão (relógio e coração acelerado) e encerramento (acorde que resolve)."""
     p = pasta / "_trilha.wav"
+    faixas = faixas or {}
+
+    def janela(nome):
+        ts = faixas.get(nome) or []
+        if not ts:
+            return "0"
+        return "+".join(f"clip((t-{a:.2f})/1.2,0,1)*clip(({b:.2f}-t)/1.2,0,1)" for a, b in ts)
+    tens, fim = janela("tensao"), janela("fim")
     expr = ("0.11*sin(2*PI*55*t)*(0.65+0.35*sin(2*PI*0.06*t))"
             "+0.07*sin(2*PI*82.41*t+0.8*sin(2*PI*0.04*t))"
             "+0.04*sin(2*PI*110*t)*(0.5+0.5*sin(2*PI*0.09*t+1))"
             "+0.025*sin(2*PI*164.8*t)*(0.5+0.5*sin(2*PI*0.13*t))"
-            "+0.13*sin(2*PI*48*t)*exp(-13*mod(t,1.6))"
-            "+0.08*sin(2*PI*45*t)*exp(-13*mod(t+1.32,1.6))")
+            f"+(1-0.8*({tens}))*(0.13*sin(2*PI*48*t)*exp(-13*mod(t,1.6))+0.08*sin(2*PI*45*t)*exp(-13*mod(t+1.32,1.6)))"
+            f"+({tens})*(0.14*sin(2*PI*50*t)*exp(-15*mod(t,0.95))+0.08*sin(2*PI*46*t)*exp(-15*mod(t+0.78,0.95))"
+            "+0.035*sin(2*PI*1320*t)*exp(-90*mod(t,0.475))+0.03*sin(2*PI*233*t)*(0.5+0.5*sin(2*PI*0.5*t)))"
+            f"+({fim})*(0.05*sin(2*PI*130.81*t)+0.04*sin(2*PI*196*t)+0.03*sin(2*PI*155.56*t))")
     _ff("-f", "lavfi", "-i", f"aevalsrc='{expr}':s=48000:d={total + 1:.2f}",
         "-f", "lavfi", "-i", f"anoisesrc=color=brown:a=0.05:d={total + 1:.2f}",
         "-filter_complex", f"[1:a]lowpass=f=260[n];[0:a][n]amix=inputs=2:normalize=0,aecho=0.8:0.6:70|140:0.22|0.12,"
@@ -1338,13 +1368,13 @@ def trilha_sombria(pasta, total):
     return p
 
 
-def mixar(voz, eventos, total, pasta, musica=None, volume_musica=0.12):
+def mixar(voz, eventos, total, pasta, musica=None, volume_musica=0.12, faixas=None):
     """Voz tratada + trilha com ducking + efeitos, normalizado em -14 LUFS."""
     if musica and Path(musica).exists():
         entradas = ["-i", str(voz), "-stream_loop", "-1", "-i", str(musica)]
         vol_trilha = min(0.9, volume_musica * 2.5)
     else:
-        entradas = ["-i", str(voz), "-i", str(trilha_sombria(pasta, total))]
+        entradas = ["-i", str(voz), "-i", str(trilha_sombria(pasta, total, faixas))]
         vol_trilha = 0.6
     grupos = {}
     for t, nome, vol, dur in eventos:
@@ -1475,7 +1505,17 @@ def montar(caso, falas, destino, vertical=True, musica=None, volume_musica=0.12,
             eventos.append((a + tc, "carimbo", 0.5, None))
         elif tipo in ("local", "data"):
             eventos.append((a + 0.45, "pulso", 0.18, None))
-    mix = mixar(voz, eventos, total, pasta, musica, volume_musica)
+    climas = climas_das_cenas(apoios, inicios, total)
+    faixas = {"tensao": [], "fim": []}
+    for i, cl in enumerate(climas):
+        a, b = inicios[i], (inicios[i + 1] if i + 1 < n else total)
+        chave = "tensao" if cl in ("Tensão", "Revelação") else "fim" if cl.startswith("Encerramento") else None
+        if chave:
+            if faixas[chave] and abs(faixas[chave][-1][1] - a) < 0.01:
+                faixas[chave][-1] = (faixas[chave][-1][0], b)
+            else:
+                faixas[chave].append((a, b))
+    mix = mixar(voz, eventos, total, pasta, musica, volume_musica, faixas)
 
     # elementos fixos da tela
     chips = {}
@@ -1605,7 +1645,8 @@ def montar(caso, falas, destino, vertical=True, musica=None, volume_musica=0.12,
         "-c:a", "aac", "-b:a", "192k", "-t", f"{total:.2f}", "-movflags", "+faststart", str(destino))
     for p in pedacos:
         p.unlink(missing_ok=True)
-    return destino, pags, {"tempos": tempos, "planos": planos, "total": total, "fator": fator, "apoios": apoios}
+    return destino, pags, {"tempos": tempos, "planos": planos, "total": total, "fator": fator, "apoios": apoios,
+                           "climas": climas, "eventos": sorted(eventos), "musica_propria": bool(musica)}
 
 
 def srt(pags):
