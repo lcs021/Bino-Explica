@@ -4,6 +4,11 @@ on:
   push:
     paths: ["casos/*.json"]
   workflow_dispatch:
+    inputs:
+      exemplo:
+        description: "Montar o caso de exemplo (assets/caso/exemplo.json) sem mexer na pasta casos"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -27,6 +32,7 @@ jobs:
         id: fila
         run: |
           git pull -q --rebase origin main || true
+          if [ "${{ inputs.exemplo }}" = "true" ]; then cp assets/caso/exemplo.json casos/zz-exemplo-teste.json; fi
           n=$(ls casos/*.json 2>/dev/null | wc -l)
           echo "total=$n" >> "$GITHUB_OUTPUT"
           if [ "$n" = "0" ]; then echo "Nenhum caso na pasta casos/ (já foram montados ou apagados)."; fi
@@ -54,7 +60,7 @@ jobs:
 
       - name: Instalar dependências
         if: steps.fila.outputs.total != '0'
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt opencv-python-headless
 
       - name: Narrar e editar os vídeos
         if: steps.fila.outputs.total != '0'
@@ -69,6 +75,8 @@ jobs:
             saida/casos/**/*.mp4
             saida/casos/**/legendas.srt
             saida/casos/**/post.txt
+            saida/casos/**/pacote-de-producao.md
+            saida/casos/**/imagens/*
             logs/
           retention-days: 30
           if-no-files-found: ignore
@@ -76,6 +84,7 @@ jobs:
       - name: Salvar
         if: always() && steps.fila.outputs.total != '0'
         run: |
+          rm -f casos/zz-exemplo-teste.json casos/feitos/zz-exemplo-teste.json
           git config user.name "bino-explica-bot"
           git config user.email "bino-explica-bot@users.noreply.github.com"
           git add -A casos

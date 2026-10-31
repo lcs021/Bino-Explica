@@ -1,0 +1,157 @@
+{
+ "titulo_caso": "O roubo da Mona Lisa",
+ "formato": "shorts",
+ "duracao_max": 59,
+ "aspect": "9:16",
+ "formatos": [
+  "9:16"
+ ],
+ "layout": "padrao",
+ "marca": "@paposinistro21",
+ "wikipedia": {
+  "pt": "Vincenzo Peruggia",
+  "en": "Vincenzo Peruggia"
+ },
+ "cenas": [
+  {
+   "fala": "Em 1911, o quadro mais famoso do mundo sumiu do Louvre. E ninguém percebeu.",
+   "tela_titulo": "Louvre, 1911",
+   "tela_texto": "",
+   "apoio": {
+    "tipo": "revelacao",
+    "valor": "Ninguém percebeu",
+    "rotulo": ""
+   },
+   "destaques": [
+    "Louvre"
+   ],
+   "pausa": false,
+   "info": "fato",
+   "busca_imagem": "Louvre museum Paris 1911"
+  },
+  {
+   "fala": "Era segunda-feira, 21 de agosto. O museu estava fechado ao público.",
+   "tela_titulo": "21 de agosto de 1911",
+   "tela_texto": "",
+   "apoio": {
+    "tipo": "data",
+    "valor": "21 de agosto de 1911",
+    "rotulo": "Segunda-feira, museu fechado ao público"
+   },
+   "destaques": [
+    "fechado"
+   ],
+   "pausa": false,
+   "info": "fato",
+   "busca_imagem": "Salon Carré Louvre"
+  },
+  {
+   "fala": "Só no dia seguinte um pintor viu, no lugar da Mona Lisa, quatro ganchos de ferro na parede.",
+   "tela_titulo": "Quatro ganchos",
+   "tela_texto": "",
+   "apoio": {
+    "tipo": "numero",
+    "valor": "4 ganchos",
+    "rotulo": "O que restou na parede"
+   },
+   "destaques": [
+    "ganchos"
+   ],
+   "pausa": false,
+   "info": "fato",
+   "busca_imagem": "Mona Lisa empty wall 1911"
+  },
+  {
+   "fala": "A polícia chegou a prender o poeta Guillaume Apollinaire, que depois foi solto. Picasso também foi interrogado.",
+   "tela_titulo": "Suspeitos errados",
+   "tela_texto": "Ninguém foi acusado",
+   "apoio": {
+    "tipo": "documento",
+    "valor": "O poeta Guillaume Apollinaire foi preso e solto dias depois; Pablo Picasso foi interrogado e liberado.",
+    "rotulo": "Segundo a imprensa"
+   },
+   "destaques": [
+    "Apollinaire",
+    "Picasso"
+   ],
+   "pausa": false,
+   "info": "fato",
+   "busca_imagem": "Le Petit Parisien 1911 Joconde"
+  },
+  {
+   "fala": "Dois anos depois, em Florença, um homem ofereceu o quadro a um negociante de arte.",
+   "tela_titulo": "Florença, 1913",
+   "tela_texto": "",
+   "apoio": {
+    "tipo": "local",
+    "valor": "Florença, Itália",
+    "rotulo": "Dezembro de 1913"
+   },
+   "destaques": [
+    "Florença"
+   ],
+   "pausa": true,
+   "info": "fato",
+   "busca_imagem": "Florence Ponte Vecchio 1910"
+  },
+  {
+   "fala": "Era Vincenzo Peruggia, ex-funcionário do Louvre. Ele foi preso, condenado, e o quadro voltou a Paris.",
+   "tela_titulo": "O culpado",
+   "tela_texto": "Condenado em 1914",
+   "apoio": {
+    "tipo": "nenhum",
+    "valor": "",
+    "rotulo": ""
+   },
+   "destaques": [
+    "Peruggia",
+    "condenado"
+   ],
+   "pausa": false,
+   "info": "fato",
+   "busca_imagem": "Galleria degli Uffizi 1913"
+  },
+  {
+   "fala": "Ele disse que queria devolver a obra à Itália. Você acredita?",
+   "tela_titulo": "Patriotismo?",
+   "tela_texto": "",
+   "apoio": {
+    "tipo": "pergunta",
+    "valor": "Patriotismo ou desculpa?",
+    "rotulo": ""
+   },
+   "destaques": [
+    "Itália"
+   ],
+   "pausa": false,
+   "info": "alegacao",
+   "busca_imagem": ""
+  }
+ ],
+ "conferir": [
+  {
+   "fato": "Roubo em 21 de agosto de 1911, uma segunda-feira",
+   "buscar": "Mona Lisa roubo 21 agosto 1911"
+  },
+  {
+   "fato": "Peruggia ofereceu o quadro em Florença em dezembro de 1913",
+   "buscar": "Peruggia Florença 1913"
+  },
+  {
+   "fato": "Apollinaire foi preso e Picasso interrogado",
+   "buscar": "Apollinaire preso Mona Lisa"
+  }
+ ],
+ "posts": {
+  "shorts": {
+   "titulo": "Roubaram a Mona Lisa e ninguém percebeu 🖼️",
+   "descricao": "Em agosto de 1911, a Mona Lisa sumiu do Louvre e o roubo só foi notado no dia seguinte. Baseado em fatos noticiados pela imprensa. Patriotismo ou desculpa?",
+   "hashtags": [
+    "#shorts",
+    "#crimesreais",
+    "#monalisa",
+    "#louvre"
+   ]
+  }
+ }
+}

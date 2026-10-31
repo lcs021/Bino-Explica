@@ -27,8 +27,9 @@ ASSETS = RAIZ / "assets" / "caso"
 FONTES = RAIZ / "assets" / "fontes"
 FPS = 30
 
-OURO = (214, 175, 98)
-OURO_VIVO = (247, 201, 96)
+OURO = (205, 46, 58)          # acento: vermelho (nome mantido por compatibilidade)
+OURO_VIVO = (255, 104, 112)   # palavra-chave na legenda
+CINZA = (190, 194, 202)
 VERMELHO = (226, 48, 62)
 TEXTO = (242, 239, 232)
 APAGADO = (150, 158, 172)
@@ -214,9 +215,11 @@ def _lut():
 LUT = _lut()
 
 
-def graduar(img):
-    """Color grading: sombras levemente azuladas, luzes quentes, contraste de cinema."""
-    return img.convert("RGB").point(LUT).convert("RGBA")
+def graduar(img, cor=0.45):
+    """Color grading documental: pouca saturação, sombras frias e contraste de cinema."""
+    from PIL import ImageEnhance
+    rgb = img.convert("RGB").point(LUT)
+    return ImageEnhance.Color(rgb).enhance(cor).convert("RGBA")
 
 
 def vinheta(w, h, forca=175):
@@ -238,7 +241,7 @@ def grao(img, forca=11):
     return base.convert("RGB")
 
 
-def painel(w, h, raio=16, fundo=(9, 12, 18, 205), borda=(214, 175, 98, 70)):
+def painel(w, h, raio=16, fundo=(9, 10, 13, 210), borda=(200, 204, 212, 46)):
     img = Image.new("RGBA", (max(1, int(w)), max(1, int(h))), (0, 0, 0, 0))
     ImageDraw.Draw(img).rounded_rectangle([0, 0, img.width - 1, img.height - 1], raio, fill=fundo, outline=borda, width=2)
     return img
@@ -342,21 +345,21 @@ def placa_estudio(L, semente):
 
     cx, chao, alt = M + L["cx"], M + L["chao"], L["alt"]
     # contraluz atrás do apresentador (separa ele do fundo)
-    img.alpha_composite(brilho(PW, PH, cx, chao - alt * 0.62, alt * 0.55, (255, 214, 160), 80))
+    img.alpha_composite(brilho(PW, PH, cx, chao - alt * 0.62, alt * 0.55, (222, 228, 238), 70))
     # feixe do refletor (luz volumétrica)
     feixe = Image.new("RGBA", (PW, PH), (0, 0, 0, 0))
     meia = alt * 0.40
-    ImageDraw.Draw(feixe).polygon([(cx - 40, 0), (cx + 40, 0), (cx + meia, chao), (cx - meia, chao)], fill=(255, 232, 200, 34))
+    ImageDraw.Draw(feixe).polygon([(cx - 40, 0), (cx + 40, 0), (cx + meia, chao), (cx - meia, chao)], fill=(232, 238, 248, 30))
     img.alpha_composite(feixe.filter(ImageFilter.GaussianBlur(28)))
     # chão e palco
     chao_img = gradiente_v(PW, PH - chao, (14, 15, 20), (6, 7, 10)).convert("RGBA")
     img.alpha_composite(chao_img, (0, chao))
     rx, ry = alt * 0.36, alt * 0.05
     palco = Image.new("RGBA", (PW, PH), (0, 0, 0, 0))
-    ImageDraw.Draw(palco).ellipse([cx - rx, chao - ry, cx + rx, chao + ry], fill=(255, 228, 190, 46))
+    ImageDraw.Draw(palco).ellipse([cx - rx, chao - ry, cx + rx, chao + ry], fill=(230, 234, 242, 40))
     img.alpha_composite(palco.filter(ImageFilter.GaussianBlur(14)))
     aro = Image.new("RGBA", (PW, PH), (0, 0, 0, 0))
-    ImageDraw.Draw(aro).ellipse([cx - rx, chao - ry, cx + rx, chao + ry], outline=OURO + (130,), width=2)
+    ImageDraw.Draw(aro).ellipse([cx - rx, chao - ry, cx + rx, chao + ry], outline=(150, 154, 162, 120), width=2)
     img.alpha_composite(aro)
     img = graduar(img)
     img.alpha_composite(vinheta(PW, PH, 150))
@@ -375,7 +378,7 @@ def fundo_grafico(L, estudio, tom="ouro"):
     for y in range(0, H, 72):
         d.line([0, y, W, y], fill=(255, 255, 255, 9))
     img.alpha_composite(grade)
-    cor = {"ouro": (214, 160, 80), "frio": (70, 130, 170), "vermelho": (200, 40, 50)}[tom]
+    cor = {"ouro": (150, 26, 36), "frio": (96, 106, 122), "vermelho": (170, 30, 40)}[tom]
     img.alpha_composite(brilho(W, H, L["gx"], L["gy"], max(W, H) * 0.45, cor, 60))
     img = graduar(img)
     img.alpha_composite(vinheta(W, H, 190))
@@ -467,6 +470,80 @@ class Apresentador:
 # =====================================================================
 # artes de apoio
 # =====================================================================
+class GArquivo(_Zoom):
+    """Foto de arquivo real (licença livre): preto e branco, movimento lento e crédito do autor na tela."""
+
+    def __init__(self, L, info, idx):
+        super().__init__(L)
+        from PIL import ImageEnhance, ImageOps
+        W, H = L["W"], L["H"]
+        foto = Image.open(info["arquivo"]).convert("RGB")
+        cinza = ImageOps.autocontrast(foto.convert("L"), cutoff=1)
+        foto = ImageEnhance.Contrast(Image.merge("RGB", (cinza, cinza, cinza))).enhance(1.1)
+        self.info = info
+        self.cheia = foto.width / foto.height < 0.8 or not L["vertical"] and foto.width / foto.height < 1.5
+        if self.cheia:                       # foto em pé: ocupa a tela toda
+            esc = max(W * 1.12 / foto.width, H * 1.12 / foto.height)
+            self.fundo = foto.resize((int(foto.width * esc), int(foto.height * esc)), Image.LANCZOS)
+            self.fundo = self.fundo.crop(((self.fundo.width - W) // 2, (self.fundo.height - H) // 2,
+                                          (self.fundo.width - W) // 2 + W, (self.fundo.height - H) // 2 + H)).convert("RGBA")
+            self.fundo.alpha_composite(vinheta(W, H, 200))
+            self.fundo = grao(self.fundo)
+            self.foto = None
+        else:                                # foto deitada: inteira, com moldura, sobre a própria foto desfocada
+            fundo = foto.resize((W, H), Image.BILINEAR).filter(ImageFilter.GaussianBlur(40)).convert("RGBA")
+            fundo.alpha_composite(Image.new("RGBA", (W, H), (6, 6, 8, 170)))
+            fundo.alpha_composite(vinheta(W, H, 200))
+            self.fundo = grao(fundo)
+            larg = int(L["gw"] * (1.08 if L["vertical"] else 0.9))
+            alt = int(larg * foto.height / foto.width)
+            limite = int(H * (0.42 if L["vertical"] else 0.62))
+            if alt > limite:
+                alt, larg = limite, int(limite * foto.width / foto.height)
+            f = foto.resize((larg, alt), Image.LANCZOS).convert("RGBA")
+            moldura = Image.new("RGBA", (larg + 16, alt + 16), (236, 236, 232, 255))
+            moldura.alpha_composite(f, (8, 8))
+            sombra = Image.new("RGBA", (larg + 120, alt + 120), (0, 0, 0, 0))
+            ImageDraw.Draw(sombra).rectangle([60, 70, larg + 70, alt + 76], fill=(0, 0, 0, 190))
+            self.sombra = sombra.filter(ImageFilter.GaussianBlur(24))
+            self.foto = moldura
+        ano = re.search(r"\b(1[6-9]|20)\d\d\b", info.get("data", "") + " " + info.get("descricao", ""))
+        self.rotulo = Sprite("ARQUIVO" + (f" · {ano.group()}" if ano else ""), f_mono(24), (255, 255, 255), esp=5)
+        credito = f"Foto: {info.get('autor', 'autor desconhecido')} · {info.get('licenca', '')} · Wikimedia Commons"
+        self.credito = [Sprite(l, f_texto(22), (200, 202, 208)) for l in quebrar(credito, f_texto(22), L["gw"])[:2]]
+        self.idx = idx
+
+    def quadro(self, tl, dur):
+        L = self.L
+        W, H = L["W"], L["H"]
+        p = suave(tl / max(dur, 0.1))
+        a = ease_out(tl / 0.35)
+        if self.cheia:
+            fr = self.zoom(self.fundo, 1 + 0.07 * p, (W * (0.45 + 0.1 * (self.idx % 2)), H * 0.42))
+            x_txt, y_rot = 60, L["topo"] + 70
+            self.rotulo.colar(fr, x_txt, y_rot, "l", alfa=a)
+            for k, s in enumerate(self.credito):
+                s.colar(fr, x_txt, y_rot + 40 + k * 30, "l", alfa=0.9 * a)
+            return fr
+        fr = self.fundo.copy()
+        z = 1 + 0.06 * p
+        k = round(z * 250) / 250
+        if k not in self._cz:
+            self._cz[k] = self.foto.resize((int(self.foto.width * k), int(self.foto.height * k)), Image.BILINEAR)
+            if len(self._cz) > 30:
+                self._cz.pop(next(iter(self._cz)))
+        f = self._cz[k]
+        cx, cy = L["gx"], L["gy"] + (20 if L["vertical"] else 0)
+        colar(fr, self.sombra, cx - self.sombra.width / 2, cy - self.sombra.height / 2 + 10, alfa=a)
+        colar(fr, f, cx - f.width / 2, cy - f.height / 2 + (1 - a) * 40, alfa=a)
+        topo = cy - f.height / 2
+        ImageDraw.Draw(fr).rectangle([cx - f.width / 2, topo - 62, cx - f.width / 2 + 10, topo - 26], fill=OURO)
+        self.rotulo.colar(fr, cx - f.width / 2 + 26, topo - 32, "l", alfa=a)
+        for k2, s in enumerate(self.credito):
+            s.colar(fr, cx - f.width / 2, cy + f.height / 2 + 42 + k2 * 30, "l", alfa=0.9 * a)
+        return fr
+
+
 def _num_br(v, dec, milhar):
     s = f"{v:,.{dec}f}"
     s = s.replace(",", "X").replace(".", ",").replace("X", ".")
@@ -590,6 +667,7 @@ class GLocal(_Zoom):
             Sprite(l, f_serif(64), TEXTO).colar(self.card, 48, 132 + k * 70, "l")
         for k, l in enumerate(sub):
             Sprite(l, f_texto(32), APAGADO).colar(self.card, 48, 132 + (len(linhas) - 1) * 70 + 48 + 42 * k, "l")
+        self.aviso = Sprite("MAPA ILUSTRATIVO", f_mono(20), (170, 174, 184), esp=4)
         self.card_pos = (L["gx"] - larg / 2, L["topo"] + (90 if L["vertical"] else 20))
         if not L["vertical"]:
             self.card_pos = (W * 0.08, H * 0.16)
@@ -620,6 +698,7 @@ class GLocal(_Zoom):
         colar(fr, self.pino, ax - 63, ay - 157 - (1 - q) * 160, alfa=q)
         e = ease_out((tl - 0.1) / 0.4)
         colar(fr, self.card, self.card_pos[0] - (1 - e) * 60, self.card_pos[1], alfa=e)
+        self.aviso.colar(fr, self.card_pos[0] - (1 - e) * 60 + 6, self.card_pos[1] + self.card.height + 34, "l", alfa=e)
         return fr
 
 
@@ -679,14 +758,14 @@ class GDocumento(_Zoom):
     def __init__(self, L, valor, rotulo, idx):
         super().__init__(L)
         W, H = L["W"], L["H"]
-        mesa = gradiente_v(W, H, (34, 25, 20), (12, 9, 8)).convert("RGBA")
+        mesa = gradiente_v(W, H, (30, 30, 32), (10, 10, 12)).convert("RGBA")
         veios = Image.new("RGBA", (W, H), (0, 0, 0, 0))
         d = ImageDraw.Draw(veios)
         rnd = random.Random(idx)
         for y in range(0, H, 11):
             d.line([0, y + rnd.randint(-3, 3), W, y + rnd.randint(-3, 3)], fill=(0, 0, 0, rnd.randint(10, 26)), width=2)
         mesa.alpha_composite(veios)
-        mesa.alpha_composite(brilho(W, H, W * 0.5, H * 0.32, max(W, H) * 0.55, (255, 196, 130), 70))
+        mesa.alpha_composite(brilho(W, H, W * 0.5, H * 0.32, max(W, H) * 0.55, (225, 220, 210), 55))
         mesa = graduar(mesa)
         mesa.alpha_composite(vinheta(W, H, 200))
         self.mesa = grao(mesa)
@@ -705,7 +784,7 @@ class GDocumento(_Zoom):
         Sprite("ARQUIVO DO CASO", f_mono(24), (60, 52, 44), esp=5).colar(papel, 60, 76, "l")
         Sprite(f"Nº {idx + 1:02d}", f_mono(24), (60, 52, 44)).colar(papel, pw - 60, 76, "r")
         dp.line([60, 100, pw - 60, 100], fill=(60, 52, 44, 255), width=2)
-        Sprite("Resumo do que foi noticiado", f_texto(22), (120, 110, 96)).colar(papel, 60, ph - 44, "l")
+        Sprite("Reconstrução ilustrativa · resumo do que foi noticiado", f_texto(22), (120, 110, 96)).colar(papel, 60, ph - 44, "l")
         self.papel = papel
         sombra = Image.new("RGBA", (pw + 120, ph + 120), (0, 0, 0, 0))
         ImageDraw.Draw(sombra).rectangle([60, 70, pw + 60, ph + 70], fill=(0, 0, 0, 170))
@@ -845,8 +924,8 @@ class GPergunta(_Zoom):
         fp = f_mono(30)
         txt = "COMENTA AQUI  ↓"
         pw = int(largura(txt, fp, 3)) + 80
-        pill = painel(pw, 84, raio=42, fundo=(214, 175, 98, 255), borda=(214, 175, 98, 255))
-        Sprite(txt, fp, (20, 16, 10), esp=3).colar(pill, pw / 2, 54)
+        pill = painel(pw, 84, raio=42, fundo=(170, 26, 38, 255), borda=(205, 46, 58, 255))
+        Sprite(txt, fp, (255, 255, 255), esp=3).colar(pill, pw / 2, 54)
         self.pill = pill
         self.seguir = Sprite(f"Segue {marca} pro próximo caso" if marca else "Segue pro próximo caso", f_texto(34), APAGADO)
 
@@ -997,7 +1076,7 @@ class Legendas:
             if k == ativo:
                 bx = [x - 14, base - asc * 0.80 - 10, x + pw + 14, base + 12]
                 ds.rounded_rectangle([bx[0], bx[1] + 8, bx[2], bx[3] + 8], 10, fill=(0, 0, 0, 170))
-                d.rounded_rectangle(bx, 10, fill=VERMELHO + (255,))
+                d.rounded_rectangle(bx, 10, fill=(176, 24, 38, 255))
                 d.text((x, base), p, font=f, fill=(255, 255, 255, 255), anchor="ls")
             else:
                 cor = OURO_VIVO if pg[k].get("chave") else (255, 255, 255)
@@ -1026,8 +1105,9 @@ class Legendas:
         colar(fr, img, self.L["leg_x"] - img.width / 2, self.L["leg_y"] - base + (1 - e) * 16, alfa=e)
 
 
-def planejar(cenas, apoios, inicios, total, palavras):
-    """Decide os cortes: quando entra a arte de apoio e qual enquadramento do apresentador usar."""
+def planejar(cenas, apoios, inicios, total, palavras, fotos=None):
+    """Decide os cortes: arte de apoio, foto de arquivo e enquadramento do apresentador, trocando a cada 2-4 s."""
+    fotos = fotos or {}
     ciclo = ["medio", "aberto", "fechado", "medio", "fechado", "aberto"]
     planos = []
     inicios_palavras = [p["ini"] for p in palavras]
@@ -1039,43 +1119,55 @@ def planejar(cenas, apoios, inicios, total, palavras):
     def apresentador(a, b, i, enq=None):
         seg = sum(1 for p in planos if p["cena"] == i)
         enq = enq or ciclo[(2 * i + seg) % len(ciclo)]
+        ant = planos[-1] if planos else None
+        if ant and ant["tipo"] == "apresentador" and ant["enq"] == enq:     # evita corte para o mesmo enquadramento
+            enq = {"fechado": "medio", "medio": "aberto", "aberto": "medio"}[enq]
         push = 1 if (i + seg) % 2 == 0 else -1
         planos.append({"ini": a, "fim": b, "cena": i, "tipo": "apresentador", "enq": enq, "push": push})
-
-    def arte(a, b, i):
-        planos.append({"ini": a, "fim": b, "cena": i, "tipo": apoios[i]["tipo"]})
 
     for i in range(len(cenas)):
         a = inicios[i]
         b = inicios[i + 1] if i + 1 < len(cenas) else total
         dur = b - a
         ap = apoios[i]
+        if ap and ap["tipo"] == "pergunta":
+            planos.append({"ini": a, "fim": b, "cena": i, "tipo": "pergunta"})
+            continue
+        visuais = (["arte"] if ap else []) + (["foto"] if i in fotos else [])
         if i == 0:
             if ap and ap["tipo"] == "revelacao":
-                corte = no_corte(min(a + 1.8, a + dur * 0.5), a, b)
-                arte(a, corte, i)
-                apresentador(corte, b, i, "fechado")
-            elif ap and dur > 3.2:
-                corte = no_corte(a + dur * 0.5, a, b)
-                apresentador(a, corte, i, "fechado")
-                arte(corte, b, i)
+                seq = ["arte", "apresentador:fechado"] + (["foto"] if i in fotos else [])
             else:
-                apresentador(a, b, i, "fechado")
-        elif ap and ap["tipo"] == "pergunta":
-            arte(a, b, i)
-        elif ap:
-            if dur < 3.2:
-                arte(a, b, i)
-            else:
-                corte = no_corte(a + max(2.2, dur * (0.45 if ap["tipo"] == "revelacao" else 0.55)), a, b)
-                arte(a, corte, i)
-                apresentador(corte, b, i)
-        elif dur > 6.5:
-            corte = no_corte(a + dur / 2, a, b)
-            apresentador(a, corte, i)
-            apresentador(corte, b, i)
+                seq = ["apresentador:fechado"] + visuais
         else:
-            apresentador(a, b, i)
+            seq = visuais + ["apresentador"]
+        while len(seq) > 1 and dur / len(seq) < 1.8:
+            seq.pop(-1 if (seq[-1].startswith("apresentador") and len(visuais)) or i == 0 else -1)
+        n_apr = sum(1 for x in seq if x.startswith("apresentador"))
+        d_vis = min(3.2, dur / len(seq))
+        t, partes = a, []
+        for k, x in enumerate(seq):
+            if k == len(seq) - 1:
+                fim = b
+            else:
+                bruto = t + (d_vis if not x.startswith("apresentador") else
+                             max(1.8, (dur - d_vis * (len(seq) - n_apr)) / max(1, n_apr)))
+                fim = no_corte(min(bruto, b - 1.2), t, b)
+            partes.append((x, t, fim))
+            t = fim
+        for x, t0, t1 in partes:
+            if x == "arte":
+                planos.append({"ini": t0, "fim": t1, "cena": i, "tipo": ap["tipo"]})
+            elif x == "foto":
+                planos.append({"ini": t0, "fim": t1, "cena": i, "tipo": "foto"})
+            else:
+                enq = x.split(":")[1] if ":" in x else None
+                if t1 - t0 > 4.5:
+                    meio = no_corte((t0 + t1) / 2, t0, t1)
+                    apresentador(t0, meio, i, enq)
+                    apresentador(meio, t1, i)
+                else:
+                    apresentador(t0, t1, i, enq)
     return planos
 
 
@@ -1197,7 +1289,7 @@ def mixar(voz, eventos, total, pasta, musica=None, volume_musica=0.12):
         vol_trilha = min(0.9, volume_musica * 2.5)
     else:
         entradas = ["-i", str(voz), "-i", str(trilha_sombria(pasta, total))]
-        vol_trilha = 0.9
+        vol_trilha = 0.6
     grupos = {}
     for t, nome, vol, dur in eventos:
         if t < 0 or t > total:
@@ -1232,7 +1324,7 @@ def mixar(voz, eventos, total, pasta, musica=None, volume_musica=0.12):
 # =====================================================================
 # montagem
 # =====================================================================
-def montar(caso, falas, destino, vertical=True, musica=None, volume_musica=0.12, reels=False, max_dur=None):
+def montar(caso, falas, destino, vertical=True, musica=None, volume_musica=0.12, reels=False, max_dur=None, imagens=None):
     """
     caso: roteiro (cenas com fala, tela_titulo, tela_texto, apoio, destaques).
     falas: [{"arquivo": mp3, "texto": texto narrado, "marcas": [{"ini","fim","texto"}]}], uma por cena.
@@ -1266,7 +1358,8 @@ def montar(caso, falas, destino, vertical=True, musica=None, volume_musica=0.12,
     marcar_chaves(palavras, cenas)
     pags = paginas(palavras)
     inicios = [0.0] + [max(0.0, tempos[i][0] - 0.12) for i in range(1, n)]
-    planos = planejar(cenas, apoios, inicios, total, palavras)
+    imagens = {int(k): v for k, v in (imagens or {}).items() if v and v.get("arquivo")}
+    planos = planejar(cenas, apoios, inicios, total, palavras, imagens)
 
     semente = sum(ord(ch) for ch in titulo)
     estudio = placa_estudio(L, semente)
@@ -1289,27 +1382,36 @@ def montar(caso, falas, destino, vertical=True, musica=None, volume_musica=0.12,
             artes[i] = GRevelacao(L, v)
         elif t == "pergunta":
             artes[i] = GPergunta(L, fundos["ouro"], v, marca)
+    fotos = {}
+    for i, info in imagens.items():
+        try:
+            fotos[i] = GArquivo(L, info, i)
+        except Exception as e:  # noqa: BLE001
+            print(f"  Foto da cena {i + 1} ignorada ({e}).", flush=True)
+    planos = [p if p["tipo"] != "foto" or p["cena"] in fotos else {**p, "tipo": "apresentador", "enq": "medio", "push": 1}
+              for p in planos]
 
-    # efeitos sonoros no ritmo da edição
-    eventos = [(0.0, "impacto", 0.7, None)]
-    for pl in planos:
+    # efeitos sonoros só onde reforçam a narrativa
+    eventos = []
+    if planos and planos[0]["tipo"] == "revelacao":
+        eventos.append((0.0, "impacto", 0.55, None))
+    for k, pl in enumerate(planos):
         a, b, i = pl["ini"], pl["fim"], pl["cena"]
-        if a > 0.05:
-            eventos.append((max(0, a - 0.18), "passagem", 0.28, None))
         tipo = pl["tipo"]
+        if a > 0.05 and tipo != "apresentador":
+            eventos.append((max(0, a - 0.15), "passagem", 0.16, None))
         if tipo == "revelacao" and i in artes:
             if a > 1.4:
-                eventos.append((a - 1.3, "subida", 0.5, None))
-            for k, ti in enumerate(artes[i].impactos()):
-                eventos.append((a + ti, "impacto", 0.85 if k == 0 else 0.45, None))
+                eventos.append((a - 1.3, "subida", 0.35, None))
+            for n, ti in enumerate(artes[i].impactos()):
+                if a + ti > 0.05 or n == 0:
+                    eventos.append((a + ti, "impacto", 0.7 if n == 0 else 0.3, None))
         elif tipo == "documento" and i in artes:
             t0, td, tc = artes[i].tempos(b - a)
-            eventos.append((a + t0, "digitar", 0.22, td))
-            eventos.append((a + tc, "carimbo", 0.7, None))
+            eventos.append((a + t0, "digitar", 0.14, td))
+            eventos.append((a + tc, "carimbo", 0.5, None))
         elif tipo in ("local", "data"):
-            eventos.append((a + 0.45, "pulso", 0.35, None))
-        elif tipo in ("numero", "cartao", "pergunta"):
-            eventos.append((a + 1.15 if tipo == "numero" else a + 0.3, "pulso", 0.3, None))
+            eventos.append((a + 0.45, "pulso", 0.18, None))
     mix = mixar(voz, eventos, total, pasta, musica, volume_musica)
 
     # elementos fixos da tela
@@ -1332,7 +1434,7 @@ def montar(caso, falas, destino, vertical=True, musica=None, volume_musica=0.12,
         for k, s in enumerate(lx):
             Sprite(s, fx, APAGADO).colar(img, 40, 112 + (len(lt) - 1) * 62 + 46 + k * 40, "l")
         chips[i] = img
-    selo = Sprite("CASO REAL", f_mono(24), OURO, esp=5)
+    selo = Sprite("CASO REAL", f_mono(24), (235, 235, 238), esp=5)
     selo_marca = Sprite(marca, f_texto(26), (200, 204, 214)) if marca else None
     branco = Image.new("RGB", (W, H), (255, 255, 255))
 
@@ -1358,7 +1460,7 @@ def montar(caso, falas, destino, vertical=True, musica=None, volume_musica=0.12,
                 x, y, _ = L["chip"]
                 colar(fr, chips[i], x - (1 - e) * 50, y, alfa=e)
         else:
-            fr = artes[i].quadro(tl, dur)
+            fr = (fotos[i] if pl["tipo"] == "foto" else artes[i]).quadro(tl, dur)
             if fr.mode != "RGB":
                 fr = fr.convert("RGB")
         # selo do canal e barra de progresso
@@ -1374,16 +1476,18 @@ def montar(caso, falas, destino, vertical=True, musica=None, volume_musica=0.12,
         d.rectangle([xb0, yb, xb1, yb + 4], fill=(48, 52, 62))
         d.rectangle([xb0, yb, xb0 + (xb1 - xb0) * t / total, yb + 4], fill=OURO)
         estado["leg"].desenhar(fr, t)
-        if tl < 0.22 and pl["ini"] > 0.05:
-            k = 1 - tl / 0.22
+        # transições discretas: só a revelação ganha flash; artes e fotos entram com um leve clarão
+        if tl < 0.2 and pl["ini"] > 0.05 and pl["tipo"] != "apresentador":
+            k = 1 - tl / 0.2
             forte = pl["tipo"] == "revelacao"
-            dd = int((16 if forte else 10) * k)
-            if dd > 0:
-                r, g, b = fr.split()
-                fr = Image.merge("RGB", (ImageChops.offset(r, dd, 0), g, ImageChops.offset(b, -dd, 0)))
-            fr = Image.blend(fr, branco, (0.5 if forte else 0.18) * k * k)
-        elif q < 6:
-            fr = Image.blend(fr, branco, 0.4 * (1 - q / 6) ** 2)
+            if forte:
+                dd = int(12 * k)
+                if dd > 0:
+                    r, g, b = fr.split()
+                    fr = Image.merge("RGB", (ImageChops.offset(r, dd, 0), g, ImageChops.offset(b, -dd, 0)))
+            fr = Image.blend(fr, branco, (0.35 if forte else 0.08) * k * k)
+        elif q < 5 and planos[0]["tipo"] == "revelacao":
+            fr = Image.blend(fr, branco, 0.3 * (1 - q / 5) ** 2)
         return fr
 
     def faixa(q0, q1, saida, rotulo):
@@ -1435,7 +1539,7 @@ def montar(caso, falas, destino, vertical=True, musica=None, volume_musica=0.12,
         "-c:a", "aac", "-b:a", "192k", "-t", f"{total:.2f}", "-movflags", "+faststart", str(destino))
     for p in pedacos:
         p.unlink(missing_ok=True)
-    return destino, pags
+    return destino, pags, {"tempos": tempos, "planos": planos, "total": total, "fator": fator, "apoios": apoios}
 
 
 def srt(pags):

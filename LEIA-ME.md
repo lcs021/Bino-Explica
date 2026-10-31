@@ -160,4 +160,6 @@ grão de filme, legendas por palavra sincronizadas com a voz, efeitos sonoros e 
 Trilha: coloque MP3 sem direitos autorais em `assets/caso/musicas/`; sem nada lá, o robô gera uma trilha sombria.
 Formatos: YouTube Shorts (até 1 min ou até 3 min; o robô encurta pausas e acelera a voz até 15% para caber), TikTok (vertical), Instagram Reels (vertical com os textos fora das áreas que o Instagram cobre) e YouTube (horizontal).
 Esses vídeos não são postados sozinhos: confira os fatos do `post.txt` antes de publicar.
-Arquivos: `montar_caso.py`, `caso_voz.py`, `caso_edicao.py`, `assets/caso/`, `.github/workflows/caso-ao-vivo.yml`.
+Pesquisa (`caso_pesquisa.py`): artigo do caso na Wikipédia (pt/en), referências classificadas, checagem de datas/números/nomes e fotos de arquivo do Wikimedia Commons só com licença livre e sem pessoas. Cada vídeo vem com `pacote-de-producao.md` (as 10 entregas: dossiê, fontes, roteiro com tempos, storyboard, imagens e licenças, narração, instruções de edição, legendas, título/descrição e verificação).
+Teste: Actions › Caso Ao Vivo › Run workflow › marque "Montar o caso de exemplo".
+Arquivos: `montar_caso.py`, `caso_voz.py`, `caso_edicao.py`, `caso_pesquisa.py`, `caso_pacote.py`, `assets/caso/`, `.github/workflows/caso-ao-vivo.yml`.

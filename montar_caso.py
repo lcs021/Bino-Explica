@@ -15,6 +15,8 @@ import sys
 from datetime import datetime
 
 import caso_edicao
+import caso_pacote
+import caso_pesquisa
 from caso_voz import narrar_falas
 from util import RAIZ, carregar_config, configurar_log, slug
 
@@ -31,7 +33,9 @@ def validar(caso: dict) -> dict:
                       "tela_texto": str(c.get("tela_texto", "")).strip(),
                       "apoio": c.get("apoio") if isinstance(c.get("apoio"), dict) else None,
                       "destaques": [str(x) for x in c.get("destaques", []) if str(x).strip()][:3],
-                      "pausa": bool(c.get("pausa"))} for c in cenas]
+                      "pausa": bool(c.get("pausa")),
+                      "info": str(c.get("info", "")).strip().lower(),
+                      "busca_imagem": str(c.get("busca_imagem", "")).strip()[:120]} for c in cenas]
     return caso
 
 
@@ -63,6 +67,12 @@ def main():
         log.info(f"===== Caso Ao Vivo: {titulo} ({len(caso['cenas'])} cenas) =====")
         inicio = time.time()
         try:
+            try:
+                pesquisa = caso_pesquisa.pesquisar(caso, pasta, log.info)
+            except Exception as e:  # noqa: BLE001
+                log.warning(f"A pesquisa automática falhou ({e}); o vídeo sai só com artes ilustrativas.")
+                pesquisa = {"data": "", "artigos": [], "fontes": [], "checagem": [], "imagens": {},
+                            "limitacoes": [f"A pesquisa automática falhou ({e}). Confira todos os fatos à mão."]}
             falas = narrar_falas(cfg, [c["fala"] for c in caso["cenas"]], pasta)
             formatos = caso.get("formatos") or [caso.get("aspect") or "9:16"]
             for fmt in formatos:
@@ -72,10 +82,18 @@ def main():
                 nome = ("video-reels.mp4" if reels else "video-shorts.mp4" if shorts
                         else "video-vertical.mp4" if vertical else "video-horizontal.mp4")
                 log.info(f"Narração pronta. Editando {nome}…")
-                _, pags = caso_edicao.montar(caso, falas, pasta / nome, vertical=vertical, musica=musica(cfg),
-                                             volume_musica=cfg["video"].get("musica_volume", 0.12), reels=reels,
-                                             max_dur=caso.get("duracao_max") if vertical else None)
+                _, pags, info = caso_edicao.montar(caso, falas, pasta / nome, vertical=vertical, musica=musica(cfg),
+                                                   volume_musica=cfg["video"].get("musica_volume", 0.12), reels=reels,
+                                                   max_dur=caso.get("duracao_max") if vertical else None,
+                                                   imagens=pesquisa.get("imagens"))
             (pasta / "legendas.srt").write_text(caso_edicao.srt(pags), encoding="utf-8")
+            (pasta / "pacote-de-producao.md").write_text(caso_pacote.gerar(caso, pesquisa, info, falas, pags, nome), encoding="utf-8")
+            imgs = pesquisa.get("imagens", {})
+            (pasta / "imagens" / "creditos.txt").write_text(
+                "\n".join(f"Cena {i + 1}: {m['titulo']} — {m['autor']} — {m['licenca']} — {m['pagina']}" for i, m in sorted(imgs.items()))
+                or "Nenhuma imagem de arquivo usada.", encoding="utf-8")
+            chk = pesquisa.get("checagem", [])
+            nao = sum(1 for x in chk if x["status"] == "Não verificado")
             post = [titulo, ""]
             for t in caso.get("titulos", []):
                 post.append(f"- {t}")
@@ -105,7 +123,10 @@ def main():
             resumo = os.environ.get("GITHUB_STEP_SUMMARY")
             if resumo:
                 with open(resumo, "a", encoding="utf-8") as f:
-                    f.write(f"- ✅ **{titulo}**: pronto em {minutos:.1f} min. Baixe em *Artifacts*, no fim desta página.\n")
+                    f.write(f"- ✅ **{titulo}**: pronto em {minutos:.1f} min · {len(imgs)} foto(s) de arquivo · "
+                            f"{len(chk) - nao}/{len(chk)} fatos conferidos. Baixe em *Artifacts*, no fim desta página.\n")
+                    for x in pesquisa.get("limitacoes", []):
+                        f.write(f"  - ⚠️ {x}\n")
         except Exception as e:  # noqa: BLE001
             log.exception(f"Falha ao montar {arq.name}: {e}")
             falhou = True
