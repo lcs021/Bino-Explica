@@ -1,0 +1,191 @@
+{
+  "titulo_caso": "Charles Ponzi: o golpe que ganhou o nome dele",
+  "aspect": "9:16",
+  "formato": "tiktok",
+  "duracao_max": 60,
+  "layout": "padrao",
+  "formatos": [
+    "9:16"
+  ],
+  "marca": "@paposinistro21",
+  "cenas": [
+    {
+      "fala": "Em 1920, em Boston, filas enormes se formavam na porta de um único homem.",
+      "tela_titulo": "Boston, 1920",
+      "tela_texto": "",
+      "apoio": {
+        "tipo": "revelacao",
+        "valor": "Filas na porta",
+        "rotulo": ""
+      },
+      "destaques": [
+        "filas"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": ""
+    },
+    {
+      "fala": "Charles Ponzi, um imigrante italiano, prometia lucro de 50% em 45 dias.",
+      "tela_titulo": "50% em 45 dias",
+      "tela_texto": "",
+      "apoio": {
+        "tipo": "numero",
+        "valor": "50%",
+        "rotulo": ""
+      },
+      "destaques": [
+        "50%"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": ""
+    },
+    {
+      "fala": "O segredo, segundo ele: cupons postais internacionais, comprados barato no exterior e trocados nos Estados Unidos.",
+      "tela_titulo": "Cupons postais",
+      "tela_texto": "",
+      "apoio": {
+        "tipo": "cartao",
+        "valor": "Cupons postais internacionais",
+        "rotulo": ""
+      },
+      "destaques": [
+        "cupons"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": ""
+    },
+    {
+      "fala": "Mas esse lucro não existia. Os primeiros investidores eram pagos com o dinheiro dos novos.",
+      "tela_titulo": "O truque",
+      "tela_texto": "",
+      "apoio": {
+        "tipo": "revelacao",
+        "valor": "Dinheiro dos novos",
+        "rotulo": ""
+      },
+      "destaques": [
+        "não existia"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": ""
+    },
+    {
+      "fala": "Em julho de 1920, o jornal Boston Post começou a investigar o esquema.",
+      "tela_titulo": "Boston Post",
+      "tela_texto": "",
+      "apoio": {
+        "tipo": "data",
+        "valor": "Julho de 1920",
+        "rotulo": ""
+      },
+      "destaques": [
+        "investigar"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": ""
+    },
+    {
+      "fala": "O esquema desmoronou. Os investidores perderam cerca de 20 milhões de dólares.",
+      "tela_titulo": "Prejuízo",
+      "tela_texto": "",
+      "apoio": {
+        "tipo": "numero",
+        "valor": "US$ 20 milhões",
+        "rotulo": ""
+      },
+      "destaques": [
+        "20 milhões"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": ""
+    },
+    {
+      "fala": "Em agosto de 1920, Ponzi foi preso e depois condenado por fraude postal.",
+      "tela_titulo": "Preso",
+      "tela_texto": "",
+      "apoio": {
+        "tipo": "data",
+        "valor": "Agosto de 1920",
+        "rotulo": ""
+      },
+      "destaques": [
+        "preso"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": ""
+    },
+    {
+      "fala": "Deportado para a Itália, ele morreu pobre no Rio de Janeiro, em 1949. E o golpe ganhou o nome dele: esquema Ponzi.",
+      "tela_titulo": "Rio de Janeiro, 1949",
+      "tela_texto": "",
+      "apoio": {
+        "tipo": "pergunta",
+        "valor": "Esquema Ponzi",
+        "rotulo": ""
+      },
+      "destaques": [
+        "Rio de Janeiro",
+        "esquema Ponzi"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": ""
+    }
+  ],
+  "wikipedia": {
+    "pt": "Charles Ponzi",
+    "en": "Charles Ponzi"
+  },
+  "titulos": [
+    "Ele prometia 50% de lucro em 45 dias",
+    "O golpe que ganhou o nome dele",
+    "Terminou a vida pobre no Rio de Janeiro"
+  ],
+  "legenda": "Ele prometia 50% de lucro em 45 dias… e terminou a vida pobre no Rio de Janeiro 💸 Você cairia nessa? 👇",
+  "hashtags": [
+    "#crimesreais",
+    "#truecrime",
+    "#ponzi",
+    "#golpe",
+    "#historiareal",
+    "#paposinistro"
+  ],
+  "posts": {
+    "tiktok": {
+      "legenda": "Ele prometia 50% de lucro em 45 dias… e terminou a vida pobre no Rio de Janeiro 💸 Você cairia nessa? 👇",
+      "hashtags": [
+        "#crimesreais",
+        "#truecrime",
+        "#ponzi",
+        "#golpe",
+        "#historiareal",
+        "#paposinistro"
+      ]
+    }
+  },
+  "conferir": [
+    {
+      "fato": "Promessa de 50% de lucro em 45 dias",
+      "buscar": "Ponzi 50% 45 days"
+    },
+    {
+      "fato": "Boston Post investigou o esquema a partir de julho de 1920",
+      "buscar": "Boston Post Ponzi July 1920"
+    },
+    {
+      "fato": "Prejuízo de cerca de US$ 20 milhões",
+      "buscar": "Ponzi investors lost 20 million"
+    },
+    {
+      "fato": "Preso em agosto de 1920; morreu no Rio de Janeiro em 1949",
+      "buscar": "Charles Ponzi Rio de Janeiro 1949"
+    }
+  ]
+}
