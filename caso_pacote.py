@@ -113,7 +113,7 @@ def gerar(caso, pesquisa, info, falas, pags, nome_video):
           f"- **Revelações:** " + (", ".join(f"cena {r}" for r in revel) if revel else "nenhuma marcada como revelação; o ponto alto é a cena final."),
           f"- **Encerramento:** “{cenas[-1]['fala']}”",
           "- **Tipo das afirmações:** " + ", ".join(f"{k}: {v}" for k, v in tipos.items()) + ".",
-          f"- **Visual:** {len(planos)} planos — {sum(1 for p in planos if p['tipo'] == 'apresentador')} do apresentador, {n3d} de reconstrução 3D, "
+          f"- **Visual:** {len(planos)} planos — {sum(1 for p in planos if p['tipo'] == 'apresentador')} do apresentador, " + (f"{n3d} de reconstrução 3D, " if n3d else "") +
           f"{sum(1 for p in planos if p['tipo'] == 'foto')} de foto de arquivo e {sum(1 for p in planos if p['tipo'] not in ('apresentador', '3d', 'foto'))} de artes.", ""]
 
     # 2 ─ retenção
@@ -127,18 +127,18 @@ def gerar(caso, pesquisa, info, falas, pags, nome_video):
         L.append(f"| {_t(a)}–{_t(min(b, total))} | {nome} | {', '.join(str(i + 1) for i in cs) or '—'} | "
                  f"{', '.join(sorted({climas[i] for i in cs})) or '—'} |")
     L += ["", f"- Troca de imagem a cada {sum(durs) / max(1, len(durs)):.1f} s em média; plano mais longo: {max(durs or [0]):.1f} s.",
-          "- O apresentador aparece na abertura, nas transições e no fechamento; reconstruções, artes e fotos carregam os fatos.",
+          "- O apresentador aparece na abertura, nas transições e no fechamento; artes e fotos de arquivo carregam os fatos.",
           "- Palavras-chave em vermelho na legenda e efeitos só nas entradas de arte e nas revelações, para não cansar.", ""]
 
     # 3 ─ roteiro de edição
     L += ["## 3. Roteiro de edição por cenas", "",
-          "| Entrada–Saída | Cena | Narração | Imagem | Prompt | Câmera | Efeito sonoro | Trilha | Texto na tela | Transição |",
-          "|---|---|---|---|---|---|---|---|---|---|"]
+          "| Entrada–Saída | Cena | Narração | Imagem |" + (" Prompt |" if n3d else "") + " Câmera | Efeito sonoro | Trilha | Texto na tela | Transição |",
+          "|---|---|---|---|" + ("---|" if n3d else "") + "---|---|---|---|---|"]
     for k, p in enumerate(planos):
         i = p["cena"]
         fala = " ".join(w["texto"] for w in palavras if p["ini"] - 0.05 <= w["ini"] < p["fim"] - 0.05)
         prompt = (cenas[i].get("prompt_3d", "")[:90] + "…") if p["tipo"] == "3d" and cenas[i].get("prompt_3d") else "—"
-        L.append(f"| {_t(p['ini'])}–{_t(p['fim'])} | {i + 1} | {_cel(fala) or '(pausa)'} | {_cel(imagem(p, i))} | {_cel(prompt)} | "
+        L.append(f"| {_t(p['ini'])}–{_t(p['fim'])} | {i + 1} | {_cel(fala) or '(pausa)'} | {_cel(imagem(p, i))} | " + (f"{_cel(prompt)} | " if n3d else "") +
                  f"{_camera(p, i)} | {sfx(p)} | {climas[i]} | {_cel(texto_tela(p, i))} | {_transicao(p, k)} |")
     L.append("")
 
@@ -156,17 +156,17 @@ def gerar(caso, pesquisa, info, falas, pags, nome_video):
             L.append(f"| {i + 1} | Apresentador e arte gerada pelo robô | ✅ não precisa de imagem |")
     L.append("")
 
-    # 5 ─ prompts
-    L += ["## 5. Prompts para gerar as imagens", "",
-          "Gere uma imagem por vez, vertical 9:16, no Gemini, ChatGPT ou Bing Image Creator. Use o mesmo personagem em todas "
-          "(mesma roupa, cabelo e cores) para manter a consistência.", ""]
-    algum = False
-    for i, c in enumerate(cenas):
-        if c.get("prompt_3d"):
-            algum = True
-            L += [f"**Cena {i + 1}**", "", "```", c["prompt_3d"], "```", ""]
-    if not algum:
-        L += ["Este roteiro não pediu reconstruções 3D.", ""]
+    # 5 ─ imagens de apoio
+    if any(c.get("prompt_3d") for c in cenas):
+        L += ["## 5. Prompts para gerar as imagens", "",
+              "Gere uma imagem por vez, vertical 9:16. Use o mesmo personagem em todas para manter a consistência.", ""]
+        for i, c in enumerate(cenas):
+            if c.get("prompt_3d"):
+                L += [f"**Cena {i + 1}**", "", "```", c["prompt_3d"], "```", ""]
+    else:
+        L += ["## 5. Imagens de apoio", "",
+              "O vídeo não usa imagens geradas por IA: o visual vem do apresentador, das artes do robô e de fotos de arquivo com licença livre. "
+              "Para trocar ou acrescentar uma foto de arquivo, use as buscas da seção 6 e respeite a licença.", ""]
 
     # 6 ─ materiais históricos
     L += ["## 6. Vídeos e materiais históricos sugeridos", ""]
@@ -184,8 +184,8 @@ def gerar(caso, pesquisa, info, falas, pags, nome_video):
     # 7 ─ câmera
     L += ["## 7. Movimentos de câmera", "",
           "- **Apresentador:** alterna plano aberto, médio e close; push-in ou pull-out lento com parallax entre fundo e personagem.",
-          "- **Reconstruções 3D:** duas variações por cena — plano geral com zoom lento e pan lateral, depois corte fechado no centro da ação.",
           "- **Fotos de arquivo:** Ken Burns lento (até 7%), sem distorcer a foto.",
+          *(["- **Reconstruções 3D:** plano geral com zoom lento e pan lateral, alternando com corte fechado no centro da ação."] if n3d else []),
           "- **Artes:** mapa com zoom até o alvo, linha do tempo deslizando, número em contagem, documento com aproximação no destaque.", ""]
 
     # 8 ─ efeitos sonoros
@@ -211,7 +211,7 @@ def gerar(caso, pesquisa, info, falas, pags, nome_video):
     # 11 ─ transições
     L += ["## 11. Transições", "",
           "- Corte seco para o apresentador (ritmo de conversa).",
-          "- Leve clarão na entrada de artes, fotos e reconstruções.",
+          "- Leve clarão na entrada de artes e fotos.",
           "- Flash branco com separação de cores só nas revelações, com impacto grave no mesmo quadro.",
           "- Nenhuma transição chamativa (cubo, giro, glitch longo).", ""]
 
@@ -220,15 +220,15 @@ def gerar(caso, pesquisa, info, falas, pags, nome_video):
           "- Paleta preto, cinza, branco e vermelho-escuro; color grading frio na investigação e quente nos cartões de pergunta.",
           "- Grão de filme leve, vinheta e sombras profundas.",
           "- Fotos de arquivo em preto e branco com crédito do autor visível.",
-          "- Selo “DRAMATIZAÇÃO” em toda reconstrução 3D; “MAPA ILUSTRATIVO” e “Reconstrução ilustrativa” nas artes.",
+          ("- Selo “DRAMATIZAÇÃO” em toda reconstrução 3D; " if n3d else "- ") + "“MAPA ILUSTRATIVO” e “Reconstrução ilustrativa” nas artes.",
           f"- Barra de progresso no topo, selo “CASO REAL” e a marca {marca}.", ""]
 
     # 13 ─ timeline
     L += ["## 13. Montagem na timeline (CapCut ou Premiere)", "",
           f"O `{nome_video}` já sai montado. Para refazer à mão:", "",
           "1. Projeto 9:16, 1080×1920, 30 fps.",
-          "2. **V1:** apresentador, reconstruções 3D, fotos e artes, seguindo a seção 3 linha por linha.",
-          "3. **V2:** selos (CASO REAL, DRAMATIZAÇÃO, créditos) e barra de progresso.",
+          "2. **V1:** apresentador, " + ("reconstruções 3D, " if n3d else "") + "fotos e artes, seguindo a seção 3 linha por linha.",
+          "3. **V2:** selos (CASO REAL, créditos" + (", DRAMATIZAÇÃO" if n3d else "") + ") e barra de progresso.",
           "4. **V3:** legendas (importe `legendas.srt`).",
           "5. **A1:** narração (voz grave, EQ e compressão). **A2:** trilha com ducking, 18 a 22 dB abaixo da voz. **A3:** efeitos da seção 8.",
           "6. Normalize em -14 LUFS (pico -1,5 dB).", ""]
@@ -264,8 +264,8 @@ def gerar(caso, pesquisa, info, falas, pags, nome_video):
           f"- {ok(n['Não verificado'] == 0)} Fatos: {n['Confirmado na referência']} confirmados, {n['Parcial: confira o detalhe']} parciais, {n['Não verificado']} não verificados.",
           f"- {ok(not caso.get('duracao_max') or total <= caso['duracao_max'] + 0.5)} Duração: {_t(total)}.",
           "- ✅ Áudio: voz dominante, trilha com ducking, -14 LUFS.",
-          "- ✅ Reconstruções e artes identificadas como ilustração; nenhuma imagem gerada apresentada como prova.",
-          "- ✅ Regras do TikTok: sem violência gráfica, sem rostos reais em reconstruções.",
+          "- ✅ Artes identificadas como ilustração; nenhuma imagem gerada apresentada como prova.",
+          "- ✅ Regras do TikTok: sem violência gráfica.",
           "- ⚠️ Antes de postar: confira os itens “Parcial” e “Não verificado” no Anexo A, e use “suspeito” ou “acusado” para quem não foi condenado.", ""]
 
     # anexos
