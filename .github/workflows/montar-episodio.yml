@@ -64,6 +64,26 @@ jobs:
           retention-days: 30
           if-no-files-found: ignore
 
+      - name: Publicar o MP4 para baixar direto (aba Releases)
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          n=0
+          for d in saida/*/; do
+            [ -d "$d" ] || continue
+            nome=$(basename "$d" | cut -d_ -f3-)
+            arquivos=()
+            for f in "$d"*.mp4; do [ -e "$f" ] && cp "$f" "/tmp/${nome}.mp4" && arquivos+=("/tmp/${nome}.mp4") && break; done
+            [ ${#arquivos[@]} -eq 0 ] && continue
+            [ -f "${d}legendas.txt" ] && cp "${d}legendas.txt" "/tmp/${nome}-legenda.txt" && arquivos+=("/tmp/${nome}-legenda.txt")
+            titulo=$(python -c "import json,sys;print(json.load(open(sys.argv[1]))['titulo'])" "${d}roteiro.json" 2>/dev/null || echo "$nome")
+            n=$((n+1))
+            gh release create "video-${{ github.run_number }}-${n}" "${arquivos[@]}" \
+              --title "🎬 ${titulo}" --notes "Vídeo pronto para o TikTok. Toque no arquivo .mp4 para baixar." --latest
+          done
+          [ $n -eq 0 ] && echo "::warning::Nenhum vídeo foi montado nesta rodada." || echo "$n vídeo(s) publicados em Releases."
+
       - name: Salvar
         if: always()
         run: |
