@@ -1,0 +1,221 @@
+{
+  "titulo_caso": "Mensalão",
+  "aspect": "9:16",
+  "formato": "tiktok",
+  "duracao_max": 60,
+  "layout": "padrao",
+  "formatos": [
+    "9:16"
+  ],
+  "marca": "@paposinistro21",
+  "cenas": [
+    {
+      "fala": "Deputados recebiam dinheiro para votar com o governo.",
+      "tela_titulo": "A acusação",
+      "tela_texto": "Brasília, 2005",
+      "apoio": {
+        "tipo": "revelacao",
+        "valor": "Voto comprado?",
+        "rotulo": "A acusação que parou o país"
+      },
+      "destaques": [
+        "dinheiro"
+      ],
+      "pausa": true,
+      "info": "alegacao",
+      "busca_imagem": "Congresso Nacional Brasil plenário Câmara dos Deputados",
+      "prompt_imagem": "Vertical 2D cinematic illustration of the empty plenary chamber of a modern Brazilian congress building at dusk, dramatic shadows, wide shot, no text"
+    },
+    {
+      "fala": "Em junho de 2005, o deputado Roberto Jefferson deu uma entrevista à imprensa. Ele acusou o governo de pagar uma mesada a parlamentares.",
+      "tela_titulo": "A denúncia",
+      "tela_texto": "Junho de 2005",
+      "apoio": {
+        "tipo": "documento",
+        "valor": "Roberto Jefferson, deputado, afirmou que parlamentares recebiam mesada em troca de apoio ao governo no Congresso.",
+        "rotulo": "Segundo a imprensa"
+      },
+      "destaques": [
+        "mesada"
+      ],
+      "pausa": false,
+      "info": "alegacao",
+      "busca_imagem": "Folha de S.Paulo 2005 Mensalão newspaper front page",
+      "prompt_imagem": "Vertical 2D cinematic illustration of a generic man in a suit speaking before a cluster of microphones and reporters, Brazil 2005 atmosphere, dramatic lighting, no text"
+    },
+    {
+      "fala": "Daí nasceu o nome: mensalão, uma mesada paga todo mês. Foi aberta uma CPI no Congresso, e o Ministério Público apresentou denúncia ao Supremo Tribunal Federal.",
+      "tela_titulo": "CPI e denúncia",
+      "tela_texto": "Congresso e STF",
+      "apoio": {
+        "tipo": "nenhum",
+        "valor": "",
+        "rotulo": ""
+      },
+      "destaques": [
+        "CPI"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": "Comissão Parlamentar de Inquérito Senado Federal sala",
+      "prompt_imagem": "Vertical 2D cinematic illustration of a congressional inquiry hearing room with generic officials at a long table, documents stacked, tense mood, no text"
+    },
+    {
+      "fala": "A acusação dizia que o esquema usava empresas de publicidade e dinheiro desviado, segundo a Procuradoria-Geral da República.",
+      "tela_titulo": "O esquema",
+      "tela_texto": "Publicidade e empréstimos",
+      "apoio": {
+        "tipo": "documento",
+        "valor": "Segundo a denúncia, recursos de empresas de publicidade e de empréstimos bancários abasteciam o pagamento a parlamentares.",
+        "rotulo": "Segundo o Ministério Público"
+      },
+      "destaques": [
+        "publicidade"
+      ],
+      "pausa": false,
+      "info": "alegacao",
+      "busca_imagem": "Banco Rural sede Belo Horizonte",
+      "prompt_imagem": "Vertical 2D cinematic illustration of a dim office with generic figures exchanging envelopes across a desk, financial documents scattered, noir style, no text"
+    },
+    {
+      "fala": "O julgamento começou em 2012, no Supremo Tribunal Federal. Foi um dos maiores da história do tribunal e foi transmitido ao vivo pela TV.",
+      "tela_titulo": "O julgamento",
+      "tela_texto": "STF, 2012",
+      "apoio": {
+        "tipo": "local",
+        "valor": "Supremo Tribunal Federal, Brasília",
+        "rotulo": "Julgamento da Ação Penal 470"
+      },
+      "destaques": [
+        "2012"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": "Supremo Tribunal Federal Brasília building",
+      "prompt_imagem": "Vertical 2D cinematic illustration of the exterior of a modernist supreme court building in Brasília at twilight, dramatic sky, no text"
+    },
+    {
+      "fala": "O STF condenou vários réus, entre eles políticos, dirigentes de partido e executivos, por crimes como corrupção e lavagem de dinheiro.",
+      "tela_titulo": "As condenações",
+      "tela_texto": "Ação Penal 470",
+      "apoio": {
+        "tipo": "revelacao",
+        "valor": "Condenados",
+        "rotulo": "Decisão do STF"
+      },
+      "destaques": [
+        "condenou"
+      ],
+      "pausa": true,
+      "info": "fato",
+      "busca_imagem": "Supremo Tribunal Federal plenário",
+      "prompt_imagem": "Vertical 2D cinematic illustration of a gavel resting on a judge's bench inside a grand court, dramatic backlight, no text"
+    },
+    {
+      "fala": "Os condenados sempre contestaram a acusação, e alguns negaram a existência do esquema. A discussão sobre o caso continua até hoje.",
+      "tela_titulo": "A controvérsia",
+      "tela_texto": "Versões divergentes",
+      "apoio": {
+        "tipo": "nenhum",
+        "valor": "",
+        "rotulo": ""
+      },
+      "destaques": [
+        "contestaram"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": "",
+      "prompt_imagem": "Vertical 2D cinematic illustration of two generic silhouettes facing each other across a courtroom aisle, split lighting, no text"
+    },
+    {
+      "fala": "O mensalão mudou a política brasileira. Para você, o julgamento foi justo?",
+      "tela_titulo": "E você?",
+      "tela_texto": "Mensalão",
+      "apoio": {
+        "tipo": "pergunta",
+        "valor": "O julgamento do mensalão foi justo?",
+        "rotulo": "Comente"
+      },
+      "destaques": [
+        "justo"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": "Praça dos Três Poderes Brasília",
+      "prompt_imagem": "Vertical 2D cinematic illustration of the Brasília skyline at night with the congress towers glowing, quiet and reflective, no text"
+    }
+  ],
+  "capa": "O esquema que abalou Brasília",
+  "wikipedia": {
+    "pt": "Escândalo do mensalão",
+    "en": "Mensalão scandal"
+  },
+  "titulos": [
+    "Mensalão: a mesada que abalou Brasília",
+    "O julgamento do século no STF",
+    "Como o mensalão foi revelado"
+  ],
+  "legenda": "O mensalão foi um dos maiores casos de corrupção julgados no Brasil. Você acha que a Justiça acertou?",
+  "hashtags": [
+    "#crimesreais",
+    "#mensalao",
+    "#truecrime",
+    "#politicabrasileira",
+    "#stf"
+  ],
+  "posts": {
+    "shorts": {
+      "titulo": "",
+      "descricao": "",
+      "hashtags": []
+    },
+    "tiktok": {
+      "titulo": "Mensalão: a mesada que abalou o Congresso e foi a julgamento",
+      "legenda": "Deputados teriam recebido dinheiro para votar com o governo, segundo a acusação. O caso foi parar no STF e foi transmitido ao vivo pela TV. 📺 Para você, o julgamento foi justo?",
+      "hashtags": [
+        "#crimesreais",
+        "#truecrime",
+        "#mensalao",
+        "#STF",
+        "#politicabrasileira"
+      ],
+      "comentario_fixado": "Os condenados sempre contestaram a acusação, e alguns negaram a existência do esquema. Qual é a sua opinião: o julgamento foi justo? 👇"
+    },
+    "instagram": {
+      "legenda": "",
+      "hashtags": []
+    },
+    "youtube": {
+      "titulo": "",
+      "descricao": "",
+      "tags": []
+    }
+  },
+  "conferir": [
+    {
+      "fato": "Entrevista de Roberto Jefferson em junho de 2005",
+      "buscar": "Roberto Jefferson entrevista Folha junho 2005 mensalão"
+    },
+    {
+      "fato": "Abertura da CPI dos Correios em 2005",
+      "buscar": "CPI dos Correios 2005 mensalão"
+    },
+    {
+      "fato": "Denúncia da Procuradoria-Geral da República ao STF",
+      "buscar": "denúncia Procuradoria-Geral da República mensalão STF 2006"
+    },
+    {
+      "fato": "Início do julgamento da Ação Penal 470 em 2012",
+      "buscar": "Ação Penal 470 início julgamento agosto 2012"
+    },
+    {
+      "fato": "Crimes pelos quais houve condenação: corrupção e lavagem de dinheiro",
+      "buscar": "Ação Penal 470 condenados crimes acórdão STF"
+    },
+    {
+      "fato": "Transmissão ao vivo do julgamento pela TV",
+      "buscar": "TV Justiça transmissão julgamento mensalão"
+    }
+  ]
+}
