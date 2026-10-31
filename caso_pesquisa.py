@@ -221,6 +221,18 @@ def _nao(motivo):
     return None
 
 
+NOMES = set()          # nomes das pessoas do caso (preenchido em pesquisar)
+GENERICOS = {"portrait", "photo", "photograph", "retrato", "foto", "fotografia", "mugshot", "circa", "ca", "jpg", "jpeg", "png",
+             "cropped", "crop", "headshot", "mr", "sr", "jr", "the", "of", "in", "de", "da", "do"}
+
+
+def _so_nome(titulo):
+    """True se o título do arquivo for só o nome de uma pessoa do caso (+ ano/retrato): é retrato, não pode."""
+    base = re.sub(r"\.[a-z]{3,4}$", "", _sem_acento(titulo.split(":", 1)[-1]))
+    toks = [t for t in re.split(r"[^a-z]+|(?<=[a-z])(?=\d)", base) if t and not t.isdigit()]
+    return bool(toks) and any(t in NOMES for t in toks) and all(t in NOMES or t in GENERICOS for t in toks)
+
+
 def _aceitavel(p):
     """Devolve os dados da imagem se ela puder ser usada; senão None (o motivo vai para MOTIVOS)."""
     ii = (p.get("imageinfo") or [{}])[0]
@@ -239,6 +251,8 @@ def _aceitavel(p):
         return _nao(f"licença ({lic or 'sem'})")
     if any(k in f" {texto} " for k in PALAVRAS_PESSOAS):
         return _nao("pessoas (descrição)")
+    if _so_nome(titulo):
+        return _nao("retrato (nome da pessoa no título)")
     if any(k in texto for k in PALAVRAS_FORA):
         return _nao("ícone/logo/bandeira")
     return {"titulo": titulo.removeprefix("File:").removeprefix("Arquivo:"), "pagina": ii.get("descriptionurl", ""),
@@ -262,7 +276,7 @@ def _tem_rosto(arquivo):
         pastas = [getattr(getattr(cv2, "data", None), "haarcascades", ""), os.path.join(os.path.dirname(cv2.__file__), "data"),
                   "/usr/share/opencv4/haarcascades", "/usr/share/opencv/haarcascades"]
         _rostos = []
-        for n in ("haarcascade_frontalface_default.xml", "haarcascade_profileface.xml"):
+        for n in ("haarcascade_frontalface_default.xml", "haarcascade_frontalface_alt2.xml", "haarcascade_profileface.xml"):
             for pasta in pastas:
                 arq = os.path.join(pasta, n) if pasta else ""
                 if arq and os.path.exists(arq):
@@ -278,9 +292,10 @@ def _tem_rosto(arquivo):
     esc = 900 / max(img.shape)
     if esc < 1:
         img = cv2.resize(img, None, fx=esc, fy=esc)
-    lado = max(36, int(min(img.shape) * 0.06))
+    lado = max(24, int(min(img.shape) * 0.035))
+    img = cv2.equalizeHist(img)
     for c in _rostos:
-        if len(c.detectMultiScale(img, scaleFactor=1.1, minNeighbors=8, minSize=(lado, lado))):
+        if len(c.detectMultiScale(img, scaleFactor=1.08, minNeighbors=6, minSize=(lado, lado))):
             return True
     return False
 
@@ -330,6 +345,10 @@ def pesquisar(caso, pasta, log=print):
     imgs_dir.mkdir(parents=True, exist_ok=True)
     titulo = caso.get("titulo_caso", "")
     wk = caso.get("wikipedia") if isinstance(caso.get("wikipedia"), dict) else {}
+    NOMES.clear()
+    fontes_nomes = [str(wk.get("pt", "")), str(wk.get("en", ""))] + [str(x.get("nome", "")) for x in caso.get("personagens", []) if isinstance(x, dict)]
+    for n in fontes_nomes:
+        NOMES.update(t for t in re.findall(r"[a-z]{3,}", _sem_acento(n)) if t not in GENERICOS)
     artigos, limitacoes = [], []
     for lang in ("pt", "en"):
         a = artigo(str(wk.get(lang, "")).strip(), lang, busca_extra=titulo if lang == "pt" or not wk.get(lang) else "")

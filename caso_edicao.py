@@ -1210,6 +1210,15 @@ def planejar(cenas, apoios, inicios, total, palavras, fotos=None, cenas3d=None):
                 meio = no_corte(b - min(3.0, dur * 0.4), a, b)
                 em_3d(a, meio, i)
                 planos.append({"ini": meio, "fim": b, "cena": i, "tipo": "pergunta"})
+            elif dur > 5.0:                          # apresentador conclui; o cartão final só nos últimos segundos
+                meio = no_corte(b - 3.5, a, b)
+                if meio - a > 4.2:
+                    m2 = no_corte(a + (meio - a) / 2, a, meio)
+                    apresentador(a, m2, i, "medio")
+                    apresentador(m2, meio, i, "fechado")
+                else:
+                    apresentador(a, meio, i, "fechado")
+                planos.append({"ini": meio, "fim": b, "cena": i, "tipo": "pergunta"})
             else:
                 planos.append({"ini": a, "fim": b, "cena": i, "tipo": "pergunta"})
             continue
