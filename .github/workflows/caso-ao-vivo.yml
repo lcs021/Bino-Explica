@@ -81,8 +81,8 @@ jobs:
           retention-days: 30
           if-no-files-found: ignore
 
-      - name: Relatório do teste (só no exemplo)
-        if: always() && inputs.exemplo
+      - name: Relatório (vídeo e quadros no ramo teste-caso)
+        if: always() && steps.fila.outputs.total != '0'
         run: |
           d=$(ls -d saida/casos/*/ | head -1)
           mkdir -p /tmp/rel && cp "$d"pacote-de-producao.md "$d"legendas.srt "$d"imagens/creditos.txt /tmp/rel/ 2>/dev/null || true

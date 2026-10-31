@@ -38,7 +38,7 @@ def gerar(caso, pesquisa, info, falas, pags, nome_video):
     if caso.get("duracao_max") and total > caso["duracao_max"] + 0.5:
         lim.append(f"O vídeo tem {total:.0f} s, acima do limite de {caso['duracao_max']:.0f} s do formato: encurte o roteiro.")
     L = [f"# Pacote de produção — {titulo}", "",
-         f"Gerado em {date.today().strftime('%d/%m/%Y')} · YouTube Shorts 9:16 (1080×1920, 30 fps) · duração {_t(total)} · arquivo `{nome_video}`", ""]
+         f"Gerado em {date.today().strftime('%d/%m/%Y')} · TikTok 9:16 (1080×1920, 30 fps) · duração {_t(total)} · arquivo `{nome_video}`", ""]
     if lim:
         L += ["> **Limitações desta produção**"] + [f"> - {x}" for x in lim] + [""]
 
@@ -105,7 +105,7 @@ def gerar(caso, pesquisa, info, falas, pags, nome_video):
         L += ["Nenhuma imagem de arquivo foi usada: o vídeo usa só artes ilustrativas e o apresentador virtual.", ""]
 
     # 6
-    L += ["## 6. Narração pronta", "", "Voz: pt-BR-AntonioNeural (masculina), velocidade +8%" +
+    L += ["## 6. Narração pronta", "", "Voz: pt-BR-AntonioNeural (masculina), voz grave natural (tom -6 Hz)" +
           (f", acelerada {100 * (info['fator'] - 1):.0f}% para caber no tempo" if info.get("fator", 1) > 1.001 else "") + ".", ""]
     L += [f["texto"] for f in falas]
     L.append("")
@@ -129,7 +129,8 @@ def gerar(caso, pesquisa, info, falas, pags, nome_video):
     L += ["```", ""]
 
     # 9
-    sh = ((caso.get("posts") or {}).get("shorts") or {})
+    q = caso.get("posts") or {}
+    sh = q.get("shorts") or {"descricao": (q.get("tiktok") or {}).get("legenda", ""), "hashtags": (q.get("tiktok") or {}).get("hashtags", [])}
     creditos = [f"Imagem: {im['titulo']} — {im['autor']}, {im['licenca']}, via Wikimedia Commons ({im['pagina']})" for _, im in sorted(imagens.items())]
     desc = sh.get("descricao", "") + ("\n\nCréditos das imagens:\n" + "\n".join(creditos) if creditos else "")
     L += ["## 9. Título, descrição e hashtags", "", f"**Título:** {sh.get('titulo') or titulo}", "", "**Descrição:**", "", "```",
