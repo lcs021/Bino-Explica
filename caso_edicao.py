@@ -1174,7 +1174,12 @@ def planejar(cenas, apoios, inicios, total, palavras, fotos=None, cenas3d=None):
         dur = b - a
         ap = apoios[i]
         if ap and ap["tipo"] == "pergunta":
-            planos.append({"ini": a, "fim": b, "cena": i, "tipo": "pergunta"})
+            if i in cenas3d and dur > 4.5:          # a imagem 3D aparece primeiro; o cartão final fecha o vídeo
+                meio = no_corte(b - min(3.0, dur * 0.4), a, b)
+                planos.append({"ini": a, "fim": meio, "cena": i, "tipo": "3d", "var": i % 2})
+                planos.append({"ini": meio, "fim": b, "cena": i, "tipo": "pergunta"})
+            else:
+                planos.append({"ini": a, "fim": b, "cena": i, "tipo": "pergunta"})
             continue
         if i in cenas3d:
             if dur > 4.2:
