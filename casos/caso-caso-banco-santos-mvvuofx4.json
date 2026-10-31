@@ -1,0 +1,223 @@
+{
+  "titulo_caso": "Caso Banco Santos",
+  "aspect": "9:16",
+  "formato": "tiktok",
+  "duracao_max": 60,
+  "layout": "padrao",
+  "formatos": [
+    "9:16"
+  ],
+  "marca": "@paposinistro21",
+  "cenas": [
+    {
+      "fala": "Um banqueiro colecionava arte enquanto seu banco quebrava.",
+      "tela_titulo": "Banco Santos",
+      "tela_texto": "São Paulo, 2004",
+      "apoio": {
+        "tipo": "nenhum",
+        "valor": "",
+        "rotulo": ""
+      },
+      "destaques": [
+        "quebrava"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": "Banco Santos São Paulo",
+      "prompt_imagem": "Vertical cinematic 2D illustration of a luxurious São Paulo office with paintings on the walls at dusk, a generic banker silhouette looking out the window, 2000s era, no text"
+    },
+    {
+      "fala": "Em 12 de novembro de 2004, o Banco Central interveio no Banco Santos, em São Paulo.",
+      "tela_titulo": "A intervenção",
+      "tela_texto": "12/11/2004",
+      "apoio": {
+        "tipo": "data",
+        "valor": "12 de novembro de 2004",
+        "rotulo": "Banco Central intervém no Banco Santos"
+      },
+      "destaques": [
+        "interveio"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": "Banco Central do Brasil São Paulo",
+      "prompt_imagem": "Vertical cinematic 2D illustration of a bank building in São Paulo in 2004 with officials in suits entering the doors, overcast sky, no text"
+    },
+    {
+      "fala": "O dono era Edemar Cid Ferreira, conhecido também como grande patrocinador das artes.",
+      "tela_titulo": "O banqueiro",
+      "tela_texto": "Edemar Cid Ferreira",
+      "apoio": {
+        "tipo": "nenhum",
+        "valor": "",
+        "rotulo": ""
+      },
+      "destaques": [
+        "Edemar"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": "Bienal de São Paulo Pavilhão",
+      "prompt_imagem": "Vertical cinematic 2D illustration of an art gallery in Brazil with large modern paintings and a generic elegant man seen from behind, warm lighting, no text"
+    },
+    {
+      "fala": "Segundo a imprensa da época, o rombo passava de dois bilhões de reais.",
+      "tela_titulo": "O rombo",
+      "tela_texto": "Mais de R$ 2 bilhões",
+      "apoio": {
+        "tipo": "numero",
+        "valor": "R$ 2 bilhões",
+        "rotulo": "Rombo estimado, segundo a imprensa da época"
+      },
+      "destaques": [
+        "rombo"
+      ],
+      "pausa": false,
+      "info": "alegacao",
+      "busca_imagem": "Banco Santos",
+      "prompt_imagem": "Vertical cinematic 2D illustration of stacks of financial documents and a calculator on a dark desk, dramatic light, no text"
+    },
+    {
+      "fala": "A Justiça decretou a falência do banco em 2005, e obras de arte da coleção foram apreendidas.",
+      "tela_titulo": "Falência",
+      "tela_texto": "2005",
+      "apoio": {
+        "tipo": "documento",
+        "valor": "Justiça decretou a falência do Banco Santos e obras de arte ligadas ao ex-dono foram apreendidas para ressarcir credores.",
+        "rotulo": "Segundo a imprensa"
+      },
+      "destaques": [
+        "falência",
+        "apreendidas"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": "Banco Santos falência leilão obras de arte",
+      "prompt_imagem": "Vertical cinematic 2D illustration of workers carefully wrapping framed paintings in a warehouse, generic figures, no text"
+    },
+    {
+      "fala": "Edemar foi acusado de crimes contra o sistema financeiro e lavagem de dinheiro. Foi condenado em primeira instância.",
+      "tela_titulo": "A condenação",
+      "tela_texto": "Primeira instância",
+      "apoio": {
+        "tipo": "revelacao",
+        "valor": "Condenado",
+        "rotulo": "Primeira instância"
+      },
+      "destaques": [
+        "condenado"
+      ],
+      "pausa": true,
+      "info": "fato",
+      "busca_imagem": "Justiça Federal São Paulo fórum",
+      "prompt_imagem": "Vertical cinematic 2D illustration of a Brazilian federal courthouse interior with a judge's bench and gavel, generic figures, no text"
+    },
+    {
+      "fala": "Os recursos se arrastaram por anos, e credores disputaram os bens na massa falida.",
+      "tela_titulo": "Anos de recursos",
+      "tela_texto": "Disputa por bens",
+      "apoio": {
+        "tipo": "nenhum",
+        "valor": "",
+        "rotulo": ""
+      },
+      "destaques": [
+        "recursos"
+      ],
+      "pausa": false,
+      "info": "fato",
+      "busca_imagem": "",
+      "prompt_imagem": "Vertical cinematic 2D illustration of a long line of people holding papers outside an office building, muted colors, generic figures, no text"
+    },
+    {
+      "fala": "Por que crimes financeiros demoram tanto para terminar na Justiça? Comenta!",
+      "tela_titulo": "E você?",
+      "tela_texto": "Comente",
+      "apoio": {
+        "tipo": "pergunta",
+        "valor": "Por que crimes financeiros demoram tanto para terminar na Justiça?",
+        "rotulo": "Comente"
+      },
+      "destaques": [
+        "demoram"
+      ],
+      "pausa": false,
+      "info": "hipotese",
+      "busca_imagem": "",
+      "prompt_imagem": "Vertical cinematic 2D illustration of a gavel resting on a pile of old case files under a desk lamp, no text"
+    }
+  ],
+  "capa": "O banco que quebrou em 2004",
+  "wikipedia": {
+    "pt": "Banco Santos",
+    "en": ""
+  },
+  "titulos": [
+    "O banqueiro que colecionava arte e quebrou um banco",
+    "Caso Banco Santos: o que aconteceu em 2004",
+    "Intervenção, falência e condenação: o caso Banco Santos"
+  ],
+  "legenda": "Em 2004, o Banco Central interveio no Banco Santos e o caso virou um dos maiores escândalos financeiros do Brasil. Por que casos assim demoram tanto na Justiça?",
+  "hashtags": [
+    "#crimesreais",
+    "#truecrime",
+    "#bancosantos",
+    "#crimefinanceiro",
+    "#casosreais",
+    "#brasil"
+  ],
+  "posts": {
+    "shorts": {
+      "titulo": "",
+      "descricao": "",
+      "hashtags": []
+    },
+    "tiktok": {
+      "titulo": "O banqueiro que colecionava arte enquanto o banco quebrava",
+      "legenda": "Em 2004, o Banco Central interveio no Banco Santos, e o rombo passava de R$ 2 bilhões. Por que crimes financeiros demoram tanto para terminar na Justiça? 🎨",
+      "hashtags": [
+        "#crimesreais",
+        "#truecrime",
+        "#BancoSantos",
+        "#EdemarCidFerreira",
+        "#crimefinanceiro"
+      ],
+      "comentario_fixado": "Mais de 20 anos depois, os credores ainda disputam os bens da massa falida. Por que você acha que esses casos demoram tanto? Comenta!"
+    },
+    "instagram": {
+      "legenda": "",
+      "hashtags": []
+    },
+    "youtube": {
+      "titulo": "",
+      "descricao": "",
+      "tags": []
+    }
+  },
+  "conferir": [
+    {
+      "fato": "Intervenção do Banco Central em 12 de novembro de 2004",
+      "buscar": "Banco Santos intervenção Banco Central 12 novembro 2004"
+    },
+    {
+      "fato": "Rombo de mais de R$ 2 bilhões segundo a imprensa",
+      "buscar": "Banco Santos rombo bilhões passivo"
+    },
+    {
+      "fato": "Decretação da falência em 2005",
+      "buscar": "Banco Santos falência decretada 2005"
+    },
+    {
+      "fato": "Edemar Cid Ferreira condenado em primeira instância (crimes e pena)",
+      "buscar": "Edemar Cid Ferreira condenação Justiça Federal"
+    },
+    {
+      "fato": "Situação atual dos recursos e da condenação",
+      "buscar": "Edemar Cid Ferreira recurso TRF3 STJ"
+    },
+    {
+      "fato": "Apreensão e leilão de obras de arte da coleção",
+      "buscar": "Banco Santos obras de arte apreendidas leilão massa falida"
+    }
+  ]
+}
