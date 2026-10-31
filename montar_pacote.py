@@ -57,13 +57,14 @@ def main():
     falhou = False
     feitos = PASTA / "feitos"
     feitos.mkdir(exist_ok=True)
-    # episódios já montados antes (pelo título) e nesta rodada: não monta duas vezes
-    ja_feitos = {h.get("titulo") for h in ler_historico(cfg) if h.get("origem") == "site"}
+    # Enviar de novo um episódio já montado = montar de novo (o vídeo antigo pode ter expirado ou sumido).
+    # Só pula cópias repetidas enviadas JUNTAS na mesma vez (ex.: "episodio (1).json").
+    ja_feitos = set()
     for arq in arquivos:
         pacote = json.loads(arq.read_text(encoding="utf-8"))
         tema = pacote.get("tema") or pacote.get("titulo") or arq.stem
         if pacote.get("titulo") in ja_feitos:
-            log.info(f"Pulando {arq.name}: este episódio já foi montado (arquivo repetido).")
+            log.info(f"Pulando {arq.name}: cópia repetida de um episódio desta mesma rodada.")
             shutil.move(str(arq), feitos / arq.name)
             continue
         ja_feitos.add(pacote.get("titulo"))
