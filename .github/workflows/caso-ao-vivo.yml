@@ -81,6 +81,20 @@ jobs:
           retention-days: 30
           if-no-files-found: ignore
 
+      - name: Relatório do teste (só no exemplo)
+        if: always() && inputs.exemplo
+        run: |
+          d=$(ls -d saida/casos/*/ | head -1)
+          mkdir -p /tmp/rel && cp "$d"pacote-de-producao.md "$d"legendas.srt "$d"imagens/creditos.txt /tmp/rel/ 2>/dev/null || true
+          cp logs/*.log /tmp/rel/ 2>/dev/null || true
+          v=$(ls "$d"*.mp4 | head -1)
+          for t in 1 4 7 10 13 16 19 22 25 28 31 34; do ffmpeg -v error -y -ss $t -i "$v" -frames:v 1 -vf scale=360:640 /tmp/rel/q_$t.jpg || true; done
+          ffprobe -v error -show_entries format=duration -of csv=p=0 "$v" > /tmp/rel/duracao.txt
+          ffmpeg -v info -i "$v" -af ebur128=framelog=quiet -f null - 2>&1 | grep -A2 "Integrated" > /tmp/rel/volume.txt || true
+          cd /tmp/rel && git init -q && git checkout -q -b teste-caso && git add -A
+          git -c user.name=bot -c user.email=bot@users.noreply.github.com commit -q -m "relatório do teste"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" teste-caso
+
       - name: Salvar
         if: always() && steps.fila.outputs.total != '0'
         run: |
