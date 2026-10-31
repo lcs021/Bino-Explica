@@ -84,7 +84,11 @@ def main():
             if caso.get("hashtags"):
                 post += ["", " ".join(caso["hashtags"])]
             q = caso.get("posts") or {}
-            if q:
+            sh = q.get("shorts") or {}
+            if sh.get("titulo"):
+                post += ["", "===== YOUTUBE SHORTS =====", f"Título: {sh.get('titulo', '')}", sh.get("descricao", ""),
+                         " ".join(sh.get("hashtags", []))]
+            elif q:
                 t, i, y = q.get("tiktok") or {}, q.get("instagram") or {}, q.get("youtube") or {}
                 post += ["", "===== TIKTOK =====", t.get("legenda", ""), " ".join(t.get("hashtags", [])),
                          "", "===== INSTAGRAM REELS =====", i.get("legenda", ""), " ".join(i.get("hashtags", [])),
