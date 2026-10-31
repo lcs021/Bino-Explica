@@ -1159,6 +1159,15 @@ def planejar(cenas, apoios, inicios, total, palavras, fotos=None, cenas3d=None):
         perto = [x for x in inicios_palavras if a + 0.9 < x - 0.05 < b - 0.9 and abs(x - t) < 0.7]
         return min(perto, key=lambda x: abs(x - t)) - 0.05 if perto else t
 
+    def em_3d(a, b, i):
+        """Reconstrução 3D em trocas de 2 a 4 s, alternando plano geral e corte fechado."""
+        dur = b - a
+        partes = max(1, math.ceil(dur / 3.6)) if dur > 4.2 else 1
+        marcas = [a] + [no_corte(a + dur * k / partes, a, b) for k in range(1, partes)] + [b]
+        for k in range(partes):
+            if marcas[k + 1] - marcas[k] > 0.3:
+                planos.append({"ini": marcas[k], "fim": marcas[k + 1], "cena": i, "tipo": "3d", "var": (k + i) % 2})
+
     def apresentador(a, b, i, enq=None):
         seg = sum(1 for p in planos if p["cena"] == i)
         enq = enq or ciclo[(2 * i + seg) % len(ciclo)]
@@ -1176,18 +1185,13 @@ def planejar(cenas, apoios, inicios, total, palavras, fotos=None, cenas3d=None):
         if ap and ap["tipo"] == "pergunta":
             if i in cenas3d and dur > 4.5:          # a imagem 3D aparece primeiro; o cartão final fecha o vídeo
                 meio = no_corte(b - min(3.0, dur * 0.4), a, b)
-                planos.append({"ini": a, "fim": meio, "cena": i, "tipo": "3d", "var": i % 2})
+                em_3d(a, meio, i)
                 planos.append({"ini": meio, "fim": b, "cena": i, "tipo": "pergunta"})
             else:
                 planos.append({"ini": a, "fim": b, "cena": i, "tipo": "pergunta"})
             continue
         if i in cenas3d:
-            if dur > 4.2:
-                meio = no_corte(a + dur * 0.5, a, b)
-                planos.append({"ini": a, "fim": meio, "cena": i, "tipo": "3d", "var": 0})
-                planos.append({"ini": meio, "fim": b, "cena": i, "tipo": "3d", "var": 1})
-            else:
-                planos.append({"ini": a, "fim": b, "cena": i, "tipo": "3d", "var": i % 2})
+            em_3d(a, b, i)
             continue
         visuais = (["arte"] if ap else []) + (["foto"] if i in fotos else [])
         if i == 0:
