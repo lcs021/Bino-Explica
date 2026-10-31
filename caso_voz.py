@@ -29,8 +29,8 @@ async def _gerar(texto, destino, velocidade, tom):
 
 def narrar_falas(cfg, falas, pasta):
     """Narra cada fala. Devolve [{"arquivo", "texto", "marcas"}] na mesma ordem."""
-    n = cfg.get("narracao", {})
-    velocidade, tom = n.get("velocidade", "+8%"), n.get("tom", "+0Hz")
+    # voz grave e natural: tom levemente mais baixo, sem efeito de robô (independe da voz do Bino no config.yaml)
+    velocidade, tom = "+2%", "-6Hz"
     saida = []
     for i, fala in enumerate(falas):
         texto = preparar_texto(fala)

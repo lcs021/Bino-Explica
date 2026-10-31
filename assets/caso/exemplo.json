@@ -1,7 +1,7 @@
 {
  "titulo_caso": "O roubo da Mona Lisa",
- "formato": "shorts",
- "duracao_max": 59,
+ "formato": "tiktok",
+ "duracao_max": 60,
  "aspect": "9:16",
  "formatos": [
   "9:16"
@@ -143,14 +143,14 @@
   }
  ],
  "posts": {
-  "shorts": {
-   "titulo": "Roubaram a Mona Lisa e ninguém percebeu 🖼️",
-   "descricao": "Em agosto de 1911, a Mona Lisa sumiu do Louvre e o roubo só foi notado no dia seguinte. Baseado em fatos noticiados pela imprensa. Patriotismo ou desculpa?",
+  "tiktok": {
+   "legenda": "Em 1911 a Mona Lisa sumiu do Louvre e ninguém percebeu na hora 🖼️ Patriotismo ou desculpa? 👇",
    "hashtags": [
-    "#shorts",
     "#crimesreais",
+    "#truecrime",
     "#monalisa",
-    "#louvre"
+    "#louvre",
+    "#historiareal"
    ]
   }
  }

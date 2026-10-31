@@ -34,7 +34,7 @@ VEICULOS = ("g1.globo.com", "oglobo.globo.com", "globo.com", "folha.uol.com.br",
             "correiobraziliense.com.br", "gazetadopovo.com.br", "jornaldocomercio", "opovo.com.br", "diariodonordeste")
 IGNORAR = ("catalogue.bnf.fr", "data.bnf.fr", "isni.org", "d-nb.info", "viaf.org", "orcid.org", "wikipedia.org", "wikimedia.org", "wikidata.org", "wiktionary.org", "google.com/search", "worldcat.org",
            "doi.org/10.", "jstor.org/action", "archive.org/details", "openlibrary.org", "viaf.org", "id.loc.gov")
-LICENCAS_OK = re.compile(r"^(public domain|pd\b|pd-|cc0|cc[ -]?by(-sa)?([ -]\d(\.\d)?)?$|cc[ -]?by(-sa)?[ -]\d\.\d)", re.I)
+LICENCAS_OK = re.compile(r"^(public domain|no restrictions|no known copyright restrictions|pd\b|pd-|cc0|cc[ -]?by(-sa)?([ -]\d(\.\d)?)?$|cc[ -]?by(-sa)?[ -]\d\.\d)", re.I)
 PALAVRAS_PESSOAS = ("portrait", "retrato", "people", "person", "persons", "men ", "women", "woman", " man", "boy", "girl",
                     "child", "children", "criança", "mugshot", "victim", "vítima", "face", "selfie", "politician",
                     "criminal", "actor", "actress", "singer", "crowd", "family", "família", "funeral", "corpse", "body",
@@ -258,8 +258,20 @@ def _tem_rosto(arquivo):
     except ImportError:
         return False
     if _rostos is None:
-        _rostos = [cv2.CascadeClassifier(cv2.data.haarcascades + n)
-                   for n in ("haarcascade_frontalface_default.xml", "haarcascade_profileface.xml")]
+        import os
+        pastas = [getattr(getattr(cv2, "data", None), "haarcascades", ""), os.path.join(os.path.dirname(cv2.__file__), "data"),
+                  "/usr/share/opencv4/haarcascades", "/usr/share/opencv/haarcascades"]
+        _rostos = []
+        for n in ("haarcascade_frontalface_default.xml", "haarcascade_profileface.xml"):
+            for pasta in pastas:
+                arq = os.path.join(pasta, n) if pasta else ""
+                if arq and os.path.exists(arq):
+                    c = cv2.CascadeClassifier(arq)
+                    if not c.empty():
+                        _rostos.append(c)
+                        break
+        if not _rostos:
+            print("  Aviso: detector de rostos indisponível; as fotos passam só pelo filtro de descrição.", flush=True)
     img = cv2.imread(str(arquivo), cv2.IMREAD_GRAYSCALE)
     if img is None:
         return True
@@ -298,7 +310,7 @@ def baixar(img, pasta, nome):
         return destino
     except Exception as e:  # noqa: BLE001
         destino.unlink(missing_ok=True)
-        return _nao(f"erro ({type(e).__name__})")
+        return _nao(f"erro ({type(e).__name__}: {str(e)[:60]})")
 
 
 # ---------------------------------------------------------------------------

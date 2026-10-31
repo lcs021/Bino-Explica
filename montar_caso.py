@@ -80,7 +80,7 @@ def main():
                 reels = vertical and caso.get("layout") == "reels"
                 shorts = vertical and str(caso.get("formato", "")).startswith("shorts")
                 nome = ("video-reels.mp4" if reels else "video-shorts.mp4" if shorts
-                        else "video-vertical.mp4" if vertical else "video-horizontal.mp4")
+                        else "video-tiktok.mp4" if vertical else "video-horizontal.mp4")
                 log.info(f"Narração pronta. Editando {nome}…")
                 _, pags, info = caso_edicao.montar(caso, falas, pasta / nome, vertical=vertical, musica=musica(cfg),
                                                    volume_musica=cfg["video"].get("musica_volume", 0.12), reels=reels,

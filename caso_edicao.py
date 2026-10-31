@@ -1296,7 +1296,7 @@ def mixar(voz, eventos, total, pasta, musica=None, volume_musica=0.12):
             continue
         arq = _sfx_arquivo(pasta, nome, dur)
         grupos.setdefault(arq, []).append((t, vol))
-    filtros = [f"[0:a]highpass=f=75,equalizer=f=250:t=q:w=1:g=-2,equalizer=f=3200:t=q:w=1:g=2.5,"
+    filtros = [f"[0:a]highpass=f=60,bass=g=3:f=120,equalizer=f=320:t=q:w=1:g=-1,equalizer=f=3000:t=q:w=1:g=1.5,"
                f"acompressor=threshold=0.1:ratio=3:attack=8:release=150:makeup=2,apad=whole_dur={total:.2f},asplit=2[voz][chave]",
                f"[1:a]atrim=0:{total:.2f},volume={vol_trilha}[tr0]",
                "[tr0][chave]sidechaincompress=threshold=0.025:ratio=9:attack=15:release=380[trilha]"]
