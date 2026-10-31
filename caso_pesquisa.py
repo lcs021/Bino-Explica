@@ -32,7 +32,7 @@ VEICULOS = ("g1.globo.com", "oglobo.globo.com", "globo.com", "folha.uol.com.br",
             "cnn.com", "nbcnews.com", "cbsnews.com", "latimes.com", "telegraph.co.uk", "independent.co.uk",
             "lefigaro.fr", "corriere.it", "repubblica.it", "dw.com", "francetvinfo.fr", "terra.com.br", "r7.com",
             "correiobraziliense.com.br", "gazetadopovo.com.br", "jornaldocomercio", "opovo.com.br", "diariodonordeste")
-IGNORAR = ("wikipedia.org", "wikimedia.org", "wikidata.org", "wiktionary.org", "google.com/search", "worldcat.org",
+IGNORAR = ("catalogue.bnf.fr", "data.bnf.fr", "isni.org", "d-nb.info", "viaf.org", "orcid.org", "wikipedia.org", "wikimedia.org", "wikidata.org", "wiktionary.org", "google.com/search", "worldcat.org",
            "doi.org/10.", "jstor.org/action", "archive.org/details", "openlibrary.org", "viaf.org", "id.loc.gov")
 LICENCAS_OK = re.compile(r"^(public domain|pd\b|pd-|cc0|cc[ -]?by(-sa)?([ -]\d(\.\d)?)?$|cc[ -]?by(-sa)?[ -]\d\.\d)", re.I)
 PALAVRAS_PESSOAS = ("portrait", "retrato", "people", "person", "persons", "men ", "women", "woman", " man", "boy", "girl",
@@ -140,6 +140,13 @@ MESES = {"janeiro": "january", "fevereiro": "february", "março": "march", "abri
          "novembro": "november", "dezembro": "december"}
 
 
+TRADUCOES = {"florenca": ("florence",), "italia": ("italy",), "franca": ("france",), "londres": ("london",),
+             "alemanha": ("germany",), "espanha": ("spain",), "brasil": ("brazil",), "inglaterra": ("england",),
+             "estados": ("united states",), "nova": ("new",), "roma": ("rome",), "lisboa": ("lisbon",), "veneza": ("venice",),
+             "milao": ("milan",), "pequim": ("beijing",), "moscou": ("moscow",), "genebra": ("geneva",), "suica": ("switzerland",),
+             "holanda": ("netherlands",), "belgica": ("belgium",), "mexico": ("mexico",), "japao": ("japan",), "china": ("china",)}
+
+
 def _nomes(t):
     ignorar = {"segundo", "imprensa", "polícia", "policia", "justiça", "caso", "isso", "mas", "naquela", "hoje", "depois",
                "quando", "como", "para", "pois", "porque", "então", "agora", "aqui", "esse", "essa", "este", "esta",
@@ -148,23 +155,47 @@ def _nomes(t):
 
 
 def checar(item, base):
-    """Confere números, datas e nomes do item contra o texto de referência."""
+    """
+    Confere datas, números e nomes do item contra o texto de referência.
+    Só marca "Confirmado" quando a frase tem data ou número e tudo aparece junto num mesmo trecho da referência.
+    Frase só com nomes vira no máximo "Parcial": o nome existe, mas o que a frase diz sobre ele precisa de conferência.
+    """
     b = _sem_acento(base)
-    nums = {n for n in _numeros(item) if len(re.sub(r"\D", "", n)) >= 2}
-    achou_n = {n for n in nums if n in b}
-    nums_ok = len({re.sub(r"\D", "", n) for n in achou_n}) >= len({re.sub(r"\D", "", n) for n in nums}) if nums else True
-    nomes = _nomes(item)
-    achou_nome = {w for w in nomes if _sem_acento(w) in b}
+    nums = sorted({re.sub(r"\D", "", n) for n in _numeros(item) if len(re.sub(r"\D", "", n)) >= 2}, key=len, reverse=True)
+    nomes = sorted({_sem_acento(w) for w in _nomes(item)})
     meses = [m for m in MESES if m in _sem_acento(item)]
-    meses_ok = all(m in b or MESES[m] in b for m in meses)
-    trecho = ""
-    alvo = next(iter(sorted(achou_n, key=len, reverse=True)), None) or next(iter(achou_nome), None)
-    if alvo:
-        i = b.find(_sem_acento(alvo))
-        trecho = base[max(0, i - 140): i + 160].replace("\n", " ").strip()
-    if (nums or nomes or meses) and nums_ok and meses_ok and (not nomes or len(achou_nome) >= max(1, len(nomes) * 0.6)):
+    if not (nums or nomes or meses):
+        return {"item": item, "status": "Sem dado conferível", "trecho": ""}
+    b_dig = re.sub(r"(?<=\d)[.,](?=\d)", "", b)            # 1.200 / 164,7 -> comparáveis
+    alvos = [(n, "n") for n in nums] + [(m, "m") for m in meses] + [(w, "w") for w in nomes]
+
+    def achados(janela):
+        ok = []
+        for t, k in alvos:
+            if k == "n":
+                ok.append(bool(re.search(rf"(?<!\d){t}(?!\d)", janela)))
+            elif k == "m":
+                ok.append(t in janela or MESES[t] in janela)
+            else:
+                ok.append(t in janela or any(x in janela for x in TRADUCOES.get(t, ())))
+        return ok
+
+    ancora = nums[0] if nums else (meses[0] if meses else nomes[0])
+    melhor, melhor_ok, pos = -1, [], -1
+    for m in re.finditer(re.escape(ancora), b_dig):
+        janela = b_dig[max(0, m.start() - 260): m.end() + 260]
+        ok = achados(janela)
+        if sum(ok) > melhor:
+            melhor, melhor_ok, pos = sum(ok), ok, m.start()
+    if pos < 0:
+        geral = achados(b_dig)
+        status = "Parcial: confira o detalhe" if any(geral) else "Não verificado"
+        return {"item": item, "status": status, "trecho": ""}
+    trecho = re.sub(r"\s+", " ", base[max(0, pos - 200): pos + 220]).strip()
+    tem_dado = bool(nums or meses)
+    if tem_dado and all(melhor_ok):
         status = "Confirmado na referência"
-    elif achou_n or achou_nome:
+    elif any(melhor_ok):
         status = "Parcial: confira o detalhe"
     else:
         status = "Não verificado"
@@ -182,8 +213,16 @@ def _info_arquivos(titulos):
     return res.get("query", {}).get("pages", [])
 
 
+MOTIVOS = {}
+
+
+def _nao(motivo):
+    MOTIVOS[motivo] = MOTIVOS.get(motivo, 0) + 1
+    return None
+
+
 def _aceitavel(p):
-    """Devolve os dados da imagem se ela puder ser usada, ou None com o motivo em p['_motivo']."""
+    """Devolve os dados da imagem se ela puder ser usada; senão None (o motivo vai para MOTIVOS)."""
     ii = (p.get("imageinfo") or [{}])[0]
     meta = ii.get("extmetadata", {})
     v = lambda k: _texto_html(meta.get(k, {}).get("value", ""))
@@ -191,15 +230,17 @@ def _aceitavel(p):
     lic = v("LicenseShortName")
     texto = _sem_acento(" ".join([titulo, v("ImageDescription"), v("ObjectName")] + [c.get("title", "") for c in p.get("categories", [])]))
     if p.get("missing") or not ii:
-        return None
+        return _nao("não está no Commons")
     if ii.get("mime") not in ("image/jpeg", "image/png", "image/tiff", "image/webp"):
-        return None
+        return _nao("formato")
     if min(ii.get("width", 0), ii.get("height", 0)) < 500:
-        return None
+        return _nao("pequena")
     if not lic or not LICENCAS_OK.search(lic.strip()) or "nc" in _sem_acento(lic).split("-") or "nd" in _sem_acento(lic):
-        return None
-    if any(k in f" {texto} " for k in PALAVRAS_PESSOAS) or any(k in texto for k in PALAVRAS_FORA):
-        return None
+        return _nao(f"licença ({lic or 'sem'})")
+    if any(k in f" {texto} " for k in PALAVRAS_PESSOAS):
+        return _nao("pessoas (descrição)")
+    if any(k in texto for k in PALAVRAS_FORA):
+        return _nao("ícone/logo/bandeira")
     return {"titulo": titulo.removeprefix("File:").removeprefix("Arquivo:"), "pagina": ii.get("descriptionurl", ""),
             "url": ii.get("thumburl") or ii.get("url"), "largura": ii.get("width"), "altura": ii.get("height"),
             "licenca": lic, "licenca_url": v("LicenseUrl"), "autor": v("Artist")[:120] or "Autor desconhecido",
@@ -225,9 +266,9 @@ def _tem_rosto(arquivo):
     esc = 900 / max(img.shape)
     if esc < 1:
         img = cv2.resize(img, None, fx=esc, fy=esc)
-    lado = max(28, int(min(img.shape) * 0.05))
+    lado = max(40, int(min(img.shape) * 0.09))
     for c in _rostos:
-        if len(c.detectMultiScale(img, scaleFactor=1.1, minNeighbors=6, minSize=(lado, lado))):
+        if len(c.detectMultiScale(img, scaleFactor=1.1, minNeighbors=8, minSize=(lado, lado))):
             return True
     return False
 
@@ -246,18 +287,18 @@ def baixar(img, pasta, nome):
     try:
         r = requests.get(img["url"], headers=UA, timeout=40)
         if r.status_code != 200 or len(r.content) < 5000:
-            return None
+            return _nao(f"download ({r.status_code})")
         destino.write_bytes(r.content)
         from PIL import Image
         with Image.open(destino) as im:
             im.convert("RGB").save(destino, quality=92)
         if _tem_rosto(destino):
             destino.unlink(missing_ok=True)
-            return None
+            return _nao("rosto detectado")
         return destino
-    except Exception:  # noqa: BLE001
+    except Exception as e:  # noqa: BLE001
         destino.unlink(missing_ok=True)
-        return None
+        return _nao(f"erro ({type(e).__name__})")
 
 
 # ---------------------------------------------------------------------------
@@ -302,9 +343,11 @@ def pesquisar(caso, pasta, log=print):
     for a in artigos:
         termos_artigo += [f"File:{n}" for n in a.get("imagens", [])[:25]]
     pool_artigo = [x for x in (_aceitavel(p) for p in _info_arquivos(termos_artigo)) if x]
+    MOTIVOS.clear()
     for i, c in enumerate(caso["cenas"]):
         termo = str(c.get("busca_imagem", "")).strip()
         cand = buscar_imagens(termo) if termo else []
+        log(f"Imagens da cena {i + 1} ('{termo}'): {len(cand)} candidatas aceitas pela licença e descrição")
         for img in cand + pool_artigo:
             if img["pagina"] in usados:
                 continue
@@ -317,6 +360,8 @@ def pesquisar(caso, pasta, log=print):
                 log(f"Imagem da cena {i + 1}: {img['titulo']} ({img['licenca']})")
                 break
             time.sleep(0.2)
+    if MOTIVOS:
+        log("Imagens descartadas: " + ", ".join(f"{k}: {v}" for k, v in sorted(MOTIVOS.items(), key=lambda x: -x[1])))
     if not por_cena:
         limitacoes.append("Nenhuma imagem de arquivo com licença livre e sem pessoas foi encontrada: o vídeo usa só artes ilustrativas.")
     return {"data": date.today().isoformat(), "artigos": [{k: a[k] for k in ("lang", "titulo", "url", "resumo")} for a in artigos],

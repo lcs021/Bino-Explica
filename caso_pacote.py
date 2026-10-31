@@ -8,9 +8,10 @@ NOMES_PLANO = {
     "revelacao": "Arte: revelação em tipografia", "pergunta": "Arte: pergunta final", "foto": "Foto de arquivo",
 }
 ENQ = {"aberto": "plano aberto", "medio": "plano médio", "fechado": "close"}
-INFO = {"fato": "Fato confirmado", "alegacao": "Alegação", "testemunho": "Testemunho", "hipotese": "Hipótese",
+INFO = {"fato": "Fato (segundo o roteiro)", "alegacao": "Alegação", "testemunho": "Testemunho", "hipotese": "Hipótese",
         "nao_verificado": "Não verificado"}
-CONFIANCA = {"Confirmado na referência": "Alta (bate com a Wikipédia, que cita as fontes)",
+CONFIANCA = {"Confirmado na referência": "Alta (datas/números batem no mesmo trecho da referência)",
+             "Sem dado conferível": "— (sem data, número ou nome para conferir)",
              "Parcial: confira o detalhe": "Média (parte bate; confira o detalhe)",
              "Não verificado": "Baixa (não encontrado; confirme antes de postar)"}
 
