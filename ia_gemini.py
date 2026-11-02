@@ -55,7 +55,12 @@ def _ordem(modelo):
     return ordem[:6]
 
 
+CHAMADAS = 0          # pedidos feitos nesta execução (controle de limites)
+
+
 def _uma_chamada(modelo, corpo, chave):
+    global CHAMADAS
+    CHAMADAS += 1
     r = requests.post(URL.format(m=modelo), json=corpo, timeout=240,
                       headers={"x-goog-api-key": chave, "Content-Type": "application/json"})
     return r

@@ -19,13 +19,19 @@ on:
         description: "O que fazer agora"
         type: choice
         default: auditoria
-        options: [auditoria, produzir, publicar, analisar]
+        options: [auditoria, painel, produzir, publicar, analisar, pausar, retomar, reagendar, cancelar, horarios]
       tema:
         description: "Tema (só para produzir; vazio = a IA pesquisa)"
         required: false
       quantos:
         description: "Quantos Reels produzir"
         default: "2"
+      id:
+        description: "Id do Reel (para reagendar ou cancelar; veja no PAINEL.md)"
+        required: false
+      quando:
+        description: "Reagendar: dd/mm HH:MM (ex.: 05/11 19:30) · Horários: 12:30,19:30"
+        required: false
 
 permissions:
   contents: write
@@ -82,11 +88,16 @@ jobs:
           INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
           FONTE_LEGENDA: "Gochi Hand"
           FONTES_DIR: ${{ github.workspace }}/assets/fontes
+          ACAO: ${{ steps.etapa.outputs.acao }}
+          QUANTOS: ${{ inputs.quantos || '2' }}
+          TEMA: ${{ inputs.tema }}
+          REEL_ID: ${{ inputs.id }}
+          QUANDO: ${{ inputs.quando }}
         run: |
-          if [ "${{ steps.etapa.outputs.acao }}" = "produzir" ]; then
-            python reels.py produzir --quantos "${{ inputs.quantos || '2' }}" --tema "${{ inputs.tema }}"
+          if [ "$ACAO" = "produzir" ]; then
+            python reels.py produzir --quantos "$QUANTOS" --tema "$TEMA"
           else
-            python reels.py ${{ steps.etapa.outputs.acao }}
+            python reels.py "$ACAO" --id "$REEL_ID" --quando "$QUANDO"
           fi
 
       - name: Guardar o registro de erros (30 dias)

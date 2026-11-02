@@ -161,6 +161,7 @@ class Desenho:
             if tag == "rect" and not self.formas and _num(el.get("width"), 0) >= 1500:
                 continue                      # o fundo branco já aparece desde o início
             self.formas.append((el, _comprimento(el), el.get("style", "")))
+        self.olhos = [el for el, _, _ in self.formas if _eh_olho(el)]
         # cada traço ganha um pedaço do tempo proporcional ao tamanho (detalhes pequenos não somem)
         pesos = [l ** 0.6 + 8 for _, l, _ in self.formas]
         tot = sum(pesos) or 1
@@ -195,6 +196,53 @@ class Desenho:
         corpo = "".join(ET.tostring(c, encoding="unicode") for c in self.raiz)
         attrs = " ".join(f'{k}="{v}"' for k, v in self.raiz.attrib.items() if not k.startswith("{"))
         return f'<svg xmlns="{SVGNS}" {attrs}><defs>{filtro}</defs><g filter="url(#boil)">{corpo}</g></svg>'
+
+
+def _cor_escura(c):
+    c = (c or "").strip().lower()
+    if c in ("black", "#000", "#000000"):
+        return True
+    m = re.fullmatch(r"#([0-9a-f]{3}|[0-9a-f]{6})", c)
+    if not m:
+        return False
+    h = m.group(1)
+    h = "".join(ch * 2 for ch in h) if len(h) == 3 else h
+    r, g, b = (int(h[i:i + 2], 16) for i in (0, 2, 4))
+    return 0.3 * r + 0.59 * g + 0.11 * b < 70
+
+
+def _eh_olho(el):
+    """Olho de bonequinho: bolinha pequena e escura (círculo ou elipse)."""
+    tag = el.tag.split("}")[-1]
+    estilo = el.get("style", "")
+    m = re.search(r"fill\s*:\s*([^;]+)", estilo)
+    cor = m.group(1) if m else el.get("fill")
+    if tag == "circle":
+        tam = _num(el.get("r"), 99)
+        return tam <= 18 and _cor_escura(cor)
+    if tag == "ellipse":
+        return max(_num(el.get("rx"), 99), _num(el.get("ry"), 99)) <= 20 and _cor_escura(cor)
+    return False
+
+
+def svg_piscando(desenho, boil=None):
+    """O mesmo desenho com os olhos fechados (achatados na vertical)."""
+    antigos = []
+    for el in desenho.olhos:
+        tag = el.tag.split("}")[-1]
+        cx = _num(el.get("cx"), 0)
+        cy = _num(el.get("cy"), 0)
+        antigos.append((el, el.get("transform")))
+        t = f"translate({cx} {cy}) scale(1 0.12) translate({-cx} {-cy})"
+        el.set("transform", (el.get("transform") + " " if el.get("transform") else "") + t)
+    try:
+        return desenho.quadro(1.0, boil=boil)
+    finally:
+        for el, t in antigos:
+            if t is None:
+                el.attrib.pop("transform", None)
+            else:
+                el.set("transform", t)
 
 
 _navegador = None
@@ -298,9 +346,12 @@ def _ease(x):
 
 
 class Cena:
-    def __init__(self, svg_txt, png, titulo, dur, voz_ini, indice, surpresa=False, ultima=False):
+    def __init__(self, svg_txt, png, titulo, dur, voz_ini, indice, surpresa=False, ultima=False,
+                 movimento=None, efeito=None):
         self.dur, self.voz_ini, self.i = dur, voz_ini, indice
         self.surpresa, self.ultima = surpresa, ultima
+        self.movimento = movimento or ("impacto" if surpresa else ["aproximar", "afastar", "panoramica"][indice % 3])
+        self.efeito = efeito or ("ding" if surpresa else "nenhum")
         self.desenho = None
         if svg_txt:
             try:
@@ -331,6 +382,13 @@ class Cena:
                     log.warning(f"Line boil indisponível ({e}); desenho fica firme.")
                     self.boils = []
                     break
+        self.piscar = None                     # personagens piscam a cada ~3 s (quando os olhos são bolinhas)
+        if self.desenho and self.desenho.olhos:
+            try:
+                self.piscar = self._encaixar(rasterizar(svg_piscando(self.desenho, boil=3 if self.boils else None),
+                                                        self.rw, self.rh))
+            except Exception as e:  # noqa: BLE001
+                log.warning(f"Piscar indisponível ({e}).")
         self.titulo = camada_titulo(titulo)
         self._cache = {}
 
@@ -339,6 +397,8 @@ class Cena:
 
     def desenho_em(self, t):
         if t >= self.t_desenho:
+            if self.piscar is not None and ((t - self.t_desenho + 0.9 + self.i * 0.7) % 3.1) < 0.14:
+                return self.piscar
             if self.boils:
                 return self.boils[int((t - self.t_desenho) * 7.5) % len(self.boils)]
             return self.final
@@ -352,11 +412,21 @@ class Cena:
         return self._cache[k]
 
     def zoom_em(self, t):
-        """Câmera: aproxima ou afasta devagar; na surpresa, zoom de impacto na revelação."""
-        base = 0.045 * (t / self.dur) if self.i % 2 == 0 else 0.045 * (1 - t / self.dur)
-        if self.surpresa:
+        """Câmera do storyboard: aproximar, afastar, panorâmica ou impacto (zoom rápido na revelação)."""
+        p = t / self.dur
+        if self.movimento == "afastar":
+            base = 0.05 * (1 - p)
+        elif self.movimento == "panoramica":
+            base = 0.07
+        else:
+            base = 0.045 * p
+        if self.surpresa or self.movimento == "impacto":
             base += 0.11 * _ease((t - self.voz_ini) / 0.35)
         return 1.0 + base
+
+    def pan_em(self, t):
+        """Deslocamento lateral suave (-1 a 1) para a panorâmica."""
+        return (-0.8 + 1.6 * _ease(t / self.dur)) if self.movimento == "panoramica" else 0.0
 
     def quadro(self, t, fundo, anterior=None, seguir=None):
         tela = fundo.copy()
@@ -367,7 +437,7 @@ class Cena:
             y_a, y_b = TOPO - 20, BASE + 20
             faixa_h = y_b - y_a
             lw, lh = W / z, faixa_h / z
-            x0, y0 = (W - lw) / 2, y_a + (faixa_h - lh) / 2
+            x0, y0 = (W - lw) / 2 * (1 + self.pan_em(t)), y_a + (faixa_h - lh) / 2
             faixa = tela.resize((W, faixa_h), Image.BILINEAR, box=(x0, y0, x0 + lw, y0 + lh))
             tela.paste(faixa, (0, y_a))
         # título: entra deslizando e aparecendo
@@ -461,6 +531,14 @@ def som_whoosh(dur=0.35, seed=7):
     return (saida / (np.abs(saida).max() + 1e-9)).astype(np.float32)
 
 
+def som_pop():
+    """'Pop' curtinho de bolha (entrada de elemento)."""
+    t = np.arange(int(0.09 * SR)) / SR
+    f = 950 - 6500 * t
+    x = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 38)
+    return (x / (np.abs(x).max() + 1e-9)).astype(np.float32)
+
+
 def som_ding():
     t = np.arange(int(0.9 * SR)) / SR
     x = (np.sin(2 * np.pi * 1318.5 * t) + 0.6 * np.sin(2 * np.pi * 1975.5 * t) + 0.25 * np.sin(2 * np.pi * 2637 * t))
@@ -525,7 +603,11 @@ def mixar(cenas, falas, destino):
             w = som_whoosh(seed=k) * 0.07
             b = max(0, int((t0 - 0.12) * SR))
             efeitos[b:b + len(w)] += w[:n - b]
-        if c.surpresa:
+        if c.efeito == "pop":
+            d = som_pop() * 0.14
+            b = int((t0 + c.voz_ini + 0.05) * SR)
+            efeitos[b:b + len(d)] += d[:n - b]
+        if c.surpresa or c.efeito == "ding":
             d = som_ding() * 0.16
             b = int((t0 + c.voz_ini - 0.05) * SR)
             efeitos[b:b + len(d)] += d[:n - b]
@@ -701,7 +783,9 @@ def montar_tiktok(cfg, roteiro, cenas_png, audios, titulos, pasta, marca, selo=N
         dur = voz_ini + len(falas[i]) / SR + FIM_PAUSA
         if i == n - 1:
             dur += 0.6                                   # respiro final antes do loop
-        cenas.append(Cena(svg, cenas_png[i], titulos[i], dur, voz_ini, i, surpresa=(i == surpresa), ultima=(i == n - 1)))
+        sb = narr[i] if i < len(narr) else {}
+        cenas.append(Cena(svg, cenas_png[i], titulos[i], dur, voz_ini, i, surpresa=(i == surpresa), ultima=(i == n - 1),
+                          movimento=sb.get("movimento"), efeito=sb.get("efeito")))
         log.info(f"[animado] cena {i + 1}/{n} preparada ({len(cenas[-1].desenho.formas) if cenas[-1].desenho else 0} traços)")
     total = sum(c.dur for c in cenas)
     if total < minimo:                                    # passa de 1 min: estica a última cena com o desenho vivo

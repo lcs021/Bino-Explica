@@ -1,13 +1,17 @@
 """
 Operação automática de Reels do Bino Explica (Instagram), 100% grátis, rodando no GitHub Actions.
 
-    python reels.py produzir [--quantos 2] [--tema "..."]   # 08:00  pesquisa, roteiro, revisão, vídeo, capa, legenda
-    python reels.py publicar                                # 12:30 e 19:30  publica o próximo Reel da vez
-    python reels.py analisar                                # 22:00  resultados + relatório (semanal aos domingos)
-    python reels.py auditoria                               # confere o que está conectado
+Módulos: pesquisador de assuntos e roteirista (aqui) · diretor de arte/ilustração (main_gratis) · animação e edição
+(animacao) · narração (narracao) · qualidade, fila, aprendizado e painel (operacao) · Instagram (instagram_upload).
 
-Tudo fica registrado em reels/registro.json (um id único por vídeo: nunca publica o mesmo duas vezes).
-Os vídeos prontos ficam na aba Releases do GitHub (reel-<id>), com a capa e a legenda.
+    python reels.py produzir [--quantos 2] [--tema "..."]   # 08:00  pesquisa → roteiro → storyboard → vídeo → QA
+    python reels.py publicar                                # 12:30 e 19:30  publica o próximo Reel aprovado
+    python reels.py analisar                                # 22:00  resultados, aprendizado e relatório semanal
+    python reels.py auditoria                               # confere o que está conectado
+    python reels.py pausar | retomar | reagendar --id X --quando "05/11 19:30" | cancelar --id X | horarios --quando "12:30,19:30"
+
+Tudo fica em reels/ (registro.json, temas.json, aprendizados.json, atividades.jsonl, PAINEL.md).
+Os vídeos aprovados ficam na aba Releases do GitHub (reel-<id>), com capa e legenda.
 """
 import argparse
 import json
@@ -20,19 +24,23 @@ import time
 import uuid
 from datetime import datetime, timedelta
 from pathlib import Path
-from zoneinfo import ZoneInfo
 
 import ia_gemini as ia
+import operacao as op
 from util import RAIZ, carregar_config, configurar_log, duracao, slug
 
 log = configurar_log()
-FUSO = ZoneInfo("America/Sao_Paulo")
+FUSO = op.FUSO
 PASTA = RAIZ / "reels"
 REGISTRO = PASTA / "registro.json"
 APRENDIZADOS = PASTA / "aprendizados.json"
-HORARIOS = ["12:30", "19:30"]
-CATEGORIAS = ["curiosidades sobre animais", "corpo humano", "ciência", "psicologia", "história", "espaço",
-              "mistérios", "fenômenos naturais", "conhecimentos gerais", "fatos surpreendentes"]
+VOZ = PASTA / "voz.json"
+CATEGORIAS = ["curiosidades sobre animais", "corpo humano", "ciência e tecnologia", "psicologia", "história", "espaço",
+              "mistérios", "fenômenos naturais", "conhecimentos gerais", "curiosidades inacreditáveis"]
+CRITERIOS = ["curiosidade", "facilidade", "compartilhamento", "interesse_brasil", "ilustravel", "originalidade",
+             "credibilidade"]
+MOVIMENTOS = ["aproximar", "afastar", "panoramica", "impacto"]
+EFEITOS = ["nenhum", "pop", "whoosh", "ding"]
 
 
 def marca_instagram():
@@ -41,12 +49,12 @@ def marca_instagram():
 
 
 def agora():
-    return datetime.now(FUSO)
+    return op.agora()
 
 
 def ler_registro():
     if REGISTRO.exists():
-        return json.loads(REGISTRO.read_text(encoding="utf-8"))
+        return op.normalizar(json.loads(REGISTRO.read_text(encoding="utf-8")))
     return []
 
 
@@ -56,13 +64,13 @@ def salvar_registro(reg):
 
 
 def horarios():
-    cfg = carregar_config()
-    return cfg.get("reels", {}).get("horarios") or HORARIOS
+    return op.horarios()
 
 
 def proximos_horarios(reg, n):
-    """Os próximos n horários livres (12:30 / 19:30), a partir de agora + 20 min."""
-    ocupados = {r["horario"] for r in reg if r.get("status") in ("pronto", "publicando", "publicado")}
+    """Os próximos n horários livres, a partir de agora + 20 min."""
+    ocupados = {r["horario"] for r in reg if r.get("horario") and
+                r.get("status") in (op.AGUARDANDO, op.PUBLICANDO, op.PUBLICADO)}
     livres, dia, limite = [], agora().date(), agora() + timedelta(minutes=20)
     while len(livres) < n:
         for h in horarios():
@@ -75,38 +83,72 @@ def proximos_horarios(reg, n):
     return livres
 
 
-# =================================================================== 1. pesquisa
+def palavras_por_segundo():
+    """Velocidade REAL da narração, medida nos últimos vídeos (para acertar a duração do roteiro)."""
+    try:
+        return max(2.0, min(3.6, json.loads(VOZ.read_text(encoding="utf-8"))["pps"]))
+    except Exception:  # noqa: BLE001
+        return 2.6
+
+
+def medir_voz(cenas, audios):
+    pal = sum(len(c["narracao"].split()) for c in cenas)
+    seg = sum(duracao(a) for a in audios)
+    if seg > 5:
+        novo = pal / seg
+        antigo = palavras_por_segundo() if VOZ.exists() else novo
+        VOZ.write_text(json.dumps({"pps": round(0.7 * antigo + 0.3 * novo, 3)}), encoding="utf-8")
+
+
+# =================================================================== 1. pesquisador de assuntos
 def escolher_temas(reg, quantos, modelo):
-    feitos = [r["tema"] for r in reg][-80:]
+    feitos = list(dict.fromkeys([r["tema"] for r in reg] + op.temas_usados()))[-120:]
     apr = json.loads(APRENDIZADOS.read_text(encoding="utf-8")) if APRENDIZADOS.exists() else {}
+    cat_stats = apr.get("categorias") or {}
     dicas = ""
     if apr.get("melhores"):
-        dicas = ("Desempenho real do perfil (use como guia, sem repetir os temas): os que mais deram certo foram "
-                 f"{json.dumps(apr['melhores'][:5], ensure_ascii=False)}; categorias fortes: {apr.get('categorias_fortes', [])}; "
-                 f"ganchos que funcionaram: {apr.get('ganchos', [])[:3]}.")
+        dicas = ("Desempenho real do perfil (guia, sem repetir temas): melhores temas "
+                 f"{json.dumps(apr['melhores'][:5], ensure_ascii=False)}; categorias fortes {apr.get('categorias_fortes', [])}.")
     prompt = f"""Você é o pesquisador de pauta do perfil "Bino Explica" (Reels de curiosidades desenhadas à mão, Brasil).
-Data de hoje: {agora():%d/%m/%Y}. Pesquise no Google assuntos com alto potencial de viralizar no Instagram brasileiro
-nestas categorias: {", ".join(CATEGORIAS)}.
-Priorize o que desperta curiosidade e vontade de compartilhar ("parece mentira, mas é verdade"), com fatos bem
-documentados por fontes confiáveis (museus, universidades, revistas científicas, enciclopédias, grandes veículos).
-Nada de pessoas vivas, tragédias recentes, política, saúde arriscada ou boatos. Não copie roteiros de outros criadores.
-{dicas}
+Data de hoje: {agora():%d/%m/%Y}. Pesquise no Google oportunidades de conteúdo com alto potencial no Instagram
+brasileiro nestas categorias: {", ".join(CATEGORIAS)}.
+Só fatos bem documentados (universidades, instituições de pesquisa, publicações especializadas, órgãos oficiais,
+enciclopédias, grandes veículos). Nada de pessoas vivas, tragédias recentes, política, saúde arriscada ou boatos.
+Não copie roteiros de outros criadores. {dicas}
 Não repita estes temas: {json.dumps(feitos, ensure_ascii=False)}.
+Dê uma nota de 0 a 10 para cada critério: curiosidade, facilidade (de entender em 50s), compartilhamento,
+interesse_brasil, ilustravel (dá um desenho simples e claro), originalidade, credibilidade (fontes fortes).
 Responda SÓ um JSON: {{"temas":[{{"tema":"assunto específico em uma frase","categoria":"uma das categorias",
-"porque":"por que viraliza, 1 frase",
-"artigos":["1 a 3 títulos EXATOS de artigos da Wikipédia em português que comprovam o tema (ex.: \"Vênus (planeta)\")"]}}]}} com 6 opções de categorias diferentes, da melhor para a pior."""
+"porque":"por que viraliza, 1 frase","criterios":{{"curiosidade":0,"facilidade":0,"compartilhamento":0,
+"interesse_brasil":0,"ilustravel":0,"originalidade":0,"credibilidade":0}},
+"artigos":["1 a 3 títulos EXATOS de artigos da Wikipédia em português que comprovam o tema (ex.: \\"Vênus (planeta)\\")"]}}]}}
+com 8 opções de categorias variadas."""
     try:
         texto, _ = ia.pesquisar(prompt, modelo)
         opcoes = ia.extrair_json(texto).get("temas", [])
-    except Exception as e:  # noqa: BLE001  (busca do Google sem cota hoje: a IA sugere e a Wikipédia confirma depois)
+    except Exception as e:  # noqa: BLE001  (busca do Google sem cota: a IA sugere e a Wikipédia confirma depois)
         log.warning(f"Pesquisa de pauta no Google indisponível ({e}); sugerindo temas sem busca.")
-        opcoes = ia.gerar_json(prompt.replace("Pesquise no Google assuntos", "Sugira assuntos"), modelo).get("temas", [])
+        opcoes = ia.gerar_json(prompt.replace("Pesquise no Google oportunidades", "Sugira oportunidades"), modelo).get("temas", [])
+    for o in opcoes:                      # pontuação interna 0-100 (+ ajuste pelo aprendizado, com amostra mínima)
+        c = o.get("criterios") or {}
+        base = sum(min(10, max(0, float(c.get(k, 5) or 0))) for k in CRITERIOS) / (10 * len(CRITERIOS)) * 100
+        st = cat_stats.get(o.get("categoria") or "", {})
+        ajuste = 0
+        if st.get("n", 0) >= 3 and cat_stats:
+            media_geral = sum(v["media"] for v in cat_stats.values()) / len(cat_stats)
+            ajuste = max(-8, min(8, (st["media"] - media_geral) / 2))
+        o["pontuacao"] = round(min(100, max(0, base + ajuste)), 1)
+    opcoes = [o for o in opcoes if o.get("tema") and o["tema"] not in feitos]
+    opcoes.sort(key=lambda o: o["pontuacao"], reverse=True)
     escolhidos, cats = [], set()
     for o in opcoes:
-        if o.get("tema") and o.get("categoria") not in cats:
+        if o.get("categoria") not in cats and o["pontuacao"] >= 55:
             escolhidos.append(o)
             cats.add(o.get("categoria"))
-    return escolhidos[:quantos + 2]               # 2 reservas, caso algum seja reprovado na revisão
+    escolhidos = escolhidos[:quantos + 2]           # reservas, caso algum seja reprovado
+    op.registrar_temas(opcoes, escolhidos)
+    log.info("Pauta: " + " | ".join(f"{o['pontuacao']:.0f} {o['tema'][:50]}" for o in escolhidos))
+    return escolhidos
 
 
 def pesquisar_fatos(tema, modelo, artigos=None):
@@ -131,13 +173,13 @@ Responda SÓ JSON: {{"fatos":["..."],"mais_surpreendente":"o fato mais impressio
     if not textos:
         raise RuntimeError("não achei fonte confiável para este tema")
     artigo = "\n\n".join(textos)[:24000]
-    fonte = {"titulo": " + ".join(f["titulo"] for f in fontes)}
-    log.info(f"Wikipédia: {fonte['titulo']} ({len(artigo)} caracteres)")
+    titulo = " + ".join(f["titulo"] for f in fontes)
+    log.info(f"Wikipédia: {titulo} ({len(artigo)} caracteres)")
     dados = ia.gerar_json(f"""Leia o(s) artigo(s) abaixo e extraia de 6 a 9 fatos curtos, precisos e surpreendentes que sirvam para
 um vídeo sobre: {tema}.
 Use SOMENTE o que está escrito nos artigos (números, datas e nomes exatos). Fatos relacionados ao assunto valem.
 Diga também se os artigos comprovam a ideia principal do tema (pode ser juntando fatos, ex.: comparando datas).
-Artigo ({fonte['titulo']}):
+Artigo ({titulo}):
 {artigo}
 Responda SÓ JSON: {{"fatos":["..."],"mais_surpreendente":"...","comprova_o_tema":true|false}}""", modelo)
     log.info(f"Fatos extraídos: {len(dados.get('fatos') or [])}; comprova o tema: {dados.get('comprova_o_tema')}")
@@ -148,60 +190,79 @@ Responda SÓ JSON: {{"fatos":["..."],"mais_surpreendente":"...","comprova_o_tema
     return dados, fontes
 
 
-# =================================================================== 2. roteiro e revisão
-def prompt_roteiro(tema, fatos, correcoes=""):
+# =================================================================== 2. roteirista + storyboard
+def prompt_roteiro(tema, fatos, abertura, ganchos_recentes, correcoes=""):
     import main_gratis as mg
     MARCA = marca_instagram()
     regras = mg.REGRAS_VIRAL.replace("@binoexplica", MARCA)
+    pps = palavras_por_segundo()
+    pmin, pmax = round(40 * pps), round(54 * pps)
     return f"""{regras}
 
-Formato: INSTAGRAM REELS de 40 a 55 segundos (110 a 140 palavras no total), EXATAMENTE 6 cenas.
+Formato: INSTAGRAM REELS de 40 a 54 segundos. A voz fala {pps:.1f} palavras por segundo, então escreva de {pmin} a
+{pmax} palavras no total, em EXATAMENTE 6 cenas. Frases curtas, sem introdução.
 Use SOMENTE estes fatos pesquisados (não acrescente nenhum fato, número ou data que não esteja aqui):
 {json.dumps(fatos, ensure_ascii=False)}
-Estrutura obrigatória:
-- Cena 1 = GANCHO (0 a 3 s): pergunta ou afirmação surpreendente, até 10 palavras. Nunca "Olá".
-- Cenas 2 a 4 = DESENVOLVIMENTO: explique de forma simples, um fato por cena.
-- Cena 5 = REVELAÇÃO: comece com uma frase curta de suspense e revele o fato mais surpreendente.
-- Cena 6 = ENCERRAMENTO: conclusão curta + pergunta que faça a pessoa comentar + "segue o Bino Explica".
+Estrutura obrigatória (storytelling de alta retenção):
+- Cena 1 = GANCHO (até 2 s, até 10 palavras). {op.ABERTURAS[abertura]}
+  PROIBIDO começar com "Você sabia" e proibido repetir estas aberturas recentes: {json.dumps(ganchos_recentes, ensure_ascii=False)}
+- Cena 2 = CURIOSIDADE: crie a pergunta na cabeça de quem assiste.
+- Cena 3 = DESENVOLVIMENTO: explique sem enrolar.
+- Cena 4 = QUEBRA DE EXPECTATIVA: algo que ninguém espera.
+- Cena 5 = REVELAÇÃO: frase curta de suspense + o fato mais surpreendente.
+- Cena 6 = ENCERRAMENTO: conclusão curta + pergunta natural para os comentários + "segue o Bino Explica".
 {"Corrija estes problemas apontados pela revisão: " + correcoes if correcoes else ""}
-"visual": a cena EM INGLÊS, rabisco de quadro branco simples (1 a 3 bonequinhos de palito, uma ação clara).
+STORYBOARD de cada cena:
+"visual": a ilustração EM INGLÊS que EXPLICA a fala (rabisco de quadro branco, 1 a 3 bonequinhos de palito, uma ação clara).
+"movimento": um de {MOVIMENTOS} ("impacto" só na revelação). "efeito": um de {EFEITOS} ("ding" só na revelação).
+"destaques": 1 a 3 palavras EXATAS da narração (números, nomes, a palavra mais surpreendente).
 "personagens": aparência fixa de cada personagem, em inglês. "legenda_tela": 2 a 4 palavras, funciona sem som.
-"destaques": 1 a 3 palavras EXATAS da narração da cena (números, nomes, a palavra mais surpreendente).
 Responda SÓ JSON:
 {{"titulo":"curto, curioso e honesto","texto_capa":"2 a 4 palavras em MAIÚSCULAS, terminando em ? ou !",
 "personagens":"...","surpresa":4,
-"cenas":[{{"narracao":"...","legenda_tela":"...","visual":"...","destaques":["..."]}}],
+"cenas":[{{"narracao":"...","legenda_tela":"...","visual":"...","movimento":"...","efeito":"...","destaques":["..."]}}],
 "legenda":"legenda do post: gancho + 2 frases que contam um pouco mais + uma pergunta para os comentários + chamada para seguir o {MARCA}",
 "hashtags":["5 a 8 hashtags ESPECÍFICAS do assunto, sem #, poucas genéricas"]}}"""
 
 
 def revisar(r, fatos, modelo):
     texto = json.dumps({"titulo": r["titulo"], "capa": r.get("texto_capa"), "narracao": [c["narracao"] for c in r["cenas"]],
-                        "legenda": r.get("legenda")}, ensure_ascii=False)
+                        "ilustracoes": [c.get("visual", "") for c in r["cenas"]], "legenda": r.get("legenda")},
+                       ensure_ascii=False)
     prompt = f"""Você é o revisor final antes de publicar um Reel. Fatos pesquisados (com fontes):
 {json.dumps(fatos, ensure_ascii=False)}
 Roteiro: {texto}
 Reprove se: (1) algum fato, número ou data do roteiro NÃO está nos fatos pesquisados ou foi exagerado/distorcido;
 (2) erro de português ou de ortografia; (3) título enganoso; (4) a 1ª frase não prende; (5) conteúdo impróprio,
-pessoa viva, política ou saúde arriscada; (6) falta pergunta final para os comentários.
+pessoa viva, política ou saúde arriscada; (6) falta pergunta final para os comentários; (7) alguma ilustração não
+corresponde à fala da cena.
 Responda SÓ JSON: {{"aprovado": true|false, "problemas": "vazio se aprovado", "nota": 0-10}}"""
     return ia.gerar_json(prompt, modelo)
 
 
-def criar_roteiro(tema, fatos, modelo):
+def criar_roteiro(tema, fatos, modelo, abertura, ganchos_recentes):
     obs = ""
+    pps = palavras_por_segundo()
     for tentativa in range(3):
-        log.info(f"Roteiro (tentativa {tentativa + 1}): {tema}")
-        r = ia.gerar_json(prompt_roteiro(tema, fatos, obs), modelo)
+        log.info(f"Roteiro (tentativa {tentativa + 1}, abertura '{abertura}'): {tema}")
+        r = ia.gerar_json(prompt_roteiro(tema, fatos, abertura, ganchos_recentes, obs), modelo)
         cenas = [c for c in r.get("cenas", []) if c.get("narracao")]
         if len(cenas) < 5:
             obs = "o roteiro precisa ter exatamente 6 cenas com narração"
             continue
         r["cenas"] = cenas[:7]
         palavras = sum(len(c["narracao"].split()) for c in r["cenas"])
-        if not 85 <= palavras <= 175:
-            obs = f"o roteiro tem {palavras} palavras; precisa ter entre 110 e 140"
+        if not 34 * pps <= palavras <= 62 * pps:
+            obs = f"o roteiro tem {palavras} palavras; precisa ter entre {round(40 * pps)} e {round(54 * pps)}"
             continue
+        if re.match(r"\s*voc[eê] sabia", r["cenas"][0]["narracao"], re.I):
+            obs = "a primeira frase não pode começar com 'Você sabia'"
+            continue
+        for k, c in enumerate(r["cenas"]):             # storyboard sempre válido
+            if c.get("movimento") not in MOVIMENTOS:
+                c["movimento"] = MOVIMENTOS[k % 3]
+            if c.get("efeito") not in EFEITOS:
+                c["efeito"] = "nenhum"
         rev = revisar(r, fatos, modelo)
         if rev.get("aprovado"):
             r["revisao"] = {"aprovado": True, "nota": rev.get("nota")}
@@ -220,7 +281,7 @@ def montar_legenda(r, fontes):
             t = marca_instagram().lstrip("@")
         if t and t.lower() not in [x.lower() for x in tags]:
             tags.append(t)
-    tags = tags[:8] or ["curiosidades", "voce sabia"]
+    tags = tags[:8] or ["curiosidades", "vocesabia"]
     dominios = []
     for f in fontes:
         d = re.sub(r"^www\.", "", (f.get("titulo") or "").strip())
@@ -238,7 +299,7 @@ def montar_legenda(r, fontes):
 
 
 def verificar_video(mp4):
-    """Checagem de qualidade antes de publicar: formato, duração, áudio presente e no volume certo."""
+    """Checagem técnica: formato, duração, áudio presente e no volume certo."""
     problemas = []
     try:
         info = json.loads(subprocess.run(["ffprobe", "-v", "error", "-show_streams", "-show_format", "-of", "json",
@@ -281,23 +342,50 @@ def produzir_um(cfg, tema_info, reg, horario, modelo_txt):
     import narracao
     tema = tema_info["tema"]
     vid = f"{agora():%Y%m%d}-{uuid.uuid4().hex[:6]}"
+    abertura = op.escolher_abertura(reg)
+    item = {"id": vid, "criado": agora().isoformat(timespec="minutes"), "tema": tema, "titulo": tema[:60],
+            "categoria": tema_info.get("categoria"), "pontuacao_tema": tema_info.get("pontuacao"),
+            "teste": {"abertura": abertura}, "status": op.EM_PRODUCAO, "horario": None, "tentativas": 0,
+            "erros": [], "historico": [], "media_id": None, "link": None, "resultados": {}}
+    reg.append(item)
+    salvar_registro(reg)
+    op.atividade("produção", f"Começou: {tema} (pontuação {tema_info.get('pontuacao', '–')}, abertura {abertura})", vid)
     pasta = RAIZ / "saida" / f"reel_{vid}_{slug(tema)[:40]}"
     pasta.mkdir(parents=True, exist_ok=True)
     log.info(f"===== Reel {vid}: {tema} =====")
-    fatos, fontes = pesquisar_fatos(tema, modelo_txt, tema_info.get("artigos"))
-    log.info(f"Pesquisa: {len(fatos.get('fatos', []))} fatos, {len(fontes)} fontes")
-    r = criar_roteiro(tema, fatos, modelo_txt)
-    if not r:
-        log.warning("Roteiro reprovado na revisão; este tema foi descartado.")
+    try:
+        fatos, fontes = pesquisar_fatos(tema, modelo_txt, tema_info.get("artigos"))
+        item["fontes"] = fontes[:8]
+        log.info(f"Pesquisa: {len(fatos.get('fatos', []))} fatos, {len(fontes)} fontes")
+        recentes = [r.get("gancho") for r in reg if r.get("gancho")][-8:]
+        r = criar_roteiro(tema, fatos, modelo_txt, abertura, recentes)
+        if not r:
+            raise RuntimeError("roteiro reprovado 3 vezes na revisão")
+    except Exception as e:  # noqa: BLE001
+        op.mudar(item, op.CANCELADO, str(e))
+        op.marcar_tema(tema, "descartado", str(e))
+        op.atividade("produção", f"Tema descartado: {tema} — {e}", vid)
+        salvar_registro(reg)
         return None
     r["tema"] = tema
+    item.update(titulo=r["titulo"], texto_capa=r.get("texto_capa"), gancho=r["cenas"][0]["narracao"],
+                roteiro=[c["narracao"] for c in r["cenas"]],
+                storyboard=[{k: c.get(k) for k in ("narracao", "visual", "movimento", "efeito", "destaques")}
+                            for c in r["cenas"]])
+    salvar_registro(reg)
     (pasta / "roteiro.json").write_text(json.dumps(r, ensure_ascii=False, indent=2), encoding="utf-8")
+
     cenas = mg.desenhar_cenas(cfg, r, pasta)
-    brancos = sum(1 for c in cenas if not c.with_suffix(".svg").exists())
-    if brancos > 1:
-        log.warning(f"{brancos} desenhos falharam; vídeo descartado (não publica com falhas).")
-        return None
+    for tentativa in range(2):                      # correção automática: refaz desenhos que falharam
+        falhos = [c for c in cenas if not c.with_suffix(".svg").exists()]
+        if not falhos:
+            break
+        log.warning(f"{len(falhos)} desenho(s) falharam; refazendo (correção automática {tentativa + 1}).")
+        for c in falhos:
+            c.unlink(missing_ok=True)
+        cenas = mg.desenhar_cenas(cfg, r, pasta)
     auds = narracao.narrar_cenas(cfg, r["cenas"], pasta, "reel")
+    medir_voz(r["cenas"], auds)
     titulos = [re.sub(r"[^\w\s:?!,.\-]", "", r.get("texto_capa") or r["titulo"]).strip()] + \
               [c.get("legenda_tela", "") for c in r["cenas"][1:]]
     marca = marca_instagram()
@@ -308,61 +396,92 @@ def produzir_um(cfg, tema_info, reg, horario, modelo_txt):
     capa = animacao.capa(cenas[i_capa], r.get("texto_capa") or r["titulo"], pasta / "capa.jpg", marca,
                          svg.read_text(encoding="utf-8") if svg.exists() else None)
     capa_ms = _capa_no_fim(mp4, capa)
-    problemas = verificar_video(mp4)
-    if problemas:
-        log.warning(f"Reprovado na checagem de qualidade: {problemas}")
-        return None
     legenda = montar_legenda(r, fontes)
+    item.update(duracao=round(duracao(mp4), 1), capa_ms=capa_ms, legenda=legenda,
+                hashtags=[t for t in legenda.split() if t.startswith("#")])
+    op.mudar(item, op.EM_REVISAO, "controle de qualidade")
+    nota, perdas = op.nota_qualidade(r, item, pasta, cenas, auds, mp4, capa, legenda, verificar_video(mp4))
+    item.update(qualidade=nota, perdas_qa=perdas)
+    log.info(f"Controle de qualidade: nota {nota}/100 {perdas}")
     (pasta / "legenda.txt").write_text(legenda, encoding="utf-8")
     nome = f"{slug(r['titulo'])[:50]}"
     arqs = {pasta / f"{nome}.mp4": mp4, pasta / f"{nome}-capa.jpg": capa, pasta / f"{nome}-legenda.txt": pasta / "legenda.txt"}
     for dst, src in arqs.items():
         shutil.copyfile(src, dst)
+    aprovado = nota >= op.NOTA_MINIMA
+    if aprovado:
+        item["horario"] = horario
     quando = datetime.fromisoformat(horario)
     tag = f"reel-{vid}"
-    notas = (f"Reel programado para {quando:%d/%m às %H:%M}.\n\n"
-             f"Tema: {tema}\nRevisão: aprovado (nota {r['revisao'].get('nota')})\n\n"
-             "Fontes da pesquisa:\n" + "\n".join(f"- {f['titulo']}" for f in fontes[:8]))
-    subprocess.run(["gh", "release", "create", tag, *map(str, arqs), "--title", f"📱 {r['titulo']}",
-                    "--notes", notas, "--latest=false"], check=True)
-    item = {"id": vid, "criado": agora().isoformat(timespec="minutes"), "tema": tema,
-            "categoria": tema_info.get("categoria"), "titulo": r["titulo"], "texto_capa": r.get("texto_capa"),
-            "gancho": r["cenas"][0]["narracao"], "roteiro": [c["narracao"] for c in r["cenas"]],
-            "legenda": legenda, "hashtags": [t for t in legenda.split() if t.startswith("#")],
-            "fontes": fontes[:8], "duracao": round(duracao(mp4), 1), "capa_ms": capa_ms,
-            "release": tag, "arquivo": f"{nome}.mp4", "horario": horario, "status": "pronto",
-            "tentativas": 0, "erros": [], "media_id": None, "link": None, "resultados": {}}
-    reg.append(item)
+    notas = ((f"✅ Aprovado (qualidade {nota}/100) e programado para {quando:%d/%m às %H:%M}.\n\n" if aprovado else
+              f"🧪 QUARENTENA (qualidade {nota}/100, mínimo {op.NOTA_MINIMA}): " + "; ".join(perdas) + "\n\n") +
+             f"Tema: {tema}\nAbertura testada: {abertura}\n\nFontes da pesquisa:\n" +
+             "\n".join(f"- {f['titulo']} {f.get('url', '')}" for f in fontes[:8]))
+    subprocess.run(["gh", "release", "create", tag, *map(str, arqs), "--title",
+                    f"{'📱' if aprovado else '🧪'} {r['titulo']}", "--notes", notas, "--latest=false"], check=True)
+    item.update(release=tag, arquivo=f"{nome}.mp4")
+    if aprovado:
+        op.mudar(item, op.AGUARDANDO, f"qualidade {nota}")
+        op.marcar_tema(tema, "produzido")
+        op.atividade("produção", f"Aprovado ({nota}/100) e programado para {quando:%d/%m %H:%M}: {r['titulo']}", vid)
+        log.info(f"Reel {vid} aprovado e programado para {quando:%d/%m %H:%M}.")
+    else:
+        op.mudar(item, op.QUARENTENA, "; ".join(perdas))
+        op.marcar_tema(tema, "quarentena", "; ".join(perdas))
+        op.atividade("qualidade", f"Quarentena ({nota}/100): {r['titulo']} — " + "; ".join(perdas[:3]), vid, True)
+        print(f"::warning::Reel '{r['titulo']}' ficou em quarentena (qualidade {nota}/100): {'; '.join(perdas)}")
     salvar_registro(reg)
-    log.info(f"Reel {vid} pronto e programado para {quando:%d/%m %H:%M}.")
-    return item
+    return item if aprovado else None
 
 
 def produzir(quantos=2, tema=None):
     cfg = carregar_config()
     reg = ler_registro()
-    pendentes_hoje = [r for r in reg if r["status"] == "pronto" and r["horario"][:10] >= agora().date().isoformat()]
-    quantos = max(0, quantos - len(pendentes_hoje)) if not tema else quantos
+    op.recuperar(reg, proximos_horarios)
+    salvar_registro(reg)
+    pode, motivo = op.pode_produzir()
+    if not pode:
+        log.warning(f"Produção não executada: {motivo}.")
+        op.atividade("produção", f"Não produziu: {motivo}.")
+        op.painel(reg)
+        return
+    futuros = [r for r in reg if r["status"] == op.AGUARDANDO and r["horario"] >= agora().isoformat()]
+    quantos = max(0, quantos - len(futuros)) if not tema else quantos
     if quantos == 0:
-        log.info("Já há Reels prontos para os próximos horários; nada a produzir.")
+        log.info("Já há Reels aprovados para os próximos horários; nada a produzir.")
+        op.painel(reg)
         return
     modelo = cfg["gemini"]["modelo_texto"]
-    temas = [{"tema": tema, "categoria": "manual"}] if tema else escolher_temas(reg, quantos, modelo)
-    log.info("Temas escolhidos: " + " | ".join(t["tema"] for t in temas))
+    temas = [{"tema": tema, "categoria": "manual", "pontuacao": None}] if tema else escolher_temas(reg, quantos, modelo)
     feitos = []
-    for t in temas:
-        if len(feitos) >= quantos:
-            break
-        horario = proximos_horarios(reg, 1)[0]
-        try:
-            item = produzir_um(cfg, t, reg, horario, modelo)
-            if item:
-                feitos.append(item)
-        except Exception as e:  # noqa: BLE001
-            log.error(f"Falhou o tema '{t['tema']}': {e}")
-        time.sleep(5)
+    try:
+        for t in temas:
+            if len(feitos) >= quantos:
+                break
+            pode, motivo = op.pode_produzir()
+            if not pode:
+                log.warning(f"Parando: {motivo}.")
+                break
+            op.somar_uso(reels=1)
+            horario = proximos_horarios(reg, 1)[0]
+            try:
+                item = produzir_um(cfg, t, reg, horario, modelo)
+                if item:
+                    feitos.append(item)
+            except Exception as e:  # noqa: BLE001
+                log.error(f"Falhou o tema '{t['tema']}': {e}")
+                for r in reg:
+                    if r["status"] in (op.EM_PRODUCAO, op.EM_REVISAO):
+                        op.mudar(r, op.FALHA, str(e))
+                        r["erros"].append(f"{agora():%d/%m %H:%M} {str(e)[:300]}")
+                op.atividade("produção", f"Falha em '{t['tema']}': {str(e)[:250]}", erro=True)
+                salvar_registro(reg)
+            time.sleep(5)
+    finally:
+        op.somar_uso(chamadas=ia.CHAMADAS)
+        op.painel(reg)
     if len(feitos) < quantos:
-        print(f"::warning::Só {len(feitos)} de {quantos} Reels ficaram prontos hoje (os outros foram reprovados ou falharam).")
+        print(f"::warning::Só {len(feitos)} de {quantos} Reels foram aprovados hoje (veja o PAINEL.md).")
         if not feitos:
             sys.exit(1)
 
@@ -371,30 +490,31 @@ def produzir(quantos=2, tema=None):
 def publicar():
     import instagram_upload as ig
     reg = ler_registro()
-    da_vez = sorted([r for r in reg if r["status"] in ("pronto", "publicando") and
+    if op.recuperar(reg, proximos_horarios):
+        salvar_registro(reg)
+    if op.pausado():
+        log.info("Automação pausada: nada será publicado.")
+        op.painel(reg)
+        return
+    da_vez = sorted([r for r in reg if r["status"] in (op.AGUARDANDO, op.PUBLICANDO) and r.get("horario") and
                      datetime.fromisoformat(r["horario"]) <= agora()], key=lambda r: r["horario"])
     if not da_vez:
         log.info("Nenhum Reel na hora de publicar.")
+        op.painel(reg)
         return
     item = da_vez[0]
-    if datetime.fromisoformat(item["horario"]) < agora() - timedelta(hours=5) and item["status"] == "pronto":
-        # perdeu o horário (robô atrasado/fora do ar): reprograma para o próximo horário livre, sem duplicar
-        item["horario"] = proximos_horarios(reg, 1)[0]
-        salvar_registro(reg)
-        log.warning(f"Reel {item['id']} perdeu o horário; reprogramado para {item['horario']}.")
-        return
     if not ig.conectado():
-        print(f"::warning::Instagram não conectado (falta o segredo INSTAGRAM_TOKEN). O Reel '{item['titulo']}' "
-              f"está pronto em Releases ({item['release']}) para postar manualmente.")
+        print(f"::warning::Instagram não conectado (falta o segredo INSTAGRAM_TOKEN). '{item['titulo']}' está em Releases.")
         return
     try:
         ig.renovar_token()
         existente = ig.ja_publicado(item["legenda"])
-        if existente:                                   # já foi (tentativa anterior que caiu no meio)
-            item.update(status="publicado", media_id=existente["id"], link=existente.get("permalink"),
+        if existente:                                   # tentativa anterior caiu no meio: já está no ar
+            item.update(media_id=existente["id"], link=existente.get("permalink"),
                         publicado=agora().isoformat(timespec="minutes"))
+            op.mudar(item, op.PUBLICADO, "confirmado nos posts recentes (sem duplicar)")
+            op.atividade("publicação", f"'{item['titulo']}' já estava no ar: {item['link']}", item["id"])
             salvar_registro(reg)
-            log.info(f"Reel {item['id']} já estava no ar: {item['link']}")
             return
         pasta = RAIZ / "saida" / "publicar"
         shutil.rmtree(pasta, ignore_errors=True)
@@ -403,119 +523,158 @@ def publicar():
         mp4 = next(pasta.glob("*.mp4"))
         problemas = verificar_video(mp4)
         if problemas:
-            raise RuntimeError(f"checagem de qualidade reprovou: {problemas}")
-        item["status"] = "publicando"
+            raise RuntimeError(f"checagem antes de publicar reprovou: {problemas}")
+        op.mudar(item, op.PUBLICANDO, "enviando ao Instagram")
         salvar_registro(reg)
         mid = ig.publicar(mp4, item["legenda"], item.get("capa_ms"))
-        item.update(status="publicado", media_id=mid, link=ig.permalink(mid),
-                    publicado=agora().isoformat(timespec="minutes"))
+        item.update(media_id=mid, link=ig.permalink(mid), publicado=agora().isoformat(timespec="minutes"))
+        op.mudar(item, op.PUBLICADO, "confirmado pela Meta")
+        op.marcar_tema(item["tema"], "publicado")
+        op.atividade("publicação", f"Publicado: {item['titulo']} → {item['link']}", item["id"])
         salvar_registro(reg)
         log.info(f"✅ Publicado: {item['link']}")
         print(f"::notice::Reel publicado: {item['titulo']} → {item['link']}")
     except Exception as e:  # noqa: BLE001
         item["tentativas"] = item.get("tentativas", 0) + 1
         item["erros"].append(f"{agora():%d/%m %H:%M} {str(e)[:300]}")
-        item["status"] = "erro" if item["tentativas"] >= 3 else "pronto"
+        op.mudar(item, op.FALHA if item["tentativas"] >= 3 else op.AGUARDANDO, str(e))
+        op.atividade("publicação", f"Falha ao publicar '{item['titulo']}' ({item['tentativas']}/3): {str(e)[:250]}",
+                     item["id"], True)
         salvar_registro(reg)
         print(f"::error::Falha ao publicar '{item['titulo']}' (tentativa {item['tentativas']}/3): {e}")
         sys.exit(1)
+    finally:
+        op.painel(reg)
 
 
-# =================================================================== 5. análise
+# =================================================================== 5. análise e aprendizado
+def _retencao(r):
+    res = r.get("resultados") or {}
+    return min(1.0, ((res.get("ig_reels_avg_watch_time") or 0) / 1000) / max(r.get("duracao") or 45, 1))
+
+
 def _pontuar(r):
     res = r.get("resultados") or {}
     views = res.get("views") or 0
     if not views:
         return 0
-    ret = min(1.0, ((res.get("ig_reels_avg_watch_time") or 0) / 1000) / max(r.get("duracao") or 45, 1))
     eng = ((res.get("shares") or 0) * 3 + (res.get("saved") or 0) * 2 + (res.get("comments") or 0) +
            (res.get("likes") or 0) * 0.5) / views
-    return round(min(100, 25 * min(views / 1000, 2) + 30 * ret + 600 * eng), 1)
+    return round(min(100, 25 * min(views / 1000, 2) + 30 * _retencao(r) + 600 * eng), 1)
 
 
 def analisar():
     import instagram_upload as ig
     reg = ler_registro()
-    if not ig.conectado():
-        log.warning("Instagram não conectado: sem resultados para analisar.")
-        _relatorio(reg, None)
-        return
-    ig.renovar_token()
-    limite = agora() - timedelta(days=30)
-    for r in reg:
-        if r.get("media_id") and datetime.fromisoformat(r.get("publicado") or r["horario"]) > limite:
-            try:
-                r["resultados"] = {**ig.insights(r["media_id"]), "atualizado": agora().isoformat(timespec="minutes")}
-                r["nota"] = _pontuar(r)
-            except Exception as e:  # noqa: BLE001
-                log.warning(f"Resultados de {r['id']} indisponíveis: {e}")
-    salvar_registro(reg)
     seg = None
-    try:
-        seg = ig.seguidores()
-        arq = PASTA / "seguidores.json"
-        hist = json.loads(arq.read_text(encoding="utf-8")) if arq.exists() else []
-        hist.append({"data": agora().date().isoformat(), "seguidores": seg})
-        arq.write_text(json.dumps(hist[-400:], ensure_ascii=False, indent=1), encoding="utf-8")
-    except Exception as e:  # noqa: BLE001
-        log.warning(f"Seguidores indisponíveis: {e}")
+    if ig.conectado():
+        ig.renovar_token()
+        limite = agora() - timedelta(days=30)
+        for r in reg:
+            if r.get("media_id") and datetime.fromisoformat(r.get("publicado") or r["horario"]) > limite:
+                try:
+                    res = ig.insights(r["media_id"])
+                    if res:
+                        r["resultados"] = {**res, "atualizado": agora().isoformat(timespec="minutes")}
+                        r["nota"] = _pontuar(r)
+                except Exception as e:  # noqa: BLE001
+                    log.warning(f"Resultados de {r['id']} indisponíveis: {e}")
+        salvar_registro(reg)
+        try:
+            seg = ig.seguidores()
+            arq = PASTA / "seguidores.json"
+            hist = json.loads(arq.read_text(encoding="utf-8")) if arq.exists() else []
+            if not hist or hist[-1]["data"] != agora().date().isoformat():
+                hist.append({"data": agora().date().isoformat(), "seguidores": seg})
+            else:
+                hist[-1]["seguidores"] = seg
+            arq.write_text(json.dumps(hist[-400:], ensure_ascii=False, indent=1), encoding="utf-8")
+        except Exception as e:  # noqa: BLE001
+            log.warning(f"Seguidores indisponíveis: {e}")
+    else:
+        log.warning("Instagram não conectado: sem resultados para analisar.")
+    aprender(reg)
     _relatorio(reg, seg)
+    op.atividade("análise", f"Resultados atualizados ({sum(1 for r in reg if r.get('nota'))} Reels com estatísticas).")
+    op.painel(reg)
+
+
+def aprender(reg):
+    """Aprendizado com amostra mínima: categorias, horários, duração, aberturas (teste A/B) e recomendações."""
+    pub = [r for r in reg if r["status"] == op.PUBLICADO and r.get("nota")]
+    apr = json.loads(APRENDIZADOS.read_text(encoding="utf-8")) if APRENDIZADOS.exists() else {}
+    apr["teste_abertura"] = op.analisar_testes(pub)
+    if pub:
+        top = sorted(pub, key=lambda r: r["nota"], reverse=True)
+        cats, por_hora = {}, {}
+        for r in pub:
+            cats.setdefault(r.get("categoria") or "?", []).append(r["nota"])
+            por_hora.setdefault(r["horario"][11:16], []).append((r.get("resultados") or {}).get("views") or 0)
+        apr.update(
+            melhores=[r["tema"] for r in top[:6]], piores=[r["tema"] for r in top[-3:]],
+            categorias={c: {"media": round(sum(v) / len(v), 1), "n": len(v)} for c, v in cats.items()},
+            categorias_fortes=[c for c in sorted(cats, key=lambda c: -sum(cats[c]) / len(cats[c])) if len(cats[c]) >= 3][:3],
+            ganchos=[r["gancho"] for r in top[:4] if r.get("gancho")],
+            views_por_horario={h: round(sum(v) / len(v)) for h, v in por_hora.items()},
+            retencao_media=f"{sum(_retencao(r) for r in pub) / len(pub):.0%}")
+        rec = []
+        curtos = [r["nota"] for r in pub if (r.get("duracao") or 0) < 45]
+        longos = [r["nota"] for r in pub if (r.get("duracao") or 0) >= 45]
+        if len(curtos) >= 5 and len(longos) >= 5:
+            mc, ml = sum(curtos) / len(curtos), sum(longos) / len(longos)
+            if mc > 1.15 * ml:
+                rec.append(f"Vídeos com menos de 45s rendem mais (nota {mc:.0f} x {ml:.0f}): testar roteiros mais curtos.")
+            elif ml > 1.15 * mc:
+                rec.append(f"Vídeos de 45s ou mais rendem mais (nota {ml:.0f} x {mc:.0f}): manter roteiros completos.")
+        if apr["categorias_fortes"]:
+            rec.append(f"Aumentar aos poucos a categoria '{apr['categorias_fortes'][0]}' (melhor média com 3+ vídeos).")
+        if len(pub) >= 10:
+            ret = sum(_retencao(r) for r in pub) / len(pub)
+            if ret < 0.35:
+                rec.append(f"Retenção média baixa ({ret:.0%}): ganchos mais fortes e revelação mais cedo.")
+            comp = sorted(pub, key=lambda r: ((r.get("resultados") or {}).get("shares") or 0), reverse=True)[:3]
+            rec.append("Mais compartilhados: " + "; ".join(r["titulo"] for r in comp) + ".")
+        if len(por_hora) >= 2 and len(pub) >= 10:
+            (h1, v1), (h2, v2) = sorted(por_hora.items(), key=lambda kv: -sum(kv[1]) / len(kv[1]))[:2]
+            if sum(v1) / len(v1) > 1.3 * (sum(v2) / max(len(v2), 1)):
+                rec.append(f"O horário {h1} rende bem mais que {h2}: teste trocar {h2} pela ação `horarios`.")
+        if apr["teste_abertura"].get("vencedor"):
+            rec.append(f"Abertura vencedora no teste A/B: '{apr['teste_abertura']['vencedor']}' (passa a ser usada ~60% das vezes).")
+        if len(pub) < 10:
+            rec.append(f"Ainda são só {len(pub)} Reels com estatísticas: conclusões firmes só a partir de 10.")
+        apr["recomendacoes"] = rec
+    apr["atualizado"] = agora().isoformat(timespec="minutes")
+    APRENDIZADOS.write_text(json.dumps(apr, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 def _relatorio(reg, seguidores):
-    pub = [r for r in reg if r.get("status") == "publicado"]
+    pub = [r for r in reg if r.get("status") == op.PUBLICADO]
     hoje = agora()
-    linhas = [f"# Relatório Bino Explica — {hoje:%d/%m/%Y %H:%M}", ""]
+    linhas = [f"# Relatório Bino Explica — {hoje:%d/%m/%Y %H:%M}", "", "Painel completo: [PAINEL.md](PAINEL.md)", ""]
     if seguidores is not None:
         linhas.append(f"**Seguidores:** {seguidores}")
-    linhas += [f"**Reels publicados:** {len(pub)} · **prontos na fila:** {sum(r['status'] == 'pronto' for r in reg)} · "
-               f"**com erro:** {sum(r['status'] == 'erro' for r in reg)}", "",
+    linhas += [f"**Reels publicados:** {len(pub)}", "",
                "| Data | Reel | Views | Alcance | Curtidas | Coment. | Compart. | Salvos | Retenção | Nota | Link |",
                "|---|---|---|---|---|---|---|---|---|---|---|"]
     for r in sorted(pub, key=lambda x: x.get("publicado") or "", reverse=True)[:30]:
         x = r.get("resultados") or {}
-        ret = ((x.get("ig_reels_avg_watch_time") or 0) / 1000) / max(r.get("duracao") or 45, 1)
         linhas.append(f"| {(r.get('publicado') or r['horario'])[:16].replace('T', ' ')} | {r['titulo']} | {x.get('views', '–')} | "
                       f"{x.get('reach', '–')} | {x.get('likes', '–')} | {x.get('comments', '–')} | {x.get('shares', '–')} | "
-                      f"{x.get('saved', '–')} | {ret:.0%} | {r.get('nota', '–')} | [abrir]({r.get('link') or ''}) |")
-    fila = [r for r in reg if r["status"] in ("pronto", "erro")]
-    if fila:
-        linhas += ["", "## Fila e pendências"]
-        for r in sorted(fila, key=lambda x: x["horario"]):
-            extra = f" — erro: {r['erros'][-1]}" if r["status"] == "erro" and r.get("erros") else ""
-            linhas.append(f"- {r['horario'][:16].replace('T', ' ')} · {r['titulo']} ({r['status']}){extra}")
-    # aprendizados (usados pela pesquisa de amanhã) e análise semanal
-    notados = [r for r in pub if r.get("nota")]
-    if notados:
-        top = sorted(notados, key=lambda r: r["nota"], reverse=True)
-        cats = {}
-        for r in notados:
-            cats.setdefault(r.get("categoria") or "?", []).append(r["nota"])
-        fortes = sorted(cats, key=lambda c: -sum(cats[c]) / len(cats[c]))
-        por_hora = {}
-        for r in notados:
-            por_hora.setdefault(r["horario"][11:16], []).append((r.get("resultados") or {}).get("views") or 0)
-        APRENDIZADOS.write_text(json.dumps({
-            "melhores": [r["tema"] for r in top[:6]], "piores": [r["tema"] for r in top[-3:]],
-            "categorias_fortes": fortes[:3], "ganchos": [r["gancho"] for r in top[:4]],
-            "views_por_horario": {h: round(sum(v) / len(v)) for h, v in por_hora.items()},
-            "atualizado": hoje.isoformat(timespec="minutes")}, ensure_ascii=False, indent=2), encoding="utf-8")
-        if hoje.weekday() == 6 or not (PASTA / "semanal.md").exists():
-            sem = [f"# Análise semanal — {hoje:%d/%m/%Y}", "",
-                   "**Temas que mais funcionaram** (nota combina views, retenção, compartilhamentos, salvos e comentários):"]
-            sem += [f"{k + 1}. {r['titulo']} — nota {r['nota']} ({(r.get('resultados') or {}).get('views', 0)} views)"
-                    for k, r in enumerate(top[:5])]
-            sem += ["", f"**Categorias mais fortes:** {', '.join(fortes[:3])}", "",
-                    "**Ganchos que prenderam:**"] + [f"- \"{r['gancho']}\"" for r in top[:3]]
-            sem += ["", "**Média de views por horário:** " +
-                    ", ".join(f"{h} → {round(sum(v) / len(v))}" for h, v in sorted(por_hora.items()))]
-            if len(por_hora) == 2 and len(notados) >= 10:
-                (h1, v1), (h2, v2) = sorted(por_hora.items(), key=lambda kv: -sum(kv[1]) / len(kv[1]))
-                if sum(v1) / len(v1) > 1.3 * (sum(v2) / max(len(v2), 1)):
-                    sem.append(f"\n> Sugestão: o horário {h1} rende bem mais que {h2}. Para testar outro horário no lugar "
-                               f"de {h2}, mude `reels: horarios:` no config.yaml.")
-            (PASTA / "semanal.md").write_text("\n".join(sem), encoding="utf-8")
+                      f"{x.get('saved', '–')} | {_retencao(r):.0%} | {r.get('nota', '–')} | [abrir]({r.get('link') or ''}) |")
     (PASTA / "relatorio.md").write_text("\n".join(linhas), encoding="utf-8")
+    apr = json.loads(APRENDIZADOS.read_text(encoding="utf-8")) if APRENDIZADOS.exists() else {}
+    if hoje.weekday() == 6 or not (PASTA / "semanal.md").exists():
+        notados = sorted([r for r in pub if r.get("nota")], key=lambda r: r["nota"], reverse=True)
+        sem = [f"# Análise semanal — {hoje:%d/%m/%Y}", "",
+               f"Reels publicados: {len(pub)} · com estatísticas: {len(notados)} · retenção média: {apr.get('retencao_media', '–')}", "",
+               "## Melhores Reels (nota combina views, retenção, compartilhamentos, salvos e comentários)"]
+        sem += [f"{k + 1}. {r['titulo']} — nota {r['nota']} ({(r.get('resultados') or {}).get('views', 0)} views, "
+                f"abertura '{(r.get('teste') or {}).get('abertura', '–')}')" for k, r in enumerate(notados[:5])] or ["- ainda sem dados"]
+        sem += ["", "## Ganchos que prenderam"] + [f"- \"{g}\"" for g in apr.get("ganchos", [])[:3]]
+        sem += ["", f"## Desempenho por horário", f"{apr.get('views_por_horario', {})}", "",
+                "## Teste A/B de aberturas", f"{apr.get('teste_abertura', {})}", "", "## Recomendações"]
+        sem += [f"- {x}" for x in apr.get("recomendacoes", [])] or ["- ainda sem dados suficientes"]
+        (PASTA / "semanal.md").write_text("\n".join(sem), encoding="utf-8")
     log.info("Relatório atualizado (reels/relatorio.md).")
 
 
@@ -537,15 +696,17 @@ def auditoria():
     except Exception as e:  # noqa: BLE001
         print(f"❌ Roteirista (Gemini): {str(e)[:200]}")
     print(f"{ok(bool(shutil.which('rsvg-convert')))} Desenhista de SVG  ·  {ok(bool(shutil.which('ffmpeg')))} ffmpeg")
+    c = op.controle()
+    print(f"{'⏸️' if c['pausado'] else '▶️'} Automação {'PAUSADA' if c['pausado'] else 'ativa'} · horários {', '.join(horarios())}")
     import instagram_upload as ig
     if not ig.conectado():
         print("❌ Instagram: falta o segredo INSTAGRAM_TOKEN (os Reels ficam prontos em Releases para postar à mão).")
         return
     try:
         info = ig.verificar_conta()
-        c = info["conta"]
-        print(f"✅ Instagram conectado: @{c.get('username')} ({c.get('account_type', 'profissional')}), "
-              f"{c.get('followers_count')} seguidores")
+        cta = info["conta"]
+        print(f"✅ Instagram conectado: @{cta.get('username')} ({cta.get('account_type', 'profissional')}), "
+              f"{cta.get('followers_count')} seguidores")
         print(f"   Limite de publicação: {info['limite']}")
         try:
             m = ig.recentes(1)
@@ -559,9 +720,12 @@ def auditoria():
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("acao", choices=["produzir", "publicar", "analisar", "auditoria"])
+    ap.add_argument("acao", choices=["produzir", "publicar", "analisar", "auditoria", "pausar", "retomar",
+                                     "reagendar", "cancelar", "horarios", "painel"])
     ap.add_argument("--quantos", type=int, default=2)
     ap.add_argument("--tema", default="")
+    ap.add_argument("--id", default="")
+    ap.add_argument("--quando", default="")
     a = ap.parse_args()
     if a.acao == "produzir":
         produzir(a.quantos, a.tema or None)
@@ -569,5 +733,19 @@ if __name__ == "__main__":
         publicar()
     elif a.acao == "analisar":
         analisar()
-    else:
+    elif a.acao == "auditoria":
         auditoria()
+        op.painel(ler_registro())
+    elif a.acao == "painel":
+        op.painel(ler_registro())
+    else:
+        registro = ler_registro()
+        try:
+            msg = op.comando(a.acao, registro, a.id, a.quando, proximos_horarios)
+            salvar_registro(registro)
+            print(f"::notice::{msg}")
+        except ValueError as e:
+            print(f"::error::{e}")
+            sys.exit(1)
+        finally:
+            op.painel(registro)
