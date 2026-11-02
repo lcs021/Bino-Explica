@@ -186,6 +186,8 @@ Diga também se os artigos comprovam a ideia principal do tema (pode ser juntand
 Artigo ({titulo}):
 {artigo}
 Responda SÓ JSON: {{"fatos":["..."],"mais_surpreendente":"...","comprova_o_tema":true|false}}""", modelo)
+    if isinstance(dados, list):
+        dados = {"fatos": [str(x) for x in dados]}
     log.info(f"Fatos extraídos: {len(dados.get('fatos') or [])}; comprova o tema: {dados.get('comprova_o_tema')}")
     if dados.get("comprova_o_tema") is False:
         raise RuntimeError("as fontes não comprovam a ideia principal do tema")
@@ -581,7 +583,10 @@ def completar_tiktok(cfg, modelo, pac, v, pasta_pac, total):
     import main_gratis as mg
     import narracao
     log.info(f"===== Completando TikTok: {v['titulo']} =====")
-    fatos, fontes = pesquisar_fatos(v["tema"], modelo)
+    art = ia.gerar_json(f"""Quais são 1 a 3 títulos EXATOS de artigos da Wikipédia em português sobre: {v['tema']}?
+Responda SÓ JSON: {{"artigos":["..."]}}""", modelo)
+    artigos = art.get("artigos") if isinstance(art, dict) else art
+    fatos, fontes = pesquisar_fatos(v["tema"], modelo, [str(a) for a in (artigos or [])][:3] or None)
     r = criar_roteiro(v["tema"], fatos, modelo, v.get("abertura") or "historia", [v.get("gancho", "")],
                       alvo=(64, 72), n_cenas=7)
     if not r:
