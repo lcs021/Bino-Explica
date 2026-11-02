@@ -361,6 +361,15 @@ class Cena:
     def quadro(self, t, fundo, anterior=None, seguir=None):
         tela = fundo.copy()
         tela.paste(self.desenho_em(t), self.pos)
+        # câmera: o zoom mexe só na faixa do desenho (título, selo e legenda ficam firmes e inteiros)
+        z = self.zoom_em(t)
+        if z > 1.0005:
+            y_a, y_b = TOPO - 20, BASE + 20
+            faixa_h = y_b - y_a
+            lw, lh = W / z, faixa_h / z
+            x0, y0 = (W - lw) / 2, y_a + (faixa_h - lh) / 2
+            faixa = tela.resize((W, faixa_h), Image.BILINEAR, box=(x0, y0, x0 + lw, y0 + lh))
+            tela.paste(faixa, (0, y_a))
         # título: entra deslizando e aparecendo
         a = _ease(t / 0.28)
         if a > 0:
@@ -376,13 +385,6 @@ class Cena:
                 if b < 1:
                     s.putalpha(seguir.getchannel("A").point(lambda v: int(v * b)))
                 tela.paste(s, ((W - s.width) // 2, H - 330 - int(20 * (1 - b))), s)
-        z = self.zoom_em(t)
-        if z > 1.0005:
-            cx, cy = W / 2, (TOPO + BASE) / 2
-            lw, lh = W / z, H / z
-            x0 = min(max(cx - lw / 2, 0), W - lw)
-            y0 = min(max(cy - lh / 2, 0), H - lh)
-            tela = tela.resize((W, H), Image.BILINEAR, box=(x0, y0, x0 + lw, y0 + lh))
         if anterior is not None and t < TRANSICAO:
             tela = Image.blend(anterior, tela, _ease(t / TRANSICAO))
         return tela

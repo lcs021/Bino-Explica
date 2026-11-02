@@ -41,7 +41,10 @@ ESTILO = """Hand-drawn whiteboard doodle style, like a marker sketch on white pa
 - Color only as flat fills on a few key objects (orange tunic with brown blotches, blue water,
   green tree, red heart). Everything else white.
 - Thought bubbles and simple symbols (hearts, stars, question marks drawn as shapes) for ideas.
-- 1 to 3 characters, big and centered. Keep the TOP 18% and BOTTOM 15% EMPTY."""
+- 1 to 3 characters, BIG: the main character must be at least 60% of the canvas height.
+- COMPOSITION FOR A VERTICAL PHONE VIDEO: put EVERYTHING inside the central square (x from 350 to 1250).
+  Leave the left and right sides empty. No ground line or object stretching across the whole width.
+- Keep the TOP 8% and BOTTOM 8% empty."""
 
 REGRAS_VIRAL = f"""Você é roteirista do canal "Bino Explica" (YouTube, TikTok e Instagram @binoexplica):
 vídeos desenhados à mão, estilo rabisco de quadro branco, feitos para VIRALIZAR.
