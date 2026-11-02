@@ -487,6 +487,12 @@ def produzir_pacote(total=5):
         for v in pac["videos"]:
             subprocess.run(["gh", "release", "download", pac["id"], "-p", v["arquivo"], "-p", v["capa"], "-D",
                             str(pasta_pac), "--clobber"], capture_output=True)
+    for v in pac["videos"]:
+        if not v.get("arquivo_tiktok"):
+            try:
+                completar_tiktok(cfg, modelo, pac, v, pasta_pac, total)
+            except Exception as e:  # noqa: BLE001
+                log.warning(f"TikTok de '{v['titulo']}' não ficou pronto: {e}")
     tentativas = 0
     while len(pac["videos"]) < total and tentativas < total * 2:
         faltam = total - len(pac["videos"])
@@ -569,6 +575,38 @@ def produzir_pacote(total=5):
     fechar_pacote(pac, pasta_pac, total)
 
 
+def completar_tiktok(cfg, modelo, pac, v, pasta_pac, total):
+    """Faz do zero a versão TikTok (mais de 1 min, sem música) de um tema do pacote que ficou só com o Reels."""
+    import animacao
+    import main_gratis as mg
+    import narracao
+    log.info(f"===== Completando TikTok: {v['titulo']} =====")
+    fatos, fontes = pesquisar_fatos(v["tema"], modelo)
+    r = criar_roteiro(v["tema"], fatos, modelo, v.get("abertura") or "historia", [v.get("gancho", "")],
+                      alvo=(64, 72), n_cenas=7)
+    if not r:
+        raise RuntimeError("roteiro reprovado")
+    pasta = RAIZ / "saida" / f"tt_{v['n']:02d}_{slug(v['tema'])[:30]}"
+    pasta.mkdir(parents=True, exist_ok=True)
+    cenas = mg.desenhar_cenas(cfg, r, pasta)
+    auds = narracao.narrar_cenas(cfg, r["cenas"], pasta, "tt")
+    titulos = [re.sub(r"[^\w\s:?!,.\-]", "", r.get("texto_capa") or r["titulo"]).strip()] + \
+              [c.get("legenda_tela", "") for c in r["cenas"][1:]]
+    mp4 = animacao.montar_tiktok(cfg, r, cenas, auds, titulos, pasta, marca_tiktok(), minimo=62, nome="tiktok",
+                                 musica=False)
+    d = duracao(mp4)
+    if verificar_video(mp4) or d < 61:
+        raise RuntimeError(f"checagem reprovou ({d:.0f}s)")
+    nome = v["arquivo"].replace("-REELS.mp4", "")
+    shutil.copyfile(mp4, pasta_pac / f"{nome}-TIKTOK.mp4")
+    leg = (r.get("legenda_tiktok") or r["titulo"]).strip()
+    tags = list(dict.fromkeys([x.lower() for x in hashtags(r)[:3]] + ["curiosidades", "vocesabia", "aprendanotiktok"]))
+    v.update(arquivo_tiktok=f"{nome}-TIKTOK.mp4", duracao_tiktok=round(d, 1),
+             legenda_tiktok=f"{leg}\n\nSegue o {marca_tiktok()} pra mais curiosidades 👀\n\n" + " ".join("#" + x for x in tags))
+    PACOTE.write_text(json.dumps(pac, ensure_ascii=False, indent=2), encoding="utf-8")
+    enviar_ao_release(pac, pasta_pac, total, [pasta_pac / v["arquivo_tiktok"]])
+
+
 def _legendas_md(pac, pasta_pac):
     linhas = [f"# 📦 Pacote Bino Explica — {len(pac['videos'])} temas", "",
               "Cada tema vem em 2 versões: REELS (Instagram, com trilha própria) e TIKTOK (mais de 1 minuto para a "
@@ -640,7 +678,7 @@ def versao_tiktok(cfg, r, fatos, cenas_ig, pasta, nome, tag, modelo):
     visuais = [f"{k}: {c.get('visual', '')}" for k, c in enumerate(r["cenas"])]
     marca = marca_tiktok()
     obs = ""
-    for tentativa in range(3):
+    for tentativa in range(4):
         t = ia.gerar_json(f"""Você é roteirista do perfil "Bino Explica" no TikTok (curiosidades desenhadas à mão, Brasil).
 Reescreva este vídeo como uma VERSÃO PARA TIKTOK de 65 a 72 segundos: {pmin} a {pmax} palavras no total, em EXATAMENTE
 7 cenas. A voz fala {pps:.1f} palavras por segundo. Linguagem de TikTok brasileiro, frases curtas, sem enrolar.
@@ -658,8 +696,10 @@ Responda SÓ JSON: {{"texto_capa":"2 a 4 palavras em MAIÚSCULAS terminando em ?
 "legenda_tiktok":"gancho + 1 frase + pergunta + 4 a 6 hashtags (ex.: #curiosidades #vocesabia #aprendanotiktok)"}}""", modelo)
         tc = [c for c in t.get("cenas", []) if c.get("narracao")][:8]
         palavras = sum(len(c["narracao"].split()) for c in tc)
-        if len(tc) < 6 or not 0.9 * pmin <= palavras <= 1.15 * pmax:
-            obs = f"precisa de 7 cenas e {pmin} a {pmax} palavras (veio {len(tc)} cenas e {palavras} palavras)"
+        if len(tc) < 6 or not 0.72 * pmin <= palavras <= 1.25 * pmax:
+            obs = (f"precisa de 7 cenas e {pmin} a {pmax} palavras (veio {len(tc)} cenas e {palavras} palavras): "
+                   f"{'escreva MAIS, com mais um fato e frases completas' if palavras < pmin else 'corte um pouco'}")
+            log.warning(f"Versão TikTok: {obs}")
             continue
         if re.match(r"\s*voc[eê] sabia", tc[0]["narracao"], re.I):
             obs = "a primeira frase não pode começar com 'Você sabia'"
