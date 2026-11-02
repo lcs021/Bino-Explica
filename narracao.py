@@ -3,6 +3,7 @@
 Usa a voz principal do config.yaml; se ela falhar, tenta as reservas na ordem.
 """
 import asyncio
+import json
 import re
 import time
 from pathlib import Path
@@ -25,7 +26,23 @@ def preparar_texto(texto: str) -> str:
 
 
 async def _falar(texto, destino, voz, velocidade, tom):
-    await edge_tts.Communicate(texto, voz, rate=velocidade, pitch=tom).save(str(destino))
+    """Grava a fala e, ao lado (.palavras.json), o momento exato de cada palavra (para a legenda sincronizada)."""
+    try:
+        com = edge_tts.Communicate(texto, voz, rate=velocidade, pitch=tom, boundary="WordBoundary")
+    except TypeError:                      # edge-tts antigo: já manda as palavras por padrão
+        com = edge_tts.Communicate(texto, voz, rate=velocidade, pitch=tom)
+    audio, palavras = bytearray(), []
+    async for parte in com.stream():
+        if parte["type"] == "audio":
+            audio += parte["data"]
+        elif parte["type"] == "WordBoundary":
+            palavras.append({"ini": parte["offset"] / 1e7, "fim": (parte["offset"] + parte["duration"]) / 1e7,
+                             "texto": parte["text"]})
+    if not audio:
+        raise RuntimeError("No audio was received")
+    Path(destino).write_bytes(bytes(audio))
+    if palavras:
+        Path(destino).with_suffix(".palavras.json").write_text(json.dumps(palavras, ensure_ascii=False), encoding="utf-8")
 
 
 _voz_escolhida = None   # decidida uma vez por execução: o episódio inteiro sai com a mesma voz

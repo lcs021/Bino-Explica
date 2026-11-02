@@ -352,16 +352,31 @@ def produzir(cfg, tema, pasta, formato="explicacao"):
     return {"roteiro": r, "longo": longo, "curto": curto, "feed": feed, "miniatura": mini}
 
 
+def _animado(cfg, r, cenas_png, auds, titulos, pasta, marca, selo=None):
+    """Edição animada (traço a traço, legendas palavra a palavra, trilha e efeitos). Se falhar, volta ao modo simples."""
+    if os.environ.get("ANIMACAO", "1") == "0":
+        return None
+    try:
+        import animacao
+        return animacao.montar_tiktok(cfg, r, cenas_png, auds, titulos, pasta, marca, selo)
+    except Exception as e:  # noqa: BLE001
+        import traceback
+        log.error(f"Edição animada falhou ({e}); montando no modo simples.\n{traceback.format_exc()[-1500:]}")
+        return None
+
+
 def _so_tiktok(cfg, r, cenas, pasta, marca):
     """Episódio feito só para o TikTok: monta apenas o vertical 9:16 (mín. 62s) com as cenas do roteiro."""
     titulos = [re.sub(r"[^\w\s:?!,.\-]", "", r.get("texto_capa") or r["curto"]["titulo"]).strip() if i == 0
                else c.get("legenda_tela", "") for i, c in enumerate(r["cenas"])]
     serie = r.get("serie") or {}
     selo = f"PARTE {serie['parte']}" if serie.get("parte") else None
-    imgs = [compor(cenas[i], t, 1080, 1920, marca, pasta / f"v_{i:02d}.png", selo) for i, t in enumerate(titulos)]
     auds = narracao.narrar_cenas(cfg, r["cenas"], pasta, "tiktok")
-    vid = video.montar(cfg, imgs, auds, [c["narracao"] for c in r["cenas"]], pasta, "tiktok_9x16", 1080, 1920,
-                       minimo=62)
+    vid = _animado(cfg, r, cenas, auds, titulos, pasta, marca, selo)
+    if not vid:
+        imgs = [compor(cenas[i], t, 1080, 1920, marca, pasta / f"v_{i:02d}.png", selo) for i, t in enumerate(titulos)]
+        vid = video.montar(cfg, imgs, auds, [c["narracao"] for c in r["cenas"]], pasta, "tiktok_9x16", 1080, 1920,
+                           minimo=62)
     (pasta / "legendas.txt").write_text(f"TIKTOK\n{r['curto']['legenda_tiktok']}\n", encoding="utf-8")
     return {"roteiro": r, "longo": None, "curto": vid, "feed": None, "miniatura": None}
 
@@ -371,9 +386,11 @@ def _tiktok_do_corte(cfg, r, cenas, pasta, marca):
     cc = r["curto"]["cenas"]
     titulo = re.sub(r"[^\w\s:?!,.\-]", "", r["curto"]["titulo"]).strip()
     titulos = [titulo if k == 0 else r["cenas"][c["imagem"]].get("legenda_tela", "") for k, c in enumerate(cc)]
-    imgs = [compor(cenas[c["imagem"]], t, 1080, 1920, marca, pasta / f"v_{k:02d}.png") for k, (c, t) in enumerate(zip(cc, titulos))]
     auds = narracao.narrar_cenas(cfg, cc, pasta, "tiktok")
-    vid = video.montar(cfg, imgs, auds, [c["narracao"] for c in cc], pasta, "tiktok_9x16", 1080, 1920, minimo=62)
+    vid = _animado(cfg, {**r, "cenas": cc, "surpresa": None}, [cenas[c["imagem"]] for c in cc], auds, titulos, pasta, marca)
+    if not vid:
+        imgs = [compor(cenas[c["imagem"]], t, 1080, 1920, marca, pasta / f"v_{k:02d}.png") for k, (c, t) in enumerate(zip(cc, titulos))]
+        vid = video.montar(cfg, imgs, auds, [c["narracao"] for c in cc], pasta, "tiktok_9x16", 1080, 1920, minimo=62)
     (pasta / "legendas.txt").write_text(f"TIKTOK\n{r['curto']['legenda_tiktok']}\n", encoding="utf-8")
     return {"roteiro": r, "longo": None, "curto": vid, "feed": None, "miniatura": None}
 

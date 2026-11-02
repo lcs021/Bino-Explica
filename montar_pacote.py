@@ -21,8 +21,9 @@ PASTA = RAIZ / "episodios"
 def preparar(pacote: dict, pasta):
     """Grava o roteiro e os desenhos do site no formato que o robô já entende."""
     pasta.mkdir(parents=True, exist_ok=True)
-    rot = {k: pacote.get(k) for k in ("titulo", "descricao", "tags", "personagens", "curto", "tema", "modo", "formato", "miniatura", "longo", "plataforma", "texto_capa", "serie")}
-    rot["cenas"] = [{"narracao": c.get("narracao", ""), "legenda_tela": c.get("legenda_tela", ""), "visual": ""}
+    rot = {k: pacote.get(k) for k in ("titulo", "descricao", "tags", "personagens", "curto", "tema", "modo", "formato", "miniatura", "longo", "plataforma", "texto_capa", "serie", "surpresa")}
+    rot["cenas"] = [{"narracao": c.get("narracao", ""), "legenda_tela": c.get("legenda_tela", ""), "visual": "",
+                     "destaques": [str(x) for x in (c.get("destaques") or [])][:4]}
                     for c in pacote["cenas"]]
     rot = mg.validar(rot)
     (pasta / "roteiro.json").write_text(json.dumps(rot, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -34,6 +35,8 @@ def preparar(pacote: dict, pasta):
         destino = pasta / f"cena_{i:02d}.png"
         if d in prontos:
             shutil.copyfile(prontos[d], destino)
+            if prontos[d].with_suffix(".svg").exists():      # o SVG serve para a animação traço a traço
+                shutil.copyfile(prontos[d].with_suffix(".svg"), destino.with_suffix(".svg"))
             continue
         limpo = mg.limpar_svg(svgs[d] if d < len(svgs) and svgs[d] else "")
         if not (limpo and mg.svg_para_png(limpo, destino)):
