@@ -290,6 +290,7 @@ def montar_legenda(r, fontes):
     texto = (r.get("legenda") or r["titulo"]).strip()
     marca = marca_instagram()
     texto = re.sub(r"@binoexplica\b", marca, texto, flags=re.I)
+    texto = re.sub(r"(segue|siga)( o)? (o )?bino ?explica\b", lambda m: f"{m.group(1)} o {marca}", texto, flags=re.I)
     if marca.lower() not in texto.lower():
         texto += f"\n\nSegue o {marca} pra uma curiosidade nova todo dia!"
     if dominios:
