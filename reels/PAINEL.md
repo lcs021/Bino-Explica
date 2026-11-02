@@ -1,21 +1,21 @@
 # 🎛️ Painel do Bino Explica — Reels
 
-Atualizado em 02/11/2026 às 13:31 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
+Atualizado em 02/11/2026 às 13:38 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
 
 ## Visão geral
 
 | Produzidos | Publicados | Na fila | Falhas | Quarentena | Views (com estatísticas) | Seguidores |
 |---|---|---|---|---|---|---|
-| 2 | 0 | 2 | 0 | 0 | 0 | – |
+| 2 | 1 | 1 | 0 | 0 | 0 | – |
 
-**Próximas publicações:** 02/11 12:30 — A inacreditável Guerra dos Emus, 02/11 19:30 — Por que o sol te faz espirrar?
+**Próximas publicações:** 02/11 19:30 — Por que o sol te faz espirrar?
 
 ## 📅 Calendário da semana
 
 | Dia | Reels (horário · status · título) |
 |---|---|
 | dom 01/11 | — |
-| seg 02/11 (hoje) | 12:30 ⏳ A inacreditável Guerra dos Emus `20261102-41cc94` · 19:30 ⏳ Por que o sol te faz espirrar? `20261102-a5ce83` |
+| seg 02/11 (hoje) | 12:30 ✅ [A inacreditável Guerra dos Emus](https://www.instagram.com/reel/DfPwPqrEUIu/) · 19:30 ⏳ Por que o sol te faz espirrar? `20261102-a5ce83` |
 | ter 03/11 | 12:30 — livre · 19:30 — livre |
 | qua 04/11 | 12:30 — livre · 19:30 — livre |
 | qui 05/11 | 12:30 — livre · 19:30 — livre |
@@ -26,7 +26,6 @@ Atualizado em 02/11/2026 às 13:31 (horário de Brasília) · automação **▶�
 
 | Reel | Status | Qualidade | Abertura testada | Horário | Arquivos |
 |---|---|---|---|---|---|
-| A inacreditável Guerra dos Emus `20261102-41cc94` | ⏳ Aguardando publicação | – | – | 2026-11-02 12:30 | Releases: reel-20261102-41cc94 |
 | Por que o sol te faz espirrar? `20261102-a5ce83` | ⏳ Aguardando publicação | 100 | afirmacao | 2026-11-02 19:30 | Releases: reel-20261102-a5ce83 |
 
 <details><summary>🎬 Storyboard — Por que o sol te faz espirrar?</summary>
@@ -70,6 +69,7 @@ Atualizado em 02/11/2026 às 13:31 (horário de Brasília) · automação **▶�
 
 ## 📝 Registro de atividades
 
+- 2026-11-02 13:38 · publicação: Publicado: A inacreditável Guerra dos Emus → https://www.instagram.com/reel/DfPwPqrEUIu/
 - 2026-11-02 13:31 · publicação: Falha ao publicar 'A inacreditável Guerra dos Emus' (1/3): Envio ao Instagram falhou (400): {"debug_info":{"retriable":false,"type":"ProcessingFailedError","message":"Request processing failed"}}
 - 2026-11-02 04:15 · youtube: Tema descartado: Os segredos letais da Ilha da Queimada Grande (a Ilha das Cobras) — roteiro reprovado 3 vezes
 - 2026-11-02 04:14 · youtube: Começou o vídeo longo: Os segredos letais da Ilha da Queimada Grande (a Ilha das Cobras)
