@@ -497,5 +497,125 @@
     },
     "visto": "2026-11-02T16:27-03:00",
     "status": "na reserva"
+  },
+  {
+    "tema": "O Voo 571 da Força Aérea Uruguaia: a incrível história de sobrevivência nos Andes contada passo a passo",
+    "categoria": "Histórias reais inacreditáveis",
+    "pontuacao": 98.3,
+    "criterios": {
+      "curiosidade": 10,
+      "retencao": 10,
+      "clique": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T18:22-03:00",
+    "status": "escolhido"
+  },
+  {
+    "tema": "Julius Caesar e os piratas cilícios: quando o jovem imperador foi sequestrado e exigiu ser tratado como rei",
+    "categoria": "Histórias reais inacreditáveis",
+    "pontuacao": 95.0,
+    "criterios": {
+      "curiosidade": 10,
+      "retencao": 9,
+      "clique": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T18:22-03:00",
+    "status": "escolhido"
+  },
+  {
+    "tema": "O Incidente do Voo 380 da Varig: a incrível navegação às cegas que salvou passageiros no Brasil",
+    "categoria": "Histórias reais inacreditáveis",
+    "pontuacao": 93.3,
+    "criterios": {
+      "curiosidade": 9,
+      "retencao": 9,
+      "clique": 9,
+      "interesse_brasil": 10,
+      "ilustravel": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T18:22-03:00",
+    "status": "escolhido"
+  },
+  {
+    "tema": "O Projeto Pigeon: o plano secreto da Segunda Guerra Mundial para guiar mísseis usando pombos treinados",
+    "categoria": "Ciência do dia a dia e tecnologia bizarra",
+    "pontuacao": 91.7,
+    "criterios": {
+      "curiosidade": 10,
+      "retencao": 9,
+      "clique": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T18:22-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A Guerra dos Trinta Anos e a Defenestração de Praga: o dia em que uma discussão política virou um conflito sangrento por causa de janelas",
+    "categoria": "Histórias reais inacreditáveis",
+    "pontuacao": 88.3,
+    "criterios": {
+      "curiosidade": 9,
+      "retencao": 8,
+      "clique": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T18:22-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O Grande Incêndio de Londres de 1666: como uma modesta padaria quase destruiu uma metrópole inteira",
+    "categoria": "Histórias reais inacreditáveis",
+    "pontuacao": 88.3,
+    "criterios": {
+      "curiosidade": 8,
+      "retencao": 9,
+      "clique": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T18:22-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A Corrida do ouro de Klondike: a aventura extrema de milhares de pessoas rumo ao gelo do Alasca",
+    "categoria": "Histórias reais inacreditáveis",
+    "pontuacao": 86.7,
+    "criterios": {
+      "curiosidade": 8,
+      "retencao": 9,
+      "clique": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T18:22-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A Batalha de Carse: o dia em que o exército britânico atacou a si mesmo no escuro por puro pânico",
+    "categoria": "Histórias reais inacreditáveis",
+    "pontuacao": 85.0,
+    "criterios": {
+      "curiosidade": 9,
+      "retencao": 8,
+      "clique": 9,
+      "interesse_brasil": 6,
+      "ilustravel": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T18:22-03:00",
+    "status": "na reserva"
   }
 ]

@@ -196,5 +196,62 @@
     ],
     "youtube_id": null,
     "link": null
+  },
+  {
+    "id": "yt-20261102-cc6c3",
+    "criado": "2026-11-02T18:22-03:00",
+    "tema": "O Voo 571 da Força Aérea Uruguaia: a incrível história de sobrevivência nos Andes contada passo a passo",
+    "titulo": "A Incrível História de Sobrevivência nos Andes",
+    "categoria": "Histórias reais inacreditáveis",
+    "pontuacao_tema": 98.3,
+    "status": "aguardando",
+    "horario": "2026-11-03T19:30-03:00",
+    "tentativas": 0,
+    "erros": [],
+    "historico": [
+      {
+        "quando": "2026-11-02T18:45-03:00",
+        "de": "em_producao",
+        "para": "aguardando",
+        "motivo": "YouTube não conectado: arquivos em Releases"
+      }
+    ],
+    "youtube_id": null,
+    "link": null,
+    "fontes": [
+      {
+        "titulo": "Wikipédia: Voo Força Aérea Uruguaia 571",
+        "url": "https://pt.wikipedia.org/wiki/Voo_For%C3%A7a_A%C3%A9rea_Uruguaia_571"
+      }
+    ],
+    "qualidade": 95,
+    "perdas_qa": [
+      "-5: duração 7.2 min (ideal 8 a 12)"
+    ],
+    "duracao": 429.2,
+    "capitulos": [
+      "00:00 A Queda na Neve",
+      "01:22 Invenções e o Fim das Buscas",
+      "03:05 A Avalanche e a Decisão Extrema",
+      "04:49 A Expedição e a Cauda do Avião",
+      "05:58 O Resgate Milagroso"
+    ],
+    "release": "yt-20261102-cc6c3",
+    "descricao": "Imagine cair com um avião no alto da Cordilheira dos Andes sem comida e com frio extremo. Essa é a história real e impressionante do Voo quinhentos e setenta e um da Força Aérea Uruguaia e de como um grupo lutou para sobreviver contra todas as probabilidades.\n\nAcompanhe passo a passo como esses jovens enfrentaram avalanches, cancelamento de buscas e tomaram decisões extremas para conseguir voltar para casa nesta jornada épica de superação humana.\n\n📌 Capítulos\n00:00 A Queda na Neve\n01:22 Invenções e o Fim das Buscas\n03:05 A Avalanche e a Decisão Extrema\n04:49 A Expedição e a Cauda do Avião\n05:58 O Resgate Milagroso\n\n📚 Fontes\n- Wikipédia: Voo Força Aérea Uruguaia 571: https://pt.wikipedia.org/wiki/Voo_For%C3%A7a_A%C3%A9rea_Uruguaia_571\n\nSe inscreve no Bino Explica pra uma curiosidade nova todo dia! 🔔\nInstagram: @binoteexplica",
+    "tags": [
+      "historia real",
+      "sobrevivencia",
+      "andes",
+      "aviao",
+      "curiosidades",
+      "bino explica",
+      "documentario",
+      "misterio",
+      "superacao",
+      "uruguai",
+      "fatos reais",
+      "aventura",
+      "historia"
+    ]
   }
 ]

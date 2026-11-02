@@ -1,6 +1,6 @@
 # 🎛️ Painel do Bino Explica — Reels
 
-Atualizado em 02/11/2026 às 16:49 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
+Atualizado em 02/11/2026 às 18:45 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
 
 ## Visão geral
 
@@ -45,6 +45,7 @@ Atualizado em 02/11/2026 às 16:49 (horário de Brasília) · automação **▶�
 
 | Data | Vídeo | Status | Qualidade | Duração | Link |
 |---|---|---|---|---|---|
+| 2026-11-03 19:30 | A Incrível História de Sobrevivência nos Andes | ⏳ Aguardando publicação | 95 | 7.2 min | yt-20261102-cc6c3 |
 | 2026-11-02 16:48 | E se a Lua simplesmente desaparecesse do dia para a noite? | 🚫 Cancelado | – | – min | – |
 | 2026-11-02 16:47 | O Incidente da Passagem Dyatlov: a ciência finalmente explicou o misté | 🚫 Cancelado | – | – min | – |
 | 2026-11-02 16:27 | A Epidemia de Dança de 1518: o estranho caso de centenas de pessoas qu | 🚫 Cancelado | – | – min | – |
@@ -52,7 +53,6 @@ Atualizado em 02/11/2026 às 16:49 (horário de Brasília) · automação **▶�
 | 2026-11-02 14:05 | E se a Terra parasse de girar? As consequências científicas catastrófi | 🚫 Cancelado | – | – min | – |
 | 2026-11-02 14:05 | A Expedição Endurance: a inacreditável jornada de sobrevivência na Ant | 🚫 Cancelado | – | – min | – |
 | 2026-11-02 04:14 | Os segredos letais da Ilha da Queimada Grande (a Ilha das Cobras) | 🚫 Cancelado | – | – min | – |
-| 2026-11-02 04:13 | Tsutomu Yamaguchi: a inacreditável história do homem que sobreviveu a  | 🚫 Cancelado | – | – min | – |
 
 ## 🧠 Inteligência
 
@@ -74,6 +74,8 @@ Atualizado em 02/11/2026 às 16:49 (horário de Brasília) · automação **▶�
 
 ## 📝 Registro de atividades
 
+- 2026-11-02 18:45 · youtube: Vídeo pronto em Releases (yt-20261102-cc6c3); YouTube não conectado.
+- 2026-11-02 18:22 · youtube: Começou o vídeo longo: O Voo 571 da Força Aérea Uruguaia: a incrível história de sobrevivência nos Andes contada passo a passo
 - 2026-11-02 16:49 · youtube: Tema descartado: E se a Lua simplesmente desaparecesse do dia para a noite? — as fontes não sustentam um vídeo de 10 minutos sobre o tema
 - 2026-11-02 16:48 · youtube: Começou o vídeo longo: E se a Lua simplesmente desaparecesse do dia para a noite?
 - 2026-11-02 16:48 · youtube: Tema descartado: O Incidente da Passagem Dyatlov: a ciência finalmente explicou o mistério da montanha da morte? — as fontes não sustentam um vídeo de 10 minutos sobre o tema
@@ -97,4 +99,3 @@ Atualizado em 02/11/2026 às 16:49 (horário de Brasília) · automação **▶�
 - 2026-11-02 03:32 · produção: Aprovado (100/100) e programado para 02/11 19:30: Por que o sol te faz espirrar?
 - 2026-11-02 03:27 · produção: Começou: O reflexo do espirro fótico faz com que uma em cada quatro pessoas espirre ao olhar diretamente para a luz do Sol (pontuação 90.0, abertura afirmacao)
 - 2026-11-02 03:27 · produção: Tema descartado: O vombate é o único ser vivo que produz fezes em formato perfeitamente cúbico devido à estrutura assimétrica de seu intestino — roteiro reprovado 3 vezes na revisão
-- 2026-11-02 03:02 · produção: Começou: O vombate é o único ser vivo que produz fezes em formato perfeitamente cúbico devido à estrutura assimétrica de seu intestino (pontuação 91.4, abertura pergunta)
