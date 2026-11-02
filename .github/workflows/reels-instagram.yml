@@ -2,14 +2,16 @@ name: Reels Instagram (automático)
 
 # Horários em UTC (Brasília = UTC-3):
 #   08:07 pesquisa + roteiros + produção dos 2 Reels do dia   (10:37 = repescagem se algum falhou)
-#   12:33 e 19:33 publicação (13:03 e 20:03 = nova tentativa se a primeira falhou ou atrasou)
+#   12:17 e 19:17 rodadas que esperam o horário exato (o GitHub costuma atrasar); 12:33/13:03 e 19:33/20:03 repescagem
 #   22:07 análise dos resultados + relatório (semanal aos domingos)
 on:
   schedule:
     - cron: "7 11 * * *"
     - cron: "37 13 * * *"
+    - cron: "17 15 * * *"
     - cron: "33 15 * * *"
     - cron: "3 16 * * *"
+    - cron: "17 22 * * *"
     - cron: "33 22 * * *"
     - cron: "3 23 * * *"
     - cron: "7 1 * * *"

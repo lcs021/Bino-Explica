@@ -154,12 +154,25 @@ def publicar(video: Path, legenda: str, capa_ms: int = None) -> str:
     if "id" not in r:
         raise RuntimeError(f"Instagram recusou o container: {r}")
     cid = r["id"]
-    tamanho = Path(video).stat().st_size
-    with open(video, "rb") as f:
-        up = requests.post(f"https://rupload.facebook.com/ig-api-upload/{VERSAO}/{cid}", data=f, timeout=900, headers={
-            "Authorization": f"OAuth {token}", "offset": "0", "file_size": str(tamanho)})
-    if up.status_code != 200 or not up.json().get("success"):
-        raise RuntimeError(f"Envio ao Instagram falhou ({up.status_code}): {up.text[:300]}")
+    log.info(f"Instagram: container criado {r}")
+    conteudo = Path(video).read_bytes()
+    padrao = f"https://rupload.facebook.com/ig-api-upload/{VERSAO}/{cid}"
+    tentativas = [(r.get("uri") or padrao, "OAuth"), (padrao, "OAuth"), (r.get("uri") or padrao, "Bearer")]
+    erros = []
+    for url, tipo in dict.fromkeys(tentativas):
+        up = requests.post(url, data=conteudo, timeout=900, headers={
+            "Authorization": f"{tipo} {token}", "offset": "0", "file_size": str(len(conteudo)),
+            "Content-Type": "application/octet-stream"})
+        try:
+            ok = up.status_code == 200 and up.json().get("success")
+        except ValueError:
+            ok = False
+        if ok:
+            break
+        erros.append(f"{url.split('/')[2]} {tipo} → {up.status_code}: {up.text[:200]}")
+        log.warning(f"Envio ao Instagram recusado ({erros[-1]}); tentando outro jeito.")
+    else:
+        raise RuntimeError("Envio ao Instagram falhou: " + " | ".join(erros))
     log.info("Instagram: vídeo enviado, aguardando processamento…")
     for _ in range(60):      # até ~10 min
         time.sleep(10)

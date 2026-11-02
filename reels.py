@@ -500,9 +500,19 @@ def publicar():
     da_vez = sorted([r for r in reg if r["status"] in (op.AGUARDANDO, op.PUBLICANDO) and r.get("horario") and
                      datetime.fromisoformat(r["horario"]) <= agora()], key=lambda r: r["horario"])
     if not da_vez:
-        log.info("Nenhum Reel na hora de publicar.")
-        op.painel(reg)
-        return
+        # o agendador do GitHub atrasa: as rodadas começam mais cedo e esperam o horário exato (até 20 min)
+        prox = sorted([r for r in reg if r["status"] == op.AGUARDANDO and r.get("horario") and
+                       agora() < datetime.fromisoformat(r["horario"]) <= agora() + timedelta(minutes=20)],
+                      key=lambda r: r["horario"])
+        if prox:
+            espera = (datetime.fromisoformat(prox[0]["horario"]) - agora()).total_seconds()
+            log.info(f"Esperando {espera / 60:.0f} min até {prox[0]['horario'][11:16]} para publicar no horário certo.")
+            time.sleep(max(0, espera))
+            da_vez = [prox[0]]
+        else:
+            log.info("Nenhum Reel na hora de publicar.")
+            op.painel(reg)
+            return
     item = da_vez[0]
     if not ig.conectado():
         print(f"::warning::Instagram não conectado (falta o segredo INSTAGRAM_TOKEN). '{item['titulo']}' está em Releases.")
