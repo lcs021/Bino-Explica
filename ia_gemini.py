@@ -61,7 +61,7 @@ CHAMADAS = 0          # pedidos feitos nesta execução (controle de limites)
 def _uma_chamada(modelo, corpo, chave):
     global CHAMADAS
     CHAMADAS += 1
-    r = requests.post(URL.format(m=modelo), json=corpo, timeout=240,
+    r = requests.post(URL.format(m=modelo), json=corpo, timeout=150,
                       headers={"x-goog-api-key": chave, "Content-Type": "application/json"})
     return r
 
@@ -109,9 +109,17 @@ def gerar(prompt: str, modelo: str, json_mode=False, temperatura=0.9) -> str:
 
 
 def gerar_json(prompt: str, modelo: str) -> dict:
-    texto = gerar(prompt, modelo, json_mode=True, temperatura=0.8)
-    m = re.search(r"\{.*\}", texto, re.S)
-    return json.loads(m.group(0) if m else texto)
+    """Pede JSON; se a resposta vier cortada ou quebrada, pede de novo (até 3 vezes)."""
+    erro = None
+    for tentativa in range(3):
+        texto = gerar(prompt, modelo, json_mode=True, temperatura=0.8)
+        m = re.search(r"\{.*\}", texto, re.S)
+        try:
+            return json.loads(m.group(0) if m else texto)
+        except json.JSONDecodeError as e:
+            erro = e
+            log.warning(f"Resposta da IA com JSON quebrado ({e}); pedindo de novo.")
+    raise RuntimeError(f"a IA devolveu JSON inválido 3 vezes ({erro})")
 
 
 def pesquisar(prompt: str, modelo: str = "gemini-3.5-flash"):

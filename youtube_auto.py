@@ -108,7 +108,7 @@ def pesquisar(tema, artigos, modelo):
 comprovam a ideia principal do tema.
 {chr(10).join(textos)[:45000]}
 Responda SÓ JSON: {{"fatos":["..."],"comprova_o_tema":true|false}}""", modelo)
-    if dados.get("comprova_o_tema") is False or len(dados.get("fatos") or []) < 12:
+    if dados.get("comprova_o_tema") is False or len(dados.get("fatos") or []) < 10:
         raise RuntimeError("as fontes não sustentam um vídeo de 10 minutos sobre o tema")
     log.info(f"Pesquisa: {len(dados['fatos'])} fatos de {len(fontes)} fonte(s)")
     return dados["fatos"], fontes
@@ -158,21 +158,75 @@ nos primeiros 15 segundos; repetição/enrolação; falta pergunta final; conte�
 Responda SÓ JSON: {{"aprovado": true|false, "problemas": "vazio se aprovado", "nota": 0-10}}""", modelo)
 
 
+DIVISAO = [3, 3, 4, 3, 3]          # blocos por capítulo (16 no total)
+
+
+def _pps():
+    try:
+        return json.loads((RAIZ / "reels" / "voz.json").read_text(encoding="utf-8"))["pps"]
+    except Exception:  # noqa: BLE001
+        return 2.6
+
+
 def criar_roteiro(tema, fatos, modelo):
+    """Roteiro longo escrito em partes (plano + 1 pedido por capítulo): a IA grátis erra menos com textos menores."""
+    import main_gratis as mg
+    regras = mg.REGRAS_VIRAL.replace("@binoexplica", "Bino Explica")
     obs = ""
-    for tentativa in range(3):
-        log.info(f"Roteiro longo (tentativa {tentativa + 1}): {tema}")
-        r = ia.gerar_json(prompt_roteiro(tema, fatos, obs), modelo)
-        caps = [c for c in r.get("capitulos", []) if c.get("blocos")]
-        blocos = [b for c in caps for b in c["blocos"] if len([f for f in b.get("falas", []) if f.strip()]) >= 1]
-        palavras = sum(len(f.split()) for b in blocos for f in b.get("falas", []))
-        if len(caps) < 3 or len(blocos) < 12:
-            obs = f"precisa de 5 capítulos e {BLOCOS} blocos com 2 falas cada"
+    for rodada in range(2):
+        plano = ia.gerar_json(f"""{regras}
+
+Planeje um vídeo de YouTube de ~10 minutos sobre: {tema}
+Fatos pesquisados (use SOMENTE estes; numere-os a partir de 0): {json.dumps(fatos, ensure_ascii=False)}
+{"Corrija: " + obs if obs else ""}
+5 capítulos: 1 = gancho forte + contexto; 2 a 4 = desenvolvimento crescente; 5 = revelação mais impressionante +
+conclusão. Distribua os fatos entre os capítulos, sem repetir.
+Responda SÓ JSON: {{"titulo":"até 70 caracteres, chamativo e honesto","texto_capa":"2 a 4 palavras em MAIÚSCULAS",
+"selo":"1 palavra curta","frase_capa":"até 5 palavras","descricao":"2 parágrafos sem spoiler do final",
+"tags":["10 a 15 tags"],"personagens":"aparência fixa dos personagens, em inglês",
+"capitulos":[{{"titulo":"título curto","resumo":"o que este capítulo conta","fatos":[0,1]}}]}}""", modelo)
+        caps_plano = (plano.get("capitulos") or [])[:5]
+        if len(caps_plano) < 4 or not plano.get("titulo"):
+            obs = "o plano precisa de título e 5 capítulos"
             continue
-        if not 1050 <= palavras <= 1800:
-            obs = f"o roteiro tem {palavras} palavras; precisa ter entre 1300 e 1500"
-            continue
+        caps, anterior = [], ""
+        for ci, cp in enumerate(caps_plano):
+            n = DIVISAO[ci] if ci < len(DIVISAO) else 3
+            fatos_cap = [fatos[k] for k in cp.get("fatos", []) if isinstance(k, int) and 0 <= k < len(fatos)] or fatos
+            papel = ("Comece com um GANCHO fortíssimo nos primeiros 15 segundos: prometa o que vem e por que ficar até o fim."
+                     if ci == 0 else
+                     "Termine com a conclusão, uma pergunta para os comentários e 'se inscreve no Bino Explica e ativa o sininho'."
+                     if ci == len(caps_plano) - 1 else
+                     "Termine com um mini-gancho para o próximo capítulo.")
+            for tentativa in range(3):
+                try:
+                    c = ia.gerar_json(f"""{regras}
+
+Vídeo: "{plano['titulo']}" (YouTube, ~10 min). Escreva o CAPÍTULO {ci + 1} de {len(caps_plano)}: "{cp.get('titulo')}" — {cp.get('resumo', '')}.
+Use SOMENTE estes fatos: {json.dumps(fatos_cap, ensure_ascii=False)}
+{papel}
+Continue naturalmente de onde parou: "{anterior[-300:]}" (sem repetir).
+EXATAMENTE {n} blocos. Cada bloco = UMA ilustração + DUAS falas seguidas, cada fala com 35 a 50 palavras, linguagem
+falada, frases curtas, sem enrolar. "visual": a ilustração EM INGLÊS que explica as duas falas (rabisco de quadro
+branco, bonequinhos de palito, uma ação clara). "destaques": 1 a 3 palavras EXATAS das falas.
+Responda SÓ JSON: {{"blocos":[{{"visual":"...","falas":["...","..."],"destaques":["..."]}}]}}""", modelo)
+                except RuntimeError as e:
+                    log.warning(f"Capítulo {ci + 1}: {e}")
+                    continue
+                blocos = [b for b in c.get("blocos", []) if len([f for f in b.get("falas", []) if f.strip()]) >= 2]
+                if len(blocos) >= n - 1:
+                    caps.append({"titulo": cp.get("titulo") or f"Parte {ci + 1}", "blocos": blocos[:n]})
+                    anterior = " ".join(blocos[-1]["falas"])
+                    break
+            else:
+                raise RuntimeError(f"não consegui escrever o capítulo {ci + 1}")
+        r = {k: plano.get(k) for k in ("titulo", "texto_capa", "selo", "frase_capa", "descricao", "tags", "personagens")}
         r["capitulos"] = caps
+        palavras = sum(len(f.split()) for c in caps for b in c["blocos"] for f in b["falas"])
+        log.info(f"Roteiro longo montado: {len(caps)} capítulos, {sum(len(c['blocos']) for c in caps)} blocos, {palavras} palavras")
+        if palavras < 900:
+            obs = f"o roteiro ficou curto ({palavras} palavras)"
+            continue
         rev = revisar(r, fatos, modelo)
         if rev.get("aprovado"):
             r["revisao"] = {"aprovado": True, "nota": rev.get("nota")}
@@ -215,7 +269,7 @@ def verificar(mp4):
     if not a:
         problemas.append("vídeo sem áudio")
     d = float(info["format"].get("duration", 0))
-    if not 360 <= d <= 900:
+    if not 300 <= d <= 900:
         problemas.append(f"duração fora do padrão ({d / 60:.1f} min)")
     if a:
         r = subprocess.run(["ffmpeg", "-hide_banner", "-i", str(mp4), "-af", "ebur128", "-f", "null", "-"],
