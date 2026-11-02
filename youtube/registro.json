@@ -204,7 +204,7 @@
     "titulo": "A Incrível História de Sobrevivência nos Andes",
     "categoria": "Histórias reais inacreditáveis",
     "pontuacao_tema": 98.3,
-    "status": "aguardando",
+    "status": "cancelado",
     "horario": "2026-11-03T19:30-03:00",
     "tentativas": 0,
     "erros": [],
@@ -214,6 +214,10 @@
         "de": "em_producao",
         "para": "aguardando",
         "motivo": "YouTube não conectado: arquivos em Releases"
+      },
+      {
+        "para": "cancelado",
+        "motivo": "YouTube desligado a pedido"
       }
     ],
     "youtube_id": null,

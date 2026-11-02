@@ -1,14 +1,11 @@
-name: YouTube diário (10 min, 19:30)
+name: YouTube (desligado)
 
 # Horários em UTC (Brasília = UTC-3):
 #   13:07 produz o vídeo do dia e envia ao YouTube já agendado para as 19:30 (o próprio YouTube publica)
 #   15:37 repescagem (se o das 13:07 falhou)
 #   19:47 confere se foi ao ar
 on:
-  schedule:
-    - cron: "7 16 * * *"
-    - cron: "37 18 * * *"
-    - cron: "47 22 * * *"
+  # Desligado a pedido: sem agendamento (só roda se alguém clicar em Run workflow).
   workflow_dispatch:
     inputs:
       acao:
