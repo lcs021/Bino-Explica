@@ -69,3 +69,46 @@ def gerar_json(prompt: str, modelo: str) -> dict:
     texto = gerar(prompt, modelo, json_mode=True, temperatura=0.8)
     m = re.search(r"\{.*\}", texto, re.S)
     return json.loads(m.group(0) if m else texto)
+
+
+def pesquisar(prompt: str, modelo: str = "gemini-2.5-flash"):
+    """Pergunta ao Gemini COM busca no Google. Devolve (texto, fontes) — fontes = [{"titulo", "url"}] reais,
+    vindas da própria busca (nada inventado)."""
+    chave = os.environ.get("GEMINI_API_KEY")
+    if not chave:
+        raise RuntimeError("Falta a chave grátis do Gemini (segredo GEMINI_API_KEY).")
+    corpo = {"contents": [{"role": "user", "parts": [{"text": prompt}]}],
+             "tools": [{"google_search": {}}], "generationConfig": {"temperature": 0.6}}
+    modelos = [modelo] + [m for m in ("gemini-2.5-flash", "gemini-flash-latest", "gemini-2.5-flash-lite") if m != modelo]
+    ultimo = ""
+    for volta in range(3):
+        for m in modelos:
+            try:
+                r = _uma_chamada(m, corpo, chave)
+            except requests.RequestException as e:
+                log.warning(f"Falha de rede na pesquisa com {m}: {e}")
+                time.sleep(10)
+                continue
+            if r.status_code != 200:
+                ultimo = f"{r.status_code}: {r.text[:200]}"
+                log.warning(f"Pesquisa com {m} indisponível ({r.status_code}); tentando outro.")
+                time.sleep(8)
+                continue
+            cand = r.json().get("candidates", [{}])[0]
+            texto = "".join(p.get("text", "") for p in cand.get("content", {}).get("parts", []))
+            fontes, vistos = [], set()
+            for ch in cand.get("groundingMetadata", {}).get("groundingChunks", []):
+                web = ch.get("web") or {}
+                tit = web.get("title") or ""
+                if web.get("uri") and tit not in vistos:
+                    vistos.add(tit)
+                    fontes.append({"titulo": tit, "url": web["uri"]})
+            if texto:
+                return texto, fontes
+        time.sleep(45)
+    raise RuntimeError(f"A pesquisa no Google pelo Gemini não respondeu agora ({ultimo}).")
+
+
+def extrair_json(texto: str):
+    m = re.search(r"[\[{].*[\]}]", texto, re.S)
+    return json.loads(m.group(0) if m else texto)

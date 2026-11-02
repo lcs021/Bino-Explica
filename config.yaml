@@ -76,3 +76,7 @@ pastas:
   saida: "saida"
   temas: "temas.txt"
   historico: "historico.json"
+
+# ---- Operação automática de Reels (reels.py / workflow "Reels Instagram") ----
+reels:
+  horarios: ["12:30", "19:30"]     # horário de Brasília; a análise semanal sugere trocas

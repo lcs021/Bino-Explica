@@ -676,7 +676,7 @@ def legendas_ass(cenas, textos, audios, destaques, destino, fonte_nome):
 
 
 # =================================================================== montagem completa
-def montar_tiktok(cfg, roteiro, cenas_png, audios, titulos, pasta, marca, selo=None, minimo=62):
+def montar_tiktok(cfg, roteiro, cenas_png, audios, titulos, pasta, marca, selo=None, minimo=62, nome="tiktok_9x16"):
     """Monta o vídeo vertical animado. Devolve o caminho do MP4."""
     from util import duracao
     narr = roteiro["cenas"]
@@ -722,8 +722,8 @@ def montar_tiktok(cfg, roteiro, cenas_png, audios, titulos, pasta, marca, selo=N
     destaques = [list(c.get("destaques") or []) for c in narr[:n]]
     legendas_ass(cenas, [c["narracao"] for c in narr[:n]], audios, destaques, trab / "legendas.ass", fonte_nome)
     fontes = os.environ.get("FONTES_DIR") or str(RAIZ / "assets/fontes")
-    saida = pasta / "tiktok_9x16.mp4"
-    tmp = pasta / "tiktok_9x16.parcial.mp4"
+    saida = pasta / f"{nome}.mp4"
+    tmp = pasta / f"{nome}.parcial.mp4"
     rodar_ffmpeg(["-i", "imagem.mp4", "-i", "som.wav", "-filter_complex",
                   f"[0:v]subtitles=legendas.ass:fontsdir='{fontes}'[v];[1:a]loudnorm=I=-14:TP=-1.5:LRA=11,aresample=44100[a]",
                   "-map", "[v]", "-map", "[a]",
@@ -732,3 +732,42 @@ def montar_tiktok(cfg, roteiro, cenas_png, audios, titulos, pasta, marca, selo=N
     tmp.replace(saida)
     log.info(f"[animado] pronto: {saida.name} ({duracao(saida):.0f}s)")
     return saida
+
+
+# =================================================================== capa do Reels
+def capa(cena_png, texto, destino, marca="@binoexplica", svg_txt=None):
+    """Capa 1080x1920: título curto e grande, ilustração do assunto, identidade do perfil.
+    O que importa fica no meio (o perfil do Instagram mostra a capa recortada em 3:4)."""
+    img = Image.new("RGB", (W, H), "white")
+    d = ImageDraw.Draw(img)
+    desenho = rasterizar(svg_txt, 2400, 1350) if svg_txt else Image.open(cena_png).convert("RGB").resize((2400, 1350))
+    caixa = _caixa_conteudo(desenho)
+    desenho = desenho.crop(caixa)
+    topo, base = 820, 1500
+    esc = min((W - 80) / desenho.width, (base - topo) / desenho.height)
+    desenho = desenho.resize((int(desenho.width * esc), int(desenho.height * esc)), Image.LANCZOS)
+    img.paste(desenho, ((W - desenho.width) // 2, topo + (base - topo - desenho.height) // 2))
+    texto = (texto or "").upper().strip()
+    tam = 150
+    f = fonte(tam, negrito=True)
+    linhas = _quebrar(d, texto, f, W - 110)
+    while (len(linhas) > 3 or max(d.textlength(l, font=f) for l in linhas) > W - 110) and tam > 80:
+        tam -= 10
+        f = fonte(tam, negrito=True)
+        linhas = _quebrar(d, texto, f, W - 110)
+    alt = int(tam * 1.08)
+    y = 780 - alt * len(linhas)
+    for k, ln in enumerate(linhas):
+        x = (W - d.textlength(ln, font=f)) / 2
+        cor_final = VERMELHO if k == len(linhas) - 1 and ln[-1:] in "?!" else None
+        corpo = ln[:-1] if cor_final else ln
+        d.text((x, y), corpo, font=f, fill=PRETO, stroke_width=4, stroke_fill="white")
+        if cor_final:
+            d.text((x + d.textlength(corpo, font=f), y), ln[-1], font=f, fill=VERMELHO)
+        y += alt
+    # sublinhado de caneta embaixo do título
+    d.line([(160, 800), (W // 2, 812), (W - 160, 798)], fill=VERMELHO, width=12, joint="curve")
+    fm = fonte(46, negrito=True)
+    d.text((W / 2, 1600), marca, font=fm, fill="#8a8a8a", anchor="mm")
+    img.save(destino, quality=93)
+    return destino

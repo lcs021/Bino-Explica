@@ -1,0 +1,107 @@
+name: Reels Instagram (automático)
+
+# Horários em UTC (Brasília = UTC-3):
+#   08:07 pesquisa + roteiros + produção dos 2 Reels do dia   (10:37 = repescagem se algum falhou)
+#   12:33 e 19:33 publicação (13:03 e 20:03 = nova tentativa se a primeira falhou ou atrasou)
+#   22:07 análise dos resultados + relatório (semanal aos domingos)
+on:
+  schedule:
+    - cron: "7 11 * * *"
+    - cron: "37 13 * * *"
+    - cron: "33 15 * * *"
+    - cron: "3 16 * * *"
+    - cron: "33 22 * * *"
+    - cron: "3 23 * * *"
+    - cron: "7 1 * * *"
+  workflow_dispatch:
+    inputs:
+      acao:
+        description: "O que fazer agora"
+        type: choice
+        default: auditoria
+        options: [auditoria, produzir, publicar, analisar]
+      tema:
+        description: "Tema (só para produzir; vazio = a IA pesquisa)"
+        required: false
+      quantos:
+        description: "Quantos Reels produzir"
+        default: "2"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: reels-instagram
+  cancel-in-progress: false
+
+jobs:
+  reels:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Decidir a etapa
+        id: etapa
+        run: |
+          case "${{ github.event.schedule }}" in
+            "7 11 * * *"|"37 13 * * *") echo "acao=produzir" >> "$GITHUB_OUTPUT" ;;
+            "7 1 * * *") echo "acao=analisar" >> "$GITHUB_OUTPUT" ;;
+            "") echo "acao=${{ inputs.acao }}" >> "$GITHUB_OUTPUT" ;;
+            *) echo "acao=publicar" >> "$GITHUB_OUTPUT" ;;
+          esac
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Instalar ffmpeg, desenhista de SVG e fontes
+        if: steps.etapa.outputs.acao == 'produzir' || steps.etapa.outputs.acao == 'auditoria'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg librsvg2-bin fonts-dejavu-core
+          mkdir -p assets/fontes
+          curl -fsSL -o assets/fontes/GochiHand-Regular.ttf \
+            https://github.com/google/fonts/raw/main/ofl/gochihand/GochiHand-Regular.ttf || true
+          curl -fsSL -o assets/fontes/Poppins-Black.ttf \
+            https://github.com/google/fonts/raw/main/ofl/poppins/Poppins-Black.ttf || true
+
+      - name: Instalar ffmpeg (checagem antes de publicar)
+        if: steps.etapa.outputs.acao == 'publicar'
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+
+      - name: Rodar (${{ steps.etapa.outputs.acao }})
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          INSTAGRAM_TOKEN: ${{ secrets.INSTAGRAM_TOKEN }}
+          INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
+          FONTE_LEGENDA: "Gochi Hand"
+          FONTES_DIR: ${{ github.workspace }}/assets/fontes
+        run: |
+          if [ "${{ steps.etapa.outputs.acao }}" = "produzir" ]; then
+            python reels.py produzir --quantos "${{ inputs.quantos || '2' }}" --tema "${{ inputs.tema }}"
+          else
+            python reels.py ${{ steps.etapa.outputs.acao }}
+          fi
+
+      - name: Guardar o registro de erros (30 dias)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reels-log-${{ github.run_number }}
+          path: logs/
+          retention-days: 30
+          if-no-files-found: ignore
+
+      - name: Salvar registro e relatório
+        if: always()
+        run: |
+          git config user.name "bino-explica-bot"
+          git config user.email "bino-explica-bot@users.noreply.github.com"
+          [ -d reels ] && git add -A reels
+          git diff --cached --quiet || (git commit -m "Reels: ${{ steps.etapa.outputs.acao }}" && git pull --rebase -q && git push)

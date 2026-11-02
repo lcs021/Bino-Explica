@@ -156,11 +156,15 @@ def criar_roteiro(cfg, tema, formato="explicacao"):
 
 # ------------------------------------------------------------------ desenhos
 def prompt_cena(r, i):
-    return f"""Draw ONE illustration as a single SVG for scene {i + 1} of 8 of a funny, family-friendly
+    return f"""Draw ONE illustration as a single SVG for scene {i + 1} of {len(r['cenas'])} of a funny, family-friendly
 viral explainer cartoon.
 Scene: {r['cenas'][i].get('visual', '')}
 Recurring characters (keep exactly this look): {r.get('personagens', '')}. {BINO}.
 {ESTILO}
+Element ORDER matters (the video draws the SVG stroke by stroke, in document order): ground/background objects
+first, then the characters (head, body, arms, legs, face), then small details. As the LAST 1 or 2 elements, add a
+hand-drawn red (#E0312B) arrow or loose circle (stroke only, fill="none", stroke-width 7) pointing at or circling
+the most important detail of the scene.
 Technical rules: viewBox="0 0 1600 900", xmlns="http://www.w3.org/2000/svg", start with
 <rect width="1600" height="900" fill="#FFFFFF"/>. No text, letters or numbers. No <image>, <script>,
 <filter>, gradients, external links or fonts. Mostly <path> elements. Under 14000 characters.
