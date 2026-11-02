@@ -1,6 +1,6 @@
 # 🎛️ Painel do Bino Explica — Reels
 
-Atualizado em 02/11/2026 às 14:02 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
+Atualizado em 02/11/2026 às 14:29 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
 
 ## Visão geral
 
@@ -45,6 +45,9 @@ Atualizado em 02/11/2026 às 14:02 (horário de Brasília) · automação **▶�
 
 | Data | Vídeo | Status | Qualidade | Duração | Link |
 |---|---|---|---|---|---|
+| 2026-11-02 14:13 | Fordlândia: a surreal cidade americana abandonada no meio da Amazônia | 🚫 Cancelado | – | – min | – |
+| 2026-11-02 14:05 | E se a Terra parasse de girar? As consequências científicas catastrófi | 🚫 Cancelado | – | – min | – |
+| 2026-11-02 14:05 | A Expedição Endurance: a inacreditável jornada de sobrevivência na Ant | 🚫 Cancelado | – | – min | – |
 | 2026-11-02 04:14 | Os segredos letais da Ilha da Queimada Grande (a Ilha das Cobras) | 🚫 Cancelado | – | – min | – |
 | 2026-11-02 04:13 | Tsutomu Yamaguchi: a inacreditável história do homem que sobreviveu a  | 🚫 Cancelado | – | – min | – |
 | 2026-11-02 04:00 | A Guerra das Emus: quando o exército australiano perdeu para pássaros  | 🚫 Cancelado | – | – min | – |
@@ -69,6 +72,12 @@ Atualizado em 02/11/2026 às 14:02 (horário de Brasília) · automação **▶�
 
 ## 📝 Registro de atividades
 
+- 2026-11-02 14:29 · youtube: Tema descartado: Fordlândia: a surreal cidade americana abandonada no meio da Amazônia — Extra data: line 1 column 7822 (char 7821)
+- 2026-11-02 14:13 · youtube: Começou o vídeo longo: Fordlândia: a surreal cidade americana abandonada no meio da Amazônia
+- 2026-11-02 14:13 · youtube: Tema descartado: A Expedição Endurance: a inacreditável jornada de sobrevivência na Antártida — Expecting ',' delimiter: line 1 column 3073 (char 3072)
+- 2026-11-02 14:05 · youtube: Começou o vídeo longo: A Expedição Endurance: a inacreditável jornada de sobrevivência na Antártida
+- 2026-11-02 14:05 · youtube: Tema descartado: E se a Terra parasse de girar? As consequências científicas catastróficas — as fontes não sustentam um vídeo de 10 minutos sobre o tema
+- 2026-11-02 14:05 · youtube: Começou o vídeo longo: E se a Terra parasse de girar? As consequências científicas catastróficas
 - 2026-11-02 13:38 · publicação: Publicado: A inacreditável Guerra dos Emus → https://www.instagram.com/reel/DfPwPqrEUIu/
 - 2026-11-02 13:31 · publicação: Falha ao publicar 'A inacreditável Guerra dos Emus' (1/3): Envio ao Instagram falhou (400): {"debug_info":{"retriable":false,"type":"ProcessingFailedError","message":"Request processing failed"}}
 - 2026-11-02 04:15 · youtube: Tema descartado: Os segredos letais da Ilha da Queimada Grande (a Ilha das Cobras) — roteiro reprovado 3 vezes

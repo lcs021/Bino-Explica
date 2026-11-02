@@ -251,5 +251,128 @@
     },
     "visto": "2026-11-02T04:00-03:00",
     "status": "na reserva"
+  },
+  {
+    "tema": "E se a Terra parasse de girar? As consequências científicas catastróficas",
+    "categoria": "Como seria se...",
+    "pontuacao": 96.7,
+    "criterios": {
+      "curiosidade": 10,
+      "retencao": 9,
+      "clique": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T14:05-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não sustentam um vídeo de 10 minutos sobre o tema"
+  },
+  {
+    "tema": "A Expedição Endurance: a inacreditável jornada de sobrevivência na Antártida",
+    "categoria": "História Real",
+    "pontuacao": 93.3,
+    "criterios": {
+      "curiosidade": 9,
+      "retencao": 10,
+      "clique": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T14:05-03:00",
+    "status": "descartado",
+    "motivo": "Expecting ',' delimiter: line 1 column 3073 (char 3072)"
+  },
+  {
+    "tema": "Fordlândia: a surreal cidade americana abandonada no meio da Amazônia",
+    "categoria": "História Real / Brasil",
+    "pontuacao": 93.3,
+    "criterios": {
+      "curiosidade": 9,
+      "retencao": 9,
+      "clique": 9,
+      "interesse_brasil": 10,
+      "ilustravel": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T14:05-03:00",
+    "status": "descartado",
+    "motivo": "Extra data: line 1 column 7822 (char 7821)"
+  },
+  {
+    "tema": "A Epidemia de Dança de 1518: o dia em que centenas de pessoas dançaram sem parar até a morte",
+    "categoria": "Mistério Explicado",
+    "pontuacao": 93.3,
+    "criterios": {
+      "curiosidade": 10,
+      "retencao": 9,
+      "clique": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-02T14:05-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O Triângulo das Bermudas: a ciência por trás da lenda que assustou o mundo",
+    "categoria": "Mistério Explicado",
+    "pontuacao": 93.3,
+    "criterios": {
+      "curiosidade": 9,
+      "retencao": 9,
+      "clique": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T14:05-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "Operação Mincemeat: como um cadáver enganou Hitler e mudou o rumo da Segunda Guerra",
+    "categoria": "História Real",
+    "pontuacao": 91.7,
+    "criterios": {
+      "curiosidade": 10,
+      "retencao": 9,
+      "clique": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T14:05-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O único sobrevivente de Saint-Pierre: o homem que se salvou da maior erupção do século XX por estar preso",
+    "categoria": "História Real / Sobrevivência",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "retencao": 9,
+      "clique": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T14:05-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "Turritopsis dohrnii: o segredo do único animal biologicamente imortal do planeta",
+    "categoria": "Ciência / Animais",
+    "pontuacao": 88.3,
+    "criterios": {
+      "curiosidade": 9,
+      "retencao": 8,
+      "clique": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T14:05-03:00",
+    "status": "na reserva"
   }
 ]

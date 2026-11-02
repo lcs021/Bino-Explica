@@ -64,5 +64,71 @@
     ],
     "youtube_id": null,
     "link": null
+  },
+  {
+    "id": "yt-20261102-01645",
+    "criado": "2026-11-02T14:05-03:00",
+    "tema": "E se a Terra parasse de girar? As consequências científicas catastróficas",
+    "titulo": "E se a Terra parasse de girar? As consequências científicas catastrófi",
+    "categoria": "Como seria se...",
+    "pontuacao_tema": 96.7,
+    "status": "cancelado",
+    "horario": null,
+    "tentativas": 0,
+    "erros": [],
+    "historico": [
+      {
+        "quando": "2026-11-02T14:05-03:00",
+        "de": "em_producao",
+        "para": "cancelado",
+        "motivo": "as fontes não sustentam um vídeo de 10 minutos sobre o tema"
+      }
+    ],
+    "youtube_id": null,
+    "link": null
+  },
+  {
+    "id": "yt-20261102-8f7f8",
+    "criado": "2026-11-02T14:05-03:00",
+    "tema": "A Expedição Endurance: a inacreditável jornada de sobrevivência na Antártida",
+    "titulo": "A Expedição Endurance: a inacreditável jornada de sobrevivência na Ant",
+    "categoria": "História Real",
+    "pontuacao_tema": 93.3,
+    "status": "cancelado",
+    "horario": null,
+    "tentativas": 0,
+    "erros": [],
+    "historico": [
+      {
+        "quando": "2026-11-02T14:13-03:00",
+        "de": "em_producao",
+        "para": "cancelado",
+        "motivo": "Expecting ',' delimiter: line 1 column 3073 (char 3072)"
+      }
+    ],
+    "youtube_id": null,
+    "link": null
+  },
+  {
+    "id": "yt-20261102-057d4",
+    "criado": "2026-11-02T14:13-03:00",
+    "tema": "Fordlândia: a surreal cidade americana abandonada no meio da Amazônia",
+    "titulo": "Fordlândia: a surreal cidade americana abandonada no meio da Amazônia",
+    "categoria": "História Real / Brasil",
+    "pontuacao_tema": 93.3,
+    "status": "cancelado",
+    "horario": null,
+    "tentativas": 0,
+    "erros": [],
+    "historico": [
+      {
+        "quando": "2026-11-02T14:29-03:00",
+        "de": "em_producao",
+        "para": "cancelado",
+        "motivo": "Extra data: line 1 column 7822 (char 7821)"
+      }
+    ],
+    "youtube_id": null,
+    "link": null
   }
 ]
