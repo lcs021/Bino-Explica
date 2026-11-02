@@ -328,6 +328,16 @@ def painel(reg, seguidores_hist=None):
             L.append(f"| {k + 1} | {s.get('narracao', '')[:90]} | {s.get('visual', '')[:60]} | {s.get('movimento', '')} | "
                      f"{', '.join(s.get('destaques', [])[:2])} | {s.get('efeito', '')} |")
         L += ["", "</details>"]
+    yt = normalizar(_ler(RAIZ / "youtube" / "registro.json", []))
+    L += ["", "## ▶️ YouTube (1 vídeo de ~10 min por dia, 19:30)", ""]
+    if yt:
+        L += ["| Data | Vídeo | Status | Qualidade | Duração | Link |", "|---|---|---|---|---|---|"]
+        for r in sorted(yt, key=lambda x: x.get("horario") or x.get("criado") or "", reverse=True)[:8]:
+            L.append(f"| {(r.get('horario') or r.get('criado') or '')[:16].replace('T', ' ')} | {r['titulo']} | "
+                     f"{NOMES.get(r['status'], r['status'])} | {r.get('qualidade', '–')} | "
+                     f"{round((r.get('duracao') or 0) / 60, 1) or '–'} min | {r.get('link') or r.get('release') or '–'} |")
+    else:
+        L.append("Ainda nenhum vídeo longo (a produção roda às 13:00 e agenda para as 19:30).")
     apr = _ler(PASTA / "aprendizados.json", {})
     L += ["", "## 🧠 Inteligência", ""]
     if apr.get("melhores"):

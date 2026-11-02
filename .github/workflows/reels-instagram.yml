@@ -115,4 +115,4 @@ jobs:
           git config user.name "bino-explica-bot"
           git config user.email "bino-explica-bot@users.noreply.github.com"
           [ -d reels ] && git add -A reels
-          git diff --cached --quiet || (git commit -m "Reels: ${{ steps.etapa.outputs.acao }}" && git pull --rebase -q && git push)
+          git diff --cached --quiet || (git commit -m "Reels: ${{ steps.etapa.outputs.acao }}" && git pull --rebase -X theirs -q && git push)

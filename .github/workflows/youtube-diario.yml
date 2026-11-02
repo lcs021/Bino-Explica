@@ -1,0 +1,97 @@
+name: YouTube diário (10 min, 19:30)
+
+# Horários em UTC (Brasília = UTC-3):
+#   13:07 produz o vídeo do dia e envia ao YouTube já agendado para as 19:30 (o próprio YouTube publica)
+#   15:37 repescagem (se o das 13:07 falhou)
+#   19:47 confere se foi ao ar
+on:
+  schedule:
+    - cron: "7 16 * * *"
+    - cron: "37 18 * * *"
+    - cron: "47 22 * * *"
+  workflow_dispatch:
+    inputs:
+      acao:
+        description: "O que fazer agora"
+        type: choice
+        default: auditoria
+        options: [auditoria, produzir, conferir]
+      tema:
+        description: "Tema (vazio = a IA escolhe)"
+        required: false
+      quando:
+        description: "Agendar para (dd/mm HH:MM; vazio = próximo 19:30 livre)"
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: youtube-diario
+  cancel-in-progress: false
+
+jobs:
+  youtube:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Decidir a etapa
+        id: etapa
+        run: |
+          case "${{ github.event.schedule }}" in
+            "7 16 * * *"|"37 18 * * *") echo "acao=produzir" >> "$GITHUB_OUTPUT" ;;
+            "47 22 * * *") echo "acao=conferir" >> "$GITHUB_OUTPUT" ;;
+            "") echo "acao=${{ inputs.acao }}" >> "$GITHUB_OUTPUT" ;;
+          esac
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Instalar ffmpeg, desenhista de SVG e fontes
+        if: steps.etapa.outputs.acao == 'produzir'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg librsvg2-bin fonts-dejavu-core
+          mkdir -p assets/fontes
+          curl -fsSL -o assets/fontes/GochiHand-Regular.ttf \
+            https://github.com/google/fonts/raw/main/ofl/gochihand/GochiHand-Regular.ttf || true
+          curl -fsSL -o assets/fontes/Poppins-Black.ttf \
+            https://github.com/google/fonts/raw/main/ofl/poppins/Poppins-Black.ttf || true
+
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+
+      - name: Rodar (${{ steps.etapa.outputs.acao }})
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          FONTE_LEGENDA: "Gochi Hand"
+          FONTES_DIR: ${{ github.workspace }}/assets/fontes
+          ACAO: ${{ steps.etapa.outputs.acao }}
+          TEMA: ${{ inputs.tema }}
+          QUANDO: ${{ inputs.quando }}
+        run: python youtube_auto.py "$ACAO" --tema "$TEMA" --quando "$QUANDO"
+
+      - name: Guardar o registro de erros (30 dias)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: youtube-log-${{ github.run_number }}
+          path: logs/
+          retention-days: 30
+          if-no-files-found: ignore
+
+      - name: Salvar registro e painel
+        if: always()
+        run: |
+          git config user.name "bino-explica-bot"
+          git config user.email "bino-explica-bot@users.noreply.github.com"
+          for p in youtube reels; do [ -d "$p" ] && git add -A "$p"; done; true
+          git diff --cached --quiet || (git commit -m "YouTube: ${{ steps.etapa.outputs.acao }}" && git pull --rebase -X theirs -q && git push)

@@ -158,12 +158,20 @@ def criar_roteiro(cfg, tema, formato="explicacao"):
 
 
 # ------------------------------------------------------------------ desenhos
+def _estilo(r):
+    if r.get("formato_video") == "16:9":
+        return ESTILO.split("- COMPOSITION FOR A VERTICAL")[0] + (
+            "- COMPOSITION FOR A HORIZONTAL 16:9 VIDEO: use the whole canvas, keep everything inside x 120-1480 and "
+            "y 90-810; characters big and readable.")
+    return ESTILO
+
+
 def prompt_cena(r, i):
     return f"""Draw ONE illustration as a single SVG for scene {i + 1} of {len(r['cenas'])} of a funny, family-friendly
 viral explainer cartoon.
 Scene: {r['cenas'][i].get('visual', '')}
 Recurring characters (keep exactly this look): {r.get('personagens', '')}. {BINO}.
-{ESTILO}
+{_estilo(r)}
 Element ORDER matters (the video draws the SVG stroke by stroke, in document order): ground/background objects
 first, then the characters (head, body, arms, legs, face), then small details. As the LAST 1 or 2 elements, add a
 hand-drawn red (#E0312B) arrow or loose circle (stroke only, fill="none", stroke-width 7) pointing at or circling

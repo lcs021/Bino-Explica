@@ -37,6 +37,31 @@ IGNORAR = {"defs", "clipPath", "mask", "marker", "pattern", "symbol", "linearGra
 VERMELHO, AZUL, LARANJA, PRETO = "#E0312B", "#1F5FD6", "#F28C1C", "#1A1A1A"
 
 TOPO, BASE = 440, H - 690          # área do desenho (entre o título e a legenda)
+# layout do formato atual (9:16 é o padrão; _formato("16:9") troca para o YouTube horizontal)
+TIT_Y, TIT_TAM, TIT_H, TIT_LINHAS = 160, 104, 420, 3
+MARCA_XY = None                    # None = centralizado embaixo
+SEGUIR_Y = H - 330
+LEG_TAM, LEG_MV, LEG_ML = 96, 480, 90
+TEXTO_SEGUIR = None
+
+
+def _formato(fmt):
+    """Ajusta tamanho e posições para 9:16 (Reels/TikTok) ou 16:9 (YouTube)."""
+    global W, H, TOPO, BASE, TIT_Y, TIT_TAM, TIT_H, TIT_LINHAS, MARCA_XY, SEGUIR_Y, LEG_TAM, LEG_MV, LEG_ML
+    if fmt == "16:9":
+        W, H = 1920, 1080
+        TOPO, BASE = 165, 1080 - 185
+        TIT_Y, TIT_TAM, TIT_H, TIT_LINHAS = 34, 80, 170, 2
+        MARCA_XY = (1920 - 40, 1080 - 50)
+        SEGUIR_Y = 1080 - 150
+        LEG_TAM, LEG_MV, LEG_ML = 70, 36, 160
+    else:
+        W, H = 1080, 1920
+        TOPO, BASE = 440, 1920 - 690
+        TIT_Y, TIT_TAM, TIT_H, TIT_LINHAS = 160, 104, 420, 3
+        MARCA_XY = None
+        SEGUIR_Y = 1920 - 330
+        LEG_TAM, LEG_MV, LEG_ML = 96, 480, 90
 FIM_PAUSA = 0.30                   # respiro depois de cada fala (corte preciso, sem enrolar)
 ENTRADA = 0.12                     # a voz entra logo depois do primeiro traço
 PAUSA_SURPRESA = 0.65              # suspense antes da revelação
@@ -282,21 +307,22 @@ def _quebrar(d, texto, f, largura):
 
 def camada_titulo(titulo):
     """Título manuscrito da cena (RGBA), com o ? ou ! final em vermelho."""
-    img = Image.new("RGBA", (W, 420), (0, 0, 0, 0))
+    img = Image.new("RGBA", (W, TIT_H), (0, 0, 0, 0))
     if not titulo:
         return img
     d = ImageDraw.Draw(img)
-    tam = 104
+    tam = TIT_TAM
     f = fonte(tam)
     linhas = _quebrar(d, titulo.upper(), f, W - 120)
-    while len(linhas) > 3 and tam > 70:
-        tam -= 8
+    while len(linhas) > TIT_LINHAS and tam > 50:
+        tam -= 6
         f = fonte(tam)
         linhas = _quebrar(d, titulo.upper(), f, W - 120)
-    for k, ln in enumerate(linhas[:3]):
-        y = 160 + k * int(tam * 1.05)
+    linhas = linhas[:TIT_LINHAS]
+    for k, ln in enumerate(linhas):
+        y = TIT_Y + k * int(tam * 1.05)
         x = (W - d.textlength(ln, font=f)) / 2
-        if k == len(linhas[:3]) - 1 and ln[-1:] in "?!":
+        if k == len(linhas) - 1 and ln[-1:] in "?!":
             d.text((x, y), ln[:-1], font=f, fill=PRETO)
             d.text((x + d.textlength(ln[:-1], font=f), y), ln[-1], font=f, fill=VERMELHO)
         else:
@@ -314,13 +340,16 @@ def camada_fundo(marca, selo):
         d.rounded_rectangle((x0, y0, x0 + tw + 68, y0 + 74), 20, fill=VERMELHO, outline=PRETO, width=6)
         d.text((W / 2, y0 + 37), selo, font=fs, fill="white", anchor="mm")
     fm = fonte(34)
-    d.text(((W - d.textlength(marca, font=fm)) / 2, H - 300), marca, font=fm, fill="#8a8a8a")
+    if MARCA_XY:
+        d.text(MARCA_XY, marca, font=fm, fill="#8a8a8a", anchor="rs")
+    else:
+        d.text(((W - d.textlength(marca, font=fm)) / 2, H - 300), marca, font=fm, fill="#8a8a8a")
     return img
 
 
 def camada_seguir(marca):
     """Chamada discreta no final: selinho 'SEGUE O @binoexplica'."""
-    txt = f"+ SEGUE O {marca.upper()}"
+    txt = TEXTO_SEGUIR or f"+ SEGUE O {marca.upper()}"
     f = fonte(44, negrito=True)
     larg = int(ImageDraw.Draw(Image.new("RGB", (1, 1))).textlength(txt, font=f)) + 80
     img = Image.new("RGBA", (larg, 92), (0, 0, 0, 0))
@@ -347,12 +376,20 @@ def _ease(x):
 
 class Cena:
     def __init__(self, svg_txt, png, titulo, dur, voz_ini, indice, surpresa=False, ultima=False,
-                 movimento=None, efeito=None):
+                 movimento=None, efeito=None, base=None):
         self.dur, self.voz_ini, self.i = dur, voz_ini, indice
+        self.continua = base is not None
         self.surpresa, self.ultima = surpresa, ultima
         self.movimento = movimento or ("impacto" if surpresa else ["aproximar", "afastar", "panoramica"][indice % 3])
         self.efeito = efeito or ("ding" if surpresa else "nenhum")
         self.desenho = None
+        if base is not None:              # mesma ilustração da fala anterior: já entra desenhada, sem redesenhar
+            for k in ("desenho", "rw", "rh", "caixa", "esc", "tam", "pos", "final", "boils", "piscar"):
+                setattr(self, k, getattr(base, k))
+            self.t_desenho = 0.0
+            self.titulo = camada_titulo(titulo)
+            self._cache = {}
+            return
         if svg_txt:
             try:
                 self.desenho = Desenho(svg_txt)
@@ -454,7 +491,7 @@ class Cena:
                 s = seguir if b >= 1 else seguir.copy()
                 if b < 1:
                     s.putalpha(seguir.getchannel("A").point(lambda v: int(v * b)))
-                tela.paste(s, ((W - s.width) // 2, H - 330 - int(20 * (1 - b))), s)
+                tela.paste(s, ((W - s.width) // 2, SEGUIR_Y - int(20 * (1 - b))), s)
         if anterior is not None and t < TRANSICAO:
             tela = Image.blend(anterior, tela, _ease(t / TRANSICAO))
         return tela
@@ -599,7 +636,7 @@ def mixar(cenas, falas, destino):
         r = som_rabisco(c.t_desenho, 100 + k) * 0.05
         b = int(t0 * SR)
         efeitos[b:b + len(r)] += r[:n - b]
-        if k > 0:
+        if k > 0 and not getattr(c, "continua", False):
             w = som_whoosh(seed=k) * 0.07
             b = max(0, int((t0 - 0.12) * SR))
             efeitos[b:b + len(w)] += w[:n - b]
@@ -619,7 +656,10 @@ def mixar(cenas, falas, destino):
     m = m[:n] / (np.abs(m[:n]).max() + 1e-9)
     # ducking: música a 13% nos respiros e 6% embaixo da voz
     janela = int(0.25 * SR)
-    energia = np.convolve(np.abs(voz), np.ones(janela) / janela, mode="same")
+    acum = np.concatenate([[0.0], np.cumsum(np.abs(voz), dtype=np.float64)])
+    ini = np.clip(np.arange(n) - janela // 2, 0, n)
+    fim = np.clip(np.arange(n) + janela // 2, 0, n)
+    energia = ((acum[fim] - acum[ini]) / janela).astype(np.float32)
     fala = np.clip(energia / 0.02, 0, 1)
     ganho = 0.13 - 0.07 * fala
     fim = int((total - 2.0) * SR)
@@ -709,7 +749,7 @@ def _ass_cor(hexa):
 
 
 def legendas_ass(cenas, textos, audios, destaques, destino, fonte_nome):
-    tam = 96
+    tam = LEG_TAM
     linhas = [
         "[Script Info]", "ScriptType: v4.00+", f"PlayResX: {W}", f"PlayResY: {H}", "WrapStyle: 0", "",
         "[V4+ Styles]",
@@ -717,7 +757,7 @@ def legendas_ass(cenas, textos, audios, destaques, destino, fonte_nome):
         "Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, "
         "Shadow, Alignment, MarginL, MarginR, MarginV, Encoding",
         f"Style: Padrao,{fonte_nome},{tam},{_ass_cor(PRETO)},{_ass_cor(PRETO)},&H00FFFFFF,&H00000000,"
-        f"0,0,0,0,100,100,1,0,1,8,0,2,90,90,480,1",
+        f"0,0,0,0,100,100,1,0,1,8,0,2,{LEG_ML},{LEG_ML},{LEG_MV},1",
         "", "[Events]", "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text",
     ]
 
@@ -760,8 +800,20 @@ def legendas_ass(cenas, textos, audios, destaques, destino, fonte_nome):
 
 
 # =================================================================== montagem completa
-def montar_tiktok(cfg, roteiro, cenas_png, audios, titulos, pasta, marca, selo=None, minimo=62, nome="tiktok_9x16"):
-    """Monta o vídeo vertical animado. Devolve o caminho do MP4."""
+def montar_tiktok(cfg, roteiro, cenas_png, audios, titulos, pasta, marca, selo=None, minimo=62, nome="tiktok_9x16",
+                  formato="9:16", texto_seguir=None):
+    """Monta o vídeo animado (vertical 9:16 ou horizontal 16:9). Devolve o caminho do MP4."""
+    global TEXTO_SEGUIR
+    _formato(formato)
+    TEXTO_SEGUIR = texto_seguir
+    try:
+        return _montar(cfg, roteiro, cenas_png, audios, titulos, pasta, marca, selo, minimo, nome)
+    finally:
+        _formato("9:16")
+        TEXTO_SEGUIR = None
+
+
+def _montar(cfg, roteiro, cenas_png, audios, titulos, pasta, marca, selo, minimo, nome):
     from util import duracao
     narr = roteiro["cenas"]
     n = len(cenas_png)
@@ -784,8 +836,9 @@ def montar_tiktok(cfg, roteiro, cenas_png, audios, titulos, pasta, marca, selo=N
         if i == n - 1:
             dur += 0.6                                   # respiro final antes do loop
         sb = narr[i] if i < len(narr) else {}
+        base = cenas[-1] if i > 0 and str(cenas_png[i]) == str(cenas_png[i - 1]) else None
         cenas.append(Cena(svg, cenas_png[i], titulos[i], dur, voz_ini, i, surpresa=(i == surpresa), ultima=(i == n - 1),
-                          movimento=sb.get("movimento"), efeito=sb.get("efeito")))
+                          movimento=sb.get("movimento"), efeito=sb.get("efeito"), base=base))
         log.info(f"[animado] cena {i + 1}/{n} preparada ({len(cenas[-1].desenho.formas) if cenas[-1].desenho else 0} traços)")
     total = sum(c.dur for c in cenas)
     if total < minimo:                                    # passa de 1 min: estica a última cena com o desenho vivo
@@ -798,8 +851,13 @@ def montar_tiktok(cfg, roteiro, cenas_png, audios, titulos, pasta, marca, selo=N
     for c in cenas:
         log.info(f"[animado] filmando cena {c.i + 1}/{n} ({c.dur:.1f}s)")
         destino = trab / f"cena_{c.i:02d}.mp4"
-        anterior = _gravar_cena(c, fundo, anterior, seguir, destino)
+        anterior = _gravar_cena(c, fundo, None if c.continua else anterior, seguir, destino)
         arquivos.append(destino)
+    t, tempos = 0.0, []
+    for c in cenas:
+        tempos.append(round(t, 2))
+        t += c.dur
+    (pasta / "tempos.json").write_text(json.dumps(tempos), encoding="utf-8")
     (trab / "lista.txt").write_text("\n".join(f"file '{a.name}'" for a in arquivos), encoding="utf-8")
     rodar_ffmpeg(["-f", "concat", "-safe", "0", "-i", "lista.txt", "-c", "copy", "imagem.mp4"], cwd=trab)
 
