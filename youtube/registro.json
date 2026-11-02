@@ -1,0 +1,68 @@
+[
+  {
+    "id": "yt-20261102-14023",
+    "criado": "2026-11-02T04:00-03:00",
+    "tema": "A Guerra das Emus: quando o exército australiano perdeu para pássaros gigantes",
+    "titulo": "A Guerra das Emus: quando o exército australiano perdeu para pássaros ",
+    "categoria": "História real inacreditável",
+    "pontuacao_tema": 96.7,
+    "status": "cancelado",
+    "horario": null,
+    "tentativas": 0,
+    "erros": [],
+    "historico": [
+      {
+        "quando": "2026-11-02T04:13-03:00",
+        "de": "em_producao",
+        "para": "cancelado",
+        "motivo": "roteiro reprovado 3 vezes"
+      }
+    ],
+    "youtube_id": null,
+    "link": null
+  },
+  {
+    "id": "yt-20261102-9d24c",
+    "criado": "2026-11-02T04:13-03:00",
+    "tema": "Tsutomu Yamaguchi: a inacreditável história do homem que sobreviveu a duas bombas atômicas",
+    "titulo": "Tsutomu Yamaguchi: a inacreditável história do homem que sobreviveu a ",
+    "categoria": "Histórias reais inacreditáveis",
+    "pontuacao_tema": 95.0,
+    "status": "cancelado",
+    "horario": null,
+    "tentativas": 0,
+    "erros": [],
+    "historico": [
+      {
+        "quando": "2026-11-02T04:14-03:00",
+        "de": "em_producao",
+        "para": "cancelado",
+        "motivo": "Extra data: line 1 column 6571 (char 6570)"
+      }
+    ],
+    "youtube_id": null,
+    "link": null
+  },
+  {
+    "id": "yt-20261102-642a0",
+    "criado": "2026-11-02T04:14-03:00",
+    "tema": "Os segredos letais da Ilha da Queimada Grande (a Ilha das Cobras)",
+    "titulo": "Os segredos letais da Ilha da Queimada Grande (a Ilha das Cobras)",
+    "categoria": "Ciência e natureza",
+    "pontuacao_tema": 95.0,
+    "status": "cancelado",
+    "horario": null,
+    "tentativas": 0,
+    "erros": [],
+    "historico": [
+      {
+        "quando": "2026-11-02T04:15-03:00",
+        "de": "em_producao",
+        "para": "cancelado",
+        "motivo": "roteiro reprovado 3 vezes"
+      }
+    ],
+    "youtube_id": null,
+    "link": null
+  }
+]

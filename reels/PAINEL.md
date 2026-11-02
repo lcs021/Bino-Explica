@@ -1,6 +1,6 @@
 # 🎛️ Painel do Bino Explica — Reels
 
-Atualizado em 02/11/2026 às 03:57 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
+Atualizado em 02/11/2026 às 04:15 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
 
 ## Visão geral
 
@@ -44,7 +44,11 @@ Atualizado em 02/11/2026 às 03:57 (horário de Brasília) · automação **▶�
 
 ## ▶️ YouTube (1 vídeo de ~10 min por dia, 19:30)
 
-Ainda nenhum vídeo longo (a produção roda às 13:00 e agenda para as 19:30).
+| Data | Vídeo | Status | Qualidade | Duração | Link |
+|---|---|---|---|---|---|
+| 2026-11-02 04:14 | Os segredos letais da Ilha da Queimada Grande (a Ilha das Cobras) | 🚫 Cancelado | – | – min | – |
+| 2026-11-02 04:13 | Tsutomu Yamaguchi: a inacreditável história do homem que sobreviveu a  | 🚫 Cancelado | – | – min | – |
+| 2026-11-02 04:00 | A Guerra das Emus: quando o exército australiano perdeu para pássaros  | 🚫 Cancelado | – | – min | – |
 
 ## 🧠 Inteligência
 
@@ -66,6 +70,12 @@ Ainda nenhum vídeo longo (a produção roda às 13:00 e agenda para as 19:30).
 
 ## 📝 Registro de atividades
 
+- 2026-11-02 04:15 · youtube: Tema descartado: Os segredos letais da Ilha da Queimada Grande (a Ilha das Cobras) — roteiro reprovado 3 vezes
+- 2026-11-02 04:14 · youtube: Começou o vídeo longo: Os segredos letais da Ilha da Queimada Grande (a Ilha das Cobras)
+- 2026-11-02 04:14 · youtube: Tema descartado: Tsutomu Yamaguchi: a inacreditável história do homem que sobreviveu a duas bombas atômicas — Extra data: line 1 column 6571 (char 6570)
+- 2026-11-02 04:13 · youtube: Começou o vídeo longo: Tsutomu Yamaguchi: a inacreditável história do homem que sobreviveu a duas bombas atômicas
+- 2026-11-02 04:13 · youtube: Tema descartado: A Guerra das Emus: quando o exército australiano perdeu para pássaros gigantes — roteiro reprovado 3 vezes
+- 2026-11-02 04:00 · youtube: Começou o vídeo longo: A Guerra das Emus: quando o exército australiano perdeu para pássaros gigantes
 - 2026-11-02 03:32 · produção: Aprovado (100/100) e programado para 02/11 19:30: Por que o sol te faz espirrar?
 - 2026-11-02 03:27 · produção: Começou: O reflexo do espirro fótico faz com que uma em cada quatro pessoas espirre ao olhar diretamente para a luz do Sol (pontuação 90.0, abertura afirmacao)
 - 2026-11-02 03:27 · produção: Tema descartado: O vombate é o único ser vivo que produz fezes em formato perfeitamente cúbico devido à estrutura assimétrica de seu intestino — roteiro reprovado 3 vezes na revisão

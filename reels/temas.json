@@ -128,5 +128,128 @@
     },
     "visto": "2026-11-02T03:02-03:00",
     "status": "na reserva"
+  },
+  {
+    "tema": "A Guerra das Emus: quando o exército australiano perdeu para pássaros gigantes",
+    "categoria": "História real inacreditável",
+    "pontuacao": 96.7,
+    "criterios": {
+      "curiosidade": 10,
+      "retencao": 9,
+      "clique": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T04:00-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado 3 vezes"
+  },
+  {
+    "tema": "Tsutomu Yamaguchi: a inacreditável história do homem que sobreviveu a duas bombas atômicas",
+    "categoria": "Histórias reais inacreditáveis",
+    "pontuacao": 95.0,
+    "criterios": {
+      "curiosidade": 9,
+      "retencao": 10,
+      "clique": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T04:00-03:00",
+    "status": "descartado",
+    "motivo": "Extra data: line 1 column 6571 (char 6570)"
+  },
+  {
+    "tema": "Os segredos letais da Ilha da Queimada Grande (a Ilha das Cobras)",
+    "categoria": "Ciência e natureza",
+    "pontuacao": 95.0,
+    "criterios": {
+      "curiosidade": 9,
+      "retencao": 9,
+      "clique": 10,
+      "interesse_brasil": 10,
+      "ilustravel": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T04:00-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado 3 vezes"
+  },
+  {
+    "tema": "O bizarro caso da Epidemia de Dança de 1518",
+    "categoria": "História real inacreditável",
+    "pontuacao": 93.3,
+    "criterios": {
+      "curiosidade": 10,
+      "retencao": 9,
+      "clique": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T04:00-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "Phineas Gage: o homem que sobreviveu com uma barra de ferro atravessada no cérebro",
+    "categoria": "Ciência e história real",
+    "pontuacao": 93.3,
+    "criterios": {
+      "curiosidade": 9,
+      "retencao": 10,
+      "clique": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T04:00-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O mistério do Incidente do Passo Dyatlov e a explicação científica final",
+    "categoria": "Mistérios explicados",
+    "pontuacao": 93.3,
+    "criterios": {
+      "curiosidade": 10,
+      "retencao": 10,
+      "clique": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-02T04:00-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O terrível naufrágio e motim do navio Batavia em 1629",
+    "categoria": "Histórias reais inacreditáveis",
+    "pontuacao": 91.7,
+    "criterios": {
+      "curiosidade": 9,
+      "retencao": 10,
+      "clique": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T04:00-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O Grande Nevoeiro de 1952: quando o próprio ar de Londres virou veneno",
+    "categoria": "História e ciência",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "retencao": 9,
+      "clique": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T04:00-03:00",
+    "status": "na reserva"
   }
 ]
