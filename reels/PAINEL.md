@@ -1,6 +1,6 @@
 # 🎛️ Painel do Bino Explica — Reels
 
-Atualizado em 02/11/2026 às 19:51 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
+Atualizado em 02/11/2026 às 20:29 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
 
 ## Visão geral
 
@@ -59,6 +59,10 @@ Nada em produção agora.
 
 ## 📝 Registro de atividades
 
+- 2026-11-02 20:29 · pacote: Vídeo 4/5 pronto (41s, 100/100): O segredo do mar brilhante
+- 2026-11-02 20:25 · pacote: Vídeo 3/5 pronto (39s, 100/100): A Travessia Sozinha a Remo
+- 2026-11-02 20:20 · pacote: Vídeo 2/5 pronto (44s, 100/100): O Segredo Brilhante do Fundo do Mar
+- 2026-11-02 20:13 · pacote: Vídeo 1/5 pronto (37s, 100/100): O Material Mais Leve Que o Ar
 - 2026-11-02 19:50 · pacote: Vídeo 3/14 pronto (74s, 100/100): A cor mais cara da história
 - 2026-11-02 19:41 · pacote: Vídeo 2/14 pronto (83s, 95/100): A ilha proibida de São Paulo
 - 2026-11-02 19:36 · pacote: Vídeo 1/14 pronto (70s, 100/100): O tsunami pegajoso que destruiu Boston
@@ -80,7 +84,3 @@ Nada em produção agora.
 - 2026-11-02 13:31 · publicação: Falha ao publicar 'A inacreditável Guerra dos Emus' (1/3): Envio ao Instagram falhou (400): {"debug_info":{"retriable":false,"type":"ProcessingFailedError","message":"Request processing failed"}}
 - 2026-11-02 04:15 · youtube: Tema descartado: Os segredos letais da Ilha da Queimada Grande (a Ilha das Cobras) — roteiro reprovado 3 vezes
 - 2026-11-02 04:14 · youtube: Começou o vídeo longo: Os segredos letais da Ilha da Queimada Grande (a Ilha das Cobras)
-- 2026-11-02 04:14 · youtube: Tema descartado: Tsutomu Yamaguchi: a inacreditável história do homem que sobreviveu a duas bombas atômicas — Extra data: line 1 column 6571 (char 6570)
-- 2026-11-02 04:13 · youtube: Começou o vídeo longo: Tsutomu Yamaguchi: a inacreditável história do homem que sobreviveu a duas bombas atômicas
-- 2026-11-02 04:13 · youtube: Tema descartado: A Guerra das Emus: quando o exército australiano perdeu para pássaros gigantes — roteiro reprovado 3 vezes
-- 2026-11-02 04:00 · youtube: Começou o vídeo longo: A Guerra das Emus: quando o exército australiano perdeu para pássaros gigantes

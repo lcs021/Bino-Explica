@@ -1156,5 +1156,271 @@
     },
     "visto": "2026-11-02T19:57-03:00",
     "status": "escolhido"
+  },
+  {
+    "tema": "O aerogel, conhecido como 'fumaça sólida', é um dos materiais mais leves do mundo e resiste a temperaturas extremas",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T20:09-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "Os pilares de luz são um raro fenômeno óptico atmosférico onde colunas verticais de luz se projetam para o céu a partir de fontes terrestres",
+    "categoria": "fenômenos naturais",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T20:09-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O efeito Purkinje faz com que as cores vermelhas pareçam mais escuras e os tons de azul mais brilhantes à medida que o ambiente escurece",
+    "categoria": "corpo humano",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T20:09-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O Efeito de Posição Serial explica por que lembramos mais facilmente dos primeiros e últimos itens de uma lista do que dos do meio",
+    "categoria": "psicologia",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T20:09-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "A Operação Mincemeat usou um cadáver com documentos falsos para enganar as forças do Eixo durante a Segunda Guerra Mundial",
+    "categoria": "história",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T20:09-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O peixe-lanterna usa uma haste brilhante com bactérias simbióticas para atrair presas e parceiros nas profundezas escuras do oceano",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T20:09-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A Lua de Júpiter, Io, é o corpo celeste mais vulcanicamente ativo do Sistema Solar, com centenas de vulcões em erupção constante",
+    "categoria": "espaço",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T20:09-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O misterioso fenômeno dos 'Baricentro e Dança de Estrelas' mostra como sistemas binários orbitam um ponto invisível no espaço vazio",
+    "categoria": "mistérios",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T20:09-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A fascinante história de como o navegador Amyr Klink cruzou o Oceano Atlântico a remo em um barco construído no Brasil",
+    "categoria": "história",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 10,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T20:20-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O fenômeno natural da bioluminescência em praias brasileiras causado pela proliferação de microalgas dinoflageladas",
+    "categoria": "fenômenos naturais",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 10,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-02T20:20-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O efeito do viés de confirmação e como o cérebro humano busca apenas informações que validam crenças antigas",
+    "categoria": "psicologia",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T20:20-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O mistério milenar da construção dos Moais na Ilha de Páscoa e as evidências arqueológicas de como eram transportados de pé",
+    "categoria": "mistérios",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-02T20:20-03:00",
+    "status": "escolhido"
+  },
+  {
+    "tema": "O misterioso fenômeno das auroras boreais e austrais e como o campo magnético da Terra protege o planeta de ventos solares letais",
+    "categoria": "espaço",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 7,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T20:20-03:00",
+    "status": "escolhido"
+  },
+  {
+    "tema": "O fenômeno biológico em que árvores adultas transferem nutrientes por raízes subterrâneas e fungos para ajudar mudas jovens da mesma espécie na floresta",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-02T20:20-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O uso histórico do basalto e de antigos espelhos parabólicos de Arquimedes na física para demonstrar a concentração de energia solar",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 85.7,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-02T20:20-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "Como o cérebro humano consegue calcular distâncias e profundidades usando o fenômeno da disparidade binocular",
+    "categoria": "corpo humano",
+    "pontuacao": 84.3,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-02T20:20-03:00",
+    "status": "na reserva"
   }
 ]
