@@ -1,6 +1,6 @@
 # 🎛️ Painel do Bino Explica — Reels
 
-Atualizado em 02/11/2026 às 03:32 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
+Atualizado em 02/11/2026 às 03:57 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
 
 ## Visão geral
 
@@ -41,6 +41,10 @@ Atualizado em 02/11/2026 às 03:32 (horário de Brasília) · automação **▶�
 | 6 | Você sabia dessa? Comenta aqui embaixo e segue o Bino Explica pra mais curiosidades. | Bino pointing down at the comments with a big smile. | afastar | segue o Bino | nenhum |
 
 </details>
+
+## ▶️ YouTube (1 vídeo de ~10 min por dia, 19:30)
+
+Ainda nenhum vídeo longo (a produção roda às 13:00 e agenda para as 19:30).
 
 ## 🧠 Inteligência
 
