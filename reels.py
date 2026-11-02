@@ -123,12 +123,16 @@ Responda SÓ um JSON: {{"temas":[{{"tema":"assunto específico em uma frase","ca
 "interesse_brasil":0,"ilustravel":0,"originalidade":0,"credibilidade":0}},
 "artigos":["1 a 3 títulos EXATOS de artigos da Wikipédia em português que comprovam o tema (ex.: \\"Vênus (planeta)\\")"]}}]}}
 com 8 opções de categorias variadas."""
+    def lista(x):
+        if isinstance(x, list):
+            return [o for o in x if isinstance(o, dict)]
+        return [o for o in (x or {}).get("temas", []) if isinstance(o, dict)]
     try:
         texto, _ = ia.pesquisar(prompt, modelo)
-        opcoes = ia.extrair_json(texto).get("temas", [])
+        opcoes = lista(ia.extrair_json(texto))
     except Exception as e:  # noqa: BLE001  (busca do Google sem cota: a IA sugere e a Wikipédia confirma depois)
         log.warning(f"Pesquisa de pauta no Google indisponível ({e}); sugerindo temas sem busca.")
-        opcoes = ia.gerar_json(prompt.replace("Pesquise no Google oportunidades", "Sugira oportunidades"), modelo).get("temas", [])
+        opcoes = lista(ia.gerar_json(prompt.replace("Pesquise no Google oportunidades", "Sugira oportunidades"), modelo))
     for o in opcoes:                      # pontuação interna 0-100 (+ ajuste pelo aprendizado, com amostra mínima)
         c = o.get("criterios") or {}
         base = sum(min(10, max(0, float(c.get(k, 5) or 0))) for k in CRITERIOS) / (10 * len(CRITERIOS)) * 100
@@ -471,10 +475,30 @@ def produzir_pacote(total=14):
         pac = {"id": f"pacote-{agora():%Y%m%d-%H%M}", "criado": agora().isoformat(timespec="minutes"), "videos": [], "fechado": False}
     pasta_pac = RAIZ / "saida" / pac["id"]
     pasta_pac.mkdir(parents=True, exist_ok=True)
+    # retomada: só vale o que já está em Releases (de uma rodada que caiu no meio)
+    if pac["videos"]:
+        r_ = subprocess.run(["gh", "release", "view", pac["id"], "--json", "assets", "-q", "[.assets[].name]"],
+                            capture_output=True, text=True)
+        no_release = set(json.loads(r_.stdout or "[]")) if r_.returncode == 0 else set()
+        perdidos = [v for v in pac["videos"] if v["arquivo"] not in no_release]
+        if perdidos:
+            log.warning(f"{len(perdidos)} vídeo(s) da rodada anterior não chegaram ao Releases; serão refeitos com outros temas.")
+            pac["videos"] = [v for v in pac["videos"] if v["arquivo"] in no_release]
+        for v in pac["videos"]:
+            subprocess.run(["gh", "release", "download", pac["id"], "-p", v["arquivo"], "-p", v["capa"], "-D",
+                            str(pasta_pac), "--clobber"], capture_output=True)
     tentativas = 0
     while len(pac["videos"]) < total and tentativas < total * 2:
         faltam = total - len(pac["videos"])
-        temas = escolher_temas(reg + [{"tema": v["tema"]} for v in pac["videos"]], min(faltam, 6), modelo)
+        temas = []
+        for tent in range(3):
+            try:
+                temas = escolher_temas(reg + [{"tema": v["tema"]} for v in pac["videos"]], min(faltam, 6), modelo)
+                if temas:
+                    break
+            except Exception as e:  # noqa: BLE001
+                log.warning(f"Pauta falhou ({e}); tentando de novo.")
+            time.sleep(30)
         if not temas:
             break
         for t in temas:
