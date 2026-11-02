@@ -113,10 +113,9 @@ def gerar_json(prompt: str, modelo: str) -> dict:
     erro = None
     for tentativa in range(3):
         texto = gerar(prompt, modelo, json_mode=True, temperatura=0.8)
-        m = re.search(r"\{.*\}", texto, re.S)
         try:
-            return json.loads(m.group(0) if m else texto)
-        except json.JSONDecodeError as e:
+            return extrair_json(texto)
+        except (json.JSONDecodeError, ValueError) as e:
             erro = e
             log.warning(f"Resposta da IA com JSON quebrado ({e}); pedindo de novo.")
     raise RuntimeError(f"a IA devolveu JSON inválido 3 vezes ({erro})")
@@ -168,8 +167,13 @@ def pesquisar(prompt: str, modelo: str = "gemini-3.5-flash"):
 
 
 def extrair_json(texto: str):
-    m = re.search(r"[\[{].*[\]}]", texto, re.S)
-    return json.loads(m.group(0) if m else texto)
+    """Lê o primeiro JSON da resposta, mesmo que venha texto ou outro JSON depois."""
+    texto = re.sub(r"^```(?:json)?|```$", "", texto.strip(), flags=re.M)
+    inicio = min([i for i in (texto.find("{"), texto.find("[")) if i >= 0], default=-1)
+    if inicio < 0:
+        raise ValueError("resposta sem JSON")
+    dados, _ = json.JSONDecoder().raw_decode(texto[inicio:])
+    return dados
 
 
 # ------------------------------------------------------------------ Wikipédia (fonte grátis de reserva)
