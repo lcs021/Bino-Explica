@@ -617,5 +617,277 @@
     },
     "visto": "2026-11-02T18:22-03:00",
     "status": "na reserva"
+  },
+  {
+    "tema": "A Inundação de Melaço de Boston em 1919 foi causada pelo rompimento de um tanque gigante que lançou uma onda doce a mais de 50 km/h.",
+    "categoria": "história",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:29-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A Ilha da Queimada Grande, em São Paulo, abriga uma das maiores concentrações de serpentes venenosas do planeta e tem desembarque proibido.",
+    "categoria": "curiosidades inacreditáveis",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 10,
+      "ilustravel": 9,
+      "originalidade": 7,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:29-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A lua Titã possui uma atmosfera tão densa e gravidade tão baixa que um ser humano conseguiria voar batendo asas presas aos braços.",
+    "categoria": "espaço",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:29-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O fenômeno do Relâmpago do Catatumbo gera tempestades elétricas quase contínuas que iluminam o céu durante cerca de 160 noites por ano.",
+    "categoria": "fenômenos naturais",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 8,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:29-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O estômago humano produz uma nova camada interna de muco a cada poucas semanas para evitar digerir a si mesmo com o ácido gástrico.",
+    "categoria": "corpo humano",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 7,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:29-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O experimento da gota de piche é um dos mais longos do mundo e prova que o piche sólido flui como líquido caindo uma gota a cada década.",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:29-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "Os tubarões-da-groenlândia são os vertebrados mais longevos da Terra e só atingem a maturidade sexual por volta dos 150 anos de idade.",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 85.7,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:29-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O efeito espectador demonstra que quanto maior o número de testemunhas em uma emergência, menor é a chance de alguém decidir intervir.",
+    "categoria": "psicologia",
+    "pontuacao": 81.4,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 8,
+      "originalidade": 7,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-02T19:29-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O curioso mecanismo dos tardígrados para sobreviver à dessecação extrema entrando em criptobiose",
+    "categoria": "curiosidades inacreditáveis",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:45-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O canto da foca leopardo que se assemelha a sons de nave espacial de filmes de ficção científica",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:45-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "Como funcionam os relógios de sol analêmicos que usam a própria sombra da pessoa como ponteiro",
+    "categoria": "conhecimentos gerais",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:45-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "Como o cérebro humano processa a ilusão de movimento através do Efeito Phi em letreiros e animações",
+    "categoria": "psicologia",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:45-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "A formação dos fogos de Santelmo, o fenômeno elétrico luminoso que coroava os mastros de navios antigos",
+    "categoria": "fenômenos naturais",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:45-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "A origem histórica do uso da cor púrpura real e como ela era extraída de moluscos marinhos raros",
+    "categoria": "história",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:45-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O fenômeno óptico da luz zodiacal visível no céu noturno causado pela poeira interplanetária",
+    "categoria": "espaço",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 8,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:45-03:00",
+    "status": "descartado",
+    "motivo": "'list' object has no attribute 'get'"
+  },
+  {
+    "tema": "O fenômeno do Efeito Coolidge na biologia comportamental que explica a reação de animais a novos estímulos",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 8,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:45-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
   }
 ]

@@ -1,21 +1,21 @@
 # 🎛️ Painel do Bino Explica — Reels
 
-Atualizado em 02/11/2026 às 19:24 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
+Atualizado em 02/11/2026 às 19:51 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
 
 ## Visão geral
 
 | Produzidos | Publicados | Na fila | Falhas | Quarentena | Views (com estatísticas) | Seguidores |
 |---|---|---|---|---|---|---|
-| 2 | 1 | 1 | 0 | 0 | 0 | – |
+| 1 | 1 | 0 | 0 | 0 | 0 | – |
 
-**Próximas publicações:** 02/11 19:30 — Por que o sol te faz espirrar?
+**Próximas publicações:** nenhuma (a produção roda às 08:00)
 
 ## 📅 Calendário da semana
 
 | Dia | Reels (horário · status · título) |
 |---|---|
 | dom 01/11 | — |
-| seg 02/11 (hoje) | 12:30 ✅ [A inacreditável Guerra dos Emus](https://www.instagram.com/reel/DfPwPqrEUIu/) · 19:30 ⏳ Por que o sol te faz espirrar? `20261102-a5ce83` |
+| seg 02/11 (hoje) | 12:30 ✅ [A inacreditável Guerra dos Emus](https://www.instagram.com/reel/DfPwPqrEUIu/) · 19:30 — livre |
 | ter 03/11 | 12:30 — livre · 19:30 — livre |
 | qua 04/11 | 12:30 — livre · 19:30 — livre |
 | qui 05/11 | 12:30 — livre · 19:30 — livre |
@@ -24,22 +24,7 @@ Atualizado em 02/11/2026 às 19:24 (horário de Brasília) · automação **▶�
 
 ## 🛠️ Produção
 
-| Reel | Status | Qualidade | Abertura testada | Horário | Arquivos |
-|---|---|---|---|---|---|
-| Por que o sol te faz espirrar? `20261102-a5ce83` | ⏳ Aguardando publicação | 100 | afirmacao | 2026-11-02 19:30 | Releases: reel-20261102-a5ce83 |
-
-<details><summary>🎬 Storyboard — Por que o sol te faz espirrar?</summary>
-
-| Cena | Narração | Ilustração | Movimento | Destaque | Efeito |
-|---|---|---|---|---|---|
-| 1 | Olhar para a luz forte faz muita gente espirrar sem parar. | Bino looking up at a bright sun and sneezing with white dood | aproximar | luz forte | nenhum |
-| 2 | Sabe o que é mais louco? Isso tem um nome gigante. | Bino scratching his head next to a very long text scroll on  | panoramica | nome gigante | pop |
-| 3 | A gente chama de reflexo fótico do espirro. E afeta quase um terço das pessoas. | Bino pointing at a pie chart showing a third of stick figure | afastar | um terço | whoosh |
-| 4 | Mas olha só que doideira, o reflexo é provocado só pela mudança na intensidade da luz. | Bino turning a light switch on and off rapidly while blinkin | aproximar | intensidade da luz | nenhum |
-| 5 | O mais surpreendente é que os espirros ocorrem em surtos e podem ser seguidos por um perío | Bino looking shocked with a giant clock showing twenty four  | impacto | vinte e quatro horas | ding |
-| 6 | Você sabia dessa? Comenta aqui embaixo e segue o Bino Explica pra mais curiosidades. | Bino pointing down at the comments with a big smile. | afastar | segue o Bino | nenhum |
-
-</details>
+Nada em produção agora.
 
 ## ▶️ YouTube (desligado)
 
@@ -74,6 +59,9 @@ Atualizado em 02/11/2026 às 19:24 (horário de Brasília) · automação **▶�
 
 ## 📝 Registro de atividades
 
+- 2026-11-02 19:50 · pacote: Vídeo 3/14 pronto (74s, 100/100): A cor mais cara da história
+- 2026-11-02 19:41 · pacote: Vídeo 2/14 pronto (83s, 95/100): A ilha proibida de São Paulo
+- 2026-11-02 19:36 · pacote: Vídeo 1/14 pronto (70s, 100/100): O tsunami pegajoso que destruiu Boston
 - 2026-11-02 18:45 · youtube: Vídeo pronto em Releases (yt-20261102-cc6c3); YouTube não conectado.
 - 2026-11-02 18:22 · youtube: Começou o vídeo longo: O Voo 571 da Força Aérea Uruguaia: a incrível história de sobrevivência nos Andes contada passo a passo
 - 2026-11-02 16:49 · youtube: Tema descartado: E se a Lua simplesmente desaparecesse do dia para a noite? — as fontes não sustentam um vídeo de 10 minutos sobre o tema
@@ -96,6 +84,3 @@ Atualizado em 02/11/2026 às 19:24 (horário de Brasília) · automação **▶�
 - 2026-11-02 04:13 · youtube: Começou o vídeo longo: Tsutomu Yamaguchi: a inacreditável história do homem que sobreviveu a duas bombas atômicas
 - 2026-11-02 04:13 · youtube: Tema descartado: A Guerra das Emus: quando o exército australiano perdeu para pássaros gigantes — roteiro reprovado 3 vezes
 - 2026-11-02 04:00 · youtube: Começou o vídeo longo: A Guerra das Emus: quando o exército australiano perdeu para pássaros gigantes
-- 2026-11-02 03:32 · produção: Aprovado (100/100) e programado para 02/11 19:30: Por que o sol te faz espirrar?
-- 2026-11-02 03:27 · produção: Começou: O reflexo do espirro fótico faz com que uma em cada quatro pessoas espirre ao olhar diretamente para a luz do Sol (pontuação 90.0, abertura afirmacao)
-- 2026-11-02 03:27 · produção: Tema descartado: O vombate é o único ser vivo que produz fezes em formato perfeitamente cúbico devido à estrutura assimétrica de seu intestino — roteiro reprovado 3 vezes na revisão
