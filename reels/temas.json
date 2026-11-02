@@ -1422,5 +1422,267 @@
     },
     "visto": "2026-11-02T20:20-03:00",
     "status": "na reserva"
+  },
+  {
+    "tema": "O dia em que a erupção do vulcão Krakatoa gerou o som mais alto já registrado na história humana, ouvida a quase cinco mil quilômetros de distância",
+    "categoria": "história",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T20:35-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O raro e fascinante fenômeno das pedras que caminham sozinhas pelo Vale da Morte, empurradas por finas camadas de gelo e vento fraco",
+    "categoria": "fenômenos naturais",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T20:35-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "A árvore que consegue sobreviver a incêndios florestais intensos graças a uma casca protetora de cortiça com até 30 centímetros de espessura",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T20:35-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O curioso experimento histórico em que cientistas provaram que o estômago humano consegue dissolver metal devido à acidez extrema do suco gástrico",
+    "categoria": "corpo humano",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T20:35-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O efeito de priming na psicologia mostra como a simples leitura de palavras relacionadas à velhice faz pessoas caminharem mais devagar sem perceber",
+    "categoria": "psicologia",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 8,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T20:35-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O curioso oceano subterrâneo na lua Encélado de Saturno que janta vapor d'água no espaço através de fissuras conhecidas como listras de tigre",
+    "categoria": "espaço",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T20:35-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O misterioso fenômeno acústico das Pedras Cantantes na Índia, pilares rochosos que produzem sons musicais puros quando atingidos levemente",
+    "categoria": "mistérios",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-02T20:35-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O relógio atômico mais preciso do mundo perde apenas um segundo a cada bilhões de anos e usa átomos de estrôncio presos por lasers",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T20:35-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O tardígrado, o animal microscópico que sobrevive ao vácuo do espaço e a temperaturas extremas",
+    "categoria": "espaço",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T20:36-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "A impressionante estratégia de camuflagem do polvo-mimético que imita até quinze animais diferentes",
+    "categoria": "curiosidades inacreditáveis",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-02T20:36-03:00",
+    "status": "descartado",
+    "motivo": "'list' object has no attribute 'get'"
+  },
+  {
+    "tema": "O dia em que a erupção do vulcão Krakatoa gerou o som mais alto já ouvido na história da humanidade",
+    "categoria": "fenômenos naturais",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T20:36-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O peixe-remo gigante que sobe à superfície antes de terremotos e sua relação com o folclore japonês",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-02T20:36-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "Como o corpo humano consegue produzir brilho próprio através da bioluminescência invisível a olho nu",
+    "categoria": "corpo humano",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 8
+    },
+    "visto": "2026-11-02T20:36-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A curiosa história do faroleiro que salvou centenas de navios usando apenas espelhos e luz solar",
+    "categoria": "história",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-02T20:36-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "Como o cérebro humano consegue apagar memórias dolorosas através de um mecanismo de supressão ativa",
+    "categoria": "psicologia",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-02T20:36-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O fenômeno do eco persistente que permitiu gravar sons do passado em paredes antigas segundo teorias acústicas",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 85.7,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 8
+    },
+    "visto": "2026-11-02T20:36-03:00",
+    "status": "na reserva"
   }
 ]

@@ -1,6 +1,6 @@
 # 🎛️ Painel do Bino Explica — Reels
 
-Atualizado em 02/11/2026 às 20:29 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
+Atualizado em 02/11/2026 às 20:46 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
 
 ## Visão geral
 
@@ -59,6 +59,8 @@ Nada em produção agora.
 
 ## 📝 Registro de atividades
 
+- 2026-11-02 20:46 · pacote: Vídeo 5/5 pronto (52s, 100/100): O som mais alto da história
+- 2026-11-02 20:46 · tiktok: Versão TikTok pronta (62s): O som mais alto da história
 - 2026-11-02 20:29 · pacote: Vídeo 4/5 pronto (41s, 100/100): O segredo do mar brilhante
 - 2026-11-02 20:25 · pacote: Vídeo 3/5 pronto (39s, 100/100): A Travessia Sozinha a Remo
 - 2026-11-02 20:20 · pacote: Vídeo 2/5 pronto (44s, 100/100): O Segredo Brilhante do Fundo do Mar
@@ -82,5 +84,3 @@ Nada em produção agora.
 - 2026-11-02 14:05 · youtube: Começou o vídeo longo: E se a Terra parasse de girar? As consequências científicas catastróficas
 - 2026-11-02 13:38 · publicação: Publicado: A inacreditável Guerra dos Emus → https://www.instagram.com/reel/DfPwPqrEUIu/
 - 2026-11-02 13:31 · publicação: Falha ao publicar 'A inacreditável Guerra dos Emus' (1/3): Envio ao Instagram falhou (400): {"debug_info":{"retriable":false,"type":"ProcessingFailedError","message":"Request processing failed"}}
-- 2026-11-02 04:15 · youtube: Tema descartado: Os segredos letais da Ilha da Queimada Grande (a Ilha das Cobras) — roteiro reprovado 3 vezes
-- 2026-11-02 04:14 · youtube: Começou o vídeo longo: Os segredos letais da Ilha da Queimada Grande (a Ilha das Cobras)
