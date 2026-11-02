@@ -5,8 +5,8 @@
 
 # ---- Motor GRÁTIS (main_gratis.py): Gemini sem cartão de crédito ----
 gemini:
-  modelo_texto: "gemini-flash-latest"         # roteiro e revisão
-  modelo_desenho: "gemini-flash-lite-latest"  # desenhos (cota grátis maior)
+  modelo_texto: "gemini-3.5-flash"           # roteiro e revisão
+  modelo_desenho: "gemini-3.5-flash-lite"     # desenhos (cota grátis maior)
   pausa_seg: 5                                # respiro entre pedidos (limite grátis)
 
 canal:

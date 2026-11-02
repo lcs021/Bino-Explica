@@ -89,8 +89,12 @@ Nada de pessoas vivas, tragédias recentes, política, saúde arriscada ou boato
 Não repita estes temas: {json.dumps(feitos, ensure_ascii=False)}.
 Responda SÓ um JSON: {{"temas":[{{"tema":"assunto específico em uma frase","categoria":"uma das categorias",
 "porque":"por que viraliza, 1 frase"}}]}} com 6 opções de categorias diferentes, da melhor para a pior."""
-    texto, _ = ia.pesquisar(prompt, modelo)
-    opcoes = ia.extrair_json(texto).get("temas", [])
+    try:
+        texto, _ = ia.pesquisar(prompt, modelo)
+        opcoes = ia.extrair_json(texto).get("temas", [])
+    except Exception as e:  # noqa: BLE001  (busca do Google sem cota hoje: a IA sugere e a Wikipédia confirma depois)
+        log.warning(f"Pesquisa de pauta no Google indisponível ({e}); sugerindo temas sem busca.")
+        opcoes = ia.gerar_json(prompt.replace("Pesquise no Google assuntos", "Sugira assuntos"), modelo).get("temas", [])
     escolhidos, cats = [], set()
     for o in opcoes:
         if o.get("tema") and o.get("categoria") not in cats:
@@ -104,11 +108,25 @@ def pesquisar_fatos(tema, modelo):
 Quero de 6 a 9 fatos curtos, precisos e surpreendentes (números, datas e nomes exatos como aparecem nas fontes).
 Não inclua nada que você não encontrou nas fontes. Se um número varia entre fontes, diga "cerca de".
 Responda SÓ JSON: {{"fatos":["..."],"mais_surpreendente":"o fato mais impressionante"}}"""
-    texto, fontes = ia.pesquisar(prompt, modelo)
-    dados = ia.extrair_json(texto)
-    if not fontes:
-        raise RuntimeError("a pesquisa não trouxe fontes verificáveis")
-    return dados, fontes
+    try:
+        texto, fontes = ia.pesquisar(prompt, modelo)
+        dados = ia.extrair_json(texto)
+        if fontes and dados.get("fatos"):
+            return dados, fontes
+        log.warning("A busca no Google não trouxe fontes; conferindo na Wikipédia.")
+    except Exception as e:  # noqa: BLE001
+        log.warning(f"Busca no Google indisponível ({e}); conferindo na Wikipédia.")
+    artigo, fonte = ia.wikipedia(tema)
+    if not artigo:
+        raise RuntimeError("não achei fonte confiável para este tema")
+    dados = ia.gerar_json(f"""Leia o artigo abaixo e extraia de 6 a 9 fatos curtos, precisos e surpreendentes sobre: {tema}.
+Use SOMENTE o que está escrito no artigo (números, datas e nomes exatos). Se o artigo não fala do tema, devolva fatos vazios.
+Artigo ({fonte['titulo']}):
+{artigo}
+Responda SÓ JSON: {{"fatos":["..."],"mais_surpreendente":"..."}}""", modelo)
+    if len(dados.get("fatos") or []) < 4:
+        raise RuntimeError("a fonte encontrada não tem fatos suficientes sobre o tema")
+    return dados, [fonte]
 
 
 # =================================================================== 2. roteiro e revisão
@@ -241,7 +259,7 @@ def produzir_um(cfg, tema_info, reg, horario, modelo_txt):
     pasta = RAIZ / "saida" / f"reel_{vid}_{slug(tema)[:40]}"
     pasta.mkdir(parents=True, exist_ok=True)
     log.info(f"===== Reel {vid}: {tema} =====")
-    fatos, fontes = pesquisar_fatos(tema, "gemini-2.5-flash")
+    fatos, fontes = pesquisar_fatos(tema, modelo_txt)
     log.info(f"Pesquisa: {len(fatos.get('fatos', []))} fatos, {len(fontes)} fontes")
     r = criar_roteiro(tema, fatos, modelo_txt)
     if not r:
@@ -304,7 +322,7 @@ def produzir(quantos=2, tema=None):
         log.info("Já há Reels prontos para os próximos horários; nada a produzir.")
         return
     modelo = cfg["gemini"]["modelo_texto"]
-    temas = [{"tema": tema, "categoria": "manual"}] if tema else escolher_temas(reg, quantos, "gemini-2.5-flash")
+    temas = [{"tema": tema, "categoria": "manual"}] if tema else escolher_temas(reg, quantos, modelo)
     log.info("Temas escolhidos: " + " | ".join(t["tema"] for t in temas))
     feitos = []
     for t in temas:
@@ -481,10 +499,18 @@ def auditoria():
     ok = lambda b: "✅" if b else "❌"
     print(f"{ok(bool(os.environ.get('GEMINI_API_KEY')))} Chave do Gemini (pesquisa e roteiro)")
     try:
-        t, f = ia.pesquisar("Diga em uma frase o que é um polvo e cite a fonte.", "gemini-2.5-flash")
+        print(f"   Modelos disponíveis: {', '.join(ia.disponiveis()[:5])}")
+        t, f = ia.pesquisar("Diga em uma frase o que é um polvo e cite a fonte.", carregar_config()["gemini"]["modelo_texto"])
         print(f"✅ Pesquisa no Google funcionando ({len(f)} fontes): {t[:80]}")
     except Exception as e:  # noqa: BLE001
-        print(f"❌ Pesquisa no Google: {e}")
+        print(f"⚠️ Pesquisa no Google sem cota agora ({str(e)[:120]}); a reserva é a Wikipédia.")
+    txt, fonte = ia.wikipedia("polvo")
+    print(f"{ok(bool(txt))} Wikipédia (fonte de reserva): {fonte['url'] if fonte else 'indisponível'}")
+    try:
+        r = ia.gerar("Responda só: ok", carregar_config()["gemini"]["modelo_texto"])
+        print(f"✅ Roteirista (Gemini) respondendo: {r.strip()[:20]}")
+    except Exception as e:  # noqa: BLE001
+        print(f"❌ Roteirista (Gemini): {str(e)[:200]}")
     print(f"{ok(bool(shutil.which('rsvg-convert')))} Desenhista de SVG  ·  {ok(bool(shutil.which('ffmpeg')))} ffmpeg")
     import instagram_upload as ig
     if not ig.conectado():

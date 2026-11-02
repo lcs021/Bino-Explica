@@ -14,7 +14,44 @@ from util import configurar_log
 
 log = configurar_log()
 URL = "https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent"
-RESERVAS = ["gemini-flash-latest", "gemini-flash-lite-latest", "gemini-2.5-flash", "gemini-2.5-flash-lite"]
+RESERVAS = ["gemini-flash-latest", "gemini-flash-lite-latest", "gemini-3.5-flash", "gemini-3.5-flash-lite"]
+
+
+_DISPONIVEIS = None
+
+
+def disponiveis():
+    """Modelos 'flash' grátis que existem HOJE na conta (o Google aposenta versões; o robô se adapta sozinho)."""
+    global _DISPONIVEIS
+    if _DISPONIVEIS is not None:
+        return _DISPONIVEIS
+    _DISPONIVEIS = []
+    chave = os.environ.get("GEMINI_API_KEY")
+    try:
+        r = requests.get("https://generativelanguage.googleapis.com/v1beta/models", timeout=30,
+                         params={"pageSize": 200}, headers={"x-goog-api-key": chave})
+        nomes = [m["name"].split("/")[-1] for m in r.json().get("models", [])
+                 if "generateContent" in m.get("supportedGenerationMethods", [])]
+        flash = [n for n in nomes if "flash" in n and not re.search(r"image|tts|audio|live|embedding|exp|preview", n)]
+
+        def versao(n):
+            v = re.search(r"(\d+(?:\.\d+)?)", n)
+            return (float(v.group(1)) if v else 0, "lite" not in n, "latest" in n)
+        _DISPONIVEIS = sorted(flash, key=versao, reverse=True)
+        log.info(f"Modelos Gemini disponíveis: {', '.join(_DISPONIVEIS[:6])}")
+    except Exception as e:  # noqa: BLE001
+        log.warning(f"Não consegui listar os modelos do Gemini ({e}).")
+    return _DISPONIVEIS
+
+
+def _ordem(modelo):
+    base = [modelo] + disponiveis() + RESERVAS
+    vistos, ordem = set(), []
+    for m in base:
+        if m and m not in vistos:
+            vistos.add(m)
+            ordem.append(m)
+    return ordem[:6]
 
 
 def _uma_chamada(modelo, corpo, chave):
@@ -32,7 +69,7 @@ def gerar(prompt: str, modelo: str, json_mode=False, temperatura=0.9) -> str:
     if json_mode:
         corpo["generationConfig"]["responseMimeType"] = "application/json"
 
-    modelos = [modelo] + [m for m in RESERVAS if m != modelo]
+    modelos = _ordem(modelo)
     for volta in range(3):                        # até 3 voltas por todos os modelos
         for m in modelos:
             for tentativa in range(2):
@@ -71,7 +108,7 @@ def gerar_json(prompt: str, modelo: str) -> dict:
     return json.loads(m.group(0) if m else texto)
 
 
-def pesquisar(prompt: str, modelo: str = "gemini-2.5-flash"):
+def pesquisar(prompt: str, modelo: str = "gemini-3.5-flash"):
     """Pergunta ao Gemini COM busca no Google. Devolve (texto, fontes) — fontes = [{"titulo", "url"}] reais,
     vindas da própria busca (nada inventado)."""
     chave = os.environ.get("GEMINI_API_KEY")
@@ -79,9 +116,9 @@ def pesquisar(prompt: str, modelo: str = "gemini-2.5-flash"):
         raise RuntimeError("Falta a chave grátis do Gemini (segredo GEMINI_API_KEY).")
     corpo = {"contents": [{"role": "user", "parts": [{"text": prompt}]}],
              "tools": [{"google_search": {}}], "generationConfig": {"temperature": 0.6}}
-    modelos = [modelo] + [m for m in ("gemini-2.5-flash", "gemini-flash-latest", "gemini-2.5-flash-lite") if m != modelo]
+    modelos = _ordem(modelo)
     ultimo = ""
-    for volta in range(3):
+    for volta in range(2):
         for m in modelos:
             try:
                 r = _uma_chamada(m, corpo, chave)
@@ -105,10 +142,32 @@ def pesquisar(prompt: str, modelo: str = "gemini-2.5-flash"):
                     fontes.append({"titulo": tit, "url": web["uri"]})
             if texto:
                 return texto, fontes
-        time.sleep(45)
+        time.sleep(30)
     raise RuntimeError(f"A pesquisa no Google pelo Gemini não respondeu agora ({ultimo}).")
 
 
 def extrair_json(texto: str):
     m = re.search(r"[\[{].*[\]}]", texto, re.S)
     return json.loads(m.group(0) if m else texto)
+
+
+# ------------------------------------------------------------------ Wikipédia (fonte grátis de reserva)
+def wikipedia(tema: str, idiomas=("pt", "en")):
+    """Busca o artigo mais relevante e devolve (texto, fonte) — fonte real com link, ou (None, None)."""
+    cab = {"User-Agent": "BinoExplicaBot/1.0 (https://github.com/lcs021/Bino-Explica)"}
+    for lang in idiomas:
+        try:
+            api = f"https://{lang}.wikipedia.org/w/api.php"
+            busca = requests.get(api, headers=cab, timeout=30, params={
+                "action": "query", "list": "search", "srsearch": tema, "srlimit": 3, "format": "json"}).json()
+            for res in busca.get("query", {}).get("search", []):
+                pag = requests.get(api, headers=cab, timeout=30, params={
+                    "action": "query", "prop": "extracts|info", "inprop": "url", "explaintext": 1,
+                    "exchars": 9000, "titles": res["title"], "format": "json", "redirects": 1}).json()
+                for p in pag.get("query", {}).get("pages", {}).values():
+                    texto = p.get("extract") or ""
+                    if len(texto) > 1200:
+                        return texto, {"titulo": f"Wikipédia: {p['title']}", "url": p.get("fullurl", "")}
+        except Exception as e:  # noqa: BLE001
+            log.warning(f"Wikipédia ({lang}) indisponível: {e}")
+    return None, None
