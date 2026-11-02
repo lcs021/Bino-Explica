@@ -206,8 +206,8 @@ Vídeo: "{plano['titulo']}" (YouTube, ~10 min). Escreva o CAPÍTULO {ci + 1} de 
 Use SOMENTE estes fatos: {json.dumps(fatos_cap, ensure_ascii=False)}
 {papel}
 Continue naturalmente de onde parou: "{anterior[-300:]}" (sem repetir).
-EXATAMENTE {n} blocos. Cada bloco = UMA ilustração + DUAS falas seguidas, cada fala com 35 a 50 palavras, linguagem
-falada, frases curtas, sem enrolar. "visual": a ilustração EM INGLÊS que explica as duas falas (rabisco de quadro
+EXATAMENTE {n} blocos. Cada bloco = UMA ilustração + DUAS falas seguidas, cada fala com 48 a 60 palavras, linguagem
+falada, frases curtas, sem enrolar e sem repetir bordões ("olha só", "sabe o que é mais louco" no máximo 1 vez no vídeo). "visual": a ilustração EM INGLÊS que explica as duas falas (rabisco de quadro
 branco, bonequinhos de palito, uma ação clara). "destaques": 1 a 3 palavras EXATAS das falas.
 Responda SÓ JSON: {{"blocos":[{{"visual":"...","falas":["...","..."],"destaques":["..."]}}]}}""", modelo)
                 except RuntimeError as e:
@@ -224,7 +224,7 @@ Responda SÓ JSON: {{"blocos":[{{"visual":"...","falas":["...","..."],"destaques
         r["capitulos"] = caps
         palavras = sum(len(f.split()) for c in caps for b in c["blocos"] for f in b["falas"])
         log.info(f"Roteiro longo montado: {len(caps)} capítulos, {sum(len(c['blocos']) for c in caps)} blocos, {palavras} palavras")
-        if palavras < 900:
+        if palavras < 1100:
             obs = f"o roteiro ficou curto ({palavras} palavras)"
             continue
         rev = revisar(r, fatos, modelo)
