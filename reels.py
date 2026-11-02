@@ -206,7 +206,7 @@ def prompt_roteiro(tema, fatos, abertura, ganchos_recentes, correcoes="", alvo=(
     return f"""{regras}
 
 Formato: vídeo vertical (Reels/TikTok) de {alvo[0]} a {alvo[1]} segundos. A voz fala {pps:.1f} palavras por segundo, então
-escreva de {pmin} a {pmax} palavras no total, em EXATAMENTE {n_cenas} cenas. Frases curtas, sem introdução.
+escreva de {pmin} a {pmax} palavras no total, em EXATAMENTE {n_cenas} cenas{f" — CADA cena com {round(pmin / n_cenas)} a {round(pmax / n_cenas)} palavras (conte!)" if alvo[0] >= 60 else ""}. Frases curtas, sem introdução.
 Use SOMENTE estes fatos pesquisados (não acrescente nenhum fato, número ou data que não esteja aqui):
 {json.dumps(fatos, ensure_ascii=False)}
 Estrutura obrigatória (storytelling de alta retenção):
@@ -261,7 +261,9 @@ def criar_roteiro(tema, fatos, modelo, abertura, ganchos_recentes, alvo=(40, 54)
         r["cenas"] = cenas[:n_cenas + 1]
         palavras = sum(len(c["narracao"].split()) for c in r["cenas"])
         if not (alvo[0] - 6) * pps <= palavras <= (alvo[1] + 8) * pps:
-            obs = f"o roteiro tem {palavras} palavras; precisa ter entre {round(alvo[0] * pps)} e {round(alvo[1] * pps)}"
+            obs = (f"o roteiro tem {palavras} palavras; precisa ter entre {round(alvo[0] * pps)} e {round(alvo[1] * pps)} "
+                   f"(cada cena com {round(alvo[0] * pps / n_cenas)} a {round(alvo[1] * pps / n_cenas)} palavras)")
+            log.warning(f"Roteiro: {obs}")
             continue
         if re.match(r"\s*voc[eê] sabia", r["cenas"][0]["narracao"], re.I):
             obs = "a primeira frase não pode começar com 'Você sabia'"
@@ -587,8 +589,12 @@ def completar_tiktok(cfg, modelo, pac, v, pasta_pac, total):
 Responda SÓ JSON: {{"artigos":["..."]}}""", modelo)
     artigos = art.get("artigos") if isinstance(art, dict) else art
     fatos, fontes = pesquisar_fatos(v["tema"], modelo, [str(a) for a in (artigos or [])][:3] or None)
-    r = criar_roteiro(v["tema"], fatos, modelo, v.get("abertura") or "historia", [v.get("gancho", "")],
-                      alvo=(64, 72), n_cenas=7)
+    r = None
+    for _ in range(2):
+        r = criar_roteiro(v["tema"], fatos, modelo, v.get("abertura") or "historia", [v.get("gancho", "")],
+                          alvo=(64, 72), n_cenas=8)
+        if r:
+            break
     if not r:
         raise RuntimeError("roteiro reprovado")
     pasta = RAIZ / "saida" / f"tt_{v['n']:02d}_{slug(v['tema'])[:30]}"
