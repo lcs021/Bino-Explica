@@ -547,6 +547,12 @@ def auditoria():
         print(f"✅ Instagram conectado: @{c.get('username')} ({c.get('account_type', 'profissional')}), "
               f"{c.get('followers_count')} seguidores")
         print(f"   Limite de publicação: {info['limite']}")
+        try:
+            m = ig.recentes(1)
+            if m:
+                print(f"✅ Leitura de posts OK; estatísticas do último: {ig.insights(m[0]['id']) or 'sem permissão de estatísticas'}")
+        except Exception as e:  # noqa: BLE001
+            print(f"⚠️ Estatísticas: {e}")
     except Exception as e:  # noqa: BLE001
         print(f"❌ Instagram: {e}")
 

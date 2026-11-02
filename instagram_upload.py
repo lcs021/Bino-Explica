@@ -101,8 +101,11 @@ def verificar_conta():
     token = _token()
     g = _graph(token)
     ig = ig_user_id(token)
-    info = requests.get(f"{g}/{ig}", params={"fields": "username,account_type,followers_count,media_count",
-                                             "access_token": token}, timeout=30).json()
+    campos = "username,account_type,followers_count,media_count" if token.startswith("IG") else \
+        "username,name,followers_count,media_count"
+    info = requests.get(f"{g}/{ig}", params={"fields": campos, "access_token": token}, timeout=30).json()
+    if "error" in info:
+        raise RuntimeError(f"a Meta recusou a leitura da conta: {info['error'].get('message')}")
     limite = requests.get(f"{g}/{ig}/content_publishing_limit", params={"fields": "quota_usage,config",
                                                                         "access_token": token}, timeout=30).json()
     return {"ig_id": ig, "conta": info, "limite": limite}
