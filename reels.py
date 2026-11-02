@@ -660,7 +660,7 @@ def fechar_pacote(pac, pasta_pac, total):
         subprocess.run(["gh", "release", "create", pac["id"], str(zipar), str(pasta_pac / "LEGENDAS.md"), "--title", titulo,
                         "--notes", "Baixe o .zip: vídeos, capas e LEGENDAS.md (legendas e hashtags de Instagram e TikTok).",
                         "--latest=false"], check=True)
-    pac["fechado"] = completo
+    pac["fechado"] = completo and all(v.get("arquivo_tiktok") for v in pac["videos"])
     PACOTE.write_text(json.dumps(pac, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"::notice::{titulo} em Releases ({pac['id']})")
     if not completo:
