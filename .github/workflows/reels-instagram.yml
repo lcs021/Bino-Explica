@@ -5,11 +5,7 @@ name: Reels Instagram (automático)
 #   12:17 e 19:17 rodadas que esperam o horário exato (o GitHub costuma atrasar); 12:33/13:03 e 19:33/20:03 repescagem
 #   22:07 análise dos resultados + relatório (semanal aos domingos)
 on:
-  # Postagem automática desligada a pedido: o robô gera pacotes de vídeos e você posta.
-  # (as rodadas da noite de 02/11 ficam só para o último Reel automático; não há mais nada na fila depois dele)
-  schedule:
-    - cron: "33 22 * * *"
-    - cron: "3 23 * * *"
+  # Postagem automática desligada a pedido: o robô gera pacotes de vídeos (ação 'pacote') e você posta.
   workflow_dispatch:
     inputs:
       acao:

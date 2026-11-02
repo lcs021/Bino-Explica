@@ -113,7 +113,7 @@
     "teste": {
       "abertura": "afirmacao"
     },
-    "status": "aguardando",
+    "status": "cancelado",
     "horario": "2026-11-02T19:30-03:00",
     "tentativas": 0,
     "erros": [],
@@ -129,6 +129,10 @@
         "de": "em_revisao",
         "para": "aguardando",
         "motivo": "qualidade 100"
+      },
+      {
+        "para": "cancelado",
+        "motivo": "postagem automática desligada; vai no pacote para postar à mão"
       }
     ],
     "media_id": null,
