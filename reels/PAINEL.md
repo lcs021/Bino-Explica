@@ -1,6 +1,6 @@
 # 🎛️ Painel do Bino Explica — Reels
 
-Atualizado em 02/11/2026 às 18:45 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
+Atualizado em 02/11/2026 às 19:24 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
 
 ## Visão geral
 
@@ -41,11 +41,11 @@ Atualizado em 02/11/2026 às 18:45 (horário de Brasília) · automação **▶�
 
 </details>
 
-## ▶️ YouTube (1 vídeo de ~10 min por dia, 19:30)
+## ▶️ YouTube (desligado)
 
 | Data | Vídeo | Status | Qualidade | Duração | Link |
 |---|---|---|---|---|---|
-| 2026-11-03 19:30 | A Incrível História de Sobrevivência nos Andes | ⏳ Aguardando publicação | 95 | 7.2 min | yt-20261102-cc6c3 |
+| 2026-11-03 19:30 | A Incrível História de Sobrevivência nos Andes | 🚫 Cancelado | 95 | 7.2 min | yt-20261102-cc6c3 |
 | 2026-11-02 16:48 | E se a Lua simplesmente desaparecesse do dia para a noite? | 🚫 Cancelado | – | – min | – |
 | 2026-11-02 16:47 | O Incidente da Passagem Dyatlov: a ciência finalmente explicou o misté | 🚫 Cancelado | – | – min | – |
 | 2026-11-02 16:27 | A Epidemia de Dança de 1518: o estranho caso de centenas de pessoas qu | 🚫 Cancelado | – | – min | – |
