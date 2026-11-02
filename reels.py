@@ -35,6 +35,11 @@ CATEGORIAS = ["curiosidades sobre animais", "corpo humano", "ciência", "psicolo
               "mistérios", "fenômenos naturais", "conhecimentos gerais", "fatos surpreendentes"]
 
 
+def marca_instagram():
+    """@ do perfil do Instagram (config.yaml → reels: marca)."""
+    return carregar_config().get("reels", {}).get("marca") or "@binoteexplica"
+
+
 def agora():
     return datetime.now(FUSO)
 
@@ -146,7 +151,9 @@ Responda SÓ JSON: {{"fatos":["..."],"mais_surpreendente":"...","comprova_o_tema
 # =================================================================== 2. roteiro e revisão
 def prompt_roteiro(tema, fatos, correcoes=""):
     import main_gratis as mg
-    return f"""{mg.REGRAS_VIRAL}
+    MARCA = marca_instagram()
+    regras = mg.REGRAS_VIRAL.replace("@binoexplica", MARCA)
+    return f"""{regras}
 
 Formato: INSTAGRAM REELS de 40 a 55 segundos (110 a 140 palavras no total), EXATAMENTE 6 cenas.
 Use SOMENTE estes fatos pesquisados (não acrescente nenhum fato, número ou data que não esteja aqui):
@@ -164,7 +171,7 @@ Responda SÓ JSON:
 {{"titulo":"curto, curioso e honesto","texto_capa":"2 a 4 palavras em MAIÚSCULAS, terminando em ? ou !",
 "personagens":"...","surpresa":4,
 "cenas":[{{"narracao":"...","legenda_tela":"...","visual":"...","destaques":["..."]}}],
-"legenda":"legenda do post: gancho + 2 frases que contam um pouco mais + uma pergunta para os comentários + chamada para seguir o @binoexplica",
+"legenda":"legenda do post: gancho + 2 frases que contam um pouco mais + uma pergunta para os comentários + chamada para seguir o {MARCA}",
 "hashtags":["5 a 8 hashtags ESPECÍFICAS do assunto, sem #, poucas genéricas"]}}"""
 
 
@@ -209,6 +216,8 @@ def montar_legenda(r, fontes):
     tags = []
     for t in r.get("hashtags", []):
         t = re.sub(r"[^\wÀ-ÿ]", "", str(t))
+        if t.lower() == "binoexplica":
+            t = marca_instagram().lstrip("@")
         if t and t.lower() not in [x.lower() for x in tags]:
             tags.append(t)
     tags = tags[:8] or ["curiosidades", "voce sabia"]
@@ -218,8 +227,10 @@ def montar_legenda(r, fontes):
         if d and d not in dominios:
             dominios.append(d)
     texto = (r.get("legenda") or r["titulo"]).strip()
-    if "@binoexplica" not in texto.lower():
-        texto += "\n\nSegue o @binoexplica pra uma curiosidade nova todo dia!"
+    marca = marca_instagram()
+    texto = re.sub(r"@binoexplica\b", marca, texto, flags=re.I)
+    if marca.lower() not in texto.lower():
+        texto += f"\n\nSegue o {marca} pra uma curiosidade nova todo dia!"
     if dominios:
         texto += "\n\nFontes: " + ", ".join(dominios[:4])
     texto += "\n\n" + " ".join("#" + t for t in tags)
@@ -289,7 +300,7 @@ def produzir_um(cfg, tema_info, reg, horario, modelo_txt):
     auds = narracao.narrar_cenas(cfg, r["cenas"], pasta, "reel")
     titulos = [re.sub(r"[^\w\s:?!,.\-]", "", r.get("texto_capa") or r["titulo"]).strip()] + \
               [c.get("legenda_tela", "") for c in r["cenas"][1:]]
-    marca = cfg["canal"].get("marca", "@binoexplica")
+    marca = marca_instagram()
     mp4 = animacao.montar_tiktok(cfg, r, cenas, auds, titulos, pasta, marca, minimo=0, nome="reel")
     i_capa = int(r.get("surpresa") or 0) if str(r.get("surpresa", "")).isdigit() else 0
     i_capa = min(max(i_capa, 0), len(cenas) - 1)

@@ -79,4 +79,5 @@ pastas:
 
 # ---- Operação automática de Reels (reels.py / workflow "Reels Instagram") ----
 reels:
+  marca: "@binoteexplica"          # @ do perfil do Instagram (aparece no vídeo, na capa e na legenda)
   horarios: ["12:30", "19:30"]     # horário de Brasília; a análise semanal sugere trocas
