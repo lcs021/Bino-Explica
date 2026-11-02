@@ -130,5 +130,71 @@
     ],
     "youtube_id": null,
     "link": null
+  },
+  {
+    "id": "yt-20261102-6dd40",
+    "criado": "2026-11-02T16:27-03:00",
+    "tema": "A Epidemia de Dança de 1518: o estranho caso de centenas de pessoas que dançaram até a morte",
+    "titulo": "A Epidemia de Dança de 1518: o estranho caso de centenas de pessoas qu",
+    "categoria": "História Real Inacreditável",
+    "pontuacao_tema": 93.3,
+    "status": "cancelado",
+    "horario": null,
+    "tentativas": 0,
+    "erros": [],
+    "historico": [
+      {
+        "quando": "2026-11-02T16:47-03:00",
+        "de": "em_producao",
+        "para": "cancelado",
+        "motivo": "roteiro reprovado 3 vezes"
+      }
+    ],
+    "youtube_id": null,
+    "link": null
+  },
+  {
+    "id": "yt-20261102-f6f10",
+    "criado": "2026-11-02T16:47-03:00",
+    "tema": "O Incidente da Passagem Dyatlov: a ciência finalmente explicou o mistério da montanha da morte?",
+    "titulo": "O Incidente da Passagem Dyatlov: a ciência finalmente explicou o misté",
+    "categoria": "Mistérios Explicados",
+    "pontuacao_tema": 93.3,
+    "status": "cancelado",
+    "horario": null,
+    "tentativas": 0,
+    "erros": [],
+    "historico": [
+      {
+        "quando": "2026-11-02T16:48-03:00",
+        "de": "em_producao",
+        "para": "cancelado",
+        "motivo": "as fontes não sustentam um vídeo de 10 minutos sobre o tema"
+      }
+    ],
+    "youtube_id": null,
+    "link": null
+  },
+  {
+    "id": "yt-20261102-0158b",
+    "criado": "2026-11-02T16:48-03:00",
+    "tema": "E se a Lua simplesmente desaparecesse do dia para a noite?",
+    "titulo": "E se a Lua simplesmente desaparecesse do dia para a noite?",
+    "categoria": "Como seria se...",
+    "pontuacao_tema": 93.3,
+    "status": "cancelado",
+    "horario": null,
+    "tentativas": 0,
+    "erros": [],
+    "historico": [
+      {
+        "quando": "2026-11-02T16:49-03:00",
+        "de": "em_producao",
+        "para": "cancelado",
+        "motivo": "as fontes não sustentam um vídeo de 10 minutos sobre o tema"
+      }
+    ],
+    "youtube_id": null,
+    "link": null
   }
 ]

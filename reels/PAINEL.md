@@ -1,6 +1,6 @@
 # 🎛️ Painel do Bino Explica — Reels
 
-Atualizado em 02/11/2026 às 14:29 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
+Atualizado em 02/11/2026 às 16:49 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
 
 ## Visão geral
 
@@ -45,12 +45,14 @@ Atualizado em 02/11/2026 às 14:29 (horário de Brasília) · automação **▶�
 
 | Data | Vídeo | Status | Qualidade | Duração | Link |
 |---|---|---|---|---|---|
+| 2026-11-02 16:48 | E se a Lua simplesmente desaparecesse do dia para a noite? | 🚫 Cancelado | – | – min | – |
+| 2026-11-02 16:47 | O Incidente da Passagem Dyatlov: a ciência finalmente explicou o misté | 🚫 Cancelado | – | – min | – |
+| 2026-11-02 16:27 | A Epidemia de Dança de 1518: o estranho caso de centenas de pessoas qu | 🚫 Cancelado | – | – min | – |
 | 2026-11-02 14:13 | Fordlândia: a surreal cidade americana abandonada no meio da Amazônia | 🚫 Cancelado | – | – min | – |
 | 2026-11-02 14:05 | E se a Terra parasse de girar? As consequências científicas catastrófi | 🚫 Cancelado | – | – min | – |
 | 2026-11-02 14:05 | A Expedição Endurance: a inacreditável jornada de sobrevivência na Ant | 🚫 Cancelado | – | – min | – |
 | 2026-11-02 04:14 | Os segredos letais da Ilha da Queimada Grande (a Ilha das Cobras) | 🚫 Cancelado | – | – min | – |
 | 2026-11-02 04:13 | Tsutomu Yamaguchi: a inacreditável história do homem que sobreviveu a  | 🚫 Cancelado | – | – min | – |
-| 2026-11-02 04:00 | A Guerra das Emus: quando o exército australiano perdeu para pássaros  | 🚫 Cancelado | – | – min | – |
 
 ## 🧠 Inteligência
 
@@ -72,6 +74,12 @@ Atualizado em 02/11/2026 às 14:29 (horário de Brasília) · automação **▶�
 
 ## 📝 Registro de atividades
 
+- 2026-11-02 16:49 · youtube: Tema descartado: E se a Lua simplesmente desaparecesse do dia para a noite? — as fontes não sustentam um vídeo de 10 minutos sobre o tema
+- 2026-11-02 16:48 · youtube: Começou o vídeo longo: E se a Lua simplesmente desaparecesse do dia para a noite?
+- 2026-11-02 16:48 · youtube: Tema descartado: O Incidente da Passagem Dyatlov: a ciência finalmente explicou o mistério da montanha da morte? — as fontes não sustentam um vídeo de 10 minutos sobre o tema
+- 2026-11-02 16:47 · youtube: Começou o vídeo longo: O Incidente da Passagem Dyatlov: a ciência finalmente explicou o mistério da montanha da morte?
+- 2026-11-02 16:47 · youtube: Tema descartado: A Epidemia de Dança de 1518: o estranho caso de centenas de pessoas que dançaram até a morte — roteiro reprovado 3 vezes
+- 2026-11-02 16:27 · youtube: Começou o vídeo longo: A Epidemia de Dança de 1518: o estranho caso de centenas de pessoas que dançaram até a morte
 - 2026-11-02 14:29 · youtube: Tema descartado: Fordlândia: a surreal cidade americana abandonada no meio da Amazônia — Extra data: line 1 column 7822 (char 7821)
 - 2026-11-02 14:13 · youtube: Começou o vídeo longo: Fordlândia: a surreal cidade americana abandonada no meio da Amazônia
 - 2026-11-02 14:13 · youtube: Tema descartado: A Expedição Endurance: a inacreditável jornada de sobrevivência na Antártida — Expecting ',' delimiter: line 1 column 3073 (char 3072)

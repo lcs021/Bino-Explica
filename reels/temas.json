@@ -374,5 +374,128 @@
     },
     "visto": "2026-11-02T14:05-03:00",
     "status": "na reserva"
+  },
+  {
+    "tema": "A Epidemia de Dança de 1518: o estranho caso de centenas de pessoas que dançaram até a morte",
+    "categoria": "História Real Inacreditável",
+    "pontuacao": 93.3,
+    "criterios": {
+      "curiosidade": 10,
+      "retencao": 9,
+      "clique": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-02T16:27-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado 3 vezes"
+  },
+  {
+    "tema": "O Incidente da Passagem Dyatlov: a ciência finalmente explicou o mistério da montanha da morte?",
+    "categoria": "Mistérios Explicados",
+    "pontuacao": 93.3,
+    "criterios": {
+      "curiosidade": 10,
+      "retencao": 10,
+      "clique": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-02T16:27-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não sustentam um vídeo de 10 minutos sobre o tema"
+  },
+  {
+    "tema": "E se a Lua simplesmente desaparecesse do dia para a noite?",
+    "categoria": "Como seria se...",
+    "pontuacao": 93.3,
+    "criterios": {
+      "curiosidade": 9,
+      "retencao": 9,
+      "clique": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T16:27-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não sustentam um vídeo de 10 minutos sobre o tema"
+  },
+  {
+    "tema": "Por que entramos num cômodo e esquecemos o que íamos fazer? A ciência das falhas do cérebro",
+    "categoria": "Ciência do dia a dia",
+    "pontuacao": 93.3,
+    "criterios": {
+      "curiosidade": 9,
+      "retencao": 9,
+      "clique": 9,
+      "interesse_brasil": 10,
+      "ilustravel": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T16:27-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "5 animais com superpoderes biológicos que parecem ter saído da ficção científica",
+    "categoria": "Listas",
+    "pontuacao": 91.7,
+    "criterios": {
+      "curiosidade": 9,
+      "retencao": 8,
+      "clique": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T16:27-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "Chuva de peixes e sapos: como a ciência explica esse estranho fenômeno meteorológico",
+    "categoria": "Ciência do dia a dia",
+    "pontuacao": 91.7,
+    "criterios": {
+      "curiosidade": 9,
+      "retencao": 8,
+      "clique": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T16:27-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A Operação Mincemeat: como um cadáver com documentos falsos enganou todo o exército de Hitler",
+    "categoria": "História Real Inacreditável",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 10,
+      "retencao": 9,
+      "clique": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T16:27-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A tragédia da Expedição Terra Nova: a dramática corrida mortal pelo Polo Sul",
+    "categoria": "História Real Inacreditável",
+    "pontuacao": 88.3,
+    "criterios": {
+      "curiosidade": 9,
+      "retencao": 10,
+      "clique": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T16:27-03:00",
+    "status": "na reserva"
   }
 ]
