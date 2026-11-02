@@ -172,9 +172,9 @@ def wikipedia(tema: str, idiomas=("pt", "en")):
             for res in candidatos:
                 pag = requests.get(api, headers=cab, timeout=30, params={
                     "action": "query", "prop": "extracts|info", "inprop": "url", "explaintext": 1,
-                    "exchars": 12000, "titles": res["title"], "format": "json", "redirects": 1}).json()
+                    "titles": res["title"], "format": "json", "redirects": 1}).json()
                 for p in pag.get("query", {}).get("pages", {}).values():
-                    texto = p.get("extract") or ""
+                    texto = (p.get("extract") or "")[:15000]
                     if len(texto) > 1200:
                         return texto, {"titulo": f"Wikipédia: {p['title']}", "url": p.get("fullurl", "")}
         except Exception as e:  # noqa: BLE001
