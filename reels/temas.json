@@ -1,0 +1,132 @@
+[
+  {
+    "tema": "O vombate é o único ser vivo que produz fezes em formato perfeitamente cúbico devido à estrutura assimétrica de seu intestino",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T03:02-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado 3 vezes na revisão"
+  },
+  {
+    "tema": "O reflexo do espirro fótico faz com que uma em cada quatro pessoas espirre ao olhar diretamente para a luz do Sol",
+    "categoria": "corpo humano",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T03:02-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A cidade subterrânea de Coober Pedy abriga milhares de pessoas debaixo da terra para escapar do calor extremo do deserto",
+    "categoria": "conhecimentos gerais",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T03:02-03:00",
+    "status": "escolhido"
+  },
+  {
+    "tema": "O Efeito Pratfall comprova que pessoas brilhantes tornam-se muito mais queridas quando cometem pequenos deslizes bobos",
+    "categoria": "psicologia",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T03:02-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "Em Vênus chove ácido sulfúrico que evapora antes de tocar o solo e a pressão atmosférica é capaz de esmagar submarinos",
+    "categoria": "espaço",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 7,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T03:02-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "As pedras deslizantes do Vale da Morte movem-se sozinhas pelo deserto empurradas por finas camadas de gelo e brisa leve",
+    "categoria": "fenômenos naturais",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T03:02-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O concreto romano dura milênios porque possui fragmentos de cal que se dissolvem e fecham rachaduras com a água da chuva",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T03:02-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A Tulipomania no século XVII transformou bulbos de flores em itens de luxo que valiam o preço de mansões inteiras",
+    "categoria": "história",
+    "pontuacao": 85.7,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T03:02-03:00",
+    "status": "na reserva"
+  }
+]

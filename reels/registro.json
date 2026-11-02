@@ -35,11 +35,164 @@
     "release": "reel-20261102-41cc94",
     "arquivo": "a-inacreditavel-guerra-dos-emus.mp4",
     "horario": "2026-11-02T12:30-03:00",
-    "status": "pronto",
+    "status": "aguardando",
     "tentativas": 0,
     "erros": [],
     "media_id": null,
     "link": null,
-    "resultados": {}
+    "resultados": {},
+    "historico": []
+  },
+  {
+    "id": "20261102-63a4e9",
+    "criado": "2026-11-02T03:02-03:00",
+    "tema": "O vombate é o único ser vivo que produz fezes em formato perfeitamente cúbico devido à estrutura assimétrica de seu intestino",
+    "titulo": "O vombate é o único ser vivo que produz fezes em formato per",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao_tema": 91.4,
+    "teste": {
+      "abertura": "pergunta"
+    },
+    "status": "cancelado",
+    "horario": null,
+    "tentativas": 0,
+    "erros": [],
+    "historico": [
+      {
+        "quando": "2026-11-02T03:27-03:00",
+        "de": "em_producao",
+        "para": "cancelado",
+        "motivo": "roteiro reprovado 3 vezes na revisão"
+      }
+    ],
+    "media_id": null,
+    "link": null,
+    "resultados": {},
+    "fontes": [
+      {
+        "titulo": "Wikipédia: Vombate",
+        "url": "https://pt.wikipedia.org/wiki/Vombate"
+      }
+    ]
+  },
+  {
+    "id": "20261102-a5ce83",
+    "criado": "2026-11-02T03:27-03:00",
+    "tema": "O reflexo do espirro fótico faz com que uma em cada quatro pessoas espirre ao olhar diretamente para a luz do Sol",
+    "titulo": "Por que o sol te faz espirrar?",
+    "categoria": "corpo humano",
+    "pontuacao_tema": 90.0,
+    "teste": {
+      "abertura": "afirmacao"
+    },
+    "status": "aguardando",
+    "horario": "2026-11-02T19:30-03:00",
+    "tentativas": 0,
+    "erros": [],
+    "historico": [
+      {
+        "quando": "2026-11-02T03:32-03:00",
+        "de": "em_producao",
+        "para": "em_revisao",
+        "motivo": "controle de qualidade"
+      },
+      {
+        "quando": "2026-11-02T03:32-03:00",
+        "de": "em_revisao",
+        "para": "aguardando",
+        "motivo": "qualidade 100"
+      }
+    ],
+    "media_id": null,
+    "link": null,
+    "resultados": {},
+    "fontes": [
+      {
+        "titulo": "Wikipédia: Reflexo fótico do espirro",
+        "url": "https://pt.wikipedia.org/wiki/Reflexo_f%C3%B3tico_do_espirro"
+      }
+    ],
+    "texto_capa": "OLHAR PRO SOL FAZ ESPIRRAR?",
+    "gancho": "Olhar para a luz forte faz muita gente espirrar sem parar.",
+    "roteiro": [
+      "Olhar para a luz forte faz muita gente espirrar sem parar.",
+      "Sabe o que é mais louco? Isso tem um nome gigante.",
+      "A gente chama de reflexo fótico do espirro. E afeta quase um terço das pessoas.",
+      "Mas olha só que doideira, o reflexo é provocado só pela mudança na intensidade da luz.",
+      "O mais surpreendente é que os espirros ocorrem em surtos e podem ser seguidos por um período refratário de até vinte e quatro horas.",
+      "Você sabia dessa? Comenta aqui embaixo e segue o Bino Explica pra mais curiosidades."
+    ],
+    "storyboard": [
+      {
+        "narracao": "Olhar para a luz forte faz muita gente espirrar sem parar.",
+        "visual": "Bino looking up at a bright sun and sneezing with white doodle lines.",
+        "movimento": "aproximar",
+        "efeito": "nenhum",
+        "destaques": [
+          "luz forte"
+        ]
+      },
+      {
+        "narracao": "Sabe o que é mais louco? Isso tem um nome gigante.",
+        "visual": "Bino scratching his head next to a very long text scroll on the whiteboard.",
+        "movimento": "panoramica",
+        "efeito": "pop",
+        "destaques": [
+          "nome gigante"
+        ]
+      },
+      {
+        "narracao": "A gente chama de reflexo fótico do espirro. E afeta quase um terço das pessoas.",
+        "visual": "Bino pointing at a pie chart showing a third of stick figures.",
+        "movimento": "afastar",
+        "efeito": "whoosh",
+        "destaques": [
+          "um terço"
+        ]
+      },
+      {
+        "narracao": "Mas olha só que doideira, o reflexo é provocado só pela mudança na intensidade da luz.",
+        "visual": "Bino turning a light switch on and off rapidly while blinking.",
+        "movimento": "aproximar",
+        "efeito": "nenhum",
+        "destaques": [
+          "intensidade da luz"
+        ]
+      },
+      {
+        "narracao": "O mais surpreendente é que os espirros ocorrem em surtos e podem ser seguidos por um período refratário de até vinte e quatro horas.",
+        "visual": "Bino looking shocked with a giant clock showing twenty four hours next to him.",
+        "movimento": "impacto",
+        "efeito": "ding",
+        "destaques": [
+          "vinte e quatro horas"
+        ]
+      },
+      {
+        "narracao": "Você sabia dessa? Comenta aqui embaixo e segue o Bino Explica pra mais curiosidades.",
+        "visual": "Bino pointing down at the comments with a big smile.",
+        "movimento": "afastar",
+        "efeito": "nenhum",
+        "destaques": [
+          "segue o Bino"
+        ]
+      }
+    ],
+    "duracao": 35.9,
+    "capa_ms": 35860,
+    "legenda": "Olhar para o sol faz muita gente espirrar e isso tem uma explicação científica fascinante. Você sabia que esse reflexo afeta até um terço da população mundial? Conta aqui nos comentários se isso acontece com você e segue o Bino Explica pra mais curiosidades.\n\nSegue o @binoteexplica pra uma curiosidade nova todo dia!\n\nFontes: Wikipédia: Reflexo fótico do espirro\n\n#espirro #sol #curiosidades #ciencia #corpo #saude #fatos",
+    "hashtags": [
+      "#espirro",
+      "#sol",
+      "#curiosidades",
+      "#ciencia",
+      "#corpo",
+      "#saude",
+      "#fatos"
+    ],
+    "qualidade": 100,
+    "perdas_qa": [],
+    "release": "reel-20261102-a5ce83",
+    "arquivo": "por-que-o-sol-te-faz-espirrar.mp4"
   }
 ]
