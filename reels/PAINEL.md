@@ -1,6 +1,6 @@
 # 🎛️ Painel do Bino Explica — Reels
 
-Atualizado em 02/11/2026 às 11:35 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
+Atualizado em 02/11/2026 às 13:31 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
 
 ## Visão geral
 
@@ -66,10 +66,11 @@ Atualizado em 02/11/2026 às 11:35 (horário de Brasília) · automação **▶�
 
 ## ❗ Histórico de erros
 
-- Nenhum erro registrado.
+- 2026-11-02 13:31 · publicação: Falha ao publicar 'A inacreditável Guerra dos Emus' (1/3): Envio ao Instagram falhou (400): {"debug_info":{"retriable":false,"type":"ProcessingFailedError","message":"Request processing failed"}}
 
 ## 📝 Registro de atividades
 
+- 2026-11-02 13:31 · publicação: Falha ao publicar 'A inacreditável Guerra dos Emus' (1/3): Envio ao Instagram falhou (400): {"debug_info":{"retriable":false,"type":"ProcessingFailedError","message":"Request processing failed"}}
 - 2026-11-02 04:15 · youtube: Tema descartado: Os segredos letais da Ilha da Queimada Grande (a Ilha das Cobras) — roteiro reprovado 3 vezes
 - 2026-11-02 04:14 · youtube: Começou o vídeo longo: Os segredos letais da Ilha da Queimada Grande (a Ilha das Cobras)
 - 2026-11-02 04:14 · youtube: Tema descartado: Tsutomu Yamaguchi: a inacreditável história do homem que sobreviveu a duas bombas atômicas — Extra data: line 1 column 6571 (char 6570)

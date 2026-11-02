@@ -36,12 +36,27 @@
     "arquivo": "a-inacreditavel-guerra-dos-emus.mp4",
     "horario": "2026-11-02T12:30-03:00",
     "status": "aguardando",
-    "tentativas": 0,
-    "erros": [],
+    "tentativas": 1,
+    "erros": [
+      "02/11 13:31 Envio ao Instagram falhou (400): {\"debug_info\":{\"retriable\":false,\"type\":\"ProcessingFailedError\",\"message\":\"Request processing failed\"}}"
+    ],
     "media_id": null,
     "link": null,
     "resultados": {},
-    "historico": []
+    "historico": [
+      {
+        "quando": "2026-11-02T13:30-03:00",
+        "de": "aguardando",
+        "para": "publicando",
+        "motivo": "enviando ao Instagram"
+      },
+      {
+        "quando": "2026-11-02T13:31-03:00",
+        "de": "publicando",
+        "para": "aguardando",
+        "motivo": "Envio ao Instagram falhou (400): {\"debug_info\":{\"retriable\":false,\"type\":\"ProcessingFailedError\",\"message\":\"Request processing failed\"}}"
+      }
+    ]
   },
   {
     "id": "20261102-63a4e9",
