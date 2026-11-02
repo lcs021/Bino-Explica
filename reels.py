@@ -460,7 +460,7 @@ def hashtags(r, extras=()):
     return tags
 
 
-def produzir_pacote(total=14):
+def produzir_pacote(total=5):
     """Gera um pacote fechado de vídeos virais (62 a 70 s, servem para Instagram e TikTok) com legendas e hashtags.
     Retoma de onde parou se a rodada cair no meio. Sobe tudo num .zip na aba Releases."""
     import zipfile
@@ -511,9 +511,10 @@ def produzir_pacote(total=14):
                 fatos, fontes = pesquisar_fatos(t["tema"], modelo, t.get("artigos"))
                 abertura = op.escolher_abertura(reg + [{"teste": {"abertura": v.get("abertura")}} for v in pac["videos"]])
                 r = criar_roteiro(t["tema"], fatos, modelo, abertura, [v["gancho"] for v in pac["videos"]][-8:],
-                                  alvo=(64, 72), n_cenas=7)
+                                  alvo=(40, 54), n_cenas=6)
                 if not r:
                     raise RuntimeError("roteiro reprovado na revisão")
+                r["tema"] = t["tema"]
                 pasta = RAIZ / "saida" / f"pac_{n:02d}_{slug(t['tema'])[:30]}"
                 pasta.mkdir(parents=True, exist_ok=True)
                 cenas = mg.desenhar_cenas(cfg, r, pasta)
@@ -528,32 +529,37 @@ def produzir_pacote(total=14):
                 medir_voz(r["cenas"], auds)
                 titulos = [re.sub(r"[^\w\s:?!,.\-]", "", r.get("texto_capa") or r["titulo"]).strip()] + \
                           [c.get("legenda_tela", "") for c in r["cenas"][1:]]
-                mp4 = animacao.montar_tiktok(cfg, r, cenas, auds, titulos, pasta, "Bino Explica", minimo=62, nome="video",
-                                             texto_seguir="+ SEGUE O BINO EXPLICA")
+                mp4 = animacao.montar_tiktok(cfg, r, cenas, auds, titulos, pasta, marca_instagram(), minimo=0,
+                                             nome="video", musica=True)
                 i_capa = min(max(int(r.get("surpresa") or 0) if str(r.get("surpresa", "")).isdigit() else 0, 0), len(cenas) - 1)
                 svg = cenas[i_capa].with_suffix(".svg")
-                capa = animacao.capa(cenas[i_capa], r.get("texto_capa") or r["titulo"], pasta / "capa.jpg", "Bino Explica",
+                capa = animacao.capa(cenas[i_capa], r.get("texto_capa") or r["titulo"], pasta / "capa.jpg", marca_instagram(),
                                      svg.read_text(encoding="utf-8") if svg.exists() else None)
                 item = {"duracao": round(duracao(mp4), 1), "fontes": fontes}
                 leg_ig = montar_legenda(r, fontes)
-                nota, perdas = op.nota_qualidade(r, item, pasta, cenas, auds, mp4, capa, leg_ig, verificar_video(mp4),
-                                                 faixa=(60, 80))
+                nota, perdas = op.nota_qualidade(r, item, pasta, cenas, auds, mp4, capa, leg_ig, verificar_video(mp4))
                 if nota < op.NOTA_MINIMA:
                     raise RuntimeError(f"qualidade {nota}/100: {'; '.join(perdas)}")
-                tags = hashtags(r)
-                leg_tt = ((r.get("legenda_tiktok") or r.get("titulo")).strip() + "\n\n" +
-                          " ".join("#" + x for x in list(dict.fromkeys(
-                              [x.lower() for x in tags[:3]] + ["curiosidades", "vocesabia", "aprendanotiktok"]))))
-                nome = f"{n:02d}-{slug(r['titulo'])[:45]}"
-                shutil.copyfile(mp4, pasta_pac / f"{nome}.mp4")
+                nome = f"{n:02d}-{slug(r['titulo'])[:40]}"
+                shutil.copyfile(mp4, pasta_pac / f"{nome}-REELS.mp4")
                 shutil.copyfile(capa, pasta_pac / f"{nome}-capa.jpg")
-                pac["videos"].append({"n": n, "tema": t["tema"], "titulo": r["titulo"], "arquivo": f"{nome}.mp4",
-                                      "capa": f"{nome}-capa.jpg", "duracao": item["duracao"], "qualidade": nota,
-                                      "abertura": abertura, "gancho": r["cenas"][0]["narracao"],
-                                      "legenda_instagram": leg_ig, "legenda_tiktok": leg_tt,
-                                      "fontes": [f.get("url") or f.get("titulo") for f in fontes]})
+                v = {"n": n, "tema": t["tema"], "titulo": r["titulo"], "arquivo": f"{nome}-REELS.mp4",
+                     "capa": f"{nome}-capa.jpg", "duracao": item["duracao"], "qualidade": nota,
+                     "abertura": abertura, "gancho": r["cenas"][0]["narracao"], "legenda_instagram": leg_ig,
+                     "fontes": [f.get("url") or f.get("titulo") for f in fontes]}
+                enviar_ao_release({**pac, "videos": pac["videos"] + [v]}, pasta_pac, total,
+                                  [pasta_pac / v["arquivo"], pasta_pac / v["capa"]])
+                try:                                 # versão TikTok: mais de 1 minuto, sem música de fundo
+                    tt = versao_tiktok(cfg, r, fatos, cenas, pasta, nome, pac["id"], modelo)
+                    shutil.copyfile(pasta / f"{nome}-TIKTOK.mp4", pasta_pac / f"{nome}-TIKTOK.mp4")
+                    v.update(arquivo_tiktok=f"{nome}-TIKTOK.mp4", duracao_tiktok=tt["duracao"], legenda_tiktok=tt["legenda"])
+                except Exception as e:  # noqa: BLE001
+                    log.warning(f"Versão TikTok não ficou pronta: {e}")
+                    v["legenda_tiktok"] = (r.get("legenda_tiktok") or r["titulo"]).strip() + \
+                        f"\n\nSegue o {marca_tiktok()} 👀 #curiosidades #vocesabia #aprendanotiktok"
+                pac["videos"].append(v)
                 PACOTE.write_text(json.dumps(pac, ensure_ascii=False, indent=2), encoding="utf-8")
-                enviar_ao_release(pac, pasta_pac, total, [pasta_pac / f"{nome}.mp4", pasta_pac / f"{nome}-capa.jpg"])
+                enviar_ao_release(pac, pasta_pac, total, [])
                 op.marcar_tema(t["tema"], "produzido")
                 op.atividade("pacote", f"Vídeo {n}/{total} pronto ({item['duracao']:.0f}s, {nota}/100): {r['titulo']}")
             except Exception as e:  # noqa: BLE001
@@ -564,15 +570,18 @@ def produzir_pacote(total=14):
 
 
 def _legendas_md(pac, pasta_pac):
-    linhas = [f"# 📦 Pacote Bino Explica — {len(pac['videos'])} vídeos", "",
-              "Sugestão: 2 por dia, às 12:30 e 19:30. Cada vídeo tem mais de 1 minuto (vale para o Instagram e para a "
-              "monetização do TikTok).", ""]
+    linhas = [f"# 📦 Pacote Bino Explica — {len(pac['videos'])} temas", "",
+              "Cada tema vem em 2 versões: REELS (Instagram, com trilha própria) e TIKTOK (mais de 1 minuto para a "
+              "monetização, sem música de fundo para não dar direitos autorais).", ""]
     for k, v in enumerate(pac["videos"]):
         d = agora().date() + timedelta(days=1 + k // 2)
-        dia, hora = f"{DIAS[d.weekday()]} {d:%d/%m}", ("12:30" if k % 2 == 0 else "19:30")
-        linhas += [f"## {v['n']:02d}. {v['titulo']}", f"**Quando postar:** {dia}, {hora} · **Arquivo:** `{v['arquivo']}` "
-                   f"· **Capa:** `{v['capa']}` · {v['duracao']:.0f}s", "", "**Legenda Instagram:**", "```",
-                   v["legenda_instagram"], "```", "", "**Legenda TikTok:**", "```", v["legenda_tiktok"], "```", ""]
+        d = agora().date() + timedelta(days=1 + k)
+        dia, hora = f"{DIAS[d.weekday()]} {d:%d/%m}", "19:30"
+        tt = (f"`{v['arquivo_tiktok']}` ({v.get('duracao_tiktok', 0):.0f}s, sem música — adicione um som da biblioteca "
+              f"do TikTok se quiser)") if v.get("arquivo_tiktok") else "use o mesmo vídeo do Reels"
+        linhas += [f"## {v['n']:02d}. {v['titulo']}", f"**Sugestão:** {dia}, {hora} · **Capa:** `{v['capa']}`", "",
+                   f"**Instagram (Reels):** `{v['arquivo']}` ({v['duracao']:.0f}s)", "```", v["legenda_instagram"], "```", "",
+                   f"**TikTok:** {tt}", "```", v.get("legenda_tiktok", ""), "```", ""]
     (pasta_pac / "LEGENDAS.md").write_text("\n".join(linhas), encoding="utf-8")
     return pasta_pac / "LEGENDAS.md"
 
@@ -580,7 +589,7 @@ def _legendas_md(pac, pasta_pac):
 def enviar_ao_release(pac, pasta_pac, total, arquivos):
     """Cada vídeo vai para Releases assim que fica pronto (mp4 + capa), com o LEGENDAS.md atualizado."""
     md = _legendas_md(pac, pasta_pac)
-    titulo = f"📦 Pacote da semana — {len(pac['videos'])} de {total} vídeos"
+    titulo = f"📦 Pacote — {len(pac['videos'])} de {total} temas (Reels + TikTok)"
     if subprocess.run(["gh", "release", "view", pac["id"]], capture_output=True).returncode != 0:
         subprocess.run(["gh", "release", "create", pac["id"], "--title", titulo, "--latest=false", "--notes",
                         "Vídeos prontos para postar (mais de 1 minuto, servem para Instagram e TikTok). "
@@ -599,7 +608,7 @@ def fechar_pacote(pac, pasta_pac, total):
             if f.suffix in (".mp4", ".jpg", ".md"):
                 z.write(f, f.name)
     completo = len(pac["videos"]) >= total
-    titulo = f"📦 Pacote da semana — {len(pac['videos'])} vídeos{'' if completo else ' (parcial)'}"
+    titulo = f"📦 Pacote — {len(pac['videos'])} temas (Reels + TikTok){'' if completo else ' (parcial)'}"
     existe = subprocess.run(["gh", "release", "view", pac["id"]], capture_output=True).returncode == 0
     if existe:
         subprocess.run(["gh", "release", "upload", pac["id"], str(zipar), str(pasta_pac / "LEGENDAS.md"), "--clobber"], check=True)
@@ -683,13 +692,15 @@ Responda SÓ JSON: {{"texto_capa":"2 a 4 palavras em MAIÚSCULAS terminando em ?
               [c.get("legenda_tela", "") for c in tc[1:]]
     rot = {"cenas": [{"narracao": c["narracao"], "destaques": c.get("destaques") or []} for c in tc],
            "surpresa": len(tc) - 2}
-    mp4 = animacao.montar_tiktok(cfg, rot, pngs, auds, titulos, pasta, marca, minimo=62, nome="tiktok")
+    mp4 = animacao.montar_tiktok(cfg, rot, pngs, auds, titulos, pasta, marca, minimo=62, nome="tiktok", musica=False)
     problemas = verificar_video(mp4)
     d = duracao(mp4)
     if problemas or d < 61:
         raise RuntimeError(f"versão TikTok reprovada na checagem ({problemas or f'{d:.0f}s'})")
     leg = (t.get("legenda_tiktok") or r["titulo"]).strip()
-    leg = re.sub(r"@binoteexplica\b", marca, leg, flags=re.I)
+    leg = re.sub(r"@binoteexplica\b|@binoexplica\b", marca, leg, flags=re.I)
+    if marca.lower() not in leg.lower():
+        leg += f"\n\nSegue o {marca} pra mais curiosidades 👀"
     arq_v, arq_l = pasta / f"{nome}-TIKTOK.mp4", pasta / f"{nome}-TIKTOK-legenda.txt"
     shutil.copyfile(mp4, arq_v)
     arq_l.write_text(leg, encoding="utf-8")
@@ -1004,7 +1015,7 @@ if __name__ == "__main__":
     a = ap.parse_args()
     if a.acao == "pacote":
         try:
-            produzir_pacote(a.quantos if a.quantos != 2 else 14)
+            produzir_pacote(a.quantos if a.quantos != 2 else 5)
         finally:
             op.painel(ler_registro())
     elif a.acao == "produzir":

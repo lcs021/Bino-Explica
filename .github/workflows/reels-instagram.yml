@@ -17,8 +17,8 @@ on:
         description: "Tema (só para produzir; vazio = a IA pesquisa)"
         required: false
       quantos:
-        description: "Quantos vídeos (pacote: 14)"
-        default: "14"
+        description: "Quantos temas (pacote: 5, cada um em Reels + TikTok)"
+        default: "5"
       id:
         description: "Id do Reel (para reagendar ou cancelar; veja no PAINEL.md)"
         required: false

@@ -43,6 +43,7 @@ MARCA_XY = None                    # None = centralizado embaixo
 SEGUIR_Y = H - 330
 LEG_TAM, LEG_MV, LEG_ML = 96, 480, 90
 TEXTO_SEGUIR = None
+MUSICA = True
 
 
 def _formato(fmt):
@@ -595,35 +596,53 @@ def _pluck(freq, dur, seed):
     return out
 
 
-def trilha(dur):
-    """Música de fundo leve e curiosa, composta aqui mesmo (sem direitos autorais)."""
-    bpm = 104
+def trilha(dur, seed=None):
+    """Música de fundo composta na hora, DIFERENTE a cada vídeo (tom, andamento, acordes e melodia sorteados).
+    Sem nenhuma música de terceiros e sem repetir a mesma 'impressão digital' sonora entre vídeos."""
+    rng = np.random.default_rng(seed)
+    bpm = int(rng.integers(86, 118))
     colcheia = 60 / bpm / 2
     nota = lambda m: 440 * 2 ** ((m - 69) / 12)
-    acordes = [[60, 64, 67, 72], [55, 59, 62, 67], [57, 60, 64, 69], [53, 57, 60, 65]]   # C G Am F
-    padrao = [0, 2, 1, 3, 2, 1, 3, 2]
-    compasso = len(padrao) * colcheia
-    loop = np.zeros(int(compasso * 4 * SR) + SR, np.float32)
-    seed = 0
-    for c, ac in enumerate(acordes):
-        for k, idx in enumerate(padrao):
-            t0 = int((c * compasso + k * colcheia) * SR)
-            s = _pluck(nota(ac[idx]), 0.9, seed) * (0.9 if k % 2 == 0 else 0.6)
-            seed += 1
-            loop[t0:t0 + len(s)] += s[:len(loop) - t0]
-        b = _pluck(nota(ac[0] - 24), 1.6, 99 + c) * 0.8                                # baixo
+    tom = int(rng.integers(-5, 6))
+    graus = {"maior": [0, 2, 4, 7, 9], "menor": [0, 3, 5, 7, 10], "lidio": [0, 2, 4, 6, 7, 11]}
+    modo = str(rng.choice(list(graus)))
+    escala = [57 + tom + o * 12 + g for o in (0, 1) for g in graus[modo]]
+    triades = {"maior": [[0, 4, 7], [5, 9, 12], [7, 11, 14], [9, 12, 16], [2, 5, 9], [4, 7, 11]],
+               "menor": [[0, 3, 7], [5, 8, 12], [8, 12, 15], [3, 7, 10], [10, 14, 17], [7, 10, 14]],
+               "lidio": [[0, 4, 7], [2, 6, 9], [7, 11, 14], [4, 7, 11], [11, 14, 18], [9, 12, 16]]}[modo]
+    prog = [triades[k] for k in rng.choice(len(triades), size=4, replace=False)]
+    compasso = 8 * colcheia
+    loop = np.zeros(int(compasso * 4 * SR) + 2 * SR, np.float32)
+    pos = int(rng.integers(0, len(escala)))
+    for c, tri in enumerate(prog):
+        base = 48 + tom
         t0 = int(c * compasso * SR)
+        b = _pluck(nota(base + tri[0] - 12), 1.8, int(rng.integers(1e6))) * 0.7
         loop[t0:t0 + len(b)] += b[:len(loop) - t0]
+        for k in range(8):
+            if rng.random() < 0.55:
+                st = int((c * compasso + k * colcheia) * SR)
+                s_ = _pluck(nota(base + 12 + tri[int(rng.integers(3))]), 0.7, int(rng.integers(1e6))) * 0.35
+                loop[st:st + len(s_)] += s_[:len(loop) - st]
+        k = 0
+        while k < 8:
+            dur_n = int(rng.choice([1, 1, 2, 2, 3]))
+            if rng.random() < 0.72:
+                pos = int(np.clip(pos + rng.choice([-2, -1, -1, 1, 1, 2]), 0, len(escala) - 1))
+                st = int((c * compasso + k * colcheia) * SR)
+                s_ = _pluck(nota(escala[pos] + 12), 0.4 + 0.3 * dur_n, int(rng.integers(1e6))) * 0.55
+                loop[st:st + len(s_)] += s_[:len(loop) - st]
+            k += dur_n
     ciclo = int(compasso * 4 * SR)
-    loop[:SR] += loop[ciclo:ciclo + SR]           # emenda o rabo do loop no começo
+    loop[:2 * SR] += loop[ciclo:ciclo + 2 * SR]
     loop = loop[:ciclo]
     n = int(dur * SR)
     out = np.tile(loop, n // len(loop) + 1)[:n]
-    out = _passa_banda(out, 60, 5000) if n < SR * 400 else out
+    out = _passa_banda(out, 70, 4500) if n < SR * 400 else out
     return (out / (np.abs(out).max() + 1e-9)).astype(np.float32)
 
 
-def mixar(cenas, falas, destino):
+def mixar(cenas, falas, destino, musica=True):
     """Narração + trilha (abaixa quando o Bino fala) + rabisco + whoosh + ding."""
     total = sum(c.dur for c in cenas)
     n = int(total * SR) + SR
@@ -651,6 +670,8 @@ def mixar(cenas, falas, destino):
         t0 += c.dur
     musica_arq = _musica_externa()
     m = _ler_audio(musica_arq) if musica_arq else trilha(total + 1)
+    if not musica:                                   # TikTok: sem trilha (adicione um som da biblioteca do app)
+        m = np.zeros_like(m)
     if len(m) < n:
         m = np.tile(m, n // max(len(m), 1) + 1)
     m = m[:n] / (np.abs(m[:n]).max() + 1e-9)
@@ -801,16 +822,18 @@ def legendas_ass(cenas, textos, audios, destaques, destino, fonte_nome):
 
 # =================================================================== montagem completa
 def montar_tiktok(cfg, roteiro, cenas_png, audios, titulos, pasta, marca, selo=None, minimo=62, nome="tiktok_9x16",
-                  formato="9:16", texto_seguir=None):
+                  formato="9:16", texto_seguir=None, musica=True):
     """Monta o vídeo animado (vertical 9:16 ou horizontal 16:9). Devolve o caminho do MP4."""
-    global TEXTO_SEGUIR
+    global TEXTO_SEGUIR, MUSICA
     _formato(formato)
     TEXTO_SEGUIR = texto_seguir
+    MUSICA = musica
     try:
         return _montar(cfg, roteiro, cenas_png, audios, titulos, pasta, marca, selo, minimo, nome)
     finally:
         _formato("9:16")
         TEXTO_SEGUIR = None
+        MUSICA = True
 
 
 def _montar(cfg, roteiro, cenas_png, audios, titulos, pasta, marca, selo, minimo, nome):
@@ -861,7 +884,7 @@ def _montar(cfg, roteiro, cenas_png, audios, titulos, pasta, marca, selo, minimo
     (trab / "lista.txt").write_text("\n".join(f"file '{a.name}'" for a in arquivos), encoding="utf-8")
     rodar_ffmpeg(["-f", "concat", "-safe", "0", "-i", "lista.txt", "-c", "copy", "imagem.mp4"], cwd=trab)
 
-    mixar(cenas, falas, trab / "som.wav")
+    mixar(cenas, falas, trab / "som.wav", musica=MUSICA)
     fonte_nome = os.environ.get("FONTE_LEGENDA", "Gochi Hand")
     destaques = [list(c.get("destaques") or []) for c in narr[:n]]
     legendas_ass(cenas, [c["narracao"] for c in narr[:n]], audios, destaques, trab / "legendas.ass", fonte_nome)
