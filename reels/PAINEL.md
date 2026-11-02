@@ -1,6 +1,6 @@
 # 🎛️ Painel do Bino Explica — Reels
 
-Atualizado em 02/11/2026 às 08:56 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
+Atualizado em 02/11/2026 às 11:35 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
 
 ## Visão geral
 
