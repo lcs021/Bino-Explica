@@ -5,29 +5,24 @@ name: Reels Instagram (automático)
 #   12:17 e 19:17 rodadas que esperam o horário exato (o GitHub costuma atrasar); 12:33/13:03 e 19:33/20:03 repescagem
 #   22:07 análise dos resultados + relatório (semanal aos domingos)
 on:
+  # Postagem automática desligada a pedido: o robô gera pacotes de vídeos e você posta.
+  # (as rodadas da noite de 02/11 ficam só para o último Reel automático; não há mais nada na fila depois dele)
   schedule:
-    - cron: "7 11 * * *"
-    - cron: "37 13 * * *"
-    - cron: "17 15 * * *"
-    - cron: "33 15 * * *"
-    - cron: "3 16 * * *"
-    - cron: "17 22 * * *"
     - cron: "33 22 * * *"
     - cron: "3 23 * * *"
-    - cron: "7 1 * * *"
   workflow_dispatch:
     inputs:
       acao:
         description: "O que fazer agora"
         type: choice
-        default: auditoria
-        options: [auditoria, painel, produzir, publicar, analisar, pausar, retomar, reagendar, cancelar, horarios]
+        default: pacote
+        options: [pacote, auditoria, painel, produzir, publicar, analisar, pausar, retomar, reagendar, cancelar, horarios]
       tema:
         description: "Tema (só para produzir; vazio = a IA pesquisa)"
         required: false
       quantos:
-        description: "Quantos Reels produzir"
-        default: "2"
+        description: "Quantos vídeos (pacote: 14)"
+        default: "14"
       id:
         description: "Id do Reel (para reagendar ou cancelar; veja no PAINEL.md)"
         required: false
@@ -45,7 +40,7 @@ concurrency:
 jobs:
   reels:
     runs-on: ubuntu-24.04
-    timeout-minutes: 90
+    timeout-minutes: 340
     steps:
       - uses: actions/checkout@v4
 
@@ -65,7 +60,7 @@ jobs:
           cache: pip
 
       - name: Instalar ffmpeg, desenhista de SVG e fontes
-        if: steps.etapa.outputs.acao == 'produzir' || steps.etapa.outputs.acao == 'auditoria'
+        if: steps.etapa.outputs.acao == 'produzir' || steps.etapa.outputs.acao == 'auditoria' || steps.etapa.outputs.acao == 'pacote'
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq ffmpeg librsvg2-bin fonts-dejavu-core
@@ -96,7 +91,9 @@ jobs:
           REEL_ID: ${{ inputs.id }}
           QUANDO: ${{ inputs.quando }}
         run: |
-          if [ "$ACAO" = "produzir" ]; then
+          if [ "$ACAO" = "pacote" ]; then
+            python reels.py pacote --quantos "$QUANTOS"
+          elif [ "$ACAO" = "produzir" ]; then
             python reels.py produzir --quantos "$QUANTOS" --tema "$TEMA"
           else
             python reels.py "$ACAO" --id "$REEL_ID" --quando "$QUANDO"

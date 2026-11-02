@@ -80,4 +80,5 @@ pastas:
 # ---- Operação automática de Reels (reels.py / workflow "Reels Instagram") ----
 reels:
   marca: "@binoteexplica"          # @ do perfil do Instagram (aparece no vídeo, na capa e na legenda)
+  marca_tiktok: "@binoexplica"     # @ do perfil do TikTok (aparece na versão TikTok de mais de 1 minuto)
   horarios: ["12:30", "19:30"]     # horário de Brasília; a análise semanal sugere trocas

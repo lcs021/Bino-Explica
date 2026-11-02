@@ -191,16 +191,16 @@ Responda SÓ JSON: {{"fatos":["..."],"mais_surpreendente":"...","comprova_o_tema
 
 
 # =================================================================== 2. roteirista + storyboard
-def prompt_roteiro(tema, fatos, abertura, ganchos_recentes, correcoes=""):
+def prompt_roteiro(tema, fatos, abertura, ganchos_recentes, correcoes="", alvo=(40, 54), n_cenas=6):
     import main_gratis as mg
     MARCA = marca_instagram()
     regras = mg.REGRAS_VIRAL.replace("@binoexplica", MARCA)
     pps = palavras_por_segundo()
-    pmin, pmax = round(40 * pps), round(54 * pps)
+    pmin, pmax = round(alvo[0] * pps), round(alvo[1] * pps)
     return f"""{regras}
 
-Formato: INSTAGRAM REELS de 40 a 54 segundos. A voz fala {pps:.1f} palavras por segundo, então escreva de {pmin} a
-{pmax} palavras no total, em EXATAMENTE 6 cenas. Frases curtas, sem introdução.
+Formato: vídeo vertical (Reels/TikTok) de {alvo[0]} a {alvo[1]} segundos. A voz fala {pps:.1f} palavras por segundo, então
+escreva de {pmin} a {pmax} palavras no total, em EXATAMENTE {n_cenas} cenas. Frases curtas, sem introdução.
 Use SOMENTE estes fatos pesquisados (não acrescente nenhum fato, número ou data que não esteja aqui):
 {json.dumps(fatos, ensure_ascii=False)}
 Estrutura obrigatória (storytelling de alta retenção):
@@ -209,8 +209,9 @@ Estrutura obrigatória (storytelling de alta retenção):
 - Cena 2 = CURIOSIDADE: crie a pergunta na cabeça de quem assiste.
 - Cena 3 = DESENVOLVIMENTO: explique sem enrolar.
 - Cena 4 = QUEBRA DE EXPECTATIVA: algo que ninguém espera.
-- Cena 5 = REVELAÇÃO: frase curta de suspense + o fato mais surpreendente.
-- Cena 6 = ENCERRAMENTO: conclusão curta + pergunta natural para os comentários + "segue o Bino Explica".
+- Cenas seguintes = mais um fato surpreendente{" (entre 20 e 30 segundos, uma frase curta pedindo para seguir o Bino)" if n_cenas > 6 else ""}.
+- Penúltima cena = REVELAÇÃO: frase curta de suspense + o fato mais surpreendente.
+- Última cena = ENCERRAMENTO: conclusão curta + pergunta natural para os comentários + "segue o Bino Explica".
 {"Corrija estes problemas apontados pela revisão: " + correcoes if correcoes else ""}
 STORYBOARD de cada cena:
 "visual": a ilustração EM INGLÊS que EXPLICA a fala (rabisco de quadro branco, 1 a 3 bonequinhos de palito, uma ação clara).
@@ -222,6 +223,7 @@ Responda SÓ JSON:
 "personagens":"...","surpresa":4,
 "cenas":[{{"narracao":"...","legenda_tela":"...","visual":"...","movimento":"...","efeito":"...","destaques":["..."]}}],
 "legenda":"legenda do post: gancho + 2 frases que contam um pouco mais + uma pergunta para os comentários + chamada para seguir o {MARCA}",
+"legenda_tiktok":"legenda curta para o TikTok: gancho + pergunta para os comentários (sem hashtags)",
 "hashtags":["5 a 8 hashtags ESPECÍFICAS do assunto, sem #, poucas genéricas"]}}"""
 
 
@@ -240,20 +242,20 @@ Responda SÓ JSON: {{"aprovado": true|false, "problemas": "vazio se aprovado", "
     return ia.gerar_json(prompt, modelo)
 
 
-def criar_roteiro(tema, fatos, modelo, abertura, ganchos_recentes):
+def criar_roteiro(tema, fatos, modelo, abertura, ganchos_recentes, alvo=(40, 54), n_cenas=6):
     obs = ""
     pps = palavras_por_segundo()
     for tentativa in range(3):
         log.info(f"Roteiro (tentativa {tentativa + 1}, abertura '{abertura}'): {tema}")
-        r = ia.gerar_json(prompt_roteiro(tema, fatos, abertura, ganchos_recentes, obs), modelo)
+        r = ia.gerar_json(prompt_roteiro(tema, fatos, abertura, ganchos_recentes, obs, alvo, n_cenas), modelo)
         cenas = [c for c in r.get("cenas", []) if c.get("narracao")]
-        if len(cenas) < 5:
-            obs = "o roteiro precisa ter exatamente 6 cenas com narração"
+        if len(cenas) < n_cenas - 1:
+            obs = f"o roteiro precisa ter exatamente {n_cenas} cenas com narração"
             continue
-        r["cenas"] = cenas[:7]
+        r["cenas"] = cenas[:n_cenas + 1]
         palavras = sum(len(c["narracao"].split()) for c in r["cenas"])
-        if not 34 * pps <= palavras <= 62 * pps:
-            obs = f"o roteiro tem {palavras} palavras; precisa ter entre {round(40 * pps)} e {round(54 * pps)}"
+        if not (alvo[0] - 6) * pps <= palavras <= (alvo[1] + 8) * pps:
+            obs = f"o roteiro tem {palavras} palavras; precisa ter entre {round(alvo[0] * pps)} e {round(alvo[1] * pps)}"
             continue
         if re.match(r"\s*voc[eê] sabia", r["cenas"][0]["narracao"], re.I):
             obs = "a primeira frase não pode começar com 'Você sabia'"
@@ -422,6 +424,11 @@ def produzir_um(cfg, tema_info, reg, horario, modelo_txt):
                     f"{'📱' if aprovado else '🧪'} {r['titulo']}", "--notes", notas, "--latest=false"], check=True)
     item.update(release=tag, arquivo=f"{nome}.mp4")
     if aprovado:
+        try:                                         # versão TikTok (> 1 min); se falhar, o Reel segue normal
+            item["tiktok"] = versao_tiktok(cfg, r, fatos, cenas, pasta, nome, tag, modelo_txt)
+        except Exception as e:  # noqa: BLE001
+            log.warning(f"Versão TikTok não ficou pronta: {e}")
+            op.atividade("tiktok", f"Versão TikTok de '{r['titulo']}' falhou: {str(e)[:200]}", vid, True)
         op.mudar(item, op.AGUARDANDO, f"qualidade {nota}")
         op.marcar_tema(tema, "produzido")
         op.atividade("produção", f"Aprovado ({nota}/100) e programado para {quando:%d/%m %H:%M}: {r['titulo']}", vid)
@@ -433,6 +440,220 @@ def produzir_um(cfg, tema_info, reg, horario, modelo_txt):
         print(f"::warning::Reel '{r['titulo']}' ficou em quarentena (qualidade {nota}/100): {'; '.join(perdas)}")
     salvar_registro(reg)
     return item if aprovado else None
+
+
+# =================================================================== pacote da semana (você posta)
+PACOTE = PASTA / "pacote.json"
+DIAS = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"]
+
+
+def hashtags(r, extras=()):
+    tags = []
+    for t in list(r.get("hashtags", [])) + list(extras):
+        t = re.sub(r"[^\wÀ-ÿ]", "", str(t))
+        if t and t.lower() not in [x.lower() for x in tags] and t.lower() not in ("binoexplica", "binoteexplica"):
+            tags.append(t)
+    return tags
+
+
+def produzir_pacote(total=14):
+    """Gera um pacote fechado de vídeos virais (62 a 70 s, servem para Instagram e TikTok) com legendas e hashtags.
+    Retoma de onde parou se a rodada cair no meio. Sobe tudo num .zip na aba Releases."""
+    import zipfile
+    import animacao
+    import main_gratis as mg
+    import narracao
+    cfg = carregar_config()
+    modelo = cfg["gemini"]["modelo_texto"]
+    reg = ler_registro()
+    pac = json.loads(PACOTE.read_text(encoding="utf-8")) if PACOTE.exists() else {}
+    if not pac or pac.get("fechado"):
+        pac = {"id": f"pacote-{agora():%Y%m%d-%H%M}", "criado": agora().isoformat(timespec="minutes"), "videos": [], "fechado": False}
+    pasta_pac = RAIZ / "saida" / pac["id"]
+    pasta_pac.mkdir(parents=True, exist_ok=True)
+    tentativas = 0
+    while len(pac["videos"]) < total and tentativas < total * 2:
+        faltam = total - len(pac["videos"])
+        temas = escolher_temas(reg + [{"tema": v["tema"]} for v in pac["videos"]], min(faltam, 6), modelo)
+        if not temas:
+            break
+        for t in temas:
+            if len(pac["videos"]) >= total or tentativas >= total * 2:
+                break
+            tentativas += 1
+            n = len(pac["videos"]) + 1
+            log.info(f"===== Pacote: vídeo {n}/{total}: {t['tema']} =====")
+            try:
+                fatos, fontes = pesquisar_fatos(t["tema"], modelo, t.get("artigos"))
+                abertura = op.escolher_abertura(reg + [{"teste": {"abertura": v.get("abertura")}} for v in pac["videos"]])
+                r = criar_roteiro(t["tema"], fatos, modelo, abertura, [v["gancho"] for v in pac["videos"]][-8:],
+                                  alvo=(64, 72), n_cenas=7)
+                if not r:
+                    raise RuntimeError("roteiro reprovado na revisão")
+                pasta = RAIZ / "saida" / f"pac_{n:02d}_{slug(t['tema'])[:30]}"
+                pasta.mkdir(parents=True, exist_ok=True)
+                cenas = mg.desenhar_cenas(cfg, r, pasta)
+                for _ in range(2):
+                    falhos = [c for c in cenas if not c.with_suffix(".svg").exists()]
+                    if not falhos:
+                        break
+                    for c in falhos:
+                        c.unlink(missing_ok=True)
+                    cenas = mg.desenhar_cenas(cfg, r, pasta)
+                auds = narracao.narrar_cenas(cfg, r["cenas"], pasta, "pac")
+                medir_voz(r["cenas"], auds)
+                titulos = [re.sub(r"[^\w\s:?!,.\-]", "", r.get("texto_capa") or r["titulo"]).strip()] + \
+                          [c.get("legenda_tela", "") for c in r["cenas"][1:]]
+                mp4 = animacao.montar_tiktok(cfg, r, cenas, auds, titulos, pasta, "Bino Explica", minimo=62, nome="video",
+                                             texto_seguir="+ SEGUE O BINO EXPLICA")
+                i_capa = min(max(int(r.get("surpresa") or 0) if str(r.get("surpresa", "")).isdigit() else 0, 0), len(cenas) - 1)
+                svg = cenas[i_capa].with_suffix(".svg")
+                capa = animacao.capa(cenas[i_capa], r.get("texto_capa") or r["titulo"], pasta / "capa.jpg", "Bino Explica",
+                                     svg.read_text(encoding="utf-8") if svg.exists() else None)
+                item = {"duracao": round(duracao(mp4), 1), "fontes": fontes}
+                leg_ig = montar_legenda(r, fontes)
+                nota, perdas = op.nota_qualidade(r, item, pasta, cenas, auds, mp4, capa, leg_ig, verificar_video(mp4),
+                                                 faixa=(60, 80))
+                if nota < op.NOTA_MINIMA:
+                    raise RuntimeError(f"qualidade {nota}/100: {'; '.join(perdas)}")
+                tags = hashtags(r)
+                leg_tt = ((r.get("legenda_tiktok") or r.get("titulo")).strip() + "\n\n" +
+                          " ".join("#" + x for x in list(dict.fromkeys(
+                              [x.lower() for x in tags[:3]] + ["curiosidades", "vocesabia", "aprendanotiktok"]))))
+                nome = f"{n:02d}-{slug(r['titulo'])[:45]}"
+                shutil.copyfile(mp4, pasta_pac / f"{nome}.mp4")
+                shutil.copyfile(capa, pasta_pac / f"{nome}-capa.jpg")
+                pac["videos"].append({"n": n, "tema": t["tema"], "titulo": r["titulo"], "arquivo": f"{nome}.mp4",
+                                      "capa": f"{nome}-capa.jpg", "duracao": item["duracao"], "qualidade": nota,
+                                      "abertura": abertura, "gancho": r["cenas"][0]["narracao"],
+                                      "legenda_instagram": leg_ig, "legenda_tiktok": leg_tt,
+                                      "fontes": [f.get("url") or f.get("titulo") for f in fontes]})
+                PACOTE.write_text(json.dumps(pac, ensure_ascii=False, indent=2), encoding="utf-8")
+                op.marcar_tema(t["tema"], "produzido")
+                op.atividade("pacote", f"Vídeo {n}/{total} pronto ({item['duracao']:.0f}s, {nota}/100): {r['titulo']}")
+            except Exception as e:  # noqa: BLE001
+                log.warning(f"Tema descartado no pacote ({t['tema']}): {e}")
+                op.marcar_tema(t["tema"], "descartado", str(e))
+            time.sleep(3)
+    fechar_pacote(pac, pasta_pac, total)
+
+
+def fechar_pacote(pac, pasta_pac, total):
+    import zipfile
+    linhas = [f"# 📦 Pacote Bino Explica — {len(pac['videos'])} vídeos", "",
+              "Sugestão: 2 por dia, às 12:30 e 19:30. Cada vídeo tem mais de 1 minuto (vale para o Instagram e para a "
+              "monetização do TikTok).", ""]
+    for k, v in enumerate(pac["videos"]):
+        d = agora().date() + timedelta(days=1 + k // 2)
+        dia, hora = f"{DIAS[d.weekday()]} {d:%d/%m}", ("12:30" if k % 2 == 0 else "19:30")
+        linhas += [f"## {v['n']:02d}. {v['titulo']}", f"**Quando postar:** {dia}, {hora} · **Arquivo:** `{v['arquivo']}` "
+                   f"· **Capa:** `{v['capa']}` · {v['duracao']:.0f}s", "", "**Legenda Instagram:**", "```",
+                   v["legenda_instagram"], "```", "", "**Legenda TikTok:**", "```", v["legenda_tiktok"], "```", ""]
+    (pasta_pac / "LEGENDAS.md").write_text("\n".join(linhas), encoding="utf-8")
+    zipar = pasta_pac / f"{pac['id']}.zip"
+    with zipfile.ZipFile(zipar, "w", zipfile.ZIP_STORED) as z:
+        for f in sorted(pasta_pac.iterdir()):
+            if f.suffix in (".mp4", ".jpg", ".md"):
+                z.write(f, f.name)
+    completo = len(pac["videos"]) >= total
+    titulo = f"📦 Pacote da semana — {len(pac['videos'])} vídeos{'' if completo else ' (parcial)'}"
+    existe = subprocess.run(["gh", "release", "view", pac["id"]], capture_output=True).returncode == 0
+    if existe:
+        subprocess.run(["gh", "release", "upload", pac["id"], str(zipar), str(pasta_pac / "LEGENDAS.md"), "--clobber"], check=True)
+        subprocess.run(["gh", "release", "edit", pac["id"], "--title", titulo], check=True)
+    else:
+        subprocess.run(["gh", "release", "create", pac["id"], str(zipar), str(pasta_pac / "LEGENDAS.md"), "--title", titulo,
+                        "--notes", "Baixe o .zip: vídeos, capas e LEGENDAS.md (legendas e hashtags de Instagram e TikTok).",
+                        "--latest=false"], check=True)
+    pac["fechado"] = completo
+    PACOTE.write_text(json.dumps(pac, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"::notice::{titulo} em Releases ({pac['id']})")
+    if not completo:
+        print(f"::warning::Faltaram {total - len(pac['videos'])} vídeos (cota da IA grátis). Rode 'pacote' de novo para completar.")
+
+
+# =================================================================== versão TikTok (mais de 1 minuto)
+def marca_tiktok():
+    return carregar_config().get("reels", {}).get("marca_tiktok") or "@binoexplica"
+
+
+def versao_tiktok(cfg, r, fatos, cenas_ig, pasta, nome, tag, modelo):
+    """Mesmo tema, 65 a 72 s (o TikTok só paga vídeos com mais de 1 minuto): reaproveita os desenhos do Reel,
+    desenha só as cenas novas, voz e edição próprias. Sobe na mesma página de Releases."""
+    import animacao
+    import main_gratis as mg
+    import narracao
+    pps = palavras_por_segundo()
+    pmin, pmax = round(62 * pps), round(70 * pps)
+    visuais = [f"{k}: {c.get('visual', '')}" for k, c in enumerate(r["cenas"])]
+    marca = marca_tiktok()
+    obs = ""
+    for tentativa in range(3):
+        t = ia.gerar_json(f"""Você é roteirista do perfil "Bino Explica" no TikTok (curiosidades desenhadas à mão, Brasil).
+Reescreva este vídeo como uma VERSÃO PARA TIKTOK de 65 a 72 segundos: {pmin} a {pmax} palavras no total, em EXATAMENTE
+7 cenas. A voz fala {pps:.1f} palavras por segundo. Linguagem de TikTok brasileiro, frases curtas, sem enrolar.
+Tema: {r['tema']}
+Roteiro do Instagram (base): {json.dumps([c['narracao'] for c in r['cenas']], ensure_ascii=False)}
+Use SOMENTE estes fatos (pode trazer 1 ou 2 fatos que o roteiro base não usou): {json.dumps(fatos, ensure_ascii=False)}
+Regras: 1º segundo com gancho diferente do Instagram (nunca "Você sabia"); entre 20 e 30 segundos, uma frase curta
+pedindo para seguir ("segue o Bino que tem curiosidade nova todo dia"); final com pergunta para os comentários.
+{"Corrija: " + obs if obs else ""}
+Ilustrações já prontas (reaproveite com "img" = número): {json.dumps(visuais, ensure_ascii=False)}
+Em cada cena, use "img" com o número de uma ilustração pronta, OU "img": -1 com um "visual" novo em inglês
+(no máximo 2 cenas novas). "legenda_tela": 2 a 4 palavras. "destaques": 1 a 3 palavras EXATAS da fala.
+Responda SÓ JSON: {{"texto_capa":"2 a 4 palavras em MAIÚSCULAS terminando em ? ou !",
+"cenas":[{{"narracao":"...","img":0,"visual":"","legenda_tela":"...","destaques":["..."]}}],
+"legenda_tiktok":"gancho + 1 frase + pergunta + 4 a 6 hashtags (ex.: #curiosidades #vocesabia #aprendanotiktok)"}}""", modelo)
+        tc = [c for c in t.get("cenas", []) if c.get("narracao")][:8]
+        palavras = sum(len(c["narracao"].split()) for c in tc)
+        if len(tc) < 6 or not 0.9 * pmin <= palavras <= 1.15 * pmax:
+            obs = f"precisa de 7 cenas e {pmin} a {pmax} palavras (veio {len(tc)} cenas e {palavras} palavras)"
+            continue
+        if re.match(r"\s*voc[eê] sabia", tc[0]["narracao"], re.I):
+            obs = "a primeira frase não pode começar com 'Você sabia'"
+            continue
+        rev = revisar({"titulo": r["titulo"], "texto_capa": t.get("texto_capa"), "cenas": tc,
+                       "legenda": t.get("legenda_tiktok")}, fatos, modelo)
+        if rev.get("aprovado"):
+            break
+        obs = rev.get("problemas", "")
+        log.warning(f"Revisão da versão TikTok reprovou: {obs}")
+    else:
+        raise RuntimeError("roteiro da versão TikTok reprovado")
+    # desenhos: reaproveita os do Reel e desenha só os novos
+    novos = [c for c in tc if not (isinstance(c.get("img"), int) and 0 <= c["img"] < len(cenas_ig))]
+    pngs_novos = []
+    if novos:
+        sub = pasta / "tiktok_desenhos"
+        sub.mkdir(exist_ok=True)
+        pngs_novos = mg.desenhar_cenas(cfg, {"cenas": [{"visual": c.get("visual") or r["cenas"][0].get("visual", "")}
+                                                       for c in novos], "personagens": r.get("personagens", "")}, sub)
+    pngs, k = [], 0
+    for c in tc:
+        if isinstance(c.get("img"), int) and 0 <= c["img"] < len(cenas_ig):
+            pngs.append(cenas_ig[c["img"]])
+        else:
+            pngs.append(pngs_novos[k])
+            k += 1
+    auds = narracao.narrar_cenas(cfg, tc, pasta, "tt")
+    titulos = [re.sub(r"[^\w\s:?!,.\-]", "", t.get("texto_capa") or r.get("texto_capa") or "").strip()] + \
+              [c.get("legenda_tela", "") for c in tc[1:]]
+    rot = {"cenas": [{"narracao": c["narracao"], "destaques": c.get("destaques") or []} for c in tc],
+           "surpresa": len(tc) - 2}
+    mp4 = animacao.montar_tiktok(cfg, rot, pngs, auds, titulos, pasta, marca, minimo=62, nome="tiktok")
+    problemas = verificar_video(mp4)
+    d = duracao(mp4)
+    if problemas or d < 61:
+        raise RuntimeError(f"versão TikTok reprovada na checagem ({problemas or f'{d:.0f}s'})")
+    leg = (t.get("legenda_tiktok") or r["titulo"]).strip()
+    leg = re.sub(r"@binoteexplica\b", marca, leg, flags=re.I)
+    arq_v, arq_l = pasta / f"{nome}-TIKTOK.mp4", pasta / f"{nome}-TIKTOK-legenda.txt"
+    shutil.copyfile(mp4, arq_v)
+    arq_l.write_text(leg, encoding="utf-8")
+    subprocess.run(["gh", "release", "upload", tag, str(arq_v), str(arq_l), "--clobber"], check=True)
+    log.info(f"Versão TikTok pronta: {d:.0f}s")
+    op.atividade("tiktok", f"Versão TikTok pronta ({d:.0f}s): {r['titulo']}")
+    return {"arquivo": arq_v.name, "duracao": round(d, 1), "legenda": leg}
 
 
 def produzir(quantos=2, tema=None):
@@ -732,13 +953,18 @@ def auditoria():
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("acao", choices=["produzir", "publicar", "analisar", "auditoria", "pausar", "retomar",
-                                     "reagendar", "cancelar", "horarios", "painel"])
+                                     "reagendar", "cancelar", "horarios", "painel", "pacote"])
     ap.add_argument("--quantos", type=int, default=2)
     ap.add_argument("--tema", default="")
     ap.add_argument("--id", default="")
     ap.add_argument("--quando", default="")
     a = ap.parse_args()
-    if a.acao == "produzir":
+    if a.acao == "pacote":
+        try:
+            produzir_pacote(a.quantos if a.quantos != 2 else 14)
+        finally:
+            op.painel(ler_registro())
+    elif a.acao == "produzir":
         produzir(a.quantos, a.tema or None)
     elif a.acao == "publicar":
         publicar()

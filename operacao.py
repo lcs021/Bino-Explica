@@ -165,7 +165,7 @@ def recuperar(reg, proximos_horarios):
 
 
 # =================================================================== controle de qualidade
-def nota_qualidade(r, item, pasta, cenas, audios, mp4, capa, legenda, problemas_video):
+def nota_qualidade(r, item, pasta, cenas, audios, mp4, capa, legenda, problemas_video, faixa=(28, 62)):
     """Inspeção antes de liberar. Devolve (nota 0-100, lista de pontos perdidos)."""
     pontos, perdas = 0, []
 
@@ -201,7 +201,7 @@ def nota_qualidade(r, item, pasta, cenas, audios, mp4, capa, legenda, problemas_
     item_(sem_tempo == 0, 5, f"{sem_tempo} fala(s) sem tempo exato das palavras (legenda estimada)")
     item_(not problemas_video, 20, "; ".join(problemas_video) or "")
     d = item.get("duracao") or 0
-    item_(28 <= d <= 62, 5, f"duração de {d:.0f}s (ideal 30 a 60s)")
+    item_(faixa[0] <= d <= faixa[1], 5, f"duração de {d:.0f}s (ideal {faixa[0]} a {faixa[1]}s)")
     item_(Path(capa).exists() and len((r.get("texto_capa") or "").split()) <= 5, 5, "capa ausente ou com texto longo")
     tags = len(re.findall(r"#\w", legenda))
     item_("?" in legenda and "@" in legenda and 3 <= tags <= 10, 5, "legenda sem pergunta, sem @ ou hashtags fora do padrão")
@@ -314,7 +314,8 @@ def painel(reg, seguidores_hist=None):
         for r in sorted(prod, key=lambda x: x.get("horario") or ""):
             L.append(f"| {r['titulo']} `{r['id']}` | {NOMES.get(r['status'], r['status'])} | {r.get('qualidade', '–')} | "
                      f"{(r.get('teste') or {}).get('abertura', '–')} | {(r.get('horario') or '')[:16].replace('T', ' ')} | "
-                     f"{'Releases: ' + r['release'] if r.get('release') else '–'} |")
+                     f"{'Releases: ' + r['release'] if r.get('release') else '–'}"
+                     f"{' · TikTok ' + str(round(r['tiktok']['duracao'])) + 's' if r.get('tiktok') else ''} |")
         quar = [r for r in prod if r["status"] == QUARENTENA]
         for r in quar:
             L.append(f"\n> 🧪 **{r['titulo']}** em quarentena (nota {r.get('qualidade')}): " + "; ".join(r.get("perdas_qa", [])[:4]))
