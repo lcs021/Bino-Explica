@@ -889,5 +889,272 @@
     "visto": "2026-11-02T19:45-03:00",
     "status": "descartado",
     "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O Efeito Estocástico e como o cérebro humano encontra padrões visuais onde eles não existem",
+    "categoria": "psicologia",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:54-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O fenômeno do choro de crocodilo e como ele ocorre biologicamente durante a alimentação",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:54-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "A capacidade única do axolote de regenerar partes complexas do corpo, incluindo o cérebro e o coração",
+    "categoria": "corpo humano",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:54-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "A Guerra dos Pastéis de 1838 e como um conflito internacional começou por causa da destruição de uma confeitaria no México",
+    "categoria": "história",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:54-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O curioso fenômeno das chuvas de meteoros e o que são exatamente as chamadas estrelas cadentes",
+    "categoria": "espaço",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:54-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O misterioso fenômeno dos fogos de Santelmo observados por marinheiros em alto-mar",
+    "categoria": "mistérios",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:54-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O curioso mecanismo dos relógios de sol e como eles conseguem marcar as horas exatas apenas com a projeção de uma sombra",
+    "categoria": "conhecimentos gerais",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 10,
+      "compartilhamento": 8,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:54-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O Projeto Biosfera 2 e a tentativa fracassada de isolar humanos em um ecossistema artificial autossustentável",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:54-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "Como o estômago humano substitui a si mesmo a cada poucos dias para evitar digerir os próprios tecidos",
+    "categoria": "corpo humano",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:57-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O Efeito Bumerangue na psicologia: por que tentar suprimir um pensamento faz com que ele apareça ainda mais na nossa mente",
+    "categoria": "psicologia",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 10,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:57-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "A incrível história do Projeto Azorian: quando a CIA construiu um navio secreto gigante para pescar um submarino soviético afundado no meio do oceano usando uma garra mecânica gigante",
+    "categoria": "curiosidades inacreditáveis",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:57-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "A Guerra da Orelha de Jenkins: o conflito internacional do século XVIII que começou oficialmente por causa de uma orelha decepada de um capitão britânico",
+    "categoria": "história",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:57-03:00",
+    "status": "escolhido"
+  },
+  {
+    "tema": "O fenômeno dos rios voadores na Amazônia: correntes de ar invisíveis que transportam mais água que o Rio Amazonas pelo céu do Brasil",
+    "categoria": "fenômenos naturais",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 10,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:57-03:00",
+    "status": "escolhido"
+  },
+  {
+    "tema": "O fenômeno do \"sono polifásico\" e como algumas espécies de aves conseguem dormir milhares de vezes por dia em micro cochilos de segundos para fugir de predadores",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:57-03:00",
+    "status": "escolhido"
+  },
+  {
+    "tema": "O Projeto Biosfera 2: o ambicioso experimento científico onde oito cientistas se isolaram em um ecossistema fechado no deserto e o plano começou a falhar por causa do oxigênio",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:57-03:00",
+    "status": "escolhido"
+  },
+  {
+    "tema": "O misterioso e silencioso planeta errante que vaga pelo espaço sideral sem pertencer a nenhuma estrela e sem orbitar nenhum sol",
+    "categoria": "espaço",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T19:57-03:00",
+    "status": "escolhido"
   }
 ]
