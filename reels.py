@@ -127,11 +127,17 @@ Responda SÓ JSON: {{"fatos":["..."],"mais_surpreendente":"o fato mais impressio
         raise RuntimeError("não achei fonte confiável para este tema")
     artigo = "\n\n".join(textos)[:24000]
     fonte = {"titulo": " + ".join(f["titulo"] for f in fontes)}
-    dados = ia.gerar_json(f"""Leia o artigo abaixo e extraia de 6 a 9 fatos curtos, precisos e surpreendentes sobre: {tema}.
-Use SOMENTE o que está escrito no artigo (números, datas e nomes exatos). Se o artigo não fala do tema, devolva fatos vazios.
+    log.info(f"Wikipédia: {fonte['titulo']} ({len(artigo)} caracteres)")
+    dados = ia.gerar_json(f"""Leia o(s) artigo(s) abaixo e extraia de 6 a 9 fatos curtos, precisos e surpreendentes que sirvam para
+um vídeo sobre: {tema}.
+Use SOMENTE o que está escrito nos artigos (números, datas e nomes exatos). Fatos relacionados ao assunto valem.
+Diga também se os artigos comprovam a ideia principal do tema (pode ser juntando fatos, ex.: comparando datas).
 Artigo ({fonte['titulo']}):
 {artigo}
-Responda SÓ JSON: {{"fatos":["..."],"mais_surpreendente":"..."}}""", modelo)
+Responda SÓ JSON: {{"fatos":["..."],"mais_surpreendente":"...","comprova_o_tema":true|false}}""", modelo)
+    log.info(f"Fatos extraídos: {len(dados.get('fatos') or [])}; comprova o tema: {dados.get('comprova_o_tema')}")
+    if dados.get("comprova_o_tema") is False:
+        raise RuntimeError("as fontes não comprovam a ideia principal do tema")
     if len(dados.get("fatos") or []) < 4:
         raise RuntimeError("a fonte encontrada não tem fatos suficientes sobre o tema")
     return dados, fontes
