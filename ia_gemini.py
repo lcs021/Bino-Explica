@@ -18,6 +18,7 @@ RESERVAS = ["gemini-flash-latest", "gemini-flash-lite-latest", "gemini-3.5-flash
 
 
 _DISPONIVEIS = None
+_SEM_BUSCA = False
 
 
 def disponiveis():
@@ -116,8 +117,11 @@ def pesquisar(prompt: str, modelo: str = "gemini-3.5-flash"):
         raise RuntimeError("Falta a chave grátis do Gemini (segredo GEMINI_API_KEY).")
     corpo = {"contents": [{"role": "user", "parts": [{"text": prompt}]}],
              "tools": [{"google_search": {}}], "generationConfig": {"temperature": 0.6}}
+    global _SEM_BUSCA
+    if _SEM_BUSCA:
+        raise RuntimeError("busca do Google sem cota nesta execução")
     modelos = _ordem(modelo)
-    ultimo = ""
+    ultimo, recusas = "", 0
     for volta in range(2):
         for m in modelos:
             try:
@@ -128,6 +132,7 @@ def pesquisar(prompt: str, modelo: str = "gemini-3.5-flash"):
                 continue
             if r.status_code != 200:
                 ultimo = f"{r.status_code}: {r.text[:200]}"
+                recusas += r.status_code == 429
                 log.warning(f"Pesquisa com {m} indisponível ({r.status_code}); tentando outro.")
                 time.sleep(8)
                 continue
@@ -142,6 +147,9 @@ def pesquisar(prompt: str, modelo: str = "gemini-3.5-flash"):
                     fontes.append({"titulo": tit, "url": web["uri"]})
             if texto:
                 return texto, fontes
+        if recusas >= len(modelos):            # todos sem cota de busca: não insiste mais nesta execução
+            _SEM_BUSCA = True
+            break
         time.sleep(30)
     raise RuntimeError(f"A pesquisa no Google pelo Gemini não respondeu agora ({ultimo}).")
 
