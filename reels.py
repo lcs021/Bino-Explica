@@ -529,6 +529,7 @@ def produzir_pacote(total=14):
                                       "legenda_instagram": leg_ig, "legenda_tiktok": leg_tt,
                                       "fontes": [f.get("url") or f.get("titulo") for f in fontes]})
                 PACOTE.write_text(json.dumps(pac, ensure_ascii=False, indent=2), encoding="utf-8")
+                enviar_ao_release(pac, pasta_pac, total, [pasta_pac / f"{nome}.mp4", pasta_pac / f"{nome}-capa.jpg"])
                 op.marcar_tema(t["tema"], "produzido")
                 op.atividade("pacote", f"Vídeo {n}/{total} pronto ({item['duracao']:.0f}s, {nota}/100): {r['titulo']}")
             except Exception as e:  # noqa: BLE001
@@ -538,8 +539,7 @@ def produzir_pacote(total=14):
     fechar_pacote(pac, pasta_pac, total)
 
 
-def fechar_pacote(pac, pasta_pac, total):
-    import zipfile
+def _legendas_md(pac, pasta_pac):
     linhas = [f"# 📦 Pacote Bino Explica — {len(pac['videos'])} vídeos", "",
               "Sugestão: 2 por dia, às 12:30 e 19:30. Cada vídeo tem mais de 1 minuto (vale para o Instagram e para a "
               "monetização do TikTok).", ""]
@@ -550,6 +550,25 @@ def fechar_pacote(pac, pasta_pac, total):
                    f"· **Capa:** `{v['capa']}` · {v['duracao']:.0f}s", "", "**Legenda Instagram:**", "```",
                    v["legenda_instagram"], "```", "", "**Legenda TikTok:**", "```", v["legenda_tiktok"], "```", ""]
     (pasta_pac / "LEGENDAS.md").write_text("\n".join(linhas), encoding="utf-8")
+    return pasta_pac / "LEGENDAS.md"
+
+
+def enviar_ao_release(pac, pasta_pac, total, arquivos):
+    """Cada vídeo vai para Releases assim que fica pronto (mp4 + capa), com o LEGENDAS.md atualizado."""
+    md = _legendas_md(pac, pasta_pac)
+    titulo = f"📦 Pacote da semana — {len(pac['videos'])} de {total} vídeos"
+    if subprocess.run(["gh", "release", "view", pac["id"]], capture_output=True).returncode != 0:
+        subprocess.run(["gh", "release", "create", pac["id"], "--title", titulo, "--latest=false", "--notes",
+                        "Vídeos prontos para postar (mais de 1 minuto, servem para Instagram e TikTok). "
+                        "Legendas e hashtags no arquivo LEGENDAS.md."], check=True)
+    subprocess.run(["gh", "release", "upload", pac["id"], *map(str, arquivos), str(md), "--clobber"], check=True)
+    subprocess.run(["gh", "release", "edit", pac["id"], "--title", titulo], check=True)
+    log.info(f"Enviado para Releases: {', '.join(Path(a).name for a in arquivos)}")
+
+
+def fechar_pacote(pac, pasta_pac, total):
+    import zipfile
+    _legendas_md(pac, pasta_pac)
     zipar = pasta_pac / f"{pac['id']}.zip"
     with zipfile.ZipFile(zipar, "w", zipfile.ZIP_STORED) as z:
         for f in sorted(pasta_pac.iterdir()):
