@@ -268,6 +268,8 @@ def produzir(tema=None, quando=None):
     if op.pausado():
         log.info("Automação pausada no painel: YouTube não produz.")
         return
+    if enviar_pendentes(reg):
+        return
     alvo = quando or proximo_horario(reg)
     if not quando and any(r["status"] == op.AGUARDANDO and r["horario"] == alvo for r in reg):
         log.info(f"Já existe vídeo agendado para {alvo}.")
@@ -365,7 +367,7 @@ def produzir(tema=None, quando=None):
                 salvar(reg)
                 print(f"::warning::Vídeo do YouTube em quarentena ({nota}/100): {'; '.join(perdas)}")
                 continue
-            item["horario"] = alvo
+            item.update(horario=alvo, descricao=descricao, tags=r.get("tags", [])[:15])
             enviar(item, mp4, capa, srt, r, descricao, alvo)
             salvar(reg)
             return
@@ -402,6 +404,27 @@ def enviar(item, mp4, capa, srt, r, descricao, alvo):
     atividade(f"Enviado ao YouTube e agendado para {alvo[8:10]}/{alvo[5:7]} {alvo[11:16]}: {r['titulo']} "
               f"(status {info.get('privacidade')})", item["id"])
     print(f"::notice::Vídeo agendado no YouTube: {r['titulo']} → https://youtu.be/{vid} ({info})")
+
+
+def enviar_pendentes(reg):
+    """Vídeo pronto (em Releases) que ainda não subiu porque o YouTube não estava conectado: envia agora."""
+    import youtube_upload as yu
+    if not yu.conectado():
+        return False
+    pend = [r for r in reg if r["status"] == op.AGUARDANDO and not r.get("youtube_id") and r.get("release")
+            and r.get("descricao") and datetime.fromisoformat(r["horario"]) > agora() + timedelta(minutes=30)]
+    for item in pend:
+        pasta = RAIZ / "saida" / f"pendente_{item['id']}"
+        shutil.rmtree(pasta, ignore_errors=True)
+        pasta.mkdir(parents=True)
+        subprocess.run(["gh", "release", "download", item["release"], "-D", str(pasta)], check=True)
+        mp4 = next(pasta.glob("*.mp4"))
+        capa = next(pasta.glob("*-capa.jpg"), None)
+        srt = next(pasta.glob("*.srt"), None)
+        enviar(item, mp4, capa, srt, {"titulo": item["titulo"], "tags": item.get("tags", [])}, item["descricao"],
+               item["horario"])
+        salvar(reg)
+    return bool(pend)
 
 
 def conferir():

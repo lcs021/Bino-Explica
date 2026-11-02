@@ -13,7 +13,8 @@ from util import RAIZ, configurar_log
 
 log = configurar_log()
 ESCOPOS = ["https://www.googleapis.com/auth/youtube.upload",
-           "https://www.googleapis.com/auth/youtube"]
+           "https://www.googleapis.com/auth/youtube",
+           "https://www.googleapis.com/auth/youtube.force-ssl"]
 SEGREDO = RAIZ / "client_secret.json"
 TOKEN = RAIZ / "token_youtube.json"
 
