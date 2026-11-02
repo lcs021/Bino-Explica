@@ -88,7 +88,8 @@ Nada de pessoas vivas, tragédias recentes, política, saúde arriscada ou boato
 {dicas}
 Não repita estes temas: {json.dumps(feitos, ensure_ascii=False)}.
 Responda SÓ um JSON: {{"temas":[{{"tema":"assunto específico em uma frase","categoria":"uma das categorias",
-"porque":"por que viraliza, 1 frase"}}]}} com 6 opções de categorias diferentes, da melhor para a pior."""
+"porque":"por que viraliza, 1 frase",
+"artigos":["1 a 3 títulos EXATOS de artigos da Wikipédia em português que comprovam o tema (ex.: \"Vênus (planeta)\")"]}}]}} com 6 opções de categorias diferentes, da melhor para a pior."""
     try:
         texto, _ = ia.pesquisar(prompt, modelo)
         opcoes = ia.extrair_json(texto).get("temas", [])
@@ -103,7 +104,7 @@ Responda SÓ um JSON: {{"temas":[{{"tema":"assunto específico em uma frase","ca
     return escolhidos[:quantos + 2]               # 2 reservas, caso algum seja reprovado na revisão
 
 
-def pesquisar_fatos(tema, modelo):
+def pesquisar_fatos(tema, modelo, artigos=None):
     prompt = f"""Pesquise no Google, em fontes confiáveis, fatos verificados sobre: {tema}.
 Quero de 6 a 9 fatos curtos, precisos e surpreendentes (números, datas e nomes exatos como aparecem nas fontes).
 Não inclua nada que você não encontrou nas fontes. Se um número varia entre fontes, diga "cerca de".
@@ -116,9 +117,16 @@ Responda SÓ JSON: {{"fatos":["..."],"mais_surpreendente":"o fato mais impressio
         log.warning("A busca no Google não trouxe fontes; conferindo na Wikipédia.")
     except Exception as e:  # noqa: BLE001
         log.warning(f"Busca no Google indisponível ({e}); conferindo na Wikipédia.")
-    artigo, fonte = ia.wikipedia(tema)
-    if not artigo:
+    textos, fontes = [], []
+    for termo in (artigos or [])[:3] + ([] if artigos else [tema]):
+        artigo, fonte = ia.wikipedia(str(termo))
+        if artigo and fonte["url"] not in [f["url"] for f in fontes]:
+            textos.append(f"=== {fonte['titulo']} ===\n{artigo}")
+            fontes.append(fonte)
+    if not textos:
         raise RuntimeError("não achei fonte confiável para este tema")
+    artigo = "\n\n".join(textos)[:24000]
+    fonte = {"titulo": " + ".join(f["titulo"] for f in fontes)}
     dados = ia.gerar_json(f"""Leia o artigo abaixo e extraia de 6 a 9 fatos curtos, precisos e surpreendentes sobre: {tema}.
 Use SOMENTE o que está escrito no artigo (números, datas e nomes exatos). Se o artigo não fala do tema, devolva fatos vazios.
 Artigo ({fonte['titulo']}):
@@ -126,7 +134,7 @@ Artigo ({fonte['titulo']}):
 Responda SÓ JSON: {{"fatos":["..."],"mais_surpreendente":"..."}}""", modelo)
     if len(dados.get("fatos") or []) < 4:
         raise RuntimeError("a fonte encontrada não tem fatos suficientes sobre o tema")
-    return dados, [fonte]
+    return dados, fontes
 
 
 # =================================================================== 2. roteiro e revisão
@@ -259,7 +267,7 @@ def produzir_um(cfg, tema_info, reg, horario, modelo_txt):
     pasta = RAIZ / "saida" / f"reel_{vid}_{slug(tema)[:40]}"
     pasta.mkdir(parents=True, exist_ok=True)
     log.info(f"===== Reel {vid}: {tema} =====")
-    fatos, fontes = pesquisar_fatos(tema, modelo_txt)
+    fatos, fontes = pesquisar_fatos(tema, modelo_txt, tema_info.get("artigos"))
     log.info(f"Pesquisa: {len(fatos.get('fatos', []))} fatos, {len(fontes)} fontes")
     r = criar_roteiro(tema, fatos, modelo_txt)
     if not r:

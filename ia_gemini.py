@@ -168,10 +168,11 @@ def wikipedia(tema: str, idiomas=("pt", "en")):
             api = f"https://{lang}.wikipedia.org/w/api.php"
             busca = requests.get(api, headers=cab, timeout=30, params={
                 "action": "query", "list": "search", "srsearch": tema, "srlimit": 3, "format": "json"}).json()
-            for res in busca.get("query", {}).get("search", []):
+            candidatos = [{"title": tema}] + busca.get("query", {}).get("search", [])   # título exato primeiro
+            for res in candidatos:
                 pag = requests.get(api, headers=cab, timeout=30, params={
                     "action": "query", "prop": "extracts|info", "inprop": "url", "explaintext": 1,
-                    "exchars": 9000, "titles": res["title"], "format": "json", "redirects": 1}).json()
+                    "exchars": 12000, "titles": res["title"], "format": "json", "redirects": 1}).json()
                 for p in pag.get("query", {}).get("pages", {}).values():
                     texto = p.get("extract") or ""
                     if len(texto) > 1200:
