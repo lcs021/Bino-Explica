@@ -464,214 +464,217 @@ def hashtags(r, extras=()):
     return tags
 
 
-def produzir_pacote(total=5):
-    """Gera um pacote fechado de vídeos virais (62 a 70 s, servem para Instagram e TikTok) com legendas e hashtags.
-    Retoma de onde parou se a rodada cair no meio. Sobe tudo num .zip na aba Releases."""
-    import zipfile
+PLATAFORMAS = {
+    "instagram": {"pasta": "Instagram", "prefixo": "IG", "alvo": (40, 54), "cenas": 6, "minimo": 0, "musica": True,
+                  "faixa": (28, 62)},
+    "tiktok": {"pasta": "TikTok", "prefixo": "TT", "alvo": (64, 72), "cenas": 8, "minimo": 62, "musica": False,
+               "faixa": (60, 80)},
+}
+
+
+def _nome_bonito(titulo):
+    t = re.sub(r'[\\/:*?"<>|#]', "", titulo).strip()
+    return re.sub(r"\s+", " ", t)[:60]
+
+
+def produzir_video_pacote(cfg, modelo, t, plataforma, n, pac, reg):
+    """Um vídeo feito do zero para a plataforma (Instagram: Reels 40-54 s com trilha; TikTok: 64-72 s sem música)."""
     import animacao
     import main_gratis as mg
     import narracao
+    p = PLATAFORMAS[plataforma]
+    fatos, fontes = pesquisar_fatos(t["tema"], modelo, t.get("artigos"))
+    feitos = [v for v in pac["videos"]]
+    abertura = op.escolher_abertura(reg + [{"teste": {"abertura": v.get("abertura")}} for v in feitos])
+    r = None
+    for _ in range(2):
+        r = criar_roteiro(t["tema"], fatos, modelo, abertura, [v["gancho"] for v in feitos][-8:],
+                          alvo=p["alvo"], n_cenas=p["cenas"])
+        if r:
+            break
+    if not r:
+        raise RuntimeError("roteiro reprovado na revisão")
+    r["tema"] = t["tema"]
+    pasta = RAIZ / "saida" / f"{p['prefixo']}_{n:02d}_{slug(t['tema'])[:30]}"
+    pasta.mkdir(parents=True, exist_ok=True)
+    cenas = mg.desenhar_cenas(cfg, r, pasta)
+    for _ in range(2):
+        falhos = [c for c in cenas if not c.with_suffix(".svg").exists()]
+        if not falhos:
+            break
+        for c in falhos:
+            c.unlink(missing_ok=True)
+        cenas = mg.desenhar_cenas(cfg, r, pasta)
+    auds = narracao.narrar_cenas(cfg, r["cenas"], pasta, "v")
+    medir_voz(r["cenas"], auds)
+    marca = marca_instagram() if plataforma == "instagram" else marca_tiktok()
+    titulos = [re.sub(r"[^\w\s:?!,.\-]", "", r.get("texto_capa") or r["titulo"]).strip()] + \
+              [c.get("legenda_tela", "") for c in r["cenas"][1:]]
+    mp4 = animacao.montar_tiktok(cfg, r, cenas, auds, titulos, pasta, marca, minimo=p["minimo"], nome="video",
+                                 musica=p["musica"])
+    i_capa = min(max(int(r.get("surpresa") or 0) if str(r.get("surpresa", "")).isdigit() else 0, 0), len(cenas) - 1)
+    svg = cenas[i_capa].with_suffix(".svg")
+    capa = animacao.capa(cenas[i_capa], r.get("texto_capa") or r["titulo"], pasta / "capa.jpg", marca,
+                         svg.read_text(encoding="utf-8") if svg.exists() else None)
+    d = duracao(mp4)
+    if plataforma == "instagram":
+        legenda = montar_legenda(r, fontes)
+    else:
+        tags = list(dict.fromkeys([x.lower() for x in hashtags(r)[:3]] + ["curiosidades", "vocesabia", "aprendanotiktok"]))
+        legenda = ((r.get("legenda_tiktok") or r["titulo"]).strip() +
+                   f"\n\nSegue o {marca} pra mais curiosidades 👀\n\n" + " ".join("#" + x for x in tags))
+    nota, perdas = op.nota_qualidade(r, {"duracao": d, "fontes": fontes}, pasta, cenas, auds, mp4, capa,
+                                     legenda if "@" in legenda else legenda + " @", verificar_video(mp4), faixa=p["faixa"])
+    if nota < op.NOTA_MINIMA or (plataforma == "tiktok" and d < 61):
+        raise RuntimeError(f"qualidade {nota}/100 ({d:.0f}s): {'; '.join(perdas)}")
+    return {"plataforma": plataforma, "n": n, "tema": t["tema"], "titulo": r["titulo"], "duracao": round(d, 1),
+            "qualidade": nota, "abertura": abertura, "gancho": r["cenas"][0]["narracao"], "legenda": legenda,
+            "fontes": [f.get("url") or f.get("titulo") for f in fontes], "_mp4": mp4, "_capa": capa}
+
+
+def produzir_pacote(total=5):
+    """Pacote fechado: `total` vídeos para o Instagram e `total` para o TikTok, temas diferentes, cada um feito do zero
+    para a sua plataforma. Zip com as pastas Instagram/ e TikTok/, vídeos com o nome do tema, capas e legendas.
+    Cada vídeo sobe para Releases assim que fica pronto; se a rodada cair, a próxima continua de onde parou."""
     cfg = carregar_config()
     modelo = cfg["gemini"]["modelo_texto"]
     reg = ler_registro()
     pac = json.loads(PACOTE.read_text(encoding="utf-8")) if PACOTE.exists() else {}
-    if not pac or pac.get("fechado"):
-        pac = {"id": f"pacote-{agora():%Y%m%d-%H%M}", "criado": agora().isoformat(timespec="minutes"), "videos": [], "fechado": False}
-    pasta_pac = RAIZ / "saida" / pac["id"]
-    pasta_pac.mkdir(parents=True, exist_ok=True)
-    # retomada: só vale o que já está em Releases (de uma rodada que caiu no meio)
+    if not pac or pac.get("fechado") or pac.get("versao") != 2:
+        pac = {"versao": 2, "id": f"pacote-{agora():%Y%m%d-%H%M}", "criado": agora().isoformat(timespec="minutes"),
+               "videos": [], "fechado": False, "total": total}
+    total = pac.get("total", total)
+    base = RAIZ / "saida" / pac["id"]
+    for p in PLATAFORMAS.values():
+        (base / p["pasta"]).mkdir(parents=True, exist_ok=True)
+    # retomada: só vale o que já está em Releases
     if pac["videos"]:
         r_ = subprocess.run(["gh", "release", "view", pac["id"], "--json", "assets", "-q", "[.assets[].name]"],
                             capture_output=True, text=True)
         no_release = set(json.loads(r_.stdout or "[]")) if r_.returncode == 0 else set()
-        perdidos = [v for v in pac["videos"] if v["arquivo"] not in no_release]
-        if perdidos:
-            log.warning(f"{len(perdidos)} vídeo(s) da rodada anterior não chegaram ao Releases; serão refeitos com outros temas.")
-            pac["videos"] = [v for v in pac["videos"] if v["arquivo"] in no_release]
+        pac["videos"] = [v for v in pac["videos"] if v["asset_mp4"] in no_release]
         for v in pac["videos"]:
-            pad = ["-p", v["arquivo"], "-p", v["capa"]] + (["-p", v["arquivo_tiktok"]] if v.get("arquivo_tiktok") else [])
-            subprocess.run(["gh", "release", "download", pac["id"], *pad, "-D", str(pasta_pac), "--clobber"],
-                           capture_output=True)
-    for v in pac["videos"]:
-        if not v.get("arquivo_tiktok"):
-            try:
-                completar_tiktok(cfg, modelo, pac, v, pasta_pac, total)
-            except Exception as e:  # noqa: BLE001
-                log.warning(f"TikTok de '{v['titulo']}' não ficou pronto: {e}")
+            dst = base / PLATAFORMAS[v["plataforma"]]["pasta"]
+            subprocess.run(["gh", "release", "download", pac["id"], "-p", v["asset_mp4"], "-p", v["asset_capa"],
+                            "-D", str(dst), "--clobber"], capture_output=True)
+            for a, nome in ((v["asset_mp4"], v["arquivo"]), (v["asset_capa"], v["capa"])):
+                if (dst / a).exists():
+                    (dst / a).replace(dst / nome)
     tentativas = 0
-    while len(pac["videos"]) < total and tentativas < total * 2:
-        faltam = total - len(pac["videos"])
-        temas = []
-        for tent in range(3):
-            try:
-                temas = escolher_temas(reg + [{"tema": v["tema"]} for v in pac["videos"]], min(faltam, 6), modelo)
-                if temas:
-                    break
-            except Exception as e:  # noqa: BLE001
-                log.warning(f"Pauta falhou ({e}); tentando de novo.")
-            time.sleep(30)
-        if not temas:
-            break
-        for t in temas:
-            if len(pac["videos"]) >= total or tentativas >= total * 2:
-                break
-            tentativas += 1
-            n = len(pac["videos"]) + 1
-            log.info(f"===== Pacote: vídeo {n}/{total}: {t['tema']} =====")
-            try:
-                fatos, fontes = pesquisar_fatos(t["tema"], modelo, t.get("artigos"))
-                abertura = op.escolher_abertura(reg + [{"teste": {"abertura": v.get("abertura")}} for v in pac["videos"]])
-                r = criar_roteiro(t["tema"], fatos, modelo, abertura, [v["gancho"] for v in pac["videos"]][-8:],
-                                  alvo=(40, 54), n_cenas=6)
-                if not r:
-                    raise RuntimeError("roteiro reprovado na revisão")
-                r["tema"] = t["tema"]
-                pasta = RAIZ / "saida" / f"pac_{n:02d}_{slug(t['tema'])[:30]}"
-                pasta.mkdir(parents=True, exist_ok=True)
-                cenas = mg.desenhar_cenas(cfg, r, pasta)
-                for _ in range(2):
-                    falhos = [c for c in cenas if not c.with_suffix(".svg").exists()]
-                    if not falhos:
+    for plataforma in ("instagram", "tiktok"):
+        while sum(v["plataforma"] == plataforma for v in pac["videos"]) < total and tentativas < total * 6:
+            faltam = total - sum(v["plataforma"] == plataforma for v in pac["videos"])
+            temas = []
+            for _ in range(3):
+                try:
+                    temas = escolher_temas(reg + [{"tema": v["tema"]} for v in pac["videos"]], min(faltam, 5), modelo)
+                    if temas:
                         break
-                    for c in falhos:
-                        c.unlink(missing_ok=True)
-                    cenas = mg.desenhar_cenas(cfg, r, pasta)
-                auds = narracao.narrar_cenas(cfg, r["cenas"], pasta, "pac")
-                medir_voz(r["cenas"], auds)
-                titulos = [re.sub(r"[^\w\s:?!,.\-]", "", r.get("texto_capa") or r["titulo"]).strip()] + \
-                          [c.get("legenda_tela", "") for c in r["cenas"][1:]]
-                mp4 = animacao.montar_tiktok(cfg, r, cenas, auds, titulos, pasta, marca_instagram(), minimo=0,
-                                             nome="video", musica=True)
-                i_capa = min(max(int(r.get("surpresa") or 0) if str(r.get("surpresa", "")).isdigit() else 0, 0), len(cenas) - 1)
-                svg = cenas[i_capa].with_suffix(".svg")
-                capa = animacao.capa(cenas[i_capa], r.get("texto_capa") or r["titulo"], pasta / "capa.jpg", marca_instagram(),
-                                     svg.read_text(encoding="utf-8") if svg.exists() else None)
-                item = {"duracao": round(duracao(mp4), 1), "fontes": fontes}
-                leg_ig = montar_legenda(r, fontes)
-                nota, perdas = op.nota_qualidade(r, item, pasta, cenas, auds, mp4, capa, leg_ig, verificar_video(mp4))
-                if nota < op.NOTA_MINIMA:
-                    raise RuntimeError(f"qualidade {nota}/100: {'; '.join(perdas)}")
-                nome = f"{n:02d}-{slug(r['titulo'])[:40]}"
-                shutil.copyfile(mp4, pasta_pac / f"{nome}-REELS.mp4")
-                shutil.copyfile(capa, pasta_pac / f"{nome}-capa.jpg")
-                v = {"n": n, "tema": t["tema"], "titulo": r["titulo"], "arquivo": f"{nome}-REELS.mp4",
-                     "capa": f"{nome}-capa.jpg", "duracao": item["duracao"], "qualidade": nota,
-                     "abertura": abertura, "gancho": r["cenas"][0]["narracao"], "legenda_instagram": leg_ig,
-                     "fontes": [f.get("url") or f.get("titulo") for f in fontes]}
-                enviar_ao_release({**pac, "videos": pac["videos"] + [v]}, pasta_pac, total,
-                                  [pasta_pac / v["arquivo"], pasta_pac / v["capa"]])
-                try:                                 # versão TikTok: mais de 1 minuto, sem música de fundo
-                    tt = versao_tiktok(cfg, r, fatos, cenas, pasta, nome, pac["id"], modelo)
-                    shutil.copyfile(pasta / f"{nome}-TIKTOK.mp4", pasta_pac / f"{nome}-TIKTOK.mp4")
-                    v.update(arquivo_tiktok=f"{nome}-TIKTOK.mp4", duracao_tiktok=tt["duracao"], legenda_tiktok=tt["legenda"])
                 except Exception as e:  # noqa: BLE001
-                    log.warning(f"Versão TikTok não ficou pronta: {e}")
-                    v["legenda_tiktok"] = (r.get("legenda_tiktok") or r["titulo"]).strip() + \
-                        f"\n\nSegue o {marca_tiktok()} 👀 #curiosidades #vocesabia #aprendanotiktok"
+                    log.warning(f"Pauta falhou ({e}); tentando de novo.")
+                time.sleep(20)
+            if not temas:
+                break
+            for t in temas:
+                if sum(v["plataforma"] == plataforma for v in pac["videos"]) >= total:
+                    break
+                tentativas += 1
+                n = sum(v["plataforma"] == plataforma for v in pac["videos"]) + 1
+                p = PLATAFORMAS[plataforma]
+                log.info(f"===== Pacote {p['pasta']} {n}/{total}: {t['tema']} =====")
+                try:
+                    v = produzir_video_pacote(cfg, modelo, t, plataforma, n, pac, reg)
+                except Exception as e:  # noqa: BLE001
+                    log.warning(f"Tema descartado ({t['tema']}): {e}")
+                    op.marcar_tema(t["tema"], "descartado", str(e))
+                    continue
+                nome = f"{n:02d} - {_nome_bonito(v['titulo'])}"
+                dst = base / p["pasta"]
+                shutil.copyfile(v.pop("_mp4"), dst / f"{nome}.mp4")
+                shutil.copyfile(v.pop("_capa"), dst / f"{nome} - capa.jpg")
+                v.update(arquivo=f"{nome}.mp4", capa=f"{nome} - capa.jpg",
+                         asset_mp4=f"{p['prefixo']}-{n:02d}-{slug(v['titulo'])[:40]}.mp4",
+                         asset_capa=f"{p['prefixo']}-{n:02d}-{slug(v['titulo'])[:40]}-capa.jpg")
                 pac["videos"].append(v)
                 PACOTE.write_text(json.dumps(pac, ensure_ascii=False, indent=2), encoding="utf-8")
-                enviar_ao_release(pac, pasta_pac, total, [])
+                publicar_no_release(pac, base, total, v)
                 op.marcar_tema(t["tema"], "produzido")
-                op.atividade("pacote", f"Vídeo {n}/{total} pronto ({item['duracao']:.0f}s, {nota}/100): {r['titulo']}")
-            except Exception as e:  # noqa: BLE001
-                log.warning(f"Tema descartado no pacote ({t['tema']}): {e}")
-                op.marcar_tema(t["tema"], "descartado", str(e))
-            time.sleep(3)
-    fechar_pacote(pac, pasta_pac, total)
+                op.atividade("pacote", f"{p['pasta']} {n}/{total} pronto ({v['duracao']:.0f}s, {v['qualidade']}/100): {v['titulo']}")
+                time.sleep(3)
+    fechar_pacote(pac, base, total)
 
 
-def completar_tiktok(cfg, modelo, pac, v, pasta_pac, total):
-    """Faz do zero a versão TikTok (mais de 1 min, sem música) de um tema do pacote que ficou só com o Reels."""
-    import animacao
-    import main_gratis as mg
-    import narracao
-    log.info(f"===== Completando TikTok: {v['titulo']} =====")
-    art = ia.gerar_json(f"""Quais são 1 a 3 títulos EXATOS de artigos da Wikipédia em português sobre: {v['tema']}?
-Responda SÓ JSON: {{"artigos":["..."]}}""", modelo)
-    artigos = art.get("artigos") if isinstance(art, dict) else art
-    fatos, fontes = pesquisar_fatos(v["tema"], modelo, [str(a) for a in (artigos or [])][:3] or None)
-    r = None
-    for _ in range(2):
-        r = criar_roteiro(v["tema"], fatos, modelo, v.get("abertura") or "historia", [v.get("gancho", "")],
-                          alvo=(64, 72), n_cenas=8)
-        if r:
-            break
-    if not r:
-        raise RuntimeError("roteiro reprovado")
-    pasta = RAIZ / "saida" / f"tt_{v['n']:02d}_{slug(v['tema'])[:30]}"
-    pasta.mkdir(parents=True, exist_ok=True)
-    cenas = mg.desenhar_cenas(cfg, r, pasta)
-    auds = narracao.narrar_cenas(cfg, r["cenas"], pasta, "tt")
-    titulos = [re.sub(r"[^\w\s:?!,.\-]", "", r.get("texto_capa") or r["titulo"]).strip()] + \
-              [c.get("legenda_tela", "") for c in r["cenas"][1:]]
-    mp4 = animacao.montar_tiktok(cfg, r, cenas, auds, titulos, pasta, marca_tiktok(), minimo=62, nome="tiktok",
-                                 musica=False)
-    d = duracao(mp4)
-    if verificar_video(mp4) or d < 61:
-        raise RuntimeError(f"checagem reprovou ({d:.0f}s)")
-    nome = v["arquivo"].replace("-REELS.mp4", "")
-    shutil.copyfile(mp4, pasta_pac / f"{nome}-TIKTOK.mp4")
-    leg = (r.get("legenda_tiktok") or r["titulo"]).strip()
-    tags = list(dict.fromkeys([x.lower() for x in hashtags(r)[:3]] + ["curiosidades", "vocesabia", "aprendanotiktok"]))
-    v.update(arquivo_tiktok=f"{nome}-TIKTOK.mp4", duracao_tiktok=round(d, 1),
-             legenda_tiktok=f"{leg}\n\nSegue o {marca_tiktok()} pra mais curiosidades 👀\n\n" + " ".join("#" + x for x in tags))
-    PACOTE.write_text(json.dumps(pac, ensure_ascii=False, indent=2), encoding="utf-8")
-    enviar_ao_release(pac, pasta_pac, total, [pasta_pac / v["arquivo_tiktok"]])
+def _legendas(pac, base):
+    """Um arquivo de legendas em cada pasta, com sugestão de dia para postar."""
+    arquivos = []
+    for plataforma, p in PLATAFORMAS.items():
+        vs = sorted([v for v in pac["videos"] if v["plataforma"] == plataforma], key=lambda v: v["n"])
+        linhas = [f"LEGENDAS {p['pasta'].upper()} — Bino Explica", "=" * 40, ""]
+        for k, v in enumerate(vs):
+            d = agora().date() + timedelta(days=1 + k)
+            linhas += [f"{v['arquivo']}", f"Sugestão: {DIAS[d.weekday()]} {d:%d/%m} às 19:30 · {v['duracao']:.0f}s"
+                       + (" · sem música (se quiser, adicione um som da biblioteca do TikTok)" if plataforma == "tiktok" else ""),
+                       "-" * 40, v["legenda"], "", ""]
+        arq = base / p["pasta"] / f"LEGENDAS {p['pasta'].upper()}.txt"
+        arq.write_text("\n".join(linhas), encoding="utf-8")
+        arquivos.append(arq)
+    return arquivos
 
 
-def _legendas_md(pac, pasta_pac):
-    linhas = [f"# 📦 Pacote Bino Explica — {len(pac['videos'])} temas", "",
-              "Cada tema vem em 2 versões: REELS (Instagram, com trilha própria) e TIKTOK (mais de 1 minuto para a "
-              "monetização, sem música de fundo para não dar direitos autorais).", ""]
-    for k, v in enumerate(pac["videos"]):
-        d = agora().date() + timedelta(days=1 + k // 2)
-        d = agora().date() + timedelta(days=1 + k)
-        dia, hora = f"{DIAS[d.weekday()]} {d:%d/%m}", "19:30"
-        tt = (f"`{v['arquivo_tiktok']}` ({v.get('duracao_tiktok', 0):.0f}s, sem música — adicione um som da biblioteca "
-              f"do TikTok se quiser)") if v.get("arquivo_tiktok") else "use o mesmo vídeo do Reels"
-        linhas += [f"## {v['n']:02d}. {v['titulo']}", f"**Sugestão:** {dia}, {hora} · **Capa:** `{v['capa']}`", "",
-                   f"**Instagram (Reels):** `{v['arquivo']}` ({v['duracao']:.0f}s)", "```", v["legenda_instagram"], "```", "",
-                   f"**TikTok:** {tt}", "```", v.get("legenda_tiktok", ""), "```", ""]
-    (pasta_pac / "LEGENDAS.md").write_text("\n".join(linhas), encoding="utf-8")
-    return pasta_pac / "LEGENDAS.md"
-
-
-def enviar_ao_release(pac, pasta_pac, total, arquivos):
-    """Cada vídeo vai para Releases assim que fica pronto (mp4 + capa), com o LEGENDAS.md atualizado."""
-    md = _legendas_md(pac, pasta_pac)
-    titulo = f"📦 Pacote — {len(pac['videos'])} de {total} temas (Reels + TikTok)"
+def publicar_no_release(pac, base, total, v):
+    """Vídeo e capa sobem para Releases assim que ficam prontos (com as legendas atualizadas)."""
+    p = PLATAFORMAS[v["plataforma"]]
+    dst = base / p["pasta"]
+    leg = _legendas(pac, base)
+    tmp = base / "_envio"
+    tmp.mkdir(exist_ok=True)
+    shutil.copyfile(dst / v["arquivo"], tmp / v["asset_mp4"])
+    shutil.copyfile(dst / v["capa"], tmp / v["asset_capa"])
+    n_ig = sum(x["plataforma"] == "instagram" for x in pac["videos"])
+    n_tt = sum(x["plataforma"] == "tiktok" for x in pac["videos"])
+    titulo = f"📦 Pacote — Instagram {n_ig}/{total} · TikTok {n_tt}/{total}"
     if subprocess.run(["gh", "release", "view", pac["id"]], capture_output=True).returncode != 0:
         subprocess.run(["gh", "release", "create", pac["id"], "--title", titulo, "--latest=false", "--notes",
-                        "Vídeos prontos para postar (mais de 1 minuto, servem para Instagram e TikTok). "
-                        "Legendas e hashtags no arquivo LEGENDAS.md."], check=True)
-    subprocess.run(["gh", "release", "upload", pac["id"], *map(str, arquivos), str(md), "--clobber"], check=True)
+                        "IG-*: vídeos do Instagram · TT-*: vídeos do TikTok. No final sai o .zip com as pastas "
+                        "Instagram/ e TikTok/, os vídeos com o nome do tema, capas e legendas."], check=True)
+    leg_tmp = []
+    for a in leg:
+        alvo = tmp / a.name.replace(" ", "-")
+        shutil.copyfile(a, alvo)
+        leg_tmp.append(str(alvo))
+    subprocess.run(["gh", "release", "upload", pac["id"], str(tmp / v["asset_mp4"]), str(tmp / v["asset_capa"]),
+                    *leg_tmp, "--clobber"], check=True)
     subprocess.run(["gh", "release", "edit", pac["id"], "--title", titulo], check=True)
-    log.info(f"Enviado para Releases: {', '.join(Path(a).name for a in arquivos)}")
+    log.info(f"Enviado para Releases: {v['asset_mp4']}")
 
 
-def fechar_pacote(pac, pasta_pac, total):
+def fechar_pacote(pac, base, total):
     import zipfile
-    _legendas_md(pac, pasta_pac)
-    zipar = pasta_pac / f"{pac['id']}.zip"
+    _legendas(pac, base)
+    zipar = base / f"Bino Explica - pacote {agora():%d-%m}.zip"
     with zipfile.ZipFile(zipar, "w", zipfile.ZIP_STORED) as z:
-        for f in sorted(pasta_pac.iterdir()):
-            if f.suffix in (".mp4", ".jpg", ".md"):
-                z.write(f, f.name)
-    completo = len(pac["videos"]) >= total
-    titulo = f"📦 Pacote — {len(pac['videos'])} temas (Reels + TikTok){'' if completo else ' (parcial)'}"
-    existe = subprocess.run(["gh", "release", "view", pac["id"]], capture_output=True).returncode == 0
-    if existe:
-        subprocess.run(["gh", "release", "upload", pac["id"], str(zipar), str(pasta_pac / "LEGENDAS.md"), "--clobber"], check=True)
-        subprocess.run(["gh", "release", "edit", pac["id"], "--title", titulo], check=True)
+        for p in PLATAFORMAS.values():
+            for f in sorted((base / p["pasta"]).iterdir()):
+                if f.suffix in (".mp4", ".jpg", ".txt"):
+                    z.write(f, f"{p['pasta']}/{f.name}")
+    asset = base / "_envio" / f"bino-explica-pacote-{agora():%d-%m}.zip"
+    asset.parent.mkdir(exist_ok=True)
+    shutil.copyfile(zipar, asset)
+    n_ig = sum(x["plataforma"] == "instagram" for x in pac["videos"])
+    n_tt = sum(x["plataforma"] == "tiktok" for x in pac["videos"])
+    completo = n_ig >= total and n_tt >= total
+    titulo = f"📦 Pacote — Instagram {n_ig}/{total} · TikTok {n_tt}/{total}{'' if completo else ' (parcial)'}"
+    if subprocess.run(["gh", "release", "view", pac["id"]], capture_output=True).returncode != 0:
+        subprocess.run(["gh", "release", "create", pac["id"], str(asset), "--title", titulo, "--latest=false",
+                        "--notes", "Baixe o .zip: pastas Instagram/ e TikTok/ com vídeos, capas e legendas."], check=True)
     else:
-        subprocess.run(["gh", "release", "create", pac["id"], str(zipar), str(pasta_pac / "LEGENDAS.md"), "--title", titulo,
-                        "--notes", "Baixe o .zip: vídeos, capas e LEGENDAS.md (legendas e hashtags de Instagram e TikTok).",
-                        "--latest=false"], check=True)
-    pac["fechado"] = completo and all(v.get("arquivo_tiktok") for v in pac["videos"])
+        subprocess.run(["gh", "release", "upload", pac["id"], str(asset), "--clobber"], check=True)
+        subprocess.run(["gh", "release", "edit", pac["id"], "--title", titulo], check=True)
+    pac["fechado"] = completo
     PACOTE.write_text(json.dumps(pac, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"::notice::{titulo} em Releases ({pac['id']})")
     if not completo:
-        print(f"::warning::Faltaram {total - len(pac['videos'])} vídeos (cota da IA grátis). Rode 'pacote' de novo para completar.")
+        print("::warning::Pacote incompleto (cota da IA grátis ou temas recusados). Rode 'pacote' de novo para completar.")
 
 
 # =================================================================== versão TikTok (mais de 1 minuto)
