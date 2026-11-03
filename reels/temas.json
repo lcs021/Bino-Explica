@@ -1684,5 +1684,668 @@
     },
     "visto": "2026-11-02T20:36-03:00",
     "status": "na reserva"
+  },
+  {
+    "tema": "O fenômeno da chuva de peixes em Yoro, onde peixes vivos caem do céu anualmente após tempestades violentas.",
+    "categoria": "curiosidades inacreditáveis",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-02T23:46-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "A ilusão da caixa de espelho que engana o cérebro humano para aliviar dores misteriosas em membros amputados.",
+    "categoria": "corpo humano",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T23:46-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O fenômeno do Relâmpago do Catatumbo, o lugar na Terra atingido por tempestades elétricas quase 300 noites por ano.",
+    "categoria": "fenômenos naturais",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T23:46-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "Como o sistema de GPS precisa recalibrar o tempo diariamente devido ao efeito de dilatação temporal previsto por Einstein.",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T23:46-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "Como os tardígrados conseguem sobreviver ao vácuo do espaço e a temperaturas extremas desidratando quase todo o próprio corpo.",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 7,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T23:46-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "A Batalha de Karánsebes, na qual o exército austríaco atacou a si mesmo por engano após uma disputa por bebidas.",
+    "categoria": "história",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-02T23:46-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "A gigante tempestade com formato geométrico de hexágono perfeito no polo norte do planeta Saturno.",
+    "categoria": "espaço",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T23:46-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O efeito espectador e como a presença de muitas testemunhas reduz a chance de alguém ajudar durante uma emergência.",
+    "categoria": "psicologia",
+    "pontuacao": 85.7,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 8,
+      "originalidade": 7,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-02T23:46-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O mecanismo de defesa do lagarto-de-chumbo que consegue esguichar sangue direto dos próprios olhos para afastar predadores.",
+    "categoria": "curiosidades inacreditáveis",
+    "pontuacao": 95.7,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:04-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O fenômeno psicológico da Criptomnésia, quando o cérebro humano esquece que teve uma ideia e acredita ter inventado algo do zero.",
+    "categoria": "psicologia",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:04-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A misteriosa anomalia magnética que faz os satélites da Terra sofrerem falhas temporárias ao passar sobre a América do Sul.",
+    "categoria": "espaço",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 10,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:04-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "Como as árvores da mesma espécie conseguem se comunicar e trocar nutrientes por meio de uma rede subterrânea de fungos chamada micorriza.",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:04-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "A origem histórica do uso do sal como moeda de troca e de onde surgiu a palavra salário na Roma Antiga.",
+    "categoria": "conhecimentos gerais",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:04-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O fenômeno do canto das dunas de areia que emite um som semelhante ao de um motor de avião em desertos específicos.",
+    "categoria": "fenômenos naturais",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:04-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O Efeito Estroboscópico natural que faz colibris parecerem parados no ar e como o cérebro humano processa essa ilusão.",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:04-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "Como o navegador brasileiro João da Nova descobriu a remota Ilha de Ascensão no meio do Oceano Atlântico no século XVI.",
+    "categoria": "história",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:04-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A 'Guerra dos Emus' na Austrália foi um conflito inusitado em que o exército usou metralhadoras contra aves gigantes e perdeu.",
+    "categoria": "história",
+    "pontuacao": 95.7,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:09-03:00",
+    "status": "descartado",
+    "motivo": "não achei fonte confiável para este tema"
+  },
+  {
+    "tema": "O disco de vinil da Voyager carrega sons da Terra e saudações em 55 idiomas para civilizações alienígenas no espaço profundo.",
+    "categoria": "espaço",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:09-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O Manuscrito Voynich é um livro ilustrado centenas de anos atrás escrito em um idioma desconhecido que nenhum criptógrafo conseguiu decifrar.",
+    "categoria": "curiosidades inacreditáveis",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:09-03:00",
+    "status": "escolhido"
+  },
+  {
+    "tema": "O tardígrado consegue sobreviver ao vácuo do espaço e a temperaturas extremas ao entrar em um estado de animação suspensa chamado criptobiose.",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:09-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A orelha e o nariz humanos nunca param de crescer ao longo da vida devido à contínua gravidade e à expansão da cartilagem.",
+    "categoria": "corpo humano",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-03T00:09-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O Efeito Baader-Meinhof explica por que começamos a notar algo com frequência logo após descobrirmos sua existência.",
+    "categoria": "psicologia",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-03T00:09-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O fenômeno do 'Raios Globulares' cria esferas luminosas misteriosas que flutuam durante tempestades e podem atravessar paredes.",
+    "categoria": "fenômenos naturais",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-03T00:09-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O vidro de Corning, conhecido como 'Gorilla Glass', foi inventado por acaso durante pesquisas militares na década de 1960.",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:09-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "Como o mel puro de abelhas encontrado em tumbas do Antigo Egito permaneceu comestível após milênios devido à sua química.",
+    "categoria": "curiosidades inacreditáveis",
+    "pontuacao": 97.1,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:14-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A Grande Guerra do Emu na Austrália, quando o governo enviou soldados com metralhadoras para combater uma praga de aves e perdeu.",
+    "categoria": "história",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:14-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "A capacidade dos pulmões humanos de conter uma superfície interna equivalente a uma quadra de tênis devido aos alvéolos.",
+    "categoria": "corpo humano",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:14-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O tardígrado, animal microscópico capaz de sobreviver ao vácuo do espaço e a temperaturas extremas através da criptobiose.",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:14-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O fenômeno óptico da Fata Morgana, uma miragem complexa no horizonte que faz ilhas e cidades distantes parecerem flutuar.",
+    "categoria": "fenômenos naturais",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:14-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O Efeito Baader-Meinhof, fenômeno cognitivo que nos faz notar repetidamente uma palavra ou objeto recém-aprendido.",
+    "categoria": "psicologia",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-03T00:14-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "Como o efeito Mpemba faz com que, sob certas condições, a água quente congele mais rápido do que a água fria.",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:14-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "A existência de dias em Vênus que duram mais do que o seu próprio ano ao redor do Sol.",
+    "categoria": "espaço",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:14-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O curioso viés cognitivo do Efeito Dunning-Kruger, que faz com que pessoas com baixa competência em uma área superestimem sua própria inteligência",
+    "categoria": "psicologia",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:28-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A existência de exoplanetas onde chove vidro de lado devido a ventos furiosos e temperaturas extremas",
+    "categoria": "espaço",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-03T00:28-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A impressionante capacidade do polvo de possuir neurônios espalhados por seus tentáculos, permitindo que eles pensem e ajam de forma independente",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:28-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A curiosa origem histórica das impressões digitais na criminologia e como o sistema brasileiro de identificação dactiloscópica se tornou pioneiro mundial",
+    "categoria": "conhecimentos gerais",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 10,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:28-03:00",
+    "status": "escolhido"
+  },
+  {
+    "tema": "O reflexo de mergulho mamífero, um mecanismo de sobrevivência que faz o corpo humano desacelerar os batimentos cardíacos ao entrar em contato com a água fria",
+    "categoria": "corpo humano",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:28-03:00",
+    "status": "escolhido"
+  },
+  {
+    "tema": "O efeito da gravidade da Terra sobre o tempo, fazendo com que relógios no nível do mar corram ligeiramente mais devagar do que no alto de montanhas",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:28-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A história da criação da primeira máquina de calcular mecânica da antiguidade, o Mecanismo de Anticítera, construído há mais de dois mil anos",
+    "categoria": "história",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 8,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T00:28-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O fenômeno do canto das dunas de areia, onde desertos emitem sons musicais de baixa frequência que lembram instrumentos musicais",
+    "categoria": "fenômenos naturais",
+    "pontuacao": 85.7,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-03T00:28-03:00",
+    "status": "na reserva"
   }
 ]

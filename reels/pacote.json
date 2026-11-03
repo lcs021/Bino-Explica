@@ -1,96 +1,193 @@
 {
-  "id": "pacote-20261102-2008",
-  "criado": "2026-11-02T20:08-03:00",
+  "versao": 2,
+  "id": "pacote-20261102-2344",
+  "criado": "2026-11-02T23:44-03:00",
   "videos": [
     {
+      "plataforma": "instagram",
       "n": 1,
-      "tema": "O aerogel, conhecido como 'fumaça sólida', é um dos materiais mais leves do mundo e resiste a temperaturas extremas",
-      "titulo": "O Material Mais Leve Que o Ar",
-      "arquivo": "01-o-material-mais-leve-que-o-ar-REELS.mp4",
-      "capa": "01-o-material-mais-leve-que-o-ar-capa.jpg",
-      "duracao": 36.9,
+      "tema": "A ilusão da caixa de espelho que engana o cérebro humano para aliviar dores misteriosas em membros amputados.",
+      "titulo": "A Caixa Que Engana a Dor",
+      "duracao": 46.2,
       "qualidade": 100,
       "abertura": "historia",
-      "gancho": "Em dezenovecentos e trinta e um, uma aposta gerou uma fumaça sólida.",
-      "legenda_instagram": "Em dezenovecentos e trinta e um, uma aposta gerou uma fumaça sólida chamada aerogel. Um material com porosidade absurda que surpreende a ciência. Você usaria um casaco feito disso? Segue o @binoteexplica pra mais curiosidades.\n\nFontes: Wikipédia: Aerogel\n\n#aerogel #ciencia #curiosidades #fumacassolida #binoteexplica #fisica",
+      "gancho": "Olha só o que acontece quando o cérebro perde um pedaço do corpo e fica confuso.",
+      "legenda": "Olha só o que acontece quando o cérebro perde um pedaço do corpo e fica confuso. Descubra como funciona a incrível caixa de espelhos e a mente humana. Será que a sua mente conseguiria cair nessa ilusão? Comenta aqui embaixo e segue o @binoteexplica pra mais curiosidades.\n\nFontes: Wikipédia: Membro-fantasma, Wikipédia: Caixa de espelhos\n\n#ciencia #curiosidades #neurologia #corpomano #membrofantasma #psicologia #binoteexplica",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Aerogel"
+        "https://pt.wikipedia.org/wiki/Membro-fantasma",
+        "https://pt.wikipedia.org/wiki/Caixa_de_espelhos"
       ],
-      "legenda_tiktok": "Já viu uma fumaça sólida mais leve que o ar? Comenta aqui embaixo e segue o Bino Explica pra mais.\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#aerogel #ciencia #curiosidades #vocesabia #aprendanotiktok",
-      "arquivo_tiktok": "01-o-material-mais-leve-que-o-ar-TIKTOK.mp4",
-      "duracao_tiktok": 72.2
+      "arquivo": "01 - A Caixa Que Engana a Dor.mp4",
+      "capa": "01 - A Caixa Que Engana a Dor - capa.jpg",
+      "asset_mp4": "IG-01-a-caixa-que-engana-a-dor.mp4",
+      "asset_capa": "IG-01-a-caixa-que-engana-a-dor-capa.jpg"
     },
     {
+      "plataforma": "instagram",
       "n": 2,
-      "tema": "O peixe-lanterna usa uma haste brilhante com bactérias simbióticas para atrair presas e parceiros nas profundezas escuras do oceano",
-      "titulo": "O Segredo Brilhante do Fundo do Mar",
-      "arquivo": "02-o-segredo-brilhante-do-fundo-do-mar-REELS.mp4",
-      "capa": "02-o-segredo-brilhante-do-fundo-do-mar-capa.jpg",
-      "duracao": 44.2,
+      "tema": "Como o sistema de GPS precisa recalibrar o tempo diariamente devido ao efeito de dilatação temporal previsto por Einstein.",
+      "titulo": "O GPS e Einstein",
+      "duracao": 44.4,
       "qualidade": 100,
       "abertura": "desafio",
-      "gancho": "Aposto que você não sabe qual é o peixe mais comum lá no fundo do mar.",
-      "legenda_instagram": "Aposto que você não sabe qual é o bicho mais comum do fundo do mar. O fundo do oceano esconde segredos brilhantes que vão te surpreender. Qual bicho das profundezas você acha mais estranho? Segue o @binoteexplica pra mais curiosidades.\n\nFontes: Wikipédia: Fauna abissal, Wikipédia: Bioluminescência\n\n#bioluminescencia #fundodomar #oceanos #curiosidades #animaismarinhos #binoteexplica",
+      "gancho": "Aposto que você não sabe que o seu GPS só funciona por causa de Albert Einstein.",
+      "legenda": "Aposto que você não sabia que o seu GPS depende de teorias criadas por Albert Einstein há mais de um século. Descubra como a física do espaço afeta o seu celular todos os dias. Você imaginava que o tempo passava diferente lá em cima? Segue o @binoteexplica pra mais curiosidades.\n\nFontes: Wikipédia: Sistema de posicionamento global, Wikipédia: Teoria da relatividade\n\n#ciencia #einstein #fisica #gps #curiosidades #relatividade #espaco",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Fauna_abissal",
-        "https://pt.wikipedia.org/wiki/Bioluminesc%C3%AAncia"
+        "https://pt.wikipedia.org/wiki/Sistema_de_posicionamento_global",
+        "https://pt.wikipedia.org/wiki/Teoria_da_relatividade"
       ],
-      "legenda_tiktok": "Aposto que você não sabe qual é o peixe mais comum lá no fundo do mar. Qual bicho você acha mais estranho?\n\nSegue o @bino.explica1 👀 #curiosidades #vocesabia #aprendanotiktok"
+      "arquivo": "02 - O GPS e Einstein.mp4",
+      "capa": "02 - O GPS e Einstein - capa.jpg",
+      "asset_mp4": "IG-02-o-gps-e-einstein.mp4",
+      "asset_capa": "IG-02-o-gps-e-einstein-capa.jpg"
     },
     {
+      "plataforma": "instagram",
       "n": 3,
-      "tema": "A fascinante história de como o navegador Amyr Klink cruzou o Oceano Atlântico a remo em um barco construído no Brasil",
-      "titulo": "A Travessia Sozinha a Remo",
-      "arquivo": "03-a-travessia-sozinha-a-remo-REELS.mp4",
-      "capa": "03-a-travessia-sozinha-a-remo-capa.jpg",
-      "duracao": 39.2,
+      "tema": "A gigante tempestade com formato geométrico de hexágono perfeito no polo norte do planeta Saturno.",
+      "titulo": "O hexágono misterioso de Saturno",
+      "duracao": 39.8,
       "qualidade": 100,
       "abertura": "numero",
-      "gancho": "Cem dias remando sozinho pelo oceano parece loucura, nao e?",
-      "legenda_instagram": "Cem dias remando sozinho pelo oceano parece loucura, mas aconteceu! Amyr Klink cruzou o Atlântico a remo da Namíbia até a Bahia. Voce teria coragem de fazer o mesmo? Segue o @binoteexplica\n\nFontes: Wikipédia: Amyr Klink\n\n#amyrklink #atlanticosul #remador #curiosidades #viagem #historia",
+      "gancho": "Treze mil e oitocentos quilômetros de pura loucura espacial.",
+      "legenda": "Treze mil e oitocentos quilômetros de pura loucura espacial. Esse formato geométrico em Saturno desafia a lógica e ainda consegue mudar de cor. Você acha que isso é um fenômeno natural ou tem algo estranho aí? Segue o @binoteexplica pra mais curiosidades.\n\nFontes: Wikipédia: Hexágono de Saturno\n\n#astronomia #saturno #espaco #curiosidades #universo #ciencia #binoteexplica",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Amyr_Klink"
+        "https://pt.wikipedia.org/wiki/Hex%C3%A1gono_de_Saturno"
       ],
-      "legenda_tiktok": "Voce cruzaria o Atlantico a remo? Comenta aqui embaixo e segue o Bino Explica!\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#amyrklink #atlantico #viagem #curiosidades #vocesabia #aprendanotiktok",
-      "arquivo_tiktok": "03-a-travessia-sozinha-a-remo-TIKTOK.mp4",
-      "duracao_tiktok": 73.2
+      "arquivo": "03 - O hexágono misterioso de Saturno.mp4",
+      "capa": "03 - O hexágono misterioso de Saturno - capa.jpg",
+      "asset_mp4": "IG-03-o-hexagono-misterioso-de-saturno.mp4",
+      "asset_capa": "IG-03-o-hexagono-misterioso-de-saturno-capa.jpg"
     },
     {
+      "plataforma": "instagram",
       "n": 4,
-      "tema": "O fenômeno natural da bioluminescência em praias brasileiras causado pela proliferação de microalgas dinoflageladas",
-      "titulo": "O segredo do mar brilhante",
-      "arquivo": "04-o-segredo-do-mar-brilhante-REELS.mp4",
-      "capa": "04-o-segredo-do-mar-brilhante-capa.jpg",
-      "duracao": 40.7,
+      "tema": "O fenômeno psicológico da Criptomnésia, quando o cérebro humano esquece que teve uma ideia e acredita ter inventado algo do zero.",
+      "titulo": "A Memória Oculta do Cérebro",
+      "duracao": 39.2,
       "qualidade": 100,
       "abertura": "pergunta",
-      "gancho": "Por que o oceano brilha no escuro?",
-      "legenda_instagram": "Por que o oceano brilha no escuro? O mar guarda segredos luminosos antigos e criaturas surpreendentes com muito mais genética do que você imagina. Você teria coragem de nadar em águas brilhantes à noite? Segue o @binoteexplica para não perder nenhuma curiosidade.\n\nFontes: Wikipédia: Bioluminescência, Wikipédia: Dinoflagelado\n\n#bioluminescencia #curiosidades #oceano #ciencia #mar #fatosinteressantes #biologia",
+      "gancho": "Já achou que teve uma ideia genial que na verdade era só lembrança?",
+      "legenda": "Já achou que teve uma ideia genial que na verdade era só lembrança? O cérebro esconde memórias e nos faz acreditar que criamos algo do zero. Qual foi a ideia mais doida que você já teve? Deixa nos comentários e segue o @binoteexplica pra mais curiosidades.\n\nFontes: Wikipédia: Criptomnésia\n\n#criptomnesia #psicologia #curiosidades #cerebro #memoria #ciencia",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Bioluminesc%C3%AAncia",
-        "https://pt.wikipedia.org/wiki/Dinoflagelado"
+        "https://pt.wikipedia.org/wiki/Criptomn%C3%A9sia"
       ],
-      "legenda_tiktok": "Já reparou que o mar brilha no escuro? Você teria coragem de nadar nessas águas?\n\nSegue o @bino.explica1 👀 #curiosidades #vocesabia #aprendanotiktok"
+      "arquivo": "04 - A Memória Oculta do Cérebro.mp4",
+      "capa": "04 - A Memória Oculta do Cérebro - capa.jpg",
+      "asset_mp4": "IG-04-a-memoria-oculta-do-cerebro.mp4",
+      "asset_capa": "IG-04-a-memoria-oculta-do-cerebro-capa.jpg"
     },
     {
+      "plataforma": "instagram",
       "n": 5,
-      "tema": "O dia em que a erupção do vulcão Krakatoa gerou o som mais alto já ouvido na história da humanidade",
-      "titulo": "O som mais alto da história",
-      "arquivo": "05-o-som-mais-alto-da-historia-REELS.mp4",
-      "capa": "05-o-som-mais-alto-da-historia-capa.jpg",
-      "duracao": 51.8,
+      "tema": "O disco de vinil da Voyager carrega sons da Terra e saudações em 55 idiomas para civilizações alienígenas no espaço profundo.",
+      "titulo": "A mensagem da Terra para o espaço",
+      "duracao": 43.0,
       "qualidade": 100,
       "abertura": "afirmacao",
-      "gancho": "Esse vulcão causou o som mais alto de toda a história humana.",
-      "legenda_instagram": "Esse vulcão causou o som mais alto de toda a história humana. A explosão foi ouvida a milhares de quilômetros de distância e confundida com uma guerra. Você conseguiria dormir com esse barulho? Comenta aqui embaixo e segue o @binoteexplica pra mais curiosidades.\n\nFontes: Wikipédia: Krakatoa, Wikipédia: Erupção do Krakatoa em 1883\n\n#Krakatoa #vulcão #curiosidades #história #ciencia #fatos #surpreendente",
+      "gancho": "Tem uma agulha tocando um disco de vinil viajando bem longe no espaço sideral.",
+      "legenda": "Tem uma agulha tocando um disco de vinil viajando bem longe no espaço sideral. Essa cápsula do tempo leva sons e imagens da nossa cultura para quem estiver lá fora. Qual música da Terra você mandaria para o espaço? Segue o @binoteexplica pra mais curiosidades.\n\nFontes: Wikipédia: Voyager Golden Record, Wikipédia: Programa Voyager\n\n#espaco #voyager #carlsagan #astronomia #curiosidades #ciencia",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Krakatoa",
-        "https://pt.wikipedia.org/wiki/Erup%C3%A7%C3%A3o_do_Krakatoa_em_1883"
+        "https://pt.wikipedia.org/wiki/Voyager_Golden_Record",
+        "https://pt.wikipedia.org/wiki/Programa_Voyager"
       ],
-      "arquivo_tiktok": "05-o-som-mais-alto-da-historia-TIKTOK.mp4",
-      "duracao_tiktok": 62.2,
-      "legenda_tiktok": "Já ouviu falar do som mais assustador da história? O Krakatoa chocou o mundo inteiro. Comenta aqui embaixo! #curiosidades #historia #krakatoa #ciencia #fatosreais\n\nSegue o @bino.explica1 pra mais curiosidades 👀"
+      "arquivo": "05 - A mensagem da Terra para o espaço.mp4",
+      "capa": "05 - A mensagem da Terra para o espaço - capa.jpg",
+      "asset_mp4": "IG-05-a-mensagem-da-terra-para-o-espaco.mp4",
+      "asset_capa": "IG-05-a-mensagem-da-terra-para-o-espaco-capa.jpg"
+    },
+    {
+      "plataforma": "tiktok",
+      "n": 1,
+      "tema": "Como o mel puro de abelhas encontrado em tumbas do Antigo Egito permaneceu comestível após milênios devido à sua química.",
+      "titulo": "O Mel Dura Para Sempre",
+      "duracao": 73.1,
+      "qualidade": 100,
+      "abertura": "historia",
+      "gancho": "Em uma colmeia movimentada, as abelhas geram calor corporal para manter uma temperatura de cerca de trinta e cinco graus nas zonas de armazenamento do mel.",
+      "legenda": "O mel pode durar para sempre? Qual comida você queria que durasse para sempre?\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#mel #abelhas #curiosidades #vocesabia #aprendanotiktok",
+      "fontes": [
+        "https://pt.wikipedia.org/wiki/Mel"
+      ],
+      "arquivo": "01 - O Mel Dura Para Sempre.mp4",
+      "capa": "01 - O Mel Dura Para Sempre - capa.jpg",
+      "asset_mp4": "TT-01-o-mel-dura-para-sempre.mp4",
+      "asset_capa": "TT-01-o-mel-dura-para-sempre-capa.jpg"
+    },
+    {
+      "plataforma": "tiktok",
+      "n": 2,
+      "tema": "O tardígrado, animal microscópico capaz de sobreviver ao vácuo do espaço e a temperaturas extremas através da criptobiose.",
+      "titulo": "O animal indestrutível do espaço",
+      "duracao": 67.5,
+      "qualidade": 100,
+      "abertura": "desafio",
+      "gancho": "Aposto que você não conhece um bicho tão forte que consegue sobreviver no vácuo do espaço sem usar nenhum tipo de equipamento especial.",
+      "legenda": "Já conhecia o tardígrado, o animal que sobrevive no espaço sem equipamento? Qual bicho é mais forte? Comenta aqui\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#tardigrado #curiosidades #ciencia #vocesabia #aprendanotiktok",
+      "fontes": [
+        "https://pt.wikipedia.org/wiki/Tardigrada",
+        "https://pt.wikipedia.org/wiki/Criptobiose"
+      ],
+      "arquivo": "02 - O animal indestrutível do espaço.mp4",
+      "capa": "02 - O animal indestrutível do espaço - capa.jpg",
+      "asset_mp4": "TT-02-o-animal-indestrutivel-do-espaco.mp4",
+      "asset_capa": "TT-02-o-animal-indestrutivel-do-espaco-capa.jpg"
+    },
+    {
+      "plataforma": "tiktok",
+      "n": 3,
+      "tema": "O curioso viés cognitivo do Efeito Dunning-Kruger, que faz com que pessoas com baixa competência em uma área superestimem sua própria inteligência",
+      "titulo": "O Efeito Dunning-Kruger",
+      "duracao": 78.3,
+      "qualidade": 100,
+      "abertura": "numero",
+      "gancho": "Sessenta e dois por cento é onde pessoas muito ruins acham que estão posicionadas na vida, mesmo sendo péssimas em quase tudo que fazem.",
+      "legenda": "Você se acha o mestre de algo? O efeito Dunning-Kruger explica por que a ignorância traz confiança. Conhece alguém assim? Comenta aqui\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#psicologia #dunningkruger #curiosidades #vocesabia #aprendanotiktok",
+      "fontes": [
+        "https://pt.wikipedia.org/wiki/Efeito_Dunning%E2%80%93Kruger"
+      ],
+      "arquivo": "03 - O Efeito Dunning-Kruger.mp4",
+      "capa": "03 - O Efeito Dunning-Kruger - capa.jpg",
+      "asset_mp4": "TT-03-o-efeito-dunning-kruger.mp4",
+      "asset_capa": "TT-03-o-efeito-dunning-kruger-capa.jpg"
+    },
+    {
+      "plataforma": "tiktok",
+      "n": 4,
+      "tema": "A existência de exoplanetas onde chove vidro de lado devido a ventos furiosos e temperaturas extremas",
+      "titulo": "O planeta onde chove vidro",
+      "duracao": 73.7,
+      "qualidade": 100,
+      "abertura": "pergunta",
+      "gancho": "Já imaginou um lugar onde chove vidro derretido? Pois é, esse planeta existe de verdade e ele fica bem longe do nosso Sistema Solar.",
+      "legenda": "Você moraria em um planeta onde chove vidro? Comenta aqui e segue o Bino Explica para mais curiosidades\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#astronomia #espaco #ciencia #curiosidades #vocesabia #aprendanotiktok",
+      "fontes": [
+        "https://pt.wikipedia.org/wiki/HD_189733_b"
+      ],
+      "arquivo": "04 - O planeta onde chove vidro.mp4",
+      "capa": "04 - O planeta onde chove vidro - capa.jpg",
+      "asset_mp4": "TT-04-o-planeta-onde-chove-vidro.mp4",
+      "asset_capa": "TT-04-o-planeta-onde-chove-vidro-capa.jpg"
+    },
+    {
+      "plataforma": "tiktok",
+      "n": 5,
+      "tema": "A impressionante capacidade do polvo de possuir neurônios espalhados por seus tentáculos, permitindo que eles pensem e ajam de forma independente",
+      "titulo": "O polvo não controla os braços",
+      "duracao": 72.7,
+      "qualidade": 100,
+      "abertura": "afirmacao",
+      "gancho": "Seu braço tem vontade própria e você nem faz ideia disso.",
+      "legenda": "O polvo não controla os braços como a gente imagina. Você teria coragem de tocar em um? Comenta aqui embaixo.\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#polvo #curiosidades #biologia #vocesabia #aprendanotiktok",
+      "fontes": [
+        "https://pt.wikipedia.org/wiki/Polvo"
+      ],
+      "arquivo": "05 - O polvo não controla os braços.mp4",
+      "capa": "05 - O polvo não controla os braços - capa.jpg",
+      "asset_mp4": "TT-05-o-polvo-nao-controla-os-bracos.mp4",
+      "asset_capa": "TT-05-o-polvo-nao-controla-os-bracos-capa.jpg"
     }
   ],
-  "fechado": false
+  "fechado": true,
+  "total": 5
 }

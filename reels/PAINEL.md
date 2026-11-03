@@ -1,6 +1,6 @@
 # 🎛️ Painel do Bino Explica — Reels
 
-Atualizado em 02/11/2026 às 21:07 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
+Atualizado em 03/11/2026 às 00:49 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
 
 ## Visão geral
 
@@ -14,13 +14,13 @@ Atualizado em 02/11/2026 às 21:07 (horário de Brasília) · automação **▶�
 
 | Dia | Reels (horário · status · título) |
 |---|---|
-| dom 01/11 | — |
-| seg 02/11 (hoje) | 12:30 ✅ [A inacreditável Guerra dos Emus](https://www.instagram.com/reel/DfPwPqrEUIu/) · 19:30 — livre |
-| ter 03/11 | 12:30 — livre · 19:30 — livre |
+| seg 02/11 | 12:30 ✅ [A inacreditável Guerra dos Emus](https://www.instagram.com/reel/DfPwPqrEUIu/) |
+| ter 03/11 (hoje) | 12:30 — livre · 19:30 — livre |
 | qua 04/11 | 12:30 — livre · 19:30 — livre |
 | qui 05/11 | 12:30 — livre · 19:30 — livre |
 | sex 06/11 | 12:30 — livre · 19:30 — livre |
 | sáb 07/11 | 12:30 — livre · 19:30 — livre |
+| dom 08/11 | 12:30 — livre · 19:30 — livre |
 
 ## 🛠️ Produção
 
@@ -46,7 +46,7 @@ Nada em produção agora.
 
 ## 🎚️ Controle
 
-- Limites por dia: **4** produções · **160** pedidos à IA (hoje: 2 produções, 64 pedidos) · custo: **R$ 0** (tudo grátis)
+- Limites por dia: **4** produções · **160** pedidos à IA (hoje: 0 produções, 0 pedidos) · custo: **R$ 0** (tudo grátis)
 - Comandos: aba **Actions → Reels Instagram (automático) → Run workflow** e escolha a ação:
   - `pausar` / `retomar` — para ou volta toda a automação
   - `reagendar` — informe o **id** do Reel e o novo **quando** (ex.: `05/11 19:30`)
@@ -59,6 +59,16 @@ Nada em produção agora.
 
 ## 📝 Registro de atividades
 
+- 2026-11-03 00:48 · pacote: TikTok 5/5 pronto (73s, 100/100): O polvo não controla os braços
+- 2026-11-03 00:43 · pacote: TikTok 4/5 pronto (74s, 100/100): O planeta onde chove vidro
+- 2026-11-03 00:36 · pacote: TikTok 3/5 pronto (78s, 100/100): O Efeito Dunning-Kruger
+- 2026-11-03 00:27 · pacote: TikTok 2/5 pronto (68s, 100/100): O animal indestrutível do espaço
+- 2026-11-03 00:20 · pacote: TikTok 1/5 pronto (73s, 100/100): O Mel Dura Para Sempre
+- 2026-11-03 00:14 · pacote: Instagram 5/5 pronto (43s, 100/100): A mensagem da Terra para o espaço
+- 2026-11-03 00:08 · pacote: Instagram 4/5 pronto (39s, 100/100): A Memória Oculta do Cérebro
+- 2026-11-03 00:04 · pacote: Instagram 3/5 pronto (40s, 100/100): O hexágono misterioso de Saturno
+- 2026-11-02 23:59 · pacote: Instagram 2/5 pronto (44s, 100/100): O GPS e Einstein
+- 2026-11-02 23:54 · pacote: Instagram 1/5 pronto (46s, 100/100): A Caixa Que Engana a Dor
 - 2026-11-02 20:46 · pacote: Vídeo 5/5 pronto (52s, 100/100): O som mais alto da história
 - 2026-11-02 20:46 · tiktok: Versão TikTok pronta (62s): O som mais alto da história
 - 2026-11-02 20:29 · pacote: Vídeo 4/5 pronto (41s, 100/100): O segredo do mar brilhante
@@ -74,13 +84,3 @@ Nada em produção agora.
 - 2026-11-02 16:48 · youtube: Começou o vídeo longo: E se a Lua simplesmente desaparecesse do dia para a noite?
 - 2026-11-02 16:48 · youtube: Tema descartado: O Incidente da Passagem Dyatlov: a ciência finalmente explicou o mistério da montanha da morte? — as fontes não sustentam um vídeo de 10 minutos sobre o tema
 - 2026-11-02 16:47 · youtube: Começou o vídeo longo: O Incidente da Passagem Dyatlov: a ciência finalmente explicou o mistério da montanha da morte?
-- 2026-11-02 16:47 · youtube: Tema descartado: A Epidemia de Dança de 1518: o estranho caso de centenas de pessoas que dançaram até a morte — roteiro reprovado 3 vezes
-- 2026-11-02 16:27 · youtube: Começou o vídeo longo: A Epidemia de Dança de 1518: o estranho caso de centenas de pessoas que dançaram até a morte
-- 2026-11-02 14:29 · youtube: Tema descartado: Fordlândia: a surreal cidade americana abandonada no meio da Amazônia — Extra data: line 1 column 7822 (char 7821)
-- 2026-11-02 14:13 · youtube: Começou o vídeo longo: Fordlândia: a surreal cidade americana abandonada no meio da Amazônia
-- 2026-11-02 14:13 · youtube: Tema descartado: A Expedição Endurance: a inacreditável jornada de sobrevivência na Antártida — Expecting ',' delimiter: line 1 column 3073 (char 3072)
-- 2026-11-02 14:05 · youtube: Começou o vídeo longo: A Expedição Endurance: a inacreditável jornada de sobrevivência na Antártida
-- 2026-11-02 14:05 · youtube: Tema descartado: E se a Terra parasse de girar? As consequências científicas catastróficas — as fontes não sustentam um vídeo de 10 minutos sobre o tema
-- 2026-11-02 14:05 · youtube: Começou o vídeo longo: E se a Terra parasse de girar? As consequências científicas catastróficas
-- 2026-11-02 13:38 · publicação: Publicado: A inacreditável Guerra dos Emus → https://www.instagram.com/reel/DfPwPqrEUIu/
-- 2026-11-02 13:31 · publicação: Falha ao publicar 'A inacreditável Guerra dos Emus' (1/3): Envio ao Instagram falhou (400): {"debug_info":{"retriable":false,"type":"ProcessingFailedError","message":"Request processing failed"}}
