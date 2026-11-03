@@ -489,8 +489,9 @@ def produzir_pacote(total=5):
             log.warning(f"{len(perdidos)} vídeo(s) da rodada anterior não chegaram ao Releases; serão refeitos com outros temas.")
             pac["videos"] = [v for v in pac["videos"] if v["arquivo"] in no_release]
         for v in pac["videos"]:
-            subprocess.run(["gh", "release", "download", pac["id"], "-p", v["arquivo"], "-p", v["capa"], "-D",
-                            str(pasta_pac), "--clobber"], capture_output=True)
+            pad = ["-p", v["arquivo"], "-p", v["capa"]] + (["-p", v["arquivo_tiktok"]] if v.get("arquivo_tiktok") else [])
+            subprocess.run(["gh", "release", "download", pac["id"], *pad, "-D", str(pasta_pac), "--clobber"],
+                           capture_output=True)
     for v in pac["videos"]:
         if not v.get("arquivo_tiktok"):
             try:
