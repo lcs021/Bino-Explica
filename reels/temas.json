@@ -2347,5 +2347,932 @@
     },
     "visto": "2026-11-03T00:28-03:00",
     "status": "na reserva"
+  },
+  {
+    "tema": "A água-viva Turritopsis dohrnii é capaz de reverter seu ciclo biológico de vida e alcançar a imortalidade biológica",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T21:32-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A sinestesia faz com que o cérebro cruze os sentidos humanos, permitindo que pessoas consigam ver sons ou sentir o gosto de cores",
+    "categoria": "psicologia",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T21:32-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "Quase toda a internet global e brasileira trafega por cabos submarinos no fundo dos oceanos e não por satélites",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T21:32-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O fenômeno neurológico da pareidolia faz o cérebro humano identificar rostos em objetos inanimados como tomadas e nuvens",
+    "categoria": "corpo humano",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 7,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T21:32-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O exoplaneta 55 Cancri e possui uma densidade tão alta que cientistas estimam que grande parte de sua massa seja de diamante",
+    "categoria": "espaço",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-03T21:32-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O Relâmpago de Catatumbo gera tempestades elétricas quase diárias na Venezuela com milhares de raios por noite no mesmo local",
+    "categoria": "fenômenos naturais",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T21:32-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A Antártida é cientificamente classificada como o maior deserto do planeta Terra devido aos baixíssimos níveis de precipitação",
+    "categoria": "conhecimentos gerais",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 8,
+      "originalidade": 7,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T21:32-03:00",
+    "status": "escolhido"
+  },
+  {
+    "tema": "A colossal erupção do vulcão Tambora em 1815 bloqueou a luz solar e criou o histórico Ano sem Verão em 1816",
+    "categoria": "história",
+    "pontuacao": 85.7,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T21:32-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A origem anatômica da 'goosebumps' (pele de galinha) e como esse mecanismo de defesa ancestral contra o frio e predadores tornou-se obsoleto nos humanos modernos.",
+    "categoria": "corpo humano",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:27-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O efeito Mpemba, paradoxo termodinâmico comprovado em que a água quente pode congelar mais rápido do que a água fria sob certas condições.",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:27-03:00",
+    "status": "descartado",
+    "motivo": "'list' object has no attribute 'get'"
+  },
+  {
+    "tema": "O curioso incidente de 1908 conhecido como Evento de Tunguska, que derrubou 80 milhões de árvores na Sibéria sem deixar cratera de impacto.",
+    "categoria": "mistérios",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:27-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O peixe-remo, maior peixe ósseo do mundo, que vive nas profundezas e cuja aparição na superfície gerou mitos de predição de terremotos na cultura japonesa.",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:27-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O experimento de Milgram e a surpreendente e assustadora tendência humana de obedecer a figuras de autoridade mesmo contra a própria moral.",
+    "categoria": "psicologia",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:27-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A 'chuva de sangue' causada por ventos do Deserto do Saara que transportam partículas vermelhas para a Europa.",
+    "categoria": "fenômenos naturais",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:27-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "A incrível história do Projeto Azorian, a operação secreta da CIA na Guerra Fria para tentar recuperar um submarino soviético afundado usando um navio disfarçado.",
+    "categoria": "história",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:27-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O fenômeno do 'Cinturão de Van Allen', as perigosas zonas de radiação espacial ao redor da Terra que moldam o desafio das viagens espaciais tripuladas.",
+    "categoria": "espaço",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:27-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O fenômeno do enrugamento dos dedos na água não é apenas uma absorção de líquido, mas uma resposta evolutiva do sistema nervoso para melhorar a aderência em superfícies molhadas.",
+    "categoria": "corpo humano",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:47-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "As pedras que andam na Racetrack Playa no Vale da Morte, que se movimentam sozinhas deixando rastros misteriosos no deserto devido a uma combinação rara de gelo e vento.",
+    "categoria": "mistérios",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:47-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O fenômeno óptico da miragem superior, conhecida como Fata Morgana, que faz navios e cidades inteiras parecerem flutuar no horizonte do mar.",
+    "categoria": "fenômenos naturais",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:47-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "A árvore Tule, no México, possui o tronco mais grosso do mundo, com uma circunferência que exigiria mais de 30 pessoas de mãos dadas para abraçá-lo.",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:47-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "A lua Encélado de Saturno esconde um oceano global subterrâneo de água líquida que ejeta gêiseres espaciais ricos em moléculas orgânicas.",
+    "categoria": "espaço",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:47-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O uso de bactérias comedoras de plástico descobertas em centros de reciclagem que podem revolucionar o combate à poluição global.",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:47-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A curiosa história do relógio de sol portátil viking e como marinheiros navegavam em dias nublados usando pedras solares de calcita.",
+    "categoria": "história",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:47-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O efeito de ozenuma ou a ilusão de que o tempo passa mais devagar quando estamos diante de situações de medo extremo ou surpresa.",
+    "categoria": "psicologia",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-03T22:47-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O estômago humano produz um novo revestimento a cada poucos dias para evitar que digira a si mesmo com o ácido gástrico.",
+    "categoria": "Corpo humano",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:48-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "A existência de árvores que se comunicam subterraneamente através de redes fúngicas para trocar nutrientes e alertar sobre perigos.",
+    "categoria": "Ciência e tecnologia",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:48-03:00",
+    "status": "descartado",
+    "motivo": "'list' object has no attribute 'get'"
+  },
+  {
+    "tema": "O peixe-bolha tem uma aparência gelatinosa bizarra fora d'água, mas sob alta pressão no oceano profundo ele parece um peixe normal.",
+    "categoria": "Curiosidades sobre animais",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:48-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O Efeito Baader-Meinhof explica por que, quando aprendemos algo novo, passamos a notar essa mesma coisa em todos os lugares.",
+    "categoria": "Psicologia",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:48-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O fenômeno do raio verde, um raro clarão luminoso visível no horizonte exatamente no último segundo do pôr do sol.",
+    "categoria": "Fenômenos naturais",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:48-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A curiosa história de como a batata foi rejeitada na Europa por séculos antes de se tornar um alimento básico global.",
+    "categoria": "História",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 10,
+      "compartilhamento": 8,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:48-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A curiosa história do relógio de areia (ampulheta) e como ele era usado para cronometrar o tempo de pregações religiosas na Idade Média.",
+    "categoria": "Conhecimentos gerais",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 10,
+      "compartilhamento": 8,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:48-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O anel de satélite natural de asteroides que circundam Marte e como a gravidade gradual vai destruir a lua Fobos.",
+    "categoria": "Espaço",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:48-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O Efeito Baader-Meinhof faz o cérebro notar com frequência assustadora uma palavra ou objeto recém-aprendido.",
+    "categoria": "psicologia",
+    "pontuacao": 95.7,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:48-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O fenômeno do 'frio na barriga' acontece porque o cérebro desvia o fluxo de sangue do sistema digestivo para os músculos em situações de perigo.",
+    "categoria": "corpo humano",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:48-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O fenômeno do 'mar de lodo' ou plânctons bioluminescentes que fazem ondas inteiras brilharem intensamente no escuro da noite.",
+    "categoria": "fenômenos naturais",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:48-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O uso de papel e caneta para anotações à mão ativa conexões neurais mais profundas do que digitar em teclados digitais.",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:48-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O canto das baleias-jubarte muda e se propaga como um sucesso musical pelas populações do oceano ao longo dos anos.",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:48-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A Lua está lentamente se afastando da Terra a cada ano, o que fará com que os dias no planeta fiquem mais longos no futuro.",
+    "categoria": "espaço",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:48-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A curiosa origem histórica das batatas fritas que revela que elas não foram inventadas na França, mas na Bélgica.",
+    "categoria": "conhecimentos gerais",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-03T22:48-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A invenção do vidro flexível no Império Romano que, segundo relatos históricos, aterrorizou o imperador Tibério por desvalorizar o ouro.",
+    "categoria": "história",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-03T22:48-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O fenômeno do Sol da Meia-Noite que ocorre nos círculos polares e altera a percepção do tempo",
+    "categoria": "Espaço",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:55-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "A fascinante história da redescoberta de Machu Picchu pelas lentes de exploradores no início do século XX",
+    "categoria": "História",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:55-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O misterioso som 'Bloop' detectado no fundo do oceano que intrigou cientistas por anos até sua explicação oficial",
+    "categoria": "Mistérios",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-03T22:55-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O peixe-lanterna e sua incrível capacidade de gerar luz própria através de órgãos chamados fotóforos para caçar nas profundezas",
+    "categoria": "Curiosidades sobre animais",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:55-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A amnésia infantil impede que adultos se lembrem dos primeiros anos de vida devido ao desenvolvimento do hipocampo",
+    "categoria": "Psicologia",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 8,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:55-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O curioso fenômeno meteorológico das pedras esféricas gigantes conhecidas como Moeraki Boulders na Nova Zelândia",
+    "categoria": "Fenômenos naturais",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:55-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A orelha humana continua crescendo lentamente por toda a vida devido à gravidade e ao formato contínuo da cartilagem",
+    "categoria": "Corpo humano",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 8
+    },
+    "visto": "2026-11-03T22:55-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O grafeno, considerado um material milagroso extraído do grafite, é mais forte que o aço e ultrafino",
+    "categoria": "Ciência e tecnologia",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 8,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:55-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A Operação Mincemeat usou um cadáver disfarçado de oficial britânico durante a Segunda Guerra Mundial para enganar estrategistas do Eixo",
+    "categoria": "história",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:58-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "A ilusão da frequência ou Fenômeno Baader-Meinhof faz o cérebro acreditar que uma nova informação recém-descoberta está em toda parte",
+    "categoria": "psicologia",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:58-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "A árvore Jiboia consegue detectar e migrar em direção a superfícies verticais escuras usando um comportamento conhecido como escotropismo",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:58-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O fenômeno do membro fantasma revela como o córtex somatossensorial do cérebro mantém um mapa corporal permanente mesmo após amputações",
+    "categoria": "corpo humano",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:58-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O asteroide troiano de Júpiter chamado 2010 TK7 orbita o Sol exatamente no mesmo caminho que o gigante gasoso sem nunca colidir",
+    "categoria": "espaço",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:58-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O canto dos tubarões abissais e outros sons oceânicos profundos conhecidos como 'O Bloop' desafiaram cientistas por anos até serem explicados por gelo quebrando",
+    "categoria": "mistérios",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:58-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O silício negro, criado por acidente em laboratório, possui uma estrutura microscópica em formato de agulhas que absorve quase 99% da luz incidente",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:58-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A Estação Meteorológica de Denali, no Alasca, resiste a ventos de furacão e temperaturas de 60 graus negativos no topo da montanha mais alta da América do Norte",
+    "categoria": "fenômenos naturais",
+    "pontuacao": 85.7,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T22:58-03:00",
+    "status": "na reserva"
   }
 ]

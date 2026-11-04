@@ -1,6 +1,6 @@
 # 🎛️ Painel do Bino Explica — Reels
 
-Atualizado em 03/11/2026 às 00:49 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
+Atualizado em 03/11/2026 às 22:59 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
 
 ## Visão geral
 
@@ -59,6 +59,15 @@ Nada em produção agora.
 
 ## 📝 Registro de atividades
 
+- 2026-11-03 22:55 · pacote: TikTok 4/5 pronto (63s, 100/100): Por que o corpo treme no perigo
+- 2026-11-03 22:47 · pacote: TikTok 3/5 pronto (72s, 95/100): O Resgate Secreto da CIA
+- 2026-11-03 22:40 · pacote: TikTok 2/5 pronto (73s, 95/100): O experimento proibido de Milgram
+- 2026-11-03 22:34 · pacote: TikTok 1/5 pronto (68s, 100/100): O Monstro Que Prevê Terremotos
+- 2026-11-03 22:27 · pacote: Instagram 5/5 pronto (40s, 95/100): O lugar com mais raios do mundo
+- 2026-11-03 22:23 · pacote: Instagram 4/5 pronto (45s, 100/100): O Planeta Diamante
+- 2026-11-03 22:17 · pacote: Instagram 3/5 pronto (41s, 100/100): Por que enxergamos rostos em tudo?
+- 2026-11-03 22:03 · pacote: Instagram 2/5 pronto (56s, 100/100): Como É Ouvir Cores e Ver Sons?
+- 2026-11-03 21:47 · pacote: Instagram 1/5 pronto (56s, 100/100): A Medusa que Reverte o Próprio Envelhecimento
 - 2026-11-03 00:48 · pacote: TikTok 5/5 pronto (73s, 100/100): O polvo não controla os braços
 - 2026-11-03 00:43 · pacote: TikTok 4/5 pronto (74s, 100/100): O planeta onde chove vidro
 - 2026-11-03 00:36 · pacote: TikTok 3/5 pronto (78s, 100/100): O Efeito Dunning-Kruger
@@ -75,12 +84,3 @@ Nada em produção agora.
 - 2026-11-02 20:25 · pacote: Vídeo 3/5 pronto (39s, 100/100): A Travessia Sozinha a Remo
 - 2026-11-02 20:20 · pacote: Vídeo 2/5 pronto (44s, 100/100): O Segredo Brilhante do Fundo do Mar
 - 2026-11-02 20:13 · pacote: Vídeo 1/5 pronto (37s, 100/100): O Material Mais Leve Que o Ar
-- 2026-11-02 19:50 · pacote: Vídeo 3/14 pronto (74s, 100/100): A cor mais cara da história
-- 2026-11-02 19:41 · pacote: Vídeo 2/14 pronto (83s, 95/100): A ilha proibida de São Paulo
-- 2026-11-02 19:36 · pacote: Vídeo 1/14 pronto (70s, 100/100): O tsunami pegajoso que destruiu Boston
-- 2026-11-02 18:45 · youtube: Vídeo pronto em Releases (yt-20261102-cc6c3); YouTube não conectado.
-- 2026-11-02 18:22 · youtube: Começou o vídeo longo: O Voo 571 da Força Aérea Uruguaia: a incrível história de sobrevivência nos Andes contada passo a passo
-- 2026-11-02 16:49 · youtube: Tema descartado: E se a Lua simplesmente desaparecesse do dia para a noite? — as fontes não sustentam um vídeo de 10 minutos sobre o tema
-- 2026-11-02 16:48 · youtube: Começou o vídeo longo: E se a Lua simplesmente desaparecesse do dia para a noite?
-- 2026-11-02 16:48 · youtube: Tema descartado: O Incidente da Passagem Dyatlov: a ciência finalmente explicou o mistério da montanha da morte? — as fontes não sustentam um vídeo de 10 minutos sobre o tema
-- 2026-11-02 16:47 · youtube: Começou o vídeo longo: O Incidente da Passagem Dyatlov: a ciência finalmente explicou o mistério da montanha da morte?
