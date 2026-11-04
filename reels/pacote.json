@@ -165,8 +165,26 @@
       "capa": "04 - Por que o corpo treme no perigo - capa.jpg",
       "asset_mp4": "TT-04-por-que-o-corpo-treme-no-perigo.mp4",
       "asset_capa": "TT-04-por-que-o-corpo-treme-no-perigo-capa.jpg"
+    },
+    {
+      "plataforma": "tiktok",
+      "n": 5,
+      "tema": "O osso hioide, localizado na garganta, é o único osso do corpo humano que não se articula com nenhum outro osso",
+      "titulo": "O osso solto no pescoço",
+      "duracao": 65.5,
+      "qualidade": 100,
+      "abertura": "afirmacao",
+      "gancho": "Existe um osso no seu pescoço que vive completamente solto, sem encostar em nenhum outro lugar do seu corpo inteiro e pesado.",
+      "legenda": "Existe um osso no seu pescoço que não se liga a nenhum outro osso do corpo. Você conhecia o hioide? Comenta aqui e segue o Bino Explica\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#corpo #humano #anatomia #curiosidades #vocesabia #aprendanotiktok",
+      "fontes": [
+        "https://pt.wikipedia.org/wiki/Osso_hioide"
+      ],
+      "arquivo": "05 - O osso solto no pescoço.mp4",
+      "capa": "05 - O osso solto no pescoço - capa.jpg",
+      "asset_mp4": "TT-05-o-osso-solto-no-pescoco.mp4",
+      "asset_capa": "TT-05-o-osso-solto-no-pescoco-capa.jpg"
     }
   ],
-  "fechado": false,
+  "fechado": true,
   "total": 5
 }

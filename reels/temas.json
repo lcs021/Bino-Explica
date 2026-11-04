@@ -3274,5 +3274,134 @@
     },
     "visto": "2026-11-03T22:58-03:00",
     "status": "na reserva"
+  },
+  {
+    "tema": "O osso hioide, localizado na garganta, é o único osso do corpo humano que não se articula com nenhum outro osso",
+    "categoria": "corpo humano",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T23:02-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O efeito Leidenfrost faz com que gotas de água deslizem sobre superfícies extremamente quentes sem evaporar instantaneamente devido a uma almofada de vapor",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T23:02-03:00",
+    "status": "escolhido"
+  },
+  {
+    "tema": "A estrela hipergigante VY Canis Majoris é tão colossal que se estivesse no lugar do Sol sua borda engoliria a órbita de Saturno",
+    "categoria": "espaço",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T23:02-03:00",
+    "status": "escolhido"
+  },
+  {
+    "tema": "Os pilares de luz são um fenômeno óptico atmosférico raro onde feixes verticais brilhantes parecem subir direto do chão para o céu à noite",
+    "categoria": "fenômenos naturais",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T23:02-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O viés da confirmação faz com que o cérebro humano ignore provas contrárias e aceite apenas o que reforça crenças antigas",
+    "categoria": "psicologia",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T23:02-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A Operação Mincemeat foi um plano de espionagem da Segunda Guerra em que os Aliados usaram um cadáver com documentos falsos para enganar os nazistas",
+    "categoria": "história",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T23:02-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O fenômeno das pedras andantes da Racetrack Playa move rochas pesadas sozinhas pelo deserto sem intervenção humana ou animal visível",
+    "categoria": "mistérios",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-03T23:02-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A árvore Jiboia do Marrocos é capaz de subir pelas encostas áridas usando suas raízes aéreas como garras para se fixar na rocha nua",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-03T23:02-03:00",
+    "status": "na reserva"
   }
 ]

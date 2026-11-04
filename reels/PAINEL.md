@@ -1,6 +1,6 @@
 # 🎛️ Painel do Bino Explica — Reels
 
-Atualizado em 03/11/2026 às 22:59 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
+Atualizado em 03/11/2026 às 23:09 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
 
 ## Visão geral
 
@@ -59,6 +59,7 @@ Nada em produção agora.
 
 ## 📝 Registro de atividades
 
+- 2026-11-03 23:09 · pacote: TikTok 5/5 pronto (66s, 100/100): O osso solto no pescoço
 - 2026-11-03 22:55 · pacote: TikTok 4/5 pronto (63s, 100/100): Por que o corpo treme no perigo
 - 2026-11-03 22:47 · pacote: TikTok 3/5 pronto (72s, 95/100): O Resgate Secreto da CIA
 - 2026-11-03 22:40 · pacote: TikTok 2/5 pronto (73s, 95/100): O experimento proibido de Milgram
@@ -83,4 +84,3 @@ Nada em produção agora.
 - 2026-11-02 20:29 · pacote: Vídeo 4/5 pronto (41s, 100/100): O segredo do mar brilhante
 - 2026-11-02 20:25 · pacote: Vídeo 3/5 pronto (39s, 100/100): A Travessia Sozinha a Remo
 - 2026-11-02 20:20 · pacote: Vídeo 2/5 pronto (44s, 100/100): O Segredo Brilhante do Fundo do Mar
-- 2026-11-02 20:13 · pacote: Vídeo 1/5 pronto (37s, 100/100): O Material Mais Leve Que o Ar
