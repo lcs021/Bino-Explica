@@ -1,188 +1,192 @@
 {
   "versao": 2,
-  "id": "pacote-20261103-2130",
-  "criado": "2026-11-03T21:30-03:00",
+  "id": "pacote-20261104-2249",
+  "criado": "2026-11-04T22:49-03:00",
   "videos": [
     {
       "plataforma": "instagram",
       "n": 1,
-      "tema": "A água-viva Turritopsis dohrnii é capaz de reverter seu ciclo biológico de vida e alcançar a imortalidade biológica",
-      "titulo": "A Medusa que Reverte o Próprio Envelhecimento",
-      "duracao": 56.4,
+      "tema": "A liga metálica Nitinol possui memória de forma e consegue retornar à sua estrutura original perfeita apenas ao ser aquecida.",
+      "titulo": "O Metal que Lembra do Passado",
+      "duracao": 50.7,
       "qualidade": 100,
       "abertura": "historia",
-      "gancho": "Uma criaturinha no oceano descobriu o segredo do rejuvenescimento.",
-      "legenda": "Uma criaturinha no oceano descobriu o segredo de voltar a ser jovem! Diante do estresse, a medusa Turritopsis dohrnii consegue reverter todo o seu ciclo biológico e recomeçar a vida como pólipo. Isso inspirou pesquisas com células-tronco humanas! Você gostaria de reverter a idade quando passa por estresse? Comenta aí e segue o @binoteexplica para mais curiosidades!\n\nFontes: Wikipédia: Turritopsis dohrnii\n\n#medusa #biologia #curiosidades #ciencia #oceanos #animais #binoteexplica",
+      "gancho": "Um pesquisador sueco descobriu um metal que lembra do passado.",
+      "legenda": "Um pesquisador sueco descobriu um metal que lembra do passado. O nitinol foi criado em 1962 e tem uma memória térmica inacreditável, sendo usado de truques de mágica até em turbinas de avião. Você já tinha ouvido falar dessa liga metálica? Comenta aí e segue o @binoteexplica pra mais curiosidades!\n\nFontes: Wikipédia: Nitinol, Wikipédia: Liga com efeito memória de forma\n\n#nitinol #ciencia #curiosidades #fisica #tecnologia #binoteexplica",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Turritopsis_dohrnii"
+        "https://pt.wikipedia.org/wiki/Nitinol",
+        "https://pt.wikipedia.org/wiki/Liga_com_efeito_mem%C3%B3ria_de_forma"
       ],
-      "arquivo": "01 - A Medusa que Reverte o Próprio Envelhecimento.mp4",
-      "capa": "01 - A Medusa que Reverte o Próprio Envelhecimento - capa.jpg",
-      "asset_mp4": "IG-01-a-medusa-que-reverte-o-proprio-envelheci.mp4",
-      "asset_capa": "IG-01-a-medusa-que-reverte-o-proprio-envelheci-capa.jpg"
+      "arquivo": "01 - O Metal que Lembra do Passado.mp4",
+      "capa": "01 - O Metal que Lembra do Passado - capa.jpg",
+      "asset_mp4": "IG-01-o-metal-que-lembra-do-passado.mp4",
+      "asset_capa": "IG-01-o-metal-que-lembra-do-passado-capa.jpg"
     },
     {
       "plataforma": "instagram",
       "n": 2,
-      "tema": "A sinestesia faz com que o cérebro cruze os sentidos humanos, permitindo que pessoas consigam ver sons ou sentir o gosto de cores",
-      "titulo": "Como É Ouvir Cores e Ver Sons?",
-      "duracao": 56.1,
+      "tema": "O oceano subterrâneo da lua Encélado engole calor interno e expele plumas de água no espaço contendo compostos orgânicos.",
+      "titulo": "A lua que joga água no espaço",
+      "duracao": 37.1,
       "qualidade": 100,
       "abertura": "desafio",
-      "gancho": "Aposto que você não consegue ouvir o som de cores.",
-      "legenda": "Aposto que você nunca imaginou como é ouvir o som de uma cor! A sinestesia é um fenômeno incrível que mistura os sentidos no cérebro de quatro por cento das pessoas. Qual sentido você gostaria de misturar no seu dia a dia? Comenta aqui embaixo e segue o @binoteexplica pra mais curiosidades!\n\nFontes: Wikipédia: Sinestesia\n\n#sinestesia #curiosidades #ciencia #historia #binoteexplica #mente",
+      "gancho": "Aposto que você não conhece a lua mais brilhante.",
+      "legenda": "Aposto que você não conhece essa lua incrível que joga água no espaço e forma anéis. Qual lua do sistema solar é a sua favorita? Conta pra mim nos comentários e segue o @binoteexplica pra mais curiosidades.\n\nFontes: Wikipédia: Encélado (satélite), Wikipédia: Sistema Solar\n\n#astronomia #espaco #lua #saturno #ciencia #curiosidades",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Sinestesia"
+        "https://pt.wikipedia.org/wiki/Enc%C3%A9lado_(sat%C3%A9lite)",
+        "https://pt.wikipedia.org/wiki/Sistema_Solar"
       ],
-      "arquivo": "02 - Como É Ouvir Cores e Ver Sons.mp4",
-      "capa": "02 - Como É Ouvir Cores e Ver Sons - capa.jpg",
-      "asset_mp4": "IG-02-como-e-ouvir-cores-e-ver-sons.mp4",
-      "asset_capa": "IG-02-como-e-ouvir-cores-e-ver-sons-capa.jpg"
+      "arquivo": "02 - A lua que joga água no espaço.mp4",
+      "capa": "02 - A lua que joga água no espaço - capa.jpg",
+      "asset_mp4": "IG-02-a-lua-que-joga-agua-no-espaco.mp4",
+      "asset_capa": "IG-02-a-lua-que-joga-agua-no-espaco-capa.jpg"
     },
     {
       "plataforma": "instagram",
       "n": 3,
-      "tema": "O fenômeno neurológico da pareidolia faz o cérebro humano identificar rostos em objetos inanimados como tomadas e nuvens",
-      "titulo": "Por que enxergamos rostos em tudo?",
-      "duracao": 40.6,
+      "tema": "A capacidade impressionante das corujas de girarem o pescoço em até 270 graus sem cortar o fluxo sanguíneo para o cérebro.",
+      "titulo": "O Segredo do Pescoço da Coruja",
+      "duracao": 41.5,
       "qualidade": 100,
       "abertura": "numero",
-      "gancho": "Cento e sessenta e cinco milissegundos.",
-      "legenda": "Você já reparou que enxergamos rostos em objetos? O cérebro faz isso super rápido para nos proteger de perigos. Qual objeto estranho parece com alguém para você? Deixa nos comentários e segue o @binoteexplica pra mais curiosidades.\n\nFontes: Wikipédia: Pareidolia\n\n#pareidolia #curiosidades #ciencia #cerebro #misterio #fatoscientificos",
+      "gancho": "Duzentos e setenta graus é o quanto uma coruja consegue girar a cabeça.",
+      "legenda": "Você sabia que as corujas conseguem girar a cabeça quase toda? Elas têm um truque incrível no pescoço e no sangue que deixa qualquer um impressionado. Qual bicho você queria imitar? Segue o @binoteexplica pra mais curiosidades.\n\nFontes: Wikipédia: Strigiformes\n\n#coruja #curiosidades #bicho #ciencia #natureza #animais #fatos",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Pareidolia"
+        "https://pt.wikipedia.org/wiki/Strigiformes"
       ],
-      "arquivo": "03 - Por que enxergamos rostos em tudo.mp4",
-      "capa": "03 - Por que enxergamos rostos em tudo - capa.jpg",
-      "asset_mp4": "IG-03-por-que-enxergamos-rostos-em-tudo.mp4",
-      "asset_capa": "IG-03-por-que-enxergamos-rostos-em-tudo-capa.jpg"
+      "arquivo": "03 - O Segredo do Pescoço da Coruja.mp4",
+      "capa": "03 - O Segredo do Pescoço da Coruja - capa.jpg",
+      "asset_mp4": "IG-03-o-segredo-do-pescoco-da-coruja.mp4",
+      "asset_capa": "IG-03-o-segredo-do-pescoco-da-coruja-capa.jpg"
     },
     {
       "plataforma": "instagram",
       "n": 4,
-      "tema": "O exoplaneta 55 Cancri e possui uma densidade tão alta que cientistas estimam que grande parte de sua massa seja de diamante",
-      "titulo": "O Planeta Diamante",
-      "duracao": 45.4,
+      "tema": "O fenômeno óptico da miragem superior, que faz navios e ilhas parecerem flutuar no horizonte devido à refração da luz.",
+      "titulo": "Navio fantasma e sol adiantado",
+      "duracao": 42.5,
       "qualidade": 100,
       "abertura": "pergunta",
-      "gancho": "Já imaginou um mundo onde o ano dura menos de dezoito horas?",
-      "legenda": "Já imaginou um mundo onde o ano dura menos de dezoito horas e a composição pode envolver diamante? O 55 Cancri e guarda segredos espaciais impressionantes. Você moraria nesse planeta? Segue o @binoteexplica pra mais curiosidades.\n\nFontes: Wikipédia: 55 Cancri e\n\n#55CancriE #espaco #astronomia #universo #ciencia #planeta #curiosidades",
+      "gancho": "Como um navio consegue desaparecer e reaparecer parecendo avançar em alta velocidade?",
+      "legenda": "Como um navio consegue desaparecer e reaparecer parecendo avançar em alta velocidade? Isso acontece por causa de uma miragem superior com inversão térmica. Você ja viu algo assim? Deixa nos comentários e segue o @binoteexplica pra mais curiosidades.\n\nFontes: Wikipédia: Miragem\n\n#miragem #curiosidades #ciencia #fenomenos #historia #fisica",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/55_Cancri_e"
+        "https://pt.wikipedia.org/wiki/Miragem"
       ],
-      "arquivo": "04 - O Planeta Diamante.mp4",
-      "capa": "04 - O Planeta Diamante - capa.jpg",
-      "asset_mp4": "IG-04-o-planeta-diamante.mp4",
-      "asset_capa": "IG-04-o-planeta-diamante-capa.jpg"
+      "arquivo": "04 - Navio fantasma e sol adiantado.mp4",
+      "capa": "04 - Navio fantasma e sol adiantado - capa.jpg",
+      "asset_mp4": "IG-04-navio-fantasma-e-sol-adiantado.mp4",
+      "asset_capa": "IG-04-navio-fantasma-e-sol-adiantado-capa.jpg"
     },
     {
       "plataforma": "instagram",
       "n": 5,
-      "tema": "O Relâmpago de Catatumbo gera tempestades elétricas quase diárias na Venezuela com milhares de raios por noite no mesmo local",
-      "titulo": "O lugar com mais raios do mundo",
-      "duracao": 39.7,
-      "qualidade": 95,
+      "tema": "A impressionante força de mordida e a estrutura dos dentes dos tubarões que se renovam continuamente ao longo da vida.",
+      "titulo": "A escada rolante de dentes do tubarão",
+      "duracao": 52.5,
+      "qualidade": 100,
       "abertura": "afirmacao",
-      "gancho": "Existe um lugar na Terra onde o céu nunca para de brilhar.",
-      "legenda": "Existe um lugar na Terra onde o céu nunca para de brilhar e bate recordes mundiais de tempestades. Você moraria perto de um lugar com tantos raios? Segue o @binoteexplica pra mais curiosidades.\n\nFontes: Wikipédia: Relâmpago do Catatumbo\n\n#ciencia #curiosidades #natureza #venezuela #fenomeno #fatoscientificos",
+      "gancho": "Tubarões perdem milhares de dentes e nunca ficam banguelas, sabe o que é mais louco? Eles usam uma verdadeira escada rolante biológica.",
+      "legenda": "Você sabia que tubarões possuem uma escada rolante de dentes? Eles perdem milhares de dentes durante a vida e sempre têm peças novas prontas para o uso. Qual animal você acha que tem a mordida mais estranha? Segue o @binoteexplica para mais curiosidades incríveis.\n\nFontes: Wikipédia: Tubarão\n\n#tubarao #biologia #curiosidades #ciencia #mar #binoteexplica #animais",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Rel%C3%A2mpago_do_Catatumbo"
+        "https://pt.wikipedia.org/wiki/Tubar%C3%A3o"
       ],
-      "arquivo": "05 - O lugar com mais raios do mundo.mp4",
-      "capa": "05 - O lugar com mais raios do mundo - capa.jpg",
-      "asset_mp4": "IG-05-o-lugar-com-mais-raios-do-mundo.mp4",
-      "asset_capa": "IG-05-o-lugar-com-mais-raios-do-mundo-capa.jpg"
+      "arquivo": "05 - A escada rolante de dentes do tubarão.mp4",
+      "capa": "05 - A escada rolante de dentes do tubarão - capa.jpg",
+      "asset_mp4": "IG-05-a-escada-rolante-de-dentes-do-tubarao.mp4",
+      "asset_capa": "IG-05-a-escada-rolante-de-dentes-do-tubarao-capa.jpg"
     },
     {
       "plataforma": "tiktok",
       "n": 1,
-      "tema": "O peixe-remo, maior peixe ósseo do mundo, que vive nas profundezas e cuja aparição na superfície gerou mitos de predição de terremotos na cultura japonesa.",
-      "titulo": "O Monstro Que Prevê Terremotos",
-      "duracao": 67.9,
+      "tema": "A extraordinária técnica de comunicação das árvores através da 'Wood Wide Web', uma rede subterrânea de fungos micorrízicos.",
+      "titulo": "A internet secreta da floresta",
+      "duracao": 73.7,
       "qualidade": 100,
       "abertura": "historia",
-      "gancho": "Em dois mil e um, pela primeira vez na história, um peixe de onze metros foi filmado vivo nadando nas profundezas do oceano.",
-      "legenda": "O peixe gigante que prevê terremotos e tsunamis? Você acredita nesse mito ou acha coincidência? Comenta aqui e segue o Bino Explica\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#peixeremo #mitosjaponeses #terremoto #curiosidades #vocesabia #aprendanotiktok",
+      "gancho": "Sob os seus pés existe uma internet secreta que conecta plantas inteiras por meio de uma vasta rede subterrânea cheia de fios e segredos vivos.",
+      "legenda": "Sabia que existe uma internet secreta feita de fungos embaixo da terra? Você imaginava isso? Conta nos comentários\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#micelio #fungos #natureza #curiosidades #vocesabia #aprendanotiktok",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Regaleco"
+        "https://pt.wikipedia.org/wiki/Micorriza",
+        "https://pt.wikipedia.org/wiki/Mic%C3%A9lio"
       ],
-      "arquivo": "01 - O Monstro Que Prevê Terremotos.mp4",
-      "capa": "01 - O Monstro Que Prevê Terremotos - capa.jpg",
-      "asset_mp4": "TT-01-o-monstro-que-preve-terremotos.mp4",
-      "asset_capa": "TT-01-o-monstro-que-preve-terremotos-capa.jpg"
+      "arquivo": "01 - A internet secreta da floresta.mp4",
+      "capa": "01 - A internet secreta da floresta - capa.jpg",
+      "asset_mp4": "TT-01-a-internet-secreta-da-floresta.mp4",
+      "asset_capa": "TT-01-a-internet-secreta-da-floresta-capa.jpg"
     },
     {
       "plataforma": "tiktok",
       "n": 2,
-      "tema": "O experimento de Milgram e a surpreendente e assustadora tendência humana de obedecer a figuras de autoridade mesmo contra a própria moral.",
-      "titulo": "O experimento proibido de Milgram",
-      "duracao": 73.4,
-      "qualidade": 95,
+      "tema": "A existência de lagos subglaciais sob a camada de gelo da Antártida, como o Lago Vostok, que permanecem isolados há milhões de anos.",
+      "titulo": "O lago escondido sob o gelo",
+      "duracao": 73.3,
+      "qualidade": 100,
       "abertura": "desafio",
-      "gancho": "Aposto que você nunca faria mal para alguém apenas porque mandaram, ou será que faria? Deixa o Bino te contar uma história chocante.",
-      "legenda": "Você daria choque em alguém só porque mandaram? Comenta aqui embaixo\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#experimentodemilgram #psicologia #curiosidades #vocesabia #aprendanotiktok",
+      "gancho": "Aposto que você não imaginava que existe um lago gigantesco enterrado a quatro mil metros de profundidade sob o gelo da Antártida.",
+      "legenda": "Aposto que você não sabia que existe um lago gigante enterrado debaixo do gelo da Antártida! Qual segredo você acha que está congelado lá? Comenta aqui\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#antartida #lagovostok #curiosidades #vocesabia #aprendanotiktok",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Experi%C3%AAncia_de_Milgram"
+        "https://pt.wikipedia.org/wiki/Lago_Vostok",
+        "https://pt.wikipedia.org/wiki/Idade_Heroica_da_Explora%C3%A7%C3%A3o_da_Ant%C3%A1rtida"
       ],
-      "arquivo": "02 - O experimento proibido de Milgram.mp4",
-      "capa": "02 - O experimento proibido de Milgram - capa.jpg",
-      "asset_mp4": "TT-02-o-experimento-proibido-de-milgram.mp4",
-      "asset_capa": "TT-02-o-experimento-proibido-de-milgram-capa.jpg"
+      "arquivo": "02 - O lago escondido sob o gelo.mp4",
+      "capa": "02 - O lago escondido sob o gelo - capa.jpg",
+      "asset_mp4": "TT-02-o-lago-escondido-sob-o-gelo.mp4",
+      "asset_capa": "TT-02-o-lago-escondido-sob-o-gelo-capa.jpg"
     },
     {
       "plataforma": "tiktok",
       "n": 3,
-      "tema": "A incrível história do Projeto Azorian, a operação secreta da CIA na Guerra Fria para tentar recuperar um submarino soviético afundado usando um navio disfarçado.",
-      "titulo": "O Resgate Secreto da CIA",
-      "duracao": 72.2,
-      "qualidade": 95,
+      "tema": "O fenômeno do 'Ponto Nemo', o local mais isolado do planeta no oceano, usado como cemitério de espaçonaves.",
+      "titulo": "O cemitério espacial da Terra",
+      "duracao": 75.2,
+      "qualidade": 100,
       "abertura": "numero",
-      "gancho": "Oitocentos milhões de dólares foram gastos no Projeto Azorian em mil novecentos e setenta e quatro pela CIA. Sabe o que é mais louco?",
-      "legenda": "A CIA gastou uma fortuna para resgatar um submarino soviético usando um navio disfarçado? Qual é o plano mais maluco que você já ouviu falar?\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#projetoazorian #cia #submarino #curiosidades #vocesabia #aprendanotiktok",
+      "gancho": "Dois mil oitocentos e sessenta e seis quilômetros é a distância mínima que separa o Ponto Nemo de qualquer pedaço de terra firme por aí.",
+      "legenda": "O lugar mais isolado da Terra é um cemitério espacial. Você teria coragem de ir lá?\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#pontonemo #curiosidades #espaco #vocesabia #aprendanotiktok",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Projeto_Azorian"
+        "https://pt.wikipedia.org/wiki/Ponto_Nemo"
       ],
-      "arquivo": "03 - O Resgate Secreto da CIA.mp4",
-      "capa": "03 - O Resgate Secreto da CIA - capa.jpg",
-      "asset_mp4": "TT-03-o-resgate-secreto-da-cia.mp4",
-      "asset_capa": "TT-03-o-resgate-secreto-da-cia-capa.jpg"
+      "arquivo": "03 - O cemitério espacial da Terra.mp4",
+      "capa": "03 - O cemitério espacial da Terra - capa.jpg",
+      "asset_mp4": "TT-03-o-cemiterio-espacial-da-terra.mp4",
+      "asset_capa": "TT-03-o-cemiterio-espacial-da-terra-capa.jpg"
     },
     {
       "plataforma": "tiktok",
       "n": 4,
-      "tema": "O fenômeno do 'frio na barriga' acontece porque o cérebro desvia o fluxo de sangue do sistema digestivo para os músculos em situações de perigo.",
-      "titulo": "Por que o corpo treme no perigo",
-      "duracao": 63.4,
+      "tema": "O paradoxo de Fermi: se o universo é tão vasto e antigo, por que ainda não encontramos sinais de inteligência alienígena?",
+      "titulo": "Onde estão os alienígenas?",
+      "duracao": 78.4,
       "qualidade": 100,
       "abertura": "pergunta",
-      "gancho": "Por que seu coração dispara e você treme inteiro quando o perigo aparece de repente na sua frente?",
-      "legenda": "Por que o corpo treme e o coração dispara no perigo? Qual foi o seu maior susto?\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#curiosidades #ciencia #biologia #vocesabia #aprendanotiktok",
+      "gancho": "Por que o universo é um silêncio total se existem setenta sextilhões de estrelas lá fora esperando pela gente encontrar algum sinal de vida inteligente?",
+      "legenda": "Onde estão os alienígenas? O paradoxo de Fermi é real. Comenta sua teoria e segue o Bino Explica.\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#astronomia #espaco #universo #curiosidades #vocesabia #aprendanotiktok",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Sistema_nervoso_simp%C3%A1tico",
-        "https://pt.wikipedia.org/wiki/Rea%C3%A7%C3%A3o_de_lutar_ou_fugir"
+        "https://pt.wikipedia.org/wiki/Paradoxo_de_Fermi"
       ],
-      "arquivo": "04 - Por que o corpo treme no perigo.mp4",
-      "capa": "04 - Por que o corpo treme no perigo - capa.jpg",
-      "asset_mp4": "TT-04-por-que-o-corpo-treme-no-perigo.mp4",
-      "asset_capa": "TT-04-por-que-o-corpo-treme-no-perigo-capa.jpg"
+      "arquivo": "04 - Onde estão os alienígenas.mp4",
+      "capa": "04 - Onde estão os alienígenas - capa.jpg",
+      "asset_mp4": "TT-04-onde-estao-os-alienigenas.mp4",
+      "asset_capa": "TT-04-onde-estao-os-alienigenas-capa.jpg"
     },
     {
       "plataforma": "tiktok",
       "n": 5,
-      "tema": "O osso hioide, localizado na garganta, é o único osso do corpo humano que não se articula com nenhum outro osso",
-      "titulo": "O osso solto no pescoço",
-      "duracao": 65.5,
-      "qualidade": 100,
+      "tema": "Como o nosso cérebro mantém a noção de tempo enquanto dormimos através do ritmo circadiano.",
+      "titulo": "O segredo do seu sono",
+      "duracao": 80.9,
+      "qualidade": 95,
       "abertura": "afirmacao",
-      "gancho": "Existe um osso no seu pescoço que vive completamente solto, sem encostar em nenhum outro lugar do seu corpo inteiro e pesado.",
-      "legenda": "Existe um osso no seu pescoço que não se liga a nenhum outro osso do corpo. Você conhecia o hioide? Comenta aqui e segue o Bino Explica\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#corpo #humano #anatomia #curiosidades #vocesabia #aprendanotiktok",
+      "gancho": "Seu cérebro nunca desliga enquanto você dorme profundamente, pois ele trabalha em uma missão secreta que mantém todas as suas memórias funcionando com segurança total.",
+      "legenda": "Seu cérebro nunca desliga enquanto você dorme. Você costuma sonhar muito ou apaga totalmente?\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#ciencia #curiosidades #sono #vocesabia #aprendanotiktok",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Osso_hioide"
+        "https://pt.wikipedia.org/wiki/Ritmo_circadiano",
+        "https://pt.wikipedia.org/wiki/Sono"
       ],
-      "arquivo": "05 - O osso solto no pescoço.mp4",
-      "capa": "05 - O osso solto no pescoço - capa.jpg",
-      "asset_mp4": "TT-05-o-osso-solto-no-pescoco.mp4",
-      "asset_capa": "TT-05-o-osso-solto-no-pescoco-capa.jpg"
+      "arquivo": "05 - O segredo do seu sono.mp4",
+      "capa": "05 - O segredo do seu sono - capa.jpg",
+      "asset_mp4": "TT-05-o-segredo-do-seu-sono.mp4",
+      "asset_capa": "TT-05-o-segredo-do-seu-sono-capa.jpg"
     }
   ],
   "fechado": true,

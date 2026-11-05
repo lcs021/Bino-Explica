@@ -3403,5 +3403,407 @@
     },
     "visto": "2026-11-03T23:02-03:00",
     "status": "na reserva"
+  },
+  {
+    "tema": "A poeira do Deserto do Saara viaja milhares de quilômetros pelo Oceano Atlântico para fertilizar o solo da Floresta Amazônica.",
+    "categoria": "fenômenos naturais",
+    "pontuacao": 95.7,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 10,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-04T22:50-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O camarão-pistola fecha suas garras com tanta velocidade que produz uma bolha de cavitação com temperatura próxima à da superfície do Sol.",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-04T22:50-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "A liga metálica Nitinol possui memória de forma e consegue retornar à sua estrutura original perfeita apenas ao ser aquecida.",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-04T22:50-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A ilusão da mão de borracha faz o cérebro humano adotar uma prótese inanimada como parte do próprio corpo em poucos minutos.",
+    "categoria": "psicologia",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-04T22:50-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O oceano subterrâneo da lua Encélado engole calor interno e expele plumas de água no espaço contendo compostos orgânicos.",
+    "categoria": "espaço",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-04T22:50-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O fígado humano é o único órgão interno capaz de se regenerar completamente a partir de apenas 25 por cento do seu tecido original.",
+    "categoria": "corpo humano",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-04T22:50-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O Grande Fedor de Londres em 1858 paralisou a capital britânica e forçou a criação do primeiro sistema moderno de esgoto.",
+    "categoria": "história",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-04T22:50-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O Silo Global de Sementes de Svalbard guarda a reserva de emergência agrícola da humanidade dentro de uma montanha congelada.",
+    "categoria": "conhecimentos gerais",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-04T22:50-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A capacidade impressionante das corujas de girarem o pescoço em até 270 graus sem cortar o fluxo sanguíneo para o cérebro.",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-04T23:22-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A existência de exoplanetas chamados planetas oceano, mundos inteiramente cobertos por globos de água líquida sem continentes.",
+    "categoria": "espaço",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-04T23:22-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O fenômeno óptico da miragem superior, que faz navios e ilhas parecerem flutuar no horizonte devido à refração da luz.",
+    "categoria": "fenômenos naturais",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-04T23:22-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A impressionante força de mordida e a estrutura dos dentes dos tubarões que se renovam continuamente ao longo da vida.",
+    "categoria": "curiosidades inacreditáveis",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 8,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-04T23:22-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O efeito Mpemba, fenômeno físico em que a água quente pode congelar mais rápido do que a água fria sob certas condições.",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-04T23:22-03:00",
+    "status": "escolhido"
+  },
+  {
+    "tema": "O fenômeno do viés de confirmação e como o cérebro humano busca apenas informações que validam crenças pré-existentes.",
+    "categoria": "psicologia",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 8,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-04T23:22-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A função biológica da unha e como o corpo humano regula o crescimento das extremidades dos dedos.",
+    "categoria": "corpo humano",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 10,
+      "compartilhamento": 8,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-04T23:22-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A história da criação do primeiro sistema de semáforos urbanos antes mesmo da invenção dos automóveis modernos.",
+    "categoria": "história",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-04T23:22-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A existência de 'Cidades Invisíveis' ou cidades perdidas descobertas por tecnologia LIDAR na Amazônia.",
+    "categoria": "conhecimentos gerais",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 10,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-04T23:52-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "A extraordinária técnica de comunicação das árvores através da 'Wood Wide Web', uma rede subterrânea de fungos micorrízicos.",
+    "categoria": "curiosidades sobre animais",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-04T23:52-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O efeito da 'ilusão de ótica da lua', onde nosso cérebro aumenta o tamanho da lua quando ela está perto do horizonte.",
+    "categoria": "fenômenos naturais",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 7,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-04T23:52-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "A existência de lagos subglaciais sob a camada de gelo da Antártida, como o Lago Vostok, que permanecem isolados há milhões de anos.",
+    "categoria": "espaço",
+    "pontuacao": 85.7,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-04T23:52-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O fenômeno do 'Ponto Nemo', o local mais isolado do planeta no oceano, usado como cemitério de espaçonaves.",
+    "categoria": "mistérios",
+    "pontuacao": 85.7,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 8,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-04T23:52-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O paradoxo de Fermi: se o universo é tão vasto e antigo, por que ainda não encontramos sinais de inteligência alienígena?",
+    "categoria": "ciência e tecnologia",
+    "pontuacao": 85.7,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 8,
+      "compartilhamento": 10,
+      "interesse_brasil": 7,
+      "ilustravel": 8,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-04T23:52-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "Como o nosso cérebro mantém a noção de tempo enquanto dormimos através do ritmo circadiano.",
+    "categoria": "corpo humano",
+    "pontuacao": 82.9,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 8,
+      "compartilhamento": 8,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 7,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-04T23:52-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A história da 'Criptografia de Enigma' e como a matemática ajudou a vencer a Segunda Guerra Mundial.",
+    "categoria": "história",
+    "pontuacao": 82.9,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 7,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-04T23:52-03:00",
+    "status": "na reserva"
   }
 ]
