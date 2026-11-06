@@ -1,6 +1,6 @@
 # 🎛️ Painel do Bino Explica — Reels
 
-Atualizado em 05/11/2026 às 01:02 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
+Atualizado em 06/11/2026 às 03:33 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
 
 ## Visão geral
 
@@ -14,13 +14,13 @@ Atualizado em 05/11/2026 às 01:02 (horário de Brasília) · automação **▶�
 
 | Dia | Reels (horário · status · título) |
 |---|---|
-| qua 04/11 | — |
-| qui 05/11 (hoje) | 12:30 — livre · 19:30 — livre |
-| sex 06/11 | 12:30 — livre · 19:30 — livre |
+| qui 05/11 | — |
+| sex 06/11 (hoje) | 12:30 — livre · 19:30 — livre |
 | sáb 07/11 | 12:30 — livre · 19:30 — livre |
 | dom 08/11 | 12:30 — livre · 19:30 — livre |
 | seg 09/11 | 12:30 — livre · 19:30 — livre |
 | ter 10/11 | 12:30 — livre · 19:30 — livre |
+| qua 11/11 | 12:30 — livre · 19:30 — livre |
 
 ## 🛠️ Produção
 
@@ -59,6 +59,16 @@ Nada em produção agora.
 
 ## 📝 Registro de atividades
 
+- 2026-11-06 03:33 · pacote: TikTok 5/5 pronto (68s, 100/100): O mistério do déjà vu
+- 2026-11-06 03:29 · pacote: TikTok 4/5 pronto (79s, 100/100): O bicho que engana a morte
+- 2026-11-06 03:21 · pacote: TikTok 3/5 pronto (68s, 100/100): O Mistério da Matéria Escura
+- 2026-11-06 03:17 · pacote: TikTok 2/5 pronto (62s, 100/100): O Segredo do Sabor
+- 2026-11-06 03:10 · pacote: TikTok 1/5 pronto (74s, 100/100): O poder secreto do placebo
+- 2026-11-06 03:04 · pacote: Instagram 5/5 pronto (43s, 100/100): O Pássaro que Venceu o Correio
+- 2026-11-06 02:56 · pacote: Instagram 4/5 pronto (39s, 100/100): O polo norte é o polo sul
+- 2026-11-06 02:49 · pacote: Instagram 3/5 pronto (52s, 100/100): O mistério das ondas gigantes que a ciência negava
+- 2026-11-06 02:41 · pacote: Instagram 2/5 pronto (50s, 100/100): O mistério do raio globular
+- 2026-11-06 02:33 · pacote: Instagram 1/5 pronto (52s, 100/100): Por que esquecemos nossos sonhos tão rápido?
 - 2026-11-05 01:02 · pacote: TikTok 5/5 pronto (81s, 95/100): O segredo do seu sono
 - 2026-11-05 00:49 · pacote: TikTok 4/5 pronto (78s, 100/100): Onde estão os alienígenas?
 - 2026-11-05 00:38 · pacote: TikTok 3/5 pronto (75s, 100/100): O cemitério espacial da Terra
@@ -74,13 +84,3 @@ Nada em produção agora.
 - 2026-11-03 22:47 · pacote: TikTok 3/5 pronto (72s, 95/100): O Resgate Secreto da CIA
 - 2026-11-03 22:40 · pacote: TikTok 2/5 pronto (73s, 95/100): O experimento proibido de Milgram
 - 2026-11-03 22:34 · pacote: TikTok 1/5 pronto (68s, 100/100): O Monstro Que Prevê Terremotos
-- 2026-11-03 22:27 · pacote: Instagram 5/5 pronto (40s, 95/100): O lugar com mais raios do mundo
-- 2026-11-03 22:23 · pacote: Instagram 4/5 pronto (45s, 100/100): O Planeta Diamante
-- 2026-11-03 22:17 · pacote: Instagram 3/5 pronto (41s, 100/100): Por que enxergamos rostos em tudo?
-- 2026-11-03 22:03 · pacote: Instagram 2/5 pronto (56s, 100/100): Como É Ouvir Cores e Ver Sons?
-- 2026-11-03 21:47 · pacote: Instagram 1/5 pronto (56s, 100/100): A Medusa que Reverte o Próprio Envelhecimento
-- 2026-11-03 00:48 · pacote: TikTok 5/5 pronto (73s, 100/100): O polvo não controla os braços
-- 2026-11-03 00:43 · pacote: TikTok 4/5 pronto (74s, 100/100): O planeta onde chove vidro
-- 2026-11-03 00:36 · pacote: TikTok 3/5 pronto (78s, 100/100): O Efeito Dunning-Kruger
-- 2026-11-03 00:27 · pacote: TikTok 2/5 pronto (68s, 100/100): O animal indestrutível do espaço
-- 2026-11-03 00:20 · pacote: TikTok 1/5 pronto (73s, 100/100): O Mel Dura Para Sempre

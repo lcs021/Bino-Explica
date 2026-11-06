@@ -3805,5 +3805,537 @@
     },
     "visto": "2026-11-04T23:52-03:00",
     "status": "na reserva"
+  },
+  {
+    "tema": "O mistério biológico de por que os seres humanos realmente precisam dormir e qual a função fundamental do sono",
+    "categoria": "Neurociência",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T02:19-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O enigma dos raios globulares e as esferas de luz misteriosas que flutuam na atmosfera",
+    "categoria": "Meteorologia",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-06T02:19-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O mistério das ondas gigantes vagabundas que se formam espontaneamente em alto-mar",
+    "categoria": "Oceanografia",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T02:19-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O fenômeno imprevisível da inversão dos polos do campo magnético da Terra",
+    "categoria": "Geofísica",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T02:19-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O mistério neurológico por trás da origem da sensação de Déjà vu no cérebro humano",
+    "categoria": "Psicologia Cognitiva",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 8,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-06T02:19-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "A razão científica e evolutiva de o bocejo ser contagioso entre os seres humanos",
+    "categoria": "Fisiologia",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-06T02:19-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "Como os animais usam a magnetorreceção para navegar pelo planeta sentindo o campo magnético invisível",
+    "categoria": "Zoologia",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 8,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T02:19-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A natureza desconhecida da matéria escura que compõe a maior parte da massa do universo",
+    "categoria": "Astrofísica",
+    "pontuacao": 85.7,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 7,
+      "compartilhamento": 8,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T02:19-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O mistério de por que a pata do gato parece resistir a qualquer queda alta através de um complexo reflexo de endireitamento.",
+    "categoria": "Comportamento Animal",
+    "pontuacao": 95.7,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 10,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T03:04-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O efeito placebo e como a pura crença do cérebro em um tratamento falso consegue alterar sintomas físicos reais.",
+    "categoria": "Corpo Humano",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T03:04-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O enigma das pedras que andam sozinhas no Vale da Morte e como cristais de gelo e vento movem rochas pesadas.",
+    "categoria": "Geologia",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T03:04-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O canto das dunas de areia e o som misterioso que algumas dunas deserticas emitem espontaneamente ao vento.",
+    "categoria": "Natureza",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 10,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T03:04-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "A origem do gosto umami e como o cérebro humano identifica esse quinto sabor através de receptores específicos.",
+    "categoria": "Culinária e Ciência",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T03:04-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O mistério da matéria escura e por que ela mantém as galáxias unidas sem que os cientistas consigam detectá-la diretamente.",
+    "categoria": "Espaço",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T03:04-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A origem do zumbido no ouvido e como o cérebro cria sons fantasmas quando há danos auditivos parciais.",
+    "categoria": "Saúde e Biologia",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 8,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T03:04-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O fenômeno do Sol da Meia-Noite e como a inclinação do eixo da Terra confunde o relógio biológico humano nas regiões polares.",
+    "categoria": "Planeta Terra",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T03:04-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O enigma neurológico da preferência gustativa pelo coentro, onde a ciência descobriu que a rejeição a gosto de sabão tem base genética, mas ainda estuda os mecanismos cerebrais da rejeição.",
+    "categoria": "Biologia",
+    "pontuacao": 95.7,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 10,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T03:22-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O mistério da 'Zona de Anomalia do Atlântico Sul', uma falha no campo magnético da Terra sobre o Brasil que danifica satélites e cuja origem exata continua sob intensa investigação científica.",
+    "categoria": "Terra",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 10,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T03:22-03:00",
+    "status": "descartado",
+    "motivo": "'list' object has no attribute 'get'"
+  },
+  {
+    "tema": "O mistério da persistência da lateralidade manual e por que a grande maioria da população mundial é destra, um enigma evolutivo que a genética e a antropologia ainda estudam.",
+    "categoria": "Corpo Humano",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T03:22-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O enigma de por que os seres humanos são a única espécie de primatas que perdeu a pelagem corporal espessa, um debate evolutivo que a antropologia física ainda tenta fechar.",
+    "categoria": "Evolução",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T03:22-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O enigma de por que os seres humanos possuem impressões digitais únicas, já que a ciência ainda debate se a função principal é o tato ou a aderência e como elas se formam.",
+    "categoria": "Corpo Humano",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T03:22-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O enigma científico do canto das dunas, um fenômeno acústico raro em que desertos ao redor do mundo emitem sons graves semelhantes a zumbidos ou órgãos musicais sem causa totalmente esclarecida.",
+    "categoria": "Natureza",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T03:22-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O mistério físico e astronômico da 'Mancha Vermelha de Júpiter', uma tempestade colossal que encolhe e muda de comportamento de formas que os astrônomos ainda não conseguem prever.",
+    "categoria": "Espaço",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T03:22-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O fenômeno do 'som de fundo do universo' ou radiação cósmica de fundo, o eco remanescente do Big Bang que preenche o espaço e cujas micro-flutuações continuam a ser mapeadas e estudadas.",
+    "categoria": "Física",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T03:22-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O misterioso mecanismo da regeneração celular da salamandra axolote, que reconstrói órgãos inteiros e membros sem deixar cicatrizes, desafiando a medicina.",
+    "categoria": "Corpo Humano e Biologia",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T03:24-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O mecanismo neurológico do déjà vu e as teorias da neurociência sobre por que o cérebro gera essa falsa sensação de memória instantânea.",
+    "categoria": "Neurociência",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T03:24-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A misteriosa origem do som de baixa frequência conhecido como 'Hum', ouvido por apenas uma parcela da população mundial sem que a ciência descubra sua fonte exata.",
+    "categoria": "Fenômenos Acústicos",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 8,
+      "originalidade": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-06T03:24-03:00",
+    "status": "escolhido"
+  },
+  {
+    "tema": "O mistério biológico do canto das baleias jubarte e como elas compõem e transmitem novas músicas complexas entre diferentes oceanos.",
+    "categoria": "Biologia Marinha",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T03:24-03:00",
+    "status": "escolhido"
+  },
+  {
+    "tema": "A oscilação de Chandler, o misterioso movimento de oscilação do eixo de rotação da Terra que os cientistas continuam sem conseguir prever com total precisão.",
+    "categoria": "Ciência da Terra",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T03:24-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O enigma da assimetria bariônica, o grande mistério da física sobre por que o universo tem mais matéria do que antimatéria se elas deveriam ter se aniquilado no Big Bang.",
+    "categoria": "Astrofísica",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 7,
+      "compartilhamento": 8,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T03:24-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A inexplicada propulsão de anomalias gravitacionais em superaglomerados de galáxias conhecida como 'Fluxo Escuro'.",
+    "categoria": "Cosmologia",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 7,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "originalidade": 10,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-06T03:24-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O enigma dos raios cósmicos de energia ultra-alta, partículas misteriosas que atingem a Terra vindas do espaço profundo com uma energia que a ciência ainda não consegue rastrear.",
+    "categoria": "Física de Partículas",
+    "pontuacao": 85.7,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T03:24-03:00",
+    "status": "na reserva"
   }
 ]

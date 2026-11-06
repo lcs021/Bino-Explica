@@ -1,194 +1,193 @@
 {
   "versao": 2,
-  "id": "pacote-20261104-2249",
-  "criado": "2026-11-04T22:49-03:00",
+  "id": "serie-ciencia-20261106-0218",
+  "criado": "2026-11-06T02:18-03:00",
   "videos": [
     {
       "plataforma": "instagram",
       "n": 1,
-      "tema": "A liga metálica Nitinol possui memória de forma e consegue retornar à sua estrutura original perfeita apenas ao ser aquecida.",
-      "titulo": "O Metal que Lembra do Passado",
-      "duracao": 50.7,
+      "tema": "O mistério biológico de por que os seres humanos realmente precisam dormir e qual a função fundamental do sono",
+      "titulo": "Por que esquecemos nossos sonhos tão rápido?",
+      "duracao": 52.3,
       "qualidade": 100,
       "abertura": "historia",
-      "gancho": "Um pesquisador sueco descobriu um metal que lembra do passado.",
-      "legenda": "Um pesquisador sueco descobriu um metal que lembra do passado. O nitinol foi criado em 1962 e tem uma memória térmica inacreditável, sendo usado de truques de mágica até em turbinas de avião. Você já tinha ouvido falar dessa liga metálica? Comenta aí e segue o @binoteexplica pra mais curiosidades!\n\nFontes: Wikipédia: Nitinol, Wikipédia: Liga com efeito memória de forma\n\n#nitinol #ciencia #curiosidades #fisica #tecnologia #binoteexplica",
+      "gancho": "Em mil novecentos e cinquenta e três, cientistas mapearam o sono REM.",
+      "legenda": "📌 Série: 5 fenômenos que a ciência ainda estuda · Parte 1/5\n\nEm mil novecentos e cinquenta e três o sono REM foi mapeado pela ciência. Enquanto o corpo se repara e limpa resíduos metabólicos no sono profundo, o cérebro desativa químicos cruciais durante os sonhos. Você costuma lembrar dos seus sonhos ao acordar? Comente aqui e segue o @binoteexplica pra mais curiosidades!\n\nFontes: Wikipédia: Sono, Wikipédia: Sono com movimento rápido dos olhos\n\nA parte 2 sai amanhã 👀\n\n#sonoREM #neurociencia #curiosidades #ciencia #corpohumano #fatoscuriosos #binoteexplica",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Nitinol",
-        "https://pt.wikipedia.org/wiki/Liga_com_efeito_mem%C3%B3ria_de_forma"
+        "https://pt.wikipedia.org/wiki/Sono",
+        "https://pt.wikipedia.org/wiki/Sono_com_movimento_r%C3%A1pido_dos_olhos"
       ],
-      "arquivo": "01 - O Metal que Lembra do Passado.mp4",
-      "capa": "01 - O Metal que Lembra do Passado - capa.jpg",
-      "asset_mp4": "IG-01-o-metal-que-lembra-do-passado.mp4",
-      "asset_capa": "IG-01-o-metal-que-lembra-do-passado-capa.jpg"
+      "arquivo": "01 - Por que esquecemos nossos sonhos tão rápido.mp4",
+      "capa": "01 - Por que esquecemos nossos sonhos tão rápido - capa.jpg",
+      "asset_mp4": "IG-01-por-que-esquecemos-nossos-sonhos-tao-rap.mp4",
+      "asset_capa": "IG-01-por-que-esquecemos-nossos-sonhos-tao-rap-capa.jpg"
     },
     {
       "plataforma": "instagram",
       "n": 2,
-      "tema": "O oceano subterrâneo da lua Encélado engole calor interno e expele plumas de água no espaço contendo compostos orgânicos.",
-      "titulo": "A lua que joga água no espaço",
-      "duracao": 37.1,
+      "tema": "O enigma dos raios globulares e as esferas de luz misteriosas que flutuam na atmosfera",
+      "titulo": "O mistério do raio globular",
+      "duracao": 50.2,
       "qualidade": 100,
       "abertura": "desafio",
-      "gancho": "Aposto que você não conhece a lua mais brilhante.",
-      "legenda": "Aposto que você não conhece essa lua incrível que joga água no espaço e forma anéis. Qual lua do sistema solar é a sua favorita? Conta pra mim nos comentários e segue o @binoteexplica pra mais curiosidades.\n\nFontes: Wikipédia: Encélado (satélite), Wikipédia: Sistema Solar\n\n#astronomia #espaco #lua #saturno #ciencia #curiosidades",
+      "gancho": "Aposto que você nunca viu uma bola de raio flutuando!",
+      "legenda": "📌 Série: 5 fenômenos que a ciência ainda estuda · Parte 2/5\n\nUma esfera brilhante flutuando no meio da tempestade parece coisa de filme, mas é o misterioso raio globular! Esse fenômeno raro já foi confundido com disco voador e demorou décadas para ser levado a sério pelos cientistas. Você teria coragem de ficar perto de um? Segue o @binoteexplica para não perder as próximas curiosidades!\n\nFontes: Wikipédia: Raio globular\n\nA parte 3 sai amanhã 👀\n\n#raioglobular #fenomenosnaturais #ciencia #curiosidades #fisica #binoteexplica",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Enc%C3%A9lado_(sat%C3%A9lite)",
-        "https://pt.wikipedia.org/wiki/Sistema_Solar"
+        "https://pt.wikipedia.org/wiki/Raio_globular"
       ],
-      "arquivo": "02 - A lua que joga água no espaço.mp4",
-      "capa": "02 - A lua que joga água no espaço - capa.jpg",
-      "asset_mp4": "IG-02-a-lua-que-joga-agua-no-espaco.mp4",
-      "asset_capa": "IG-02-a-lua-que-joga-agua-no-espaco-capa.jpg"
+      "arquivo": "02 - O mistério do raio globular.mp4",
+      "capa": "02 - O mistério do raio globular - capa.jpg",
+      "asset_mp4": "IG-02-o-misterio-do-raio-globular.mp4",
+      "asset_capa": "IG-02-o-misterio-do-raio-globular-capa.jpg"
     },
     {
       "plataforma": "instagram",
       "n": 3,
-      "tema": "A capacidade impressionante das corujas de girarem o pescoço em até 270 graus sem cortar o fluxo sanguíneo para o cérebro.",
-      "titulo": "O Segredo do Pescoço da Coruja",
-      "duracao": 41.5,
+      "tema": "O mistério das ondas gigantes vagabundas que se formam espontaneamente em alto-mar",
+      "titulo": "O mistério das ondas gigantes que a ciência negava",
+      "duracao": 52.1,
       "qualidade": 100,
       "abertura": "numero",
-      "gancho": "Duzentos e setenta graus é o quanto uma coruja consegue girar a cabeça.",
-      "legenda": "Você sabia que as corujas conseguem girar a cabeça quase toda? Elas têm um truque incrível no pescoço e no sangue que deixa qualquer um impressionado. Qual bicho você queria imitar? Segue o @binoteexplica pra mais curiosidades.\n\nFontes: Wikipédia: Strigiformes\n\n#coruja #curiosidades #bicho #ciencia #natureza #animais #fatos",
+      "gancho": "Trinta e três metros de parede de água pura!",
+      "legenda": "📌 Série: 5 fenômenos que a ciência ainda estuda · Parte 3/5\n\nTrinta e três metros de pura água no meio do mar! Durante mais de um século, a ciência achou que esses monstros eram só delírio de marinheiro. Mas satélites provaram que os vagalhões não só existem como surgem sugando outras ondas. Você teria coragem de pegar um navio no Atlântico Sul? Comenta aqui embaixo e segue o @binoteexplica pra mais curiosidades!\n\nFontes: Wikipédia: Vagalhão\n\nA parte 4 sai amanhã 👀\n\n#vagalhao #ondagigante #curiosidadesmaritimas #oceanos #ciencia #binoteexplica",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Strigiformes"
+        "https://pt.wikipedia.org/wiki/Vagalh%C3%A3o"
       ],
-      "arquivo": "03 - O Segredo do Pescoço da Coruja.mp4",
-      "capa": "03 - O Segredo do Pescoço da Coruja - capa.jpg",
-      "asset_mp4": "IG-03-o-segredo-do-pescoco-da-coruja.mp4",
-      "asset_capa": "IG-03-o-segredo-do-pescoco-da-coruja-capa.jpg"
+      "arquivo": "03 - O mistério das ondas gigantes que a ciência negava.mp4",
+      "capa": "03 - O mistério das ondas gigantes que a ciência negava - capa.jpg",
+      "asset_mp4": "IG-03-o-misterio-das-ondas-gigantes-que-a-cien.mp4",
+      "asset_capa": "IG-03-o-misterio-das-ondas-gigantes-que-a-cien-capa.jpg"
     },
     {
       "plataforma": "instagram",
       "n": 4,
-      "tema": "O fenômeno óptico da miragem superior, que faz navios e ilhas parecerem flutuar no horizonte devido à refração da luz.",
-      "titulo": "Navio fantasma e sol adiantado",
-      "duracao": 42.5,
+      "tema": "O fenômeno imprevisível da inversão dos polos do campo magnético da Terra",
+      "titulo": "O polo norte é o polo sul",
+      "duracao": 39.0,
       "qualidade": 100,
       "abertura": "pergunta",
-      "gancho": "Como um navio consegue desaparecer e reaparecer parecendo avançar em alta velocidade?",
-      "legenda": "Como um navio consegue desaparecer e reaparecer parecendo avançar em alta velocidade? Isso acontece por causa de uma miragem superior com inversão térmica. Você ja viu algo assim? Deixa nos comentários e segue o @binoteexplica pra mais curiosidades.\n\nFontes: Wikipédia: Miragem\n\n#miragem #curiosidades #ciencia #fenomenos #historia #fisica",
+      "gancho": "Sabe o que é mais louco sobre o polo norte magnético?",
+      "legenda": "📌 Série: 5 fenômenos que a ciência ainda estuda · Parte 4/5\n\nSabe o que é mais louco sobre o polo norte magnético? Ele está correndo para a Sibéria e guarda segredos do núcleo da Terra. Você confiaria na sua bússola? Segue o @binoteexplica para não perder nenhuma curiosidade.\n\nFontes: Wikipédia: Inversão geomagnética, Wikipédia: Campo magnético terrestre\n\nA parte 5 sai amanhã 👀\n\n#ciencia #curiosidades #magnetismo #terra #fisica #binoteexplica",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Miragem"
+        "https://pt.wikipedia.org/wiki/Invers%C3%A3o_geomagn%C3%A9tica",
+        "https://pt.wikipedia.org/wiki/Campo_magn%C3%A9tico_terrestre"
       ],
-      "arquivo": "04 - Navio fantasma e sol adiantado.mp4",
-      "capa": "04 - Navio fantasma e sol adiantado - capa.jpg",
-      "asset_mp4": "IG-04-navio-fantasma-e-sol-adiantado.mp4",
-      "asset_capa": "IG-04-navio-fantasma-e-sol-adiantado-capa.jpg"
+      "arquivo": "04 - O polo norte é o polo sul.mp4",
+      "capa": "04 - O polo norte é o polo sul - capa.jpg",
+      "asset_mp4": "IG-04-o-polo-norte-e-o-polo-sul.mp4",
+      "asset_capa": "IG-04-o-polo-norte-e-o-polo-sul-capa.jpg"
     },
     {
       "plataforma": "instagram",
       "n": 5,
-      "tema": "A impressionante força de mordida e a estrutura dos dentes dos tubarões que se renovam continuamente ao longo da vida.",
-      "titulo": "A escada rolante de dentes do tubarão",
-      "duracao": 52.5,
+      "tema": "Como os animais usam a magnetorreceção para navegar pelo planeta sentindo o campo magnético invisível",
+      "titulo": "O Pássaro que Venceu o Correio",
+      "duracao": 43.0,
       "qualidade": 100,
       "abertura": "afirmacao",
-      "gancho": "Tubarões perdem milhares de dentes e nunca ficam banguelas, sabe o que é mais louco? Eles usam uma verdadeira escada rolante biológica.",
-      "legenda": "Você sabia que tubarões possuem uma escada rolante de dentes? Eles perdem milhares de dentes durante a vida e sempre têm peças novas prontas para o uso. Qual animal você acha que tem a mordida mais estranha? Segue o @binoteexplica para mais curiosidades incríveis.\n\nFontes: Wikipédia: Tubarão\n\n#tubarao #biologia #curiosidades #ciencia #mar #binoteexplica #animais",
+      "gancho": "Um passarinho viajou cinco mil quilometros e chegou antes de uma carta.",
+      "legenda": "📌 Série: 5 fenômenos que a ciência ainda estuda · Parte 5/5\n\nUm passarinho viajou quase cinco mil quilometros pelo Atlantico e chegou antes da carta que o avisava. Alem disso, aves usam o campo magnetico para navegar, mas o mecanismo exato ainda e um misterio. Qual parte dessa historia te deixou mais impressionado? Segue o @binoteexplica para nao perder nada.\n\nFontes: Wikipédia: Migração de aves\n\nÚltima parte! Qual das 5 partes foi a melhor? 👇\n\n#ciencia #curiosidades #aves #misterio #biologia #natureza #fatoshistoricos",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Tubar%C3%A3o"
+        "https://pt.wikipedia.org/wiki/Migra%C3%A7%C3%A3o_de_aves"
       ],
-      "arquivo": "05 - A escada rolante de dentes do tubarão.mp4",
-      "capa": "05 - A escada rolante de dentes do tubarão - capa.jpg",
-      "asset_mp4": "IG-05-a-escada-rolante-de-dentes-do-tubarao.mp4",
-      "asset_capa": "IG-05-a-escada-rolante-de-dentes-do-tubarao-capa.jpg"
+      "arquivo": "05 - O Pássaro que Venceu o Correio.mp4",
+      "capa": "05 - O Pássaro que Venceu o Correio - capa.jpg",
+      "asset_mp4": "IG-05-o-passaro-que-venceu-o-correio.mp4",
+      "asset_capa": "IG-05-o-passaro-que-venceu-o-correio-capa.jpg"
     },
     {
       "plataforma": "tiktok",
       "n": 1,
-      "tema": "A extraordinária técnica de comunicação das árvores através da 'Wood Wide Web', uma rede subterrânea de fungos micorrízicos.",
-      "titulo": "A internet secreta da floresta",
-      "duracao": 73.7,
+      "tema": "O efeito placebo e como a pura crença do cérebro em um tratamento falso consegue alterar sintomas físicos reais.",
+      "titulo": "O poder secreto do placebo",
+      "duracao": 74.4,
       "qualidade": 100,
       "abertura": "historia",
-      "gancho": "Sob os seus pés existe uma internet secreta que conecta plantas inteiras por meio de uma vasta rede subterrânea cheia de fios e segredos vivos.",
-      "legenda": "Sabia que existe uma internet secreta feita de fungos embaixo da terra? Você imaginava isso? Conta nos comentários\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#micelio #fungos #natureza #curiosidades #vocesabia #aprendanotiktok",
+      "gancho": "No século quatorze cantores de funerais fingiam conexão com o falecido para ganhar dinheiro e o nome daquela farsa era apenas placebo mesmo.",
+      "legenda": "📌 Série: 5 fenômenos que a ciência ainda estuda · Parte 1/5\n\nJá tomou um remédio de mentira e melhorou? Conta aqui nos comentários!\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\nA parte 2 sai amanhã 👀\n\n#efeitoplacebo #curiosidadesmedicas #ciencia #curiosidades #vocesabia #aprendanotiktok",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Micorriza",
-        "https://pt.wikipedia.org/wiki/Mic%C3%A9lio"
+        "https://pt.wikipedia.org/wiki/Placebo"
       ],
-      "arquivo": "01 - A internet secreta da floresta.mp4",
-      "capa": "01 - A internet secreta da floresta - capa.jpg",
-      "asset_mp4": "TT-01-a-internet-secreta-da-floresta.mp4",
-      "asset_capa": "TT-01-a-internet-secreta-da-floresta-capa.jpg"
+      "arquivo": "01 - O poder secreto do placebo.mp4",
+      "capa": "01 - O poder secreto do placebo - capa.jpg",
+      "asset_mp4": "TT-01-o-poder-secreto-do-placebo.mp4",
+      "asset_capa": "TT-01-o-poder-secreto-do-placebo-capa.jpg"
     },
     {
       "plataforma": "tiktok",
       "n": 2,
-      "tema": "A existência de lagos subglaciais sob a camada de gelo da Antártida, como o Lago Vostok, que permanecem isolados há milhões de anos.",
-      "titulo": "O lago escondido sob o gelo",
-      "duracao": 73.3,
+      "tema": "A origem do gosto umami e como o cérebro humano identifica esse quinto sabor através de receptores específicos.",
+      "titulo": "O Segredo do Sabor",
+      "duracao": 62.2,
       "qualidade": 100,
       "abertura": "desafio",
-      "gancho": "Aposto que você não imaginava que existe um lago gigantesco enterrado a quatro mil metros de profundidade sob o gelo da Antártida.",
-      "legenda": "Aposto que você não sabia que existe um lago gigante enterrado debaixo do gelo da Antártida! Qual segredo você acha que está congelado lá? Comenta aqui\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#antartida #lagovostok #curiosidades #vocesabia #aprendanotiktok",
+      "gancho": "Aposto que você erra onde sente o gosto umami na boca todos os dias da sua vida agora mesmo.",
+      "legenda": "📌 Série: 5 fenômenos que a ciência ainda estuda · Parte 2/5\n\nAposto que você erra onde sente o gosto umami na boca! Qual sua comida favorita com esse sabor?\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\nA parte 3 sai amanhã 👀\n\n#umami #ciencia #curiosidades #vocesabia #aprendanotiktok",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Lago_Vostok",
-        "https://pt.wikipedia.org/wiki/Idade_Heroica_da_Explora%C3%A7%C3%A3o_da_Ant%C3%A1rtida"
+        "https://pt.wikipedia.org/wiki/Umami"
       ],
-      "arquivo": "02 - O lago escondido sob o gelo.mp4",
-      "capa": "02 - O lago escondido sob o gelo - capa.jpg",
-      "asset_mp4": "TT-02-o-lago-escondido-sob-o-gelo.mp4",
-      "asset_capa": "TT-02-o-lago-escondido-sob-o-gelo-capa.jpg"
+      "arquivo": "02 - O Segredo do Sabor.mp4",
+      "capa": "02 - O Segredo do Sabor - capa.jpg",
+      "asset_mp4": "TT-02-o-segredo-do-sabor.mp4",
+      "asset_capa": "TT-02-o-segredo-do-sabor-capa.jpg"
     },
     {
       "plataforma": "tiktok",
       "n": 3,
-      "tema": "O fenômeno do 'Ponto Nemo', o local mais isolado do planeta no oceano, usado como cemitério de espaçonaves.",
-      "titulo": "O cemitério espacial da Terra",
-      "duracao": 75.2,
+      "tema": "O mistério da matéria escura e por que ela mantém as galáxias unidas sem que os cientistas consigam detectá-la diretamente.",
+      "titulo": "O Mistério da Matéria Escura",
+      "duracao": 67.6,
       "qualidade": 100,
       "abertura": "numero",
-      "gancho": "Dois mil oitocentos e sessenta e seis quilômetros é a distância mínima que separa o Ponto Nemo de qualquer pedaço de terra firme por aí.",
-      "legenda": "O lugar mais isolado da Terra é um cemitério espacial. Você teria coragem de ir lá?\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#pontonemo #curiosidades #espaco #vocesabia #aprendanotiktok",
+      "gancho": "Oitenta e quatro por cento de toda a matéria do nosso universo é totalmente invisível para nós e ninguém sabe explicar isso direito.",
+      "legenda": "📌 Série: 5 fenômenos que a ciência ainda estuda · Parte 3/5\n\nOitenta e quatro por cento do universo é matéria escura invisível e um módulo de dois bilhões de dólares foi caçar isso no espaço. Você acha que vamos descobrir? Segue o @binoteexplica\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\nA parte 4 sai amanhã 👀\n\n#materiaescura #universo #ciencia #curiosidades #vocesabia #aprendanotiktok",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Ponto_Nemo"
+        "https://pt.wikipedia.org/wiki/Mat%C3%A9ria_escura"
       ],
-      "arquivo": "03 - O cemitério espacial da Terra.mp4",
-      "capa": "03 - O cemitério espacial da Terra - capa.jpg",
-      "asset_mp4": "TT-03-o-cemiterio-espacial-da-terra.mp4",
-      "asset_capa": "TT-03-o-cemiterio-espacial-da-terra-capa.jpg"
+      "arquivo": "03 - O Mistério da Matéria Escura.mp4",
+      "capa": "03 - O Mistério da Matéria Escura - capa.jpg",
+      "asset_mp4": "TT-03-o-misterio-da-materia-escura.mp4",
+      "asset_capa": "TT-03-o-misterio-da-materia-escura-capa.jpg"
     },
     {
       "plataforma": "tiktok",
       "n": 4,
-      "tema": "O paradoxo de Fermi: se o universo é tão vasto e antigo, por que ainda não encontramos sinais de inteligência alienígena?",
-      "titulo": "Onde estão os alienígenas?",
-      "duracao": 78.4,
+      "tema": "O misterioso mecanismo da regeneração celular da salamandra axolote, que reconstrói órgãos inteiros e membros sem deixar cicatrizes, desafiando a medicina.",
+      "titulo": "O bicho que engana a morte",
+      "duracao": 78.9,
       "qualidade": 100,
       "abertura": "pergunta",
-      "gancho": "Por que o universo é um silêncio total se existem setenta sextilhões de estrelas lá fora esperando pela gente encontrar algum sinal de vida inteligente?",
-      "legenda": "Onde estão os alienígenas? O paradoxo de Fermi é real. Comenta sua teoria e segue o Bino Explica.\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#astronomia #espaco #universo #curiosidades #vocesabia #aprendanotiktok",
+      "gancho": "Por que o nome axolote significa monstro aquático na antiga língua asteca e remete diretamente ao poderoso deus Xolotl na mitologia?",
+      "legenda": "📌 Série: 5 fenômenos que a ciência ainda estuda · Parte 4/5\n\nPor que o axolote é considerado um monstro aquático cheio de superpoderes? Qual animal você queria ser igual?\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\nA parte 5 sai amanhã 👀\n\n#axolote #biologia #ciencia #curiosidades #vocesabia #aprendanotiktok",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Paradoxo_de_Fermi"
+        "https://pt.wikipedia.org/wiki/Ambystoma_mexicanum",
+        "https://pt.wikipedia.org/wiki/Regenera%C3%A7%C3%A3o_(biologia)"
       ],
-      "arquivo": "04 - Onde estão os alienígenas.mp4",
-      "capa": "04 - Onde estão os alienígenas - capa.jpg",
-      "asset_mp4": "TT-04-onde-estao-os-alienigenas.mp4",
-      "asset_capa": "TT-04-onde-estao-os-alienigenas-capa.jpg"
+      "arquivo": "04 - O bicho que engana a morte.mp4",
+      "capa": "04 - O bicho que engana a morte - capa.jpg",
+      "asset_mp4": "TT-04-o-bicho-que-engana-a-morte.mp4",
+      "asset_capa": "TT-04-o-bicho-que-engana-a-morte-capa.jpg"
     },
     {
       "plataforma": "tiktok",
       "n": 5,
-      "tema": "Como o nosso cérebro mantém a noção de tempo enquanto dormimos através do ritmo circadiano.",
-      "titulo": "O segredo do seu sono",
-      "duracao": 80.9,
-      "qualidade": 95,
+      "tema": "O mecanismo neurológico do déjà vu e as teorias da neurociência sobre por que o cérebro gera essa falsa sensação de memória instantânea.",
+      "titulo": "O mistério do déjà vu",
+      "duracao": 68.2,
+      "qualidade": 100,
       "abertura": "afirmacao",
-      "gancho": "Seu cérebro nunca desliga enquanto você dorme profundamente, pois ele trabalha em uma missão secreta que mantém todas as suas memórias funcionando com segurança total.",
-      "legenda": "Seu cérebro nunca desliga enquanto você dorme. Você costuma sonhar muito ou apaga totalmente?\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\n#ciencia #curiosidades #sono #vocesabia #aprendanotiktok",
+      "gancho": "Essa sensação de que você já viveu esse exato momento é uma falha mental bizarra que a ciência resolveu investigar fundo agora mesmo.",
+      "legenda": "📌 Série: 5 fenômenos que a ciência ainda estuda · Parte 5/5\n\nJá teve essa sensação estranha? Comenta aqui embaixo e segue o Bino Explica para mais curiosidades.\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\nÚltima parte! Qual das 5 partes foi a melhor? 👇\n\n#dejavu #ciencia #curiosidades #vocesabia #aprendanotiktok",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Ritmo_circadiano",
-        "https://pt.wikipedia.org/wiki/Sono"
+        "https://pt.wikipedia.org/wiki/D%C3%A9j%C3%A0_vu"
       ],
-      "arquivo": "05 - O segredo do seu sono.mp4",
-      "capa": "05 - O segredo do seu sono - capa.jpg",
-      "asset_mp4": "TT-05-o-segredo-do-seu-sono.mp4",
-      "asset_capa": "TT-05-o-segredo-do-seu-sono-capa.jpg"
+      "arquivo": "05 - O mistério do déjà vu.mp4",
+      "capa": "05 - O mistério do déjà vu - capa.jpg",
+      "asset_mp4": "TT-05-o-misterio-do-deja-vu.mp4",
+      "asset_capa": "TT-05-o-misterio-do-deja-vu-capa.jpg"
     }
   ],
   "fechado": true,
-  "total": 5
+  "total": 5,
+  "serie": "ciencia"
 }
