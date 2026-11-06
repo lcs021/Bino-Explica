@@ -16,8 +16,13 @@ on:
       tema:
         description: "Tema (só para produzir; vazio = a IA pesquisa)"
         required: false
+      serie:
+        description: "Série do pacote (automática = a próxima da fila)"
+        type: choice
+        default: automatica
+        options: [automatica, ciencia, mentira, errado, mente]
       quantos:
-        description: "Quantos temas (pacote: 5, cada um em Reels + TikTok)"
+        description: "Quantas partes por plataforma (pacote: 5)"
         default: "5"
       id:
         description: "Id do Reel (para reagendar ou cancelar; veja no PAINEL.md)"
@@ -86,9 +91,10 @@ jobs:
           TEMA: ${{ inputs.tema }}
           REEL_ID: ${{ inputs.id }}
           QUANDO: ${{ inputs.quando }}
+          SERIE: ${{ inputs.serie }}
         run: |
           if [ "$ACAO" = "pacote" ]; then
-            python reels.py pacote --quantos "$QUANTOS"
+            python reels.py pacote --quantos "$QUANTOS" --serie "$SERIE"
           elif [ "$ACAO" = "produzir" ]; then
             python reels.py produzir --quantos "$QUANTOS" --tema "$TEMA"
           else

@@ -331,15 +331,23 @@ def camada_titulo(titulo):
     return img
 
 
+def _selo(d, selo, y0, tam=50):
+    """Selinho vermelho da série (ex.: "MISTÉRIOS DA CIÊNCIA · 1/5"), sempre inteiro na tela."""
+    fs = fonte(tam, negrito=True)
+    while d.textlength(selo, font=fs) > W - 160 and tam > 30:
+        tam -= 4
+        fs = fonte(tam, negrito=True)
+    tw = d.textlength(selo, font=fs)
+    x0 = (W - tw) / 2 - 34
+    d.rounded_rectangle((x0, y0, x0 + tw + 68, y0 + tam + 24), 20, fill=VERMELHO, outline=PRETO, width=6)
+    d.text((W / 2, y0 + (tam + 24) / 2), selo, font=fs, fill="white", anchor="mm")
+
+
 def camada_fundo(marca, selo):
     img = Image.new("RGB", (W, H), "white")
     d = ImageDraw.Draw(img)
     if selo:
-        fs = fonte(50, negrito=True)
-        tw = d.textlength(selo, font=fs)
-        x0, y0 = (W - tw) / 2 - 34, 92
-        d.rounded_rectangle((x0, y0, x0 + tw + 68, y0 + 74), 20, fill=VERMELHO, outline=PRETO, width=6)
-        d.text((W / 2, y0 + 37), selo, font=fs, fill="white", anchor="mm")
+        _selo(d, selo, 62 if H > W else 92)
     fm = fonte(34)
     if MARCA_XY:
         d.text(MARCA_XY, marca, font=fm, fill="#8a8a8a", anchor="rs")
@@ -902,7 +910,7 @@ def _montar(cfg, roteiro, cenas_png, audios, titulos, pasta, marca, selo, minimo
 
 
 # =================================================================== capa do Reels
-def capa(cena_png, texto, destino, marca="@binoexplica", svg_txt=None):
+def capa(cena_png, texto, destino, marca="@binoexplica", svg_txt=None, selo=None):
     """Capa 1080x1920: título curto e grande, ilustração do assunto, identidade do perfil.
     O que importa fica no meio (o perfil do Instagram mostra a capa recortada em 3:4)."""
     img = Image.new("RGB", (W, H), "white")
@@ -934,7 +942,9 @@ def capa(cena_png, texto, destino, marca="@binoexplica", svg_txt=None):
         y += alt
     # sublinhado de caneta embaixo do título
     d.line([(160, 800), (W // 2, 812), (W - 160, 798)], fill=VERMELHO, width=12, joint="curve")
+    if selo:                                   # série: "PARTE 2/5" na capa (dentro do recorte 3:4 do perfil)
+        _selo(d, selo, 1512, 52)
     fm = fonte(46, negrito=True)
-    d.text((W / 2, 1600), marca, font=fm, fill="#8a8a8a", anchor="mm")
+    d.text((W / 2, 1650 if selo else 1600), marca, font=fm, fill="#8a8a8a", anchor="mm")
     img.save(destino, quality=93)
     return destino

@@ -101,7 +101,7 @@ def medir_voz(cenas, audios):
 
 
 # =================================================================== 1. pesquisador de assuntos
-def escolher_temas(reg, quantos, modelo):
+def escolher_temas(reg, quantos, modelo, serie=None):
     feitos = list(dict.fromkeys([r["tema"] for r in reg] + op.temas_usados()))[-120:]
     apr = json.loads(APRENDIZADOS.read_text(encoding="utf-8")) if APRENDIZADOS.exists() else {}
     cat_stats = apr.get("categorias") or {}
@@ -111,7 +111,7 @@ def escolher_temas(reg, quantos, modelo):
                  f"{json.dumps(apr['melhores'][:5], ensure_ascii=False)}; categorias fortes {apr.get('categorias_fortes', [])}.")
     prompt = f"""Você é o pesquisador de pauta do perfil "Bino Explica" (Reels de curiosidades desenhadas à mão, Brasil).
 Data de hoje: {agora():%d/%m/%Y}. Pesquise no Google oportunidades de conteúdo com alto potencial no Instagram
-brasileiro nestas categorias: {", ".join(CATEGORIAS)}.
+brasileiro {f'para a SÉRIE "{SERIES[serie]["nome"]}": {SERIES[serie]["pauta"]}. TODOS os temas precisam se encaixar nessa série' if serie else "nestas categorias: " + ", ".join(CATEGORIAS)}.
 Só fatos bem documentados (universidades, instituições de pesquisa, publicações especializadas, órgãos oficiais,
 enciclopédias, grandes veículos). Nada de pessoas vivas, tragédias recentes, política, saúde arriscada ou boatos.
 Não copie roteiros de outros criadores. {dicas}
@@ -146,7 +146,7 @@ com 8 opções de categorias variadas."""
     opcoes.sort(key=lambda o: o["pontuacao"], reverse=True)
     escolhidos, cats = [], set()
     for o in opcoes:
-        if o.get("categoria") not in cats and o["pontuacao"] >= 55:
+        if (serie or o.get("categoria") not in cats) and o["pontuacao"] >= 55:
             escolhidos.append(o)
             cats.add(o.get("categoria"))
     escolhidos = escolhidos[:quantos + 2]           # reservas, caso algum seja reprovado
@@ -197,7 +197,15 @@ Responda SÓ JSON: {{"fatos":["..."],"mais_surpreendente":"...","comprova_o_tema
 
 
 # =================================================================== 2. roteirista + storyboard
-def prompt_roteiro(tema, fatos, abertura, ganchos_recentes, correcoes="", alvo=(40, 54), n_cenas=6):
+def _fim_serie(sr):
+    if sr["parte"] < sr["total"]:
+        return (f'conclusão curta + pergunta natural para os comentários + "essa foi a parte {sr["parte"]} da série '
+                f'{sr["nome"]}; a parte {sr["parte"] + 1} sai amanhã, segue o Bino Explica pra não perder".')
+    return (f'conclusão curta + "essa foi a última parte da série {sr["nome"]}" + pergunta: qual das {sr["total"]} '
+            f'partes mais te impressionou? + "segue o Bino Explica que vem série nova".')
+
+
+def prompt_roteiro(tema, fatos, abertura, ganchos_recentes, correcoes="", alvo=(40, 54), n_cenas=6, serie=None):
     import main_gratis as mg
     MARCA = marca_instagram()
     regras = mg.REGRAS_VIRAL.replace("@binoexplica", MARCA)
@@ -217,7 +225,7 @@ Estrutura obrigatória (storytelling de alta retenção):
 - Cena 4 = QUEBRA DE EXPECTATIVA: algo que ninguém espera.
 - Cenas seguintes = mais um fato surpreendente{" (entre 20 e 30 segundos, uma frase curta pedindo para seguir o Bino)" if n_cenas > 6 else ""}.
 - Penúltima cena = REVELAÇÃO: frase curta de suspense + o fato mais surpreendente.
-- Última cena = ENCERRAMENTO: conclusão curta + pergunta natural para os comentários + "segue o Bino Explica".
+- Última cena = ENCERRAMENTO: {_fim_serie(serie) if serie else 'conclusão curta + pergunta natural para os comentários + "segue o Bino Explica".'}
 {"Corrija estes problemas apontados pela revisão: " + correcoes if correcoes else ""}
 STORYBOARD de cada cena:
 "visual": a ilustração EM INGLÊS que EXPLICA a fala (rabisco de quadro branco, 1 a 3 bonequinhos de palito, uma ação clara).
@@ -248,12 +256,12 @@ Responda SÓ JSON: {{"aprovado": true|false, "problemas": "vazio se aprovado", "
     return ia.gerar_json(prompt, modelo)
 
 
-def criar_roteiro(tema, fatos, modelo, abertura, ganchos_recentes, alvo=(40, 54), n_cenas=6):
+def criar_roteiro(tema, fatos, modelo, abertura, ganchos_recentes, alvo=(40, 54), n_cenas=6, serie=None):
     obs = ""
     pps = palavras_por_segundo()
     for tentativa in range(3):
         log.info(f"Roteiro (tentativa {tentativa + 1}, abertura '{abertura}'): {tema}")
-        r = ia.gerar_json(prompt_roteiro(tema, fatos, abertura, ganchos_recentes, obs, alvo, n_cenas), modelo)
+        r = ia.gerar_json(prompt_roteiro(tema, fatos, abertura, ganchos_recentes, obs, alvo, n_cenas, serie), modelo)
         cenas = [c for c in r.get("cenas", []) if c.get("narracao")]
         if len(cenas) < n_cenas - 1:
             obs = f"o roteiro precisa ter exatamente {n_cenas} cenas com narração"
@@ -452,6 +460,24 @@ def produzir_um(cfg, tema_info, reg, horario, modelo_txt):
 
 # =================================================================== pacote da semana (você posta)
 PACOTE = PASTA / "pacote.json"
+# Séries: cada pacote é uma série de 5 partes por plataforma (dá ao público um motivo para voltar no dia seguinte)
+SERIES = {
+    "ciencia": {"nome": "5 fenômenos que a ciência ainda estuda", "selo": "A CIÊNCIA AINDA ESTUDA",
+                "pauta": "fenômenos reais da natureza, do corpo humano, da Terra ou do espaço que a ciência AINDA NÃO "
+                         "explicou por completo e continua estudando (com as hipóteses documentadas; nada de misticismo "
+                         "ou pseudociência)"},
+    "mentira": {"nome": "Histórias reais que parecem mentira", "selo": "PARECE MENTIRA",
+                "pauta": "histórias reais e bem documentadas tão absurdas que parecem inventadas (episódios históricos, "
+                         "planos malucos, coincidências, acidentes curiosos), sem pessoas vivas e sem tragédias recentes"},
+    "errado": {"nome": "Experimentos que deram errado", "selo": "DEU ERRADO",
+               "pauta": "experimentos científicos, projetos e invenções reais que deram errado, saíram do controle ou "
+                        "tiveram um resultado totalmente inesperado (bem documentados, sem pessoas vivas)"},
+    "mente": {"nome": "Curiosidades que vão desafiar sua mente", "selo": "DESAFIA SUA MENTE",
+              "pauta": "paradoxos, ilusões e fatos de matemática, física, tempo e percepção que parecem impossíveis e "
+                       "bugam a cabeça, fáceis de explicar com um desenho simples"},
+}
+ORDEM_SERIES = list(SERIES)
+
 DIAS = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"]
 
 
@@ -483,13 +509,16 @@ def produzir_video_pacote(cfg, modelo, t, plataforma, n, pac, reg):
     import main_gratis as mg
     import narracao
     p = PLATAFORMAS[plataforma]
+    sd = SERIES.get(pac.get("serie") or "")
+    sr = {"nome": sd["nome"], "parte": n, "total": pac["total"]} if sd else None
+    selo = f"{sd['selo']} · PARTE {n}/{pac['total']}" if sd else None
     fatos, fontes = pesquisar_fatos(t["tema"], modelo, t.get("artigos"))
     feitos = [v for v in pac["videos"]]
     abertura = op.escolher_abertura(reg + [{"teste": {"abertura": v.get("abertura")}} for v in feitos])
     r = None
     for _ in range(2):
         r = criar_roteiro(t["tema"], fatos, modelo, abertura, [v["gancho"] for v in feitos][-8:],
-                          alvo=p["alvo"], n_cenas=p["cenas"])
+                          alvo=p["alvo"], n_cenas=p["cenas"], serie=sr)
         if r:
             break
     if not r:
@@ -510,12 +539,13 @@ def produzir_video_pacote(cfg, modelo, t, plataforma, n, pac, reg):
     marca = marca_instagram() if plataforma == "instagram" else marca_tiktok()
     titulos = [re.sub(r"[^\w\s:?!,.\-]", "", r.get("texto_capa") or r["titulo"]).strip()] + \
               [c.get("legenda_tela", "") for c in r["cenas"][1:]]
-    mp4 = animacao.montar_tiktok(cfg, r, cenas, auds, titulos, pasta, marca, minimo=p["minimo"], nome="video",
-                                 musica=p["musica"])
+    mp4 = animacao.montar_tiktok(cfg, r, cenas, auds, titulos, pasta, marca, selo=selo, minimo=p["minimo"],
+                                 nome="video", musica=p["musica"])
     i_capa = min(max(int(r.get("surpresa") or 0) if str(r.get("surpresa", "")).isdigit() else 0, 0), len(cenas) - 1)
     svg = cenas[i_capa].with_suffix(".svg")
     capa = animacao.capa(cenas[i_capa], r.get("texto_capa") or r["titulo"], pasta / "capa.jpg", marca,
-                         svg.read_text(encoding="utf-8") if svg.exists() else None)
+                         svg.read_text(encoding="utf-8") if svg.exists() else None,
+                         selo=f"PARTE {n}/{pac['total']}" if sd else None)
     d = duracao(mp4)
     if plataforma == "instagram":
         legenda = montar_legenda(r, fontes)
@@ -523,6 +553,11 @@ def produzir_video_pacote(cfg, modelo, t, plataforma, n, pac, reg):
         tags = list(dict.fromkeys([x.lower() for x in hashtags(r)[:3]] + ["curiosidades", "vocesabia", "aprendanotiktok"]))
         legenda = ((r.get("legenda_tiktok") or r["titulo"]).strip() +
                    f"\n\nSegue o {marca} pra mais curiosidades 👀\n\n" + " ".join("#" + x for x in tags))
+    if sd:                                       # série: identifica a parte e chama para a próxima
+        prox = (f"A parte {n + 1} sai amanhã 👀" if n < pac["total"] else
+                f"Última parte! Qual das {pac['total']} partes foi a melhor? 👇")
+        legenda = f"📌 Série: {sd['nome']} · Parte {n}/{pac['total']}\n\n{legenda}"
+        legenda = legenda.replace("\n\n#", f"\n\n{prox}\n\n#", 1) if "\n\n#" in legenda else legenda + f"\n\n{prox}"
     nota, perdas = op.nota_qualidade(r, {"duracao": d, "fontes": fontes}, pasta, cenas, auds, mp4, capa,
                                      legenda if "@" in legenda else legenda + " @", verificar_video(mp4), faixa=p["faixa"])
     if nota < op.NOTA_MINIMA or (plataforma == "tiktok" and d < 61):
@@ -532,7 +567,7 @@ def produzir_video_pacote(cfg, modelo, t, plataforma, n, pac, reg):
             "fontes": [f.get("url") or f.get("titulo") for f in fontes], "_mp4": mp4, "_capa": capa}
 
 
-def produzir_pacote(total=5):
+def produzir_pacote(total=5, serie=""):
     """Pacote fechado: `total` vídeos para o Instagram e `total` para o TikTok, temas diferentes, cada um feito do zero
     para a sua plataforma. Zip com as pastas Instagram/ e TikTok/, vídeos com o nome do tema, capas e legendas.
     Cada vídeo sobe para Releases assim que fica pronto; se a rodada cair, a próxima continua de onde parou."""
@@ -541,8 +576,13 @@ def produzir_pacote(total=5):
     reg = ler_registro()
     pac = json.loads(PACOTE.read_text(encoding="utf-8")) if PACOTE.exists() else {}
     if not pac or pac.get("fechado") or pac.get("versao") != 2:
-        pac = {"versao": 2, "id": f"pacote-{agora():%Y%m%d-%H%M}", "criado": agora().isoformat(timespec="minutes"),
-               "videos": [], "fechado": False, "total": total}
+        anterior = pac.get("serie") if pac else None
+        if serie not in SERIES:                  # automática: a próxima série da fila
+            serie = ORDEM_SERIES[(ORDEM_SERIES.index(anterior) + 1) % len(ORDEM_SERIES)] if anterior in SERIES \
+                else ORDEM_SERIES[0]
+        pac = {"versao": 2, "id": f"serie-{serie}-{agora():%Y%m%d-%H%M}", "criado": agora().isoformat(timespec="minutes"),
+               "videos": [], "fechado": False, "total": total, "serie": serie}
+    log.info(f"Série do pacote: {SERIES.get(pac.get('serie') or '', {}).get('nome', '(sem série)')}")
     total = pac.get("total", total)
     base = RAIZ / "saida" / pac["id"]
     for p in PLATAFORMAS.values():
@@ -567,7 +607,8 @@ def produzir_pacote(total=5):
             temas = []
             for _ in range(3):
                 try:
-                    temas = escolher_temas(reg + [{"tema": v["tema"]} for v in pac["videos"]], min(faltam, 5), modelo)
+                    temas = escolher_temas(reg + [{"tema": v["tema"]} for v in pac["videos"]], min(faltam, 5), modelo,
+                                           pac.get("serie"))
                     if temas:
                         break
                 except Exception as e:  # noqa: BLE001
@@ -609,7 +650,10 @@ def _legendas(pac, base):
     arquivos = []
     for plataforma, p in PLATAFORMAS.items():
         vs = sorted([v for v in pac["videos"] if v["plataforma"] == plataforma], key=lambda v: v["n"])
+        sd = SERIES.get(pac.get("serie") or "")
         linhas = [f"LEGENDAS {p['pasta'].upper()} — Bino Explica", "=" * 40, ""]
+        if sd:
+            linhas[2:2] = [f"Série: {sd['nome']} — poste na ordem (Parte 1, 2, 3...), uma por dia.", ""]
         for k, v in enumerate(vs):
             d = agora().date() + timedelta(days=1 + k)
             linhas += [f"{v['arquivo']}", f"Sugestão: {DIAS[d.weekday()]} {d:%d/%m} às 19:30 · {v['duracao']:.0f}s"
@@ -619,6 +663,11 @@ def _legendas(pac, base):
         arq.write_text("\n".join(linhas), encoding="utf-8")
         arquivos.append(arq)
     return arquivos
+
+
+def _nome_serie(pac):
+    sd = SERIES.get(pac.get("serie") or "")
+    return f"Série: {sd['nome']}" if sd else "Pacote"
 
 
 def publicar_no_release(pac, base, total, v):
@@ -632,7 +681,7 @@ def publicar_no_release(pac, base, total, v):
     shutil.copyfile(dst / v["capa"], tmp / v["asset_capa"])
     n_ig = sum(x["plataforma"] == "instagram" for x in pac["videos"])
     n_tt = sum(x["plataforma"] == "tiktok" for x in pac["videos"])
-    titulo = f"📦 Pacote — Instagram {n_ig}/{total} · TikTok {n_tt}/{total}"
+    titulo = f"📦 {_nome_serie(pac)} — Instagram {n_ig}/{total} · TikTok {n_tt}/{total}"
     if subprocess.run(["gh", "release", "view", pac["id"]], capture_output=True).returncode != 0:
         subprocess.run(["gh", "release", "create", pac["id"], "--title", titulo, "--latest=false", "--notes",
                         "IG-*: vídeos do Instagram · TT-*: vídeos do TikTok. No final sai o .zip com as pastas "
@@ -651,19 +700,21 @@ def publicar_no_release(pac, base, total, v):
 def fechar_pacote(pac, base, total):
     import zipfile
     _legendas(pac, base)
-    zipar = base / f"Bino Explica - pacote {agora():%d-%m}.zip"
+    sd = SERIES.get(pac.get("serie") or "")
+    zipar = base / (f"Bino Explica - {sd['nome']}.zip" if sd else f"Bino Explica - pacote {agora():%d-%m}.zip")
     with zipfile.ZipFile(zipar, "w", zipfile.ZIP_STORED) as z:
         for p in PLATAFORMAS.values():
             for f in sorted((base / p["pasta"]).iterdir()):
                 if f.suffix in (".mp4", ".jpg", ".txt"):
                     z.write(f, f"{p['pasta']}/{f.name}")
-    asset = base / "_envio" / f"bino-explica-pacote-{agora():%d-%m}.zip"
+    asset = base / "_envio" / (f"bino-explica-serie-{slug(sd['nome'])}.zip" if sd else
+                               f"bino-explica-pacote-{agora():%d-%m}.zip")
     asset.parent.mkdir(exist_ok=True)
     shutil.copyfile(zipar, asset)
     n_ig = sum(x["plataforma"] == "instagram" for x in pac["videos"])
     n_tt = sum(x["plataforma"] == "tiktok" for x in pac["videos"])
     completo = n_ig >= total and n_tt >= total
-    titulo = f"📦 Pacote — Instagram {n_ig}/{total} · TikTok {n_tt}/{total}{'' if completo else ' (parcial)'}"
+    titulo = f"📦 {_nome_serie(pac)} — Instagram {n_ig}/{total} · TikTok {n_tt}/{total}{'' if completo else ' (parcial)'}"
     if subprocess.run(["gh", "release", "view", pac["id"]], capture_output=True).returncode != 0:
         subprocess.run(["gh", "release", "create", pac["id"], str(asset), "--title", titulo, "--latest=false",
                         "--notes", "Baixe o .zip: pastas Instagram/ e TikTok/ com vídeos, capas e legendas."], check=True)
@@ -1067,10 +1118,11 @@ if __name__ == "__main__":
     ap.add_argument("--tema", default="")
     ap.add_argument("--id", default="")
     ap.add_argument("--quando", default="")
+    ap.add_argument("--serie", default="")
     a = ap.parse_args()
     if a.acao == "pacote":
         try:
-            produzir_pacote(a.quantos if a.quantos != 2 else 5)
+            produzir_pacote(a.quantos if a.quantos != 2 else 5, a.serie)
         finally:
             op.painel(ler_registro())
     elif a.acao == "produzir":
