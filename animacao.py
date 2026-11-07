@@ -66,7 +66,8 @@ def _formato(fmt):
 FIM_PAUSA = 0.30                   # respiro depois de cada fala (corte preciso, sem enrolar)
 ENTRADA = 0.12                     # a voz entra logo depois do primeiro traço
 PAUSA_SURPRESA = 0.65              # suspense antes da revelação
-TRANSICAO = 0.22                   # crossfade entre cenas
+TRANSICAO = 0.40                   # transição por rabisco entre cenas
+TREMOR = 0.32                      # vibração curta na revelação
 
 
 def _t(nome):
@@ -378,6 +379,63 @@ def _caixa_conteudo(img):
 
 
 # =================================================================== uma cena
+def _caminho_rabisco(seed):
+    """Zigue-zague do marcador (pontos em tela cheia) e a grossura que cobre a tela."""
+    rng = np.random.default_rng(seed)
+    faixas = 7
+    alt = H / faixas
+    pts = []
+    for k in range(faixas + 1):                        # esquerda→direita, direita→esquerda, descendo
+        y = alt * (k + 0.5) + rng.uniform(-alt * 0.15, alt * 0.15)
+        xs = (-0.1 * W, 1.1 * W) if k % 2 == 0 else (1.1 * W, -0.1 * W)
+        pts += [(xs[0], y), (xs[1], y + rng.uniform(-alt * 0.2, alt * 0.2))]
+    return pts, alt * 1.55
+
+
+def _trecho(pts, p0, p1):
+    """Pedaço do caminho entre as frações p0 e p1 do comprimento total."""
+    seg = list(zip(pts[:-1], pts[1:]))
+    comp = [np.hypot(b[0] - a[0], b[1] - a[1]) for a, b in seg]
+    tot = sum(comp)
+    ini, fim, acc, out = max(0.0, p0) * tot, min(1.0, p1) * tot, 0.0, []
+    for (a, b), L in zip(seg, comp):
+        for f in np.linspace(0, 1, max(2, int(L / 40))):
+            pos = acc + f * L
+            if ini <= pos <= fim:
+                out.append((a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f))
+        acc += L
+    return out
+
+
+def _mascara_rabisco(p, seed):
+    """Máscara da transição: onde o marcador já passou entra a cena nova (branca = cena nova)."""
+    if p >= 1:
+        return Image.new("L", (W, H), 255)
+    esc = 4
+    m = Image.new("L", (W // esc, H // esc), 0)
+    if p > 0:
+        pts, grosso = _caminho_rabisco(seed)
+        tr = [(x / esc, y / esc) for x, y in _trecho(pts, 0, p)]
+        if len(tr) > 1:
+            ImageDraw.Draw(m).line(tr, fill=255, width=int(grosso / esc), joint="curve")
+    return m.resize((W, H), Image.BILINEAR)
+
+
+def _ponta_rabisco(tela, p, seed):
+    """O traço do marcador na frente da borracha: uma linha de caneta tremida, que some no fim."""
+    if not 0 < p < 1:
+        return tela
+    pts, grosso = _caminho_rabisco(seed)
+    tr = _trecho(pts, p - 0.16, p)
+    if len(tr) < 2:
+        return tela
+    rng = np.random.default_rng(seed + int(p * 50))
+    onda = [(x, y + 26 * np.sin(i * 1.7) + rng.uniform(-4, 4)) for i, (x, y) in enumerate(tr)]
+    camada = Image.new("L", (W, H), 0)
+    ImageDraw.Draw(camada).line(onda, fill=int(255 * min(1.0, 3 * (1 - p))), width=13, joint="curve")
+    return Image.composite(Image.new("RGB", (W, H), PRETO), tela, camada)
+
+
 def _ease(x):
     x = min(1.0, max(0.0, x))
     return x * x * (3 - 2 * x)
@@ -476,7 +534,12 @@ class Cena:
 
     def quadro(self, t, fundo, anterior=None, seguir=None):
         tela = fundo.copy()
-        tela.paste(self.desenho_em(t), self.pos)
+        dx = dy = 0
+        if self.surpresa and 0 <= t - self.voz_ini < TREMOR:   # vibração curta e discreta na revelação
+            q = (t - self.voz_ini) / TREMOR
+            amp = 11 * (1 - q)
+            dx, dy = int(amp * np.sin(q * 38)), int(amp * 0.6 * np.cos(q * 31))
+        tela.paste(self.desenho_em(t), (self.pos[0] + dx, self.pos[1] + dy))
         # câmera: o zoom mexe só na faixa do desenho (título, selo e legenda ficam firmes e inteiros)
         z = self.zoom_em(t)
         if z > 1.0005:
@@ -501,8 +564,10 @@ class Cena:
                 if b < 1:
                     s.putalpha(seguir.getchannel("A").point(lambda v: int(v * b)))
                 tela.paste(s, ((W - s.width) // 2, SEGUIR_Y - int(20 * (1 - b))), s)
-        if anterior is not None and t < TRANSICAO:
-            tela = Image.blend(anterior, tela, _ease(t / TRANSICAO))
+        if anterior is not None and t < TRANSICAO:     # o marcador "apaga" a cena anterior rabiscando a nova
+            p = _ease(t / TRANSICAO)
+            tela = Image.composite(tela, anterior, _mascara_rabisco(p, 40 + self.i))
+            tela = _ponta_rabisco(tela, p, 40 + self.i)
         return tela
 
 
@@ -532,6 +597,24 @@ def _ler_audio(arq):
     r = subprocess.run(["ffmpeg", "-v", "error", "-i", str(arq), "-f", "f32le", "-ac", "1", "-ar", str(SR), "-"],
                        capture_output=True, check=True)
     return np.frombuffer(r.stdout, dtype=np.float32).copy()
+
+
+VOZ_FILTRO = ("highpass=f=80,afftdn=nf=-30,equalizer=f=220:t=q:w=1.2:g=-2,"   # tira ronco e "embolado"
+              "equalizer=f=3200:t=q:w=1.0:g=2.5,"                         # presença: dicção mais clara
+              "acompressor=threshold=-20dB:ratio=3:attack=8:release=120:makeup=2")  # volume constante
+
+
+def _ler_voz(arq):
+    """Narração tratada: limpeza de ruído, equalização e compressão (mesma duração do original)."""
+    try:
+        r = subprocess.run(["ffmpeg", "-v", "error", "-i", str(arq), "-af", VOZ_FILTRO, "-f", "f32le", "-ac", "1",
+                            "-ar", str(SR), "-"], capture_output=True, check=True)
+        x = np.frombuffer(r.stdout, dtype=np.float32).copy()
+        if len(x):
+            return x * (0.89 / (np.abs(x).max() + 1e-9))
+    except subprocess.CalledProcessError as e:
+        log.warning(f"Tratamento da voz falhou ({e.stderr.decode()[-200:]}); usando a voz original.")
+    return _ler_audio(arq)
 
 
 def _ruido(n, seed):
@@ -760,15 +843,18 @@ def _palavras_com_tempo(texto, arq_audio, dur_fala):
     return res
 
 
-def _cor_palavra(p, primeira, destaques):
+def _cor_palavra(p, primeira, destaques, surpresa=False):
+    """Paleta: preto = texto; azul = informação importante; vermelho = surpresa; laranja = destaque secundário."""
     n = _norm(p)
-    if re.search(r"\d", p) or n in NUMEROS:
+    chave = n and any(n == _norm(d) or (len(n) > 3 and n in _norm(d).split()) for d in destaques)
+    numero = bool(re.search(r"\d", p)) or n in NUMEROS
+    if (chave or numero) and surpresa:
         return VERMELHO
-    if n and any(n == _norm(d) or (len(n) > 3 and n in _norm(d).split()) for d in destaques):
-        return LARANJA
+    if chave or numero:
+        return AZUL
     limpo = re.sub(r"^[^\wÀ-ÿ]+", "", p)
     if limpo[:1].isupper() and not primeira and len(n) > 1:
-        return AZUL
+        return LARANJA
     return None
 
 
@@ -817,9 +903,12 @@ def legendas_ass(cenas, textos, audios, destaques, destino, fonte_nome):
                 continue
             partes = []
             for k, (_, _, w) in enumerate(grupo):
-                cor = _cor_palavra(w, inicio_frase and k == 0, dest)
+                cor = _cor_palavra(w, inicio_frase and k == 0, dest, c.surpresa)
                 w = w.replace("\\", "")
-                partes.append(f"{{\\c{_ass_cor(cor)}}}{w}{{\\c{_ass_cor(PRETO)}}}" if cor else w)
+                # cada palavra aparece quando é falada (fica transparente até a sua vez)
+                ms = max(0, int((grupo[k][0] - grupo[0][0]) * 1000))
+                surge = f"{{\\alpha&HFF&\\t({ms},{ms + 70},\\alpha&H00&)}}" if k else ""
+                partes.append(f"{surge}{{\\c{_ass_cor(cor)}}}{w}{{\\c{_ass_cor(PRETO)}}}" if cor else f"{surge}{w}")
                 inicio_frase = bool(re.search(r"[.!?…]$", w))
             pop = "{\\fscx82\\fscy82\\t(0,90,\\fscx106\\fscy106)\\t(90,150,\\fscx100\\fscy100)}"
             linhas.append(f"Dialogue: 0,{tempo(ini)},{tempo(fim)},Padrao,,0,0,0,,{pop}{' '.join(partes)}")
@@ -857,7 +946,7 @@ def _montar(cfg, roteiro, cenas_png, audios, titulos, pasta, marca, selo, minimo
     trab = pasta / "_trab_animado"
     trab.mkdir(exist_ok=True)
 
-    falas = [_ler_audio(a) for a in audios]
+    falas = [_ler_voz(a) for a in audios]
     cenas = []
     for i in range(n):
         svg_arq = Path(cenas_png[i]).with_suffix(".svg")
