@@ -252,8 +252,38 @@ Reprove se: (1) algum fato, número ou data do roteiro NÃO está nos fatos pesq
 (2) erro de português ou de ortografia; (3) título enganoso; (4) a 1ª frase não prende; (5) conteúdo impróprio,
 pessoa viva, política ou saúde arriscada; (6) falta pergunta final para os comentários; (7) alguma ilustração não
 corresponde à fala da cena.
-Responda SÓ JSON: {{"aprovado": true|false, "problemas": "vazio se aprovado", "nota": 0-10}}"""
-    return ia.gerar_json(prompt, modelo)
+Seja rigoroso no item (1): separe a narração E a legenda em afirmações e, para cada uma, aponte qual fato pesquisado
+a sustenta. Histórias, anedotas, recordes, nomes, países e anos sem fato correspondente = reprovado (não aceite
+"parece plausível"). Opiniões, perguntas e chamadas para seguir não precisam de fonte.
+Responda SÓ JSON: {{"afirmacoes": [{{"frase": "...", "fato": "fato que sustenta ou vazio"}}],
+"aprovado": true|false, "problemas": "vazio se aprovado", "nota": 0-10}}"""
+    rev = ia.gerar_json(prompt, modelo)
+    sem_base = [a.get("frase", "") for a in rev.get("afirmacoes") or [] if isinstance(a, dict) and not str(a.get("fato") or "").strip()]
+    if rev.get("aprovado") and sem_base:
+        rev["aprovado"] = False
+        rev["problemas"] = "afirmações sem fato pesquisado que as sustente (tire ou troque): " + " | ".join(sem_base[:4])
+    erros = sem_acento(" ".join([texto]))
+    if rev.get("aprovado") and erros:
+        rev["aprovado"] = False
+        rev["problemas"] = "palavras sem acento (ortografia): " + ", ".join(erros)
+    return rev
+
+
+SEM_ACENTO = {"nao": "não", "voce": "você", "voces": "vocês", "tambem": "também", "misterio": "mistério",
+              "ciencia": "ciência", "historia": "história", "ate": "até", "entao": "então", "porem": "porém",
+              "alem": "além", "numero": "número", "unico": "único", "unica": "única", "magnetico": "magnético",
+              "quilometros": "quilômetros", "atlantico": "Atlântico", "sera": "será", "tambem": "também",
+              "ninguem": "ninguém", "agua": "água", "cerebro": "cérebro", "facil": "fácil",
+              "possivel": "possível", "impossivel": "impossível", "incrivel": "incrível"}
+
+
+def sem_acento(texto):
+    """Palavras comuns escritas sem acento (a IA às vezes tira os acentos da legenda)."""
+    vistos = []
+    for w in re.findall(r"[a-zçãõáéíóúâêô]+", (texto or "").lower()):
+        if SEM_ACENTO.get(w) and w not in vistos:
+            vistos.append(w)
+    return vistos[:6]
 
 
 def criar_roteiro(tema, fatos, modelo, abertura, ganchos_recentes, alvo=(40, 54), n_cenas=6, serie=None):
@@ -498,6 +528,15 @@ PLATAFORMAS = {
 }
 
 
+def _sem_cta(texto):
+    """Tira a chamada 'segue o ...' que a IA às vezes já coloca (a chamada certa é acrescentada depois)."""
+    t = re.sub(r"\s*(e )?(segue|siga)[^.!?\n]*(bino|@)[^.!?\n]*[.!?]?", "", texto.strip(), flags=re.I).strip()
+    t = re.sub(r"\s+([.!?])", r"\1", t)
+    if t and t[-1] not in ".!?":
+        t += "!"
+    return t or texto.strip()
+
+
 def _nome_bonito(titulo):
     t = re.sub(r'[\\/:*?"<>|#]', "", titulo).strip()
     return re.sub(r"\s+", " ", t)[:60]
@@ -551,7 +590,7 @@ def produzir_video_pacote(cfg, modelo, t, plataforma, n, pac, reg):
         legenda = montar_legenda(r, fontes)
     else:
         tags = list(dict.fromkeys([x.lower() for x in hashtags(r)[:3]] + ["curiosidades", "vocesabia", "aprendanotiktok"]))
-        legenda = ((r.get("legenda_tiktok") or r["titulo"]).strip() +
+        legenda = (_sem_cta(r.get("legenda_tiktok") or r["titulo"]) +
                    f"\n\nSegue o {marca} pra mais curiosidades 👀\n\n" + " ".join("#" + x for x in tags))
     if sd:                                       # série: identifica a parte e chama para a próxima
         prox = (f"A parte {n + 1} sai amanhã 👀" if n < pac["total"] else
@@ -577,11 +616,17 @@ def produzir_pacote(total=5, serie=""):
     pac = json.loads(PACOTE.read_text(encoding="utf-8")) if PACOTE.exists() else {}
     if not pac or pac.get("fechado") or pac.get("versao") != 2:
         anterior = pac.get("serie") if pac else None
+        numero = (pac.get("numero") or 0) + 1 if pac else 1
+        prev_fim = pac.get("fim_postagem") if pac else None
+        inicio = agora().date() + timedelta(days=1)
+        if prev_fim:
+            inicio = max(inicio, datetime.fromisoformat(prev_fim).date() + timedelta(days=1))
         if serie not in SERIES:                  # automática: a próxima série da fila
             serie = ORDEM_SERIES[(ORDEM_SERIES.index(anterior) + 1) % len(ORDEM_SERIES)] if anterior in SERIES \
                 else ORDEM_SERIES[0]
         pac = {"versao": 2, "id": f"serie-{serie}-{agora():%Y%m%d-%H%M}", "criado": agora().isoformat(timespec="minutes"),
-               "videos": [], "fechado": False, "total": total, "serie": serie}
+               "videos": [], "fechado": False, "total": total, "serie": serie, "numero": numero,
+               "inicio_postagem": inicio.isoformat(), "fim_postagem": (inicio + timedelta(days=total - 1)).isoformat()}
     log.info(f"Série do pacote: {SERIES.get(pac.get('serie') or '', {}).get('nome', '(sem série)')}")
     total = pac.get("total", total)
     base = RAIZ / "saida" / pac["id"]
@@ -655,7 +700,8 @@ def _legendas(pac, base):
         if sd:
             linhas[2:2] = [f"Série: {sd['nome']} — poste na ordem (Parte 1, 2, 3...), uma por dia.", ""]
         for k, v in enumerate(vs):
-            d = agora().date() + timedelta(days=1 + k)
+            d = (datetime.fromisoformat(pac["inicio_postagem"]).date() if pac.get("inicio_postagem")
+                 else agora().date() + timedelta(days=1)) + timedelta(days=k)
             linhas += [f"{v['arquivo']}", f"Sugestão: {DIAS[d.weekday()]} {d:%d/%m} às 19:30 · {v['duracao']:.0f}s"
                        + (" · sem música (se quiser, adicione um som da biblioteca do TikTok)" if plataforma == "tiktok" else ""),
                        "-" * 40, v["legenda"], "", ""]
@@ -667,7 +713,9 @@ def _legendas(pac, base):
 
 def _nome_serie(pac):
     sd = SERIES.get(pac.get("serie") or "")
-    return f"Série: {sd['nome']}" if sd else "Pacote"
+    if not sd:
+        return "Pacote"
+    return f"Série {pac['numero']}: {sd['nome']}" if pac.get("numero") else f"Série: {sd['nome']}"
 
 
 def publicar_no_release(pac, base, total, v):
@@ -701,13 +749,14 @@ def fechar_pacote(pac, base, total):
     import zipfile
     _legendas(pac, base)
     sd = SERIES.get(pac.get("serie") or "")
-    zipar = base / (f"Bino Explica - {sd['nome']}.zip" if sd else f"Bino Explica - pacote {agora():%d-%m}.zip")
+    num = f"Série {pac['numero']} - " if sd and pac.get("numero") else ""
+    zipar = base / (f"Bino Explica - {num}{sd['nome']}.zip" if sd else f"Bino Explica - pacote {agora():%d-%m}.zip")
     with zipfile.ZipFile(zipar, "w", zipfile.ZIP_STORED) as z:
         for p in PLATAFORMAS.values():
             for f in sorted((base / p["pasta"]).iterdir()):
                 if f.suffix in (".mp4", ".jpg", ".txt"):
                     z.write(f, f"{p['pasta']}/{f.name}")
-    asset = base / "_envio" / (f"bino-explica-serie-{slug(sd['nome'])}.zip" if sd else
+    asset = base / "_envio" / (f"bino-explica-{slug(num + sd['nome'])}.zip" if sd else
                                f"bino-explica-pacote-{agora():%d-%m}.zip")
     asset.parent.mkdir(exist_ok=True)
     shutil.copyfile(zipar, asset)

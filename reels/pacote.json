@@ -189,5 +189,8 @@
   ],
   "fechado": true,
   "total": 5,
-  "serie": "ciencia"
+  "serie": "ciencia",
+  "numero": 1,
+  "inicio_postagem": "2026-11-19",
+  "fim_postagem": "2026-11-23"
 }
