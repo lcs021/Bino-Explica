@@ -68,6 +68,7 @@ ENTRADA = 0.12                     # a voz entra logo depois do primeiro traço
 PAUSA_SURPRESA = 0.65              # suspense antes da revelação
 TRANSICAO = 0.40                   # transição por rabisco entre cenas
 BARRA_H = 10                       # altura da barra de progresso
+MARCA_ASS, MARCA_BORDA = "&H004DD8FF&", 15   # marca-texto da palavra falada (amarelo #FFD84D)
 TREMOR = 0.32                      # vibração curta na revelação
 
 
@@ -696,6 +697,22 @@ def som_pop():
     return (x / (np.abs(x).max() + 1e-9)).astype(np.float32)
 
 
+def som_subida(dur=0.7, seed=9):
+    """Tensão antes da revelação: ruído filtrado que sobe de volume e de brilho."""
+    n = int(dur * SR)
+    x = _passa_banda(_ruido(n, seed), 600, 5000)
+    env = np.linspace(0, 1, n, dtype=np.float32) ** 2.2
+    return (x / (np.abs(x).max() + 1e-9) * env).astype(np.float32)
+
+
+def som_impacto():
+    """Batida grave e curta (sub) que acompanha o zoom da revelação."""
+    t = np.arange(int(0.45 * SR)) / SR
+    f = 95 * np.exp(-t * 7) + 42
+    x = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 9) * np.minimum(1, t / 0.003)
+    return (x / np.abs(x).max()).astype(np.float32)
+
+
 def som_ding():
     t = np.arange(int(0.9 * SR)) / SR
     x = (np.sin(2 * np.pi * 1318.5 * t) + 0.6 * np.sin(2 * np.pi * 1975.5 * t) + 0.25 * np.sin(2 * np.pi * 2637 * t))
@@ -786,6 +803,13 @@ def mixar(cenas, falas, destino, musica=True):
             d = som_pop() * 0.14
             b = int((t0 + c.voz_ini + 0.05) * SR)
             efeitos[b:b + len(d)] += d[:n - b]
+        if c.surpresa:                                  # sobe a tensão e bate junto com o zoom
+            sub = som_subida() * 0.05
+            b = max(0, int((t0 + c.voz_ini) * SR) - len(sub))
+            efeitos[b:b + len(sub)] += sub[:n - b]
+            imp = som_impacto() * 0.22
+            b = int((t0 + c.voz_ini) * SR)
+            efeitos[b:b + len(imp)] += imp[:n - b]
         if c.surpresa or c.efeito == "ding":
             d = som_ding() * 0.16
             b = int((t0 + c.voz_ini - 0.05) * SR)
@@ -941,7 +965,12 @@ def legendas_ass(cenas, textos, audios, destaques, destino, fonte_nome):
                 w = w.replace("\\", "").upper()
                 # cada palavra aparece quando é falada (fica transparente até a sua vez)
                 ms = max(0, int((grupo[k][0] - grupo[0][0]) * 1000))
-                surge = f"{{\\alpha&HFF&\\t({ms},{ms + 70},\\alpha&H00&)}}" if k else ""
+                me = max(ms + 120, int((grupo[k][1] - grupo[0][0]) * 1000))
+                surge = f"\\alpha&HFF&\\t({ms},{ms + 70},\\alpha&H00&)" if k else ""
+                # marca-texto amarelo passa de palavra em palavra junto com a voz
+                marca = (f"\\t({ms},{ms + 60},\\3c{MARCA_ASS}\\bord{MARCA_BORDA})"
+                         f"\\t({me},{me + 90},\\3c&H00FFFFFF&\\bord7)")
+                surge = "{" + surge + marca + "}"
                 partes.append(f"{surge}{{\\c{_ass_cor(cor)}}}{w}{{\\c{_ass_cor(PRETO)}}}" if cor else f"{surge}{w}")
                 inicio_frase = bool(re.search(r"[.!?…]$", w))
             pop = "{\\fscx82\\fscy82\\t(0,90,\\fscx106\\fscy106)\\t(90,150,\\fscx100\\fscy100)}"
