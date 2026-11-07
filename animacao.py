@@ -67,6 +67,7 @@ FIM_PAUSA = 0.30                   # respiro depois de cada fala (corte preciso,
 ENTRADA = 0.12                     # a voz entra logo depois do primeiro traço
 PAUSA_SURPRESA = 0.65              # suspense antes da revelação
 TRANSICAO = 0.40                   # transição por rabisco entre cenas
+BARRA_H = 10                       # altura da barra de progresso
 TREMOR = 0.32                      # vibração curta na revelação
 
 
@@ -445,6 +446,8 @@ class Cena:
     def __init__(self, svg_txt, png, titulo, dur, voz_ini, indice, surpresa=False, ultima=False,
                  movimento=None, efeito=None, base=None):
         self.dur, self.voz_ini, self.i = dur, voz_ini, indice
+        self.punches = []                      # instantes (na cena) das palavras-chave: "punch-in" de câmera
+        self.t0, self.total = 0.0, 0.0         # posição no vídeo inteiro (barra de progresso)
         self.continua = base is not None
         self.surpresa, self.ultima = surpresa, ultima
         self.movimento = movimento or ("impacto" if surpresa else ["aproximar", "afastar", "panoramica"][indice % 3])
@@ -476,7 +479,7 @@ class Cena:
         self.pos = ((W - self.tam[0]) // 2, TOPO + (BASE - TOPO - self.tam[1]) // 2)
         self.final = self._encaixar(final)
         # tempo de construção: rápido na abertura, nunca maior que 40% da cena
-        self.t_desenho = min(1.1 if indice == 0 else 2.0, 0.4 * dur) + (PAUSA_SURPRESA * 0.6 if surpresa else 0)
+        self.t_desenho = min(0.7 if indice == 0 else 2.0, 0.4 * dur) + (PAUSA_SURPRESA * 0.6 if surpresa else 0)
         self.boils = []
         if self.desenho:
             for seed in (3, 11, 23):
@@ -526,6 +529,12 @@ class Cena:
             base = 0.045 * p
         if self.surpresa or self.movimento == "impacto":
             base += 0.11 * _ease((t - self.voz_ini) / 0.35)
+        for pt in self.punches:                # punch-in rápido na palavra-chave e volta macia
+            d = t - pt
+            if -0.10 < d < 0.75:
+                base += 0.055 * (_ease((d + 0.10) / 0.12) if d < 0.02 else (1 - _ease((d - 0.02) / 0.73)))
+        if self.i == 0:                        # abertura: entra já em movimento (sem frame parado)
+            base += 0.07 * (1 - _ease(t / 0.6))
         return 1.0 + base
 
     def pan_em(self, t):
@@ -550,7 +559,7 @@ class Cena:
             faixa = tela.resize((W, faixa_h), Image.BILINEAR, box=(x0, y0, x0 + lw, y0 + lh))
             tela.paste(faixa, (0, y_a))
         # título: entra deslizando e aparecendo
-        a = _ease(t / 0.28)
+        a = 1.0 if self.i == 0 else _ease(t / 0.28)   # 1º quadro já com título (gancho e miniatura)
         if a > 0:
             tit = self.titulo
             if a < 1:
@@ -564,6 +573,10 @@ class Cena:
                 if b < 1:
                     s.putalpha(seguir.getchannel("A").point(lambda v: int(v * b)))
                 tela.paste(s, ((W - s.width) // 2, SEGUIR_Y - int(20 * (1 - b))), s)
+        if self.total > 0:                             # barra de progresso fina no topo (segura a retenção)
+            larg = int(W * min(1.0, (self.t0 + t) / self.total))
+            if larg > 0:
+                ImageDraw.Draw(tela).rectangle([0, 0, larg, BARRA_H - 1], fill=VERMELHO)
         if anterior is not None and t < TRANSICAO:     # o marcador "apaga" a cena anterior rabiscando a nova
             p = _ease(t / TRANSICAO)
             tela = Image.composite(tela, anterior, _mascara_rabisco(p, 40 + self.i))
@@ -750,6 +763,10 @@ def mixar(cenas, falas, destino, musica=True):
             w = som_whoosh(seed=k) * 0.07
             b = max(0, int((t0 - 0.12) * SR))
             efeitos[b:b + len(w)] += w[:n - b]
+        for pt in getattr(c, "punches", []):           # tique discreto junto do punch-in
+            d = som_pop() * 0.06
+            b = int((t0 + pt) * SR)
+            efeitos[b:b + len(d)] += d[:n - b]
         if c.efeito == "pop":
             d = som_pop() * 0.14
             b = int((t0 + c.voz_ini + 0.05) * SR)
@@ -965,6 +982,21 @@ def _montar(cfg, roteiro, cenas_png, audios, titulos, pasta, marca, selo, minimo
         cenas[-1].dur += minimo - total + 0.2
         log.info(f"[animado] narração com {total:.0f}s; final estendido para {minimo:.0f}s")
 
+    # punch-in nas palavras-chave (no máximo 2 por cena, longe da entrada e uma da outra)
+    for k, c in enumerate(cenas):
+        dest = [_norm(d) for d in (narr[k].get("destaques") or [])] if k < len(narr) else []
+        if not dest or c.surpresa:
+            continue
+        for ini, _, w in _palavras_com_tempo(narr[k]["narracao"], audios[k], len(falas[k]) / SR):
+            pt = c.voz_ini + ini
+            if _norm(w) in dest and pt > 0.6 and all(abs(pt - x) > 1.3 for x in c.punches) and len(c.punches) < 2:
+                c.punches.append(pt)
+    t = 0.0
+    for c in cenas:
+        c.t0 = t
+        t += c.dur
+    for c in cenas:
+        c.total = t
     fundo = camada_fundo(marca, selo)
     seguir = camada_seguir(marca)
     arquivos, anterior = [], None
