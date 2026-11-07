@@ -41,7 +41,7 @@ TOPO, BASE = 440, H - 690          # área do desenho (entre o título e a legen
 TIT_Y, TIT_TAM, TIT_H, TIT_LINHAS = 160, 104, 420, 3
 MARCA_XY = None                    # None = centralizado embaixo
 SEGUIR_Y = H - 330
-LEG_TAM, LEG_MV, LEG_ML = 96, 480, 90
+LEG_TAM, LEG_MV, LEG_ML = 84, 480, 90
 TEXTO_SEGUIR = None
 MUSICA = True
 
@@ -62,7 +62,7 @@ def _formato(fmt):
         TIT_Y, TIT_TAM, TIT_H, TIT_LINHAS = 160, 104, 420, 3
         MARCA_XY = None
         SEGUIR_Y = 1920 - 330
-        LEG_TAM, LEG_MV, LEG_ML = 96, 480, 90
+        LEG_TAM, LEG_MV, LEG_ML = 84, 480, 90
 FIM_PAUSA = 0.30                   # respiro depois de cada fala (corte preciso, sem enrolar)
 ENTRADA = 0.12                     # a voz entra logo depois do primeiro traço
 PAUSA_SURPRESA = 0.65              # suspense antes da revelação
@@ -345,8 +345,20 @@ def _selo(d, selo, y0, tam=50):
     d.text((W / 2, y0 + (tam + 24) / 2), selo, font=fs, fill="white", anchor="mm")
 
 
+def papel():
+    """Fundo de papel: branco quente com fibras bem suaves (baixa frequência, não pesa no vídeo)."""
+    rng = np.random.default_rng(5)
+    g = rng.standard_normal((H // 8, W // 8)).astype(np.float32)
+    g = np.asarray(Image.fromarray(((g * 18) + 128).clip(0, 255).astype("uint8")).resize((W, H), Image.BICUBIC),
+                   np.float32) - 128
+    base = np.array([253, 252, 248], np.float32)            # off-white de papel
+    luz = np.linspace(1.0, 0.985, H, dtype=np.float32)[:, None, None]   # vinheta vertical levíssima
+    arr = (base[None, None, :] * luz + g[:, :, None] * 0.09).clip(0, 255).astype("uint8")
+    return Image.fromarray(arr, "RGB")
+
+
 def camada_fundo(marca, selo):
-    img = Image.new("RGB", (W, H), "white")
+    img = papel()
     d = ImageDraw.Draw(img)
     if selo:
         _selo(d, selo, 62 if H > W else 92)
@@ -479,7 +491,7 @@ class Cena:
         self.pos = ((W - self.tam[0]) // 2, TOPO + (BASE - TOPO - self.tam[1]) // 2)
         self.final = self._encaixar(final)
         # tempo de construção: rápido na abertura, nunca maior que 40% da cena
-        self.t_desenho = min(0.7 if indice == 0 else 2.0, 0.4 * dur) + (PAUSA_SURPRESA * 0.6 if surpresa else 0)
+        self.t_desenho = min(0.45 if indice == 0 else 2.0, 0.4 * dur) + (PAUSA_SURPRESA * 0.6 if surpresa else 0)
         self.boils = []
         if self.desenho:
             for seed in (3, 11, 23):
@@ -548,7 +560,10 @@ class Cena:
             q = (t - self.voz_ini) / TREMOR
             amp = 11 * (1 - q)
             dx, dy = int(amp * np.sin(q * 38)), int(amp * 0.6 * np.cos(q * 31))
-        tela.paste(self.desenho_em(t), (self.pos[0] + dx, self.pos[1] + dy))
+        des = self.desenho_em(t)                       # tinta sobre o papel (multiplica: o branco some)
+        x, y = self.pos[0] + dx, self.pos[1] + dy
+        caixa = (x, y, x + des.width, y + des.height)
+        tela.paste(ImageChops.multiply(tela.crop(caixa), des), caixa[:2])
         # câmera: o zoom mexe só na faixa do desenho (título, selo e legenda ficam firmes e inteiros)
         z = self.zoom_em(t)
         if z > 1.0005:
@@ -888,8 +903,8 @@ def legendas_ass(cenas, textos, audios, destaques, destino, fonte_nome):
         "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, "
         "Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, "
         "Shadow, Alignment, MarginL, MarginR, MarginV, Encoding",
-        f"Style: Padrao,{fonte_nome},{tam},{_ass_cor(PRETO)},{_ass_cor(PRETO)},&H00FFFFFF,&H00000000,"
-        f"0,0,0,0,100,100,1,0,1,8,0,2,{LEG_ML},{LEG_ML},{LEG_MV},1",
+        f"Style: Padrao,{fonte_nome},{tam},{_ass_cor(PRETO)},{_ass_cor(PRETO)},&H00FFFFFF,&HB4000000,"
+        f"0,0,0,0,100,100,1,0,1,7,4,2,{LEG_ML},{LEG_ML},{LEG_MV},1",
         "", "[Events]", "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text",
     ]
 
@@ -903,10 +918,12 @@ def legendas_ass(cenas, textos, audios, destaques, destino, fonte_nome):
     for c, texto, aud, dest in zip(cenas, textos, audios, destaques):
         pal = _palavras_com_tempo(texto, aud, c.dur - c.voz_ini - FIM_PAUSA)
         grupos, atual = [], []
-        for p in pal:                                  # até 3 palavras / 18 letras; quebra na pontuação
+        for p in pal:                                  # até 3 palavras / 15 letras (1 linha); quebra na pontuação
+            if atual and sum(len(x[2]) + 1 for x in atual) + len(p[2]) > 15:
+                grupos.append(atual)
+                atual = []
             atual.append(p)
-            letras = sum(len(x[2]) + 1 for x in atual)
-            if len(atual) >= 3 or letras >= 18 or re.search(r"[.!?,;:…]$", p[2]):
+            if len(atual) >= 3 or re.search(r"[.!?,;:…]$", p[2]):
                 grupos.append(atual)
                 atual = []
         if atual:
@@ -921,7 +938,7 @@ def legendas_ass(cenas, textos, audios, destaques, destino, fonte_nome):
             partes = []
             for k, (_, _, w) in enumerate(grupo):
                 cor = _cor_palavra(w, inicio_frase and k == 0, dest, c.surpresa)
-                w = w.replace("\\", "")
+                w = w.replace("\\", "").upper()
                 # cada palavra aparece quando é falada (fica transparente até a sua vez)
                 ms = max(0, int((grupo[k][0] - grupo[0][0]) * 1000))
                 surge = f"{{\\alpha&HFF&\\t({ms},{ms + 70},\\alpha&H00&)}}" if k else ""
@@ -1014,7 +1031,7 @@ def _montar(cfg, roteiro, cenas_png, audios, titulos, pasta, marca, selo, minimo
     rodar_ffmpeg(["-f", "concat", "-safe", "0", "-i", "lista.txt", "-c", "copy", "imagem.mp4"], cwd=trab)
 
     mixar(cenas, falas, trab / "som.wav", musica=MUSICA)
-    fonte_nome = os.environ.get("FONTE_LEGENDA", "Gochi Hand")
+    fonte_nome = os.environ.get("FONTE_LEGENDA_REELS", "Poppins Black")
     destaques = [list(c.get("destaques") or []) for c in narr[:n]]
     legendas_ass(cenas, [c["narracao"] for c in narr[:n]], audios, destaques, trab / "legendas.ass", fonte_nome)
     fontes = os.environ.get("FONTES_DIR") or str(RAIZ / "assets/fontes")
@@ -1034,7 +1051,7 @@ def _montar(cfg, roteiro, cenas_png, audios, titulos, pasta, marca, selo, minimo
 def capa(cena_png, texto, destino, marca="@binoexplica", svg_txt=None, selo=None):
     """Capa 1080x1920: título curto e grande, ilustração do assunto, identidade do perfil.
     O que importa fica no meio (o perfil do Instagram mostra a capa recortada em 3:4)."""
-    img = Image.new("RGB", (W, H), "white")
+    img = papel()
     d = ImageDraw.Draw(img)
     desenho = rasterizar(svg_txt, 2400, 1350) if svg_txt else Image.open(cena_png).convert("RGB").resize((2400, 1350))
     caixa = _caixa_conteudo(desenho)
@@ -1042,8 +1059,10 @@ def capa(cena_png, texto, destino, marca="@binoexplica", svg_txt=None, selo=None
     topo, base = 820, 1500
     esc = min((W - 80) / desenho.width, (base - topo) / desenho.height)
     desenho = desenho.resize((int(desenho.width * esc), int(desenho.height * esc)), Image.LANCZOS)
-    img.paste(desenho, ((W - desenho.width) // 2, topo + (base - topo - desenho.height) // 2))
-    texto = (texto or "").upper().strip()
+    xy = ((W - desenho.width) // 2, topo + (base - topo - desenho.height) // 2)
+    cx = (*xy, xy[0] + desenho.width, xy[1] + desenho.height)
+    img.paste(ImageChops.multiply(img.crop(cx), desenho.convert("RGB")), xy)
+    texto = re.sub(r"([?!])[?!.]+$", r"\1", (texto or "").upper().strip())   # "LUA?!" vira "LUA?"
     tam = 150
     f = fonte(tam, negrito=True)
     linhas = _quebrar(d, texto, f, W - 110)
