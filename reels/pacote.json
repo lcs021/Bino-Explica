@@ -1,196 +1,193 @@
 {
   "versao": 2,
-  "id": "serie-ciencia-20261106-0218",
-  "criado": "2026-11-06T02:18-03:00",
+  "id": "serie-mentira-20261106-2349",
+  "criado": "2026-11-06T23:49-03:00",
   "videos": [
     {
       "plataforma": "instagram",
       "n": 1,
-      "tema": "O mistério biológico de por que os seres humanos realmente precisam dormir e qual a função fundamental do sono",
-      "titulo": "Por que esquecemos nossos sonhos tão rápido?",
-      "duracao": 52.3,
+      "tema": "O Projeto Acoustic Kitty, o plano da CIA durante a Guerra Fria para implantar cirurgicamente microfones em um gato real e transformá-lo em um espião secreto.",
+      "titulo": "O bizarro gato espião de 20 milhões de dólares",
+      "duracao": 47.9,
       "qualidade": 100,
       "abertura": "historia",
-      "gancho": "Em mil novecentos e cinquenta e três, cientistas mapearam o sono REM.",
-      "legenda": "📌 Série: 5 fenômenos que a ciência ainda estuda · Parte 1/5\n\nEm mil novecentos e cinquenta e três o sono REM foi mapeado pela ciência. Enquanto o corpo se repara e limpa resíduos metabólicos no sono profundo, o cérebro desativa químicos cruciais durante os sonhos. Você costuma lembrar dos seus sonhos ao acordar? Comente aqui e segue o @binoteexplica pra mais curiosidades!\n\nFontes: Wikipédia: Sono, Wikipédia: Sono com movimento rápido dos olhos\n\nA parte 2 sai amanhã 👀\n\n#sonoREM #neurociencia #curiosidades #ciencia #corpohumano #fatoscuriosos #binoteexplica",
+      "gancho": "Nos anos sessenta, a CIA transformou um gato em espião.",
+      "legenda": "📌 Série: Histórias reais que parecem mentira · Parte 1/5\n\nNos anos sessenta a CIA gastou vinte milhões de dólares para transformar um gato em espião com microfone e antena. Mas no primeiro teste o felino foi atropelado por um táxi na rua. O que você faria no lugar dos cientistas da CIA? Segue o @binoteexplica para mais curiosidades!\n\nFontes: Wikipédia: Acoustic Kitty\n\nA parte 2 sai amanhã 👀\n\n#historia #curiosidades #cia #gatos #espionagem #binoteexplica",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Sono",
-        "https://pt.wikipedia.org/wiki/Sono_com_movimento_r%C3%A1pido_dos_olhos"
+        "https://pt.wikipedia.org/wiki/Acoustic_Kitty"
       ],
-      "arquivo": "01 - Por que esquecemos nossos sonhos tão rápido.mp4",
-      "capa": "01 - Por que esquecemos nossos sonhos tão rápido - capa.jpg",
-      "asset_mp4": "IG-01-por-que-esquecemos-nossos-sonhos-tao-rap.mp4",
-      "asset_capa": "IG-01-por-que-esquecemos-nossos-sonhos-tao-rap-capa.jpg"
+      "arquivo": "01 - O bizarro gato espião de 20 milhões de dólares.mp4",
+      "capa": "01 - O bizarro gato espião de 20 milhões de dólares - capa.jpg",
+      "asset_mp4": "IG-01-o-bizarro-gato-espiao-de-20-milhoes-de-d.mp4",
+      "asset_capa": "IG-01-o-bizarro-gato-espiao-de-20-milhoes-de-d-capa.jpg"
     },
     {
       "plataforma": "instagram",
       "n": 2,
-      "tema": "O enigma dos raios globulares e as esferas de luz misteriosas que flutuam na atmosfera",
-      "titulo": "O mistério do raio globular",
-      "duracao": 50.2,
+      "tema": "A Guerra do Porco de 1859, um confronto militar entre os Estados Unidos e o Reino Unido desencadeado após um porco ser abatido por comer batatas em uma horta disputada.",
+      "titulo": "A guerra real que começou por causa de um porco",
+      "duracao": 51.1,
       "qualidade": 100,
       "abertura": "desafio",
-      "gancho": "Aposto que você nunca viu uma bola de raio flutuando!",
-      "legenda": "📌 Série: 5 fenômenos que a ciência ainda estuda · Parte 2/5\n\nUma esfera brilhante flutuando no meio da tempestade parece coisa de filme, mas é o misterioso raio globular! Esse fenômeno raro já foi confundido com disco voador e demorou décadas para ser levado a sério pelos cientistas. Você teria coragem de ficar perto de um? Segue o @binoteexplica para não perder as próximas curiosidades!\n\nFontes: Wikipédia: Raio globular\n\nA parte 3 sai amanhã 👀\n\n#raioglobular #fenomenosnaturais #ciencia #curiosidades #fisica #binoteexplica",
+      "gancho": "Aposto que você não conhece a incrível Guerra do Porco!",
+      "legenda": "📌 Série: Histórias reais que parecem mentira · Parte 2/5\n\nVocê sabia que um porco quase causou uma grande guerra? Em 1859, a disputa entre fazendeiros nas Ilhas San Juan mobilizou exércitos inteiros de dois países. A paz só veio anos depois com a ajuda da diplomacia alemã. O que você faria no lugar do fazendeiro? Segue o @binoteexplica para não perder a parte três!\n\nFontes: Wikipédia: Guerra do Porco\n\nA parte 3 sai amanhã 👀\n\n#historia #curiosidades #guerra #fatoscuriosos #binoteexplica #historiador",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Raio_globular"
+        "https://pt.wikipedia.org/wiki/Guerra_do_Porco"
       ],
-      "arquivo": "02 - O mistério do raio globular.mp4",
-      "capa": "02 - O mistério do raio globular - capa.jpg",
-      "asset_mp4": "IG-02-o-misterio-do-raio-globular.mp4",
-      "asset_capa": "IG-02-o-misterio-do-raio-globular-capa.jpg"
+      "arquivo": "02 - A guerra real que começou por causa de um porco.mp4",
+      "capa": "02 - A guerra real que começou por causa de um porco - capa.jpg",
+      "asset_mp4": "IG-02-a-guerra-real-que-comecou-por-causa-de-u.mp4",
+      "asset_capa": "IG-02-a-guerra-real-que-comecou-por-causa-de-u-capa.jpg"
     },
     {
       "plataforma": "instagram",
       "n": 3,
-      "tema": "O mistério das ondas gigantes vagabundas que se formam espontaneamente em alto-mar",
-      "titulo": "O mistério das ondas gigantes que a ciência negava",
-      "duracao": 52.1,
+      "tema": "O Projeto A119, o plano secreto dos Estados Unidos para explodir uma bomba atômica na Lua apenas para demonstrar poderio militar aos soviéticos durante a corrida espacial.",
+      "titulo": "O plano secreto para explodir uma bomba na Lua",
+      "duracao": 54.1,
       "qualidade": 100,
       "abertura": "numero",
-      "gancho": "Trinta e três metros de parede de água pura!",
-      "legenda": "📌 Série: 5 fenômenos que a ciência ainda estuda · Parte 3/5\n\nTrinta e três metros de pura água no meio do mar! Durante mais de um século, a ciência achou que esses monstros eram só delírio de marinheiro. Mas satélites provaram que os vagalhões não só existem como surgem sugando outras ondas. Você teria coragem de pegar um navio no Atlântico Sul? Comenta aqui embaixo e segue o @binoteexplica pra mais curiosidades!\n\nFontes: Wikipédia: Vagalhão\n\nA parte 4 sai amanhã 👀\n\n#vagalhao #ondagigante #curiosidadesmaritimas #oceanos #ciencia #binoteexplica",
+      "gancho": "Dez cientistas tentaram explodir uma bomba atômica na Lua.",
+      "legenda": "📌 Série: Histórias reais que parecem mentira · Parte 3/5\n\nDez cientistas tentaram explodir uma bomba na Lua! O Projeto A119 foi um plano ultrassecreto dos Estados Unidos para detonar uma bomba nuclear visível da Terra. O plano só foi cancelado por medo da poluição atômica e do foguete cair de volta no nosso planeta. Se eles tivessem explodido a Lua, como seria a vida hoje? Comenta aí e segue o @binoteexplica!\n\nFontes: Wikipédia: Projeto A119\n\nA parte 4 sai amanhã 👀\n\n#projetoa119 #carlsagan #guerrafria #historia #curiosidades #espaco #bombaatomica",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Vagalh%C3%A3o"
+        "https://pt.wikipedia.org/wiki/Projeto_A119"
       ],
-      "arquivo": "03 - O mistério das ondas gigantes que a ciência negava.mp4",
-      "capa": "03 - O mistério das ondas gigantes que a ciência negava - capa.jpg",
-      "asset_mp4": "IG-03-o-misterio-das-ondas-gigantes-que-a-cien.mp4",
-      "asset_capa": "IG-03-o-misterio-das-ondas-gigantes-que-a-cien-capa.jpg"
+      "arquivo": "03 - O plano secreto para explodir uma bomba na Lua.mp4",
+      "capa": "03 - O plano secreto para explodir uma bomba na Lua - capa.jpg",
+      "asset_mp4": "IG-03-o-plano-secreto-para-explodir-uma-bomba-.mp4",
+      "asset_capa": "IG-03-o-plano-secreto-para-explodir-uma-bomba--capa.jpg"
     },
     {
       "plataforma": "instagram",
       "n": 4,
-      "tema": "O fenômeno imprevisível da inversão dos polos do campo magnético da Terra",
-      "titulo": "O polo norte é o polo sul",
-      "duracao": 39.0,
+      "tema": "A Chuva de carne do Kentucky em 1876, o dia em que pedaços de carne caíram do céu limpo sobre uma cidade inteira, desafiando moradores e cientistas da época.",
+      "titulo": "Choveu carne do céu!",
+      "duracao": 45.2,
       "qualidade": 100,
       "abertura": "pergunta",
-      "gancho": "Sabe o que é mais louco sobre o polo norte magnético?",
-      "legenda": "📌 Série: 5 fenômenos que a ciência ainda estuda · Parte 4/5\n\nSabe o que é mais louco sobre o polo norte magnético? Ele está correndo para a Sibéria e guarda segredos do núcleo da Terra. Você confiaria na sua bússola? Segue o @binoteexplica para não perder nenhuma curiosidade.\n\nFontes: Wikipédia: Inversão geomagnética, Wikipédia: Campo magnético terrestre\n\nA parte 5 sai amanhã 👀\n\n#ciencia #curiosidades #magnetismo #terra #fisica #binoteexplica",
+      "gancho": "Já imaginou chover carne vermelha do céu limpo?",
+      "legenda": "📌 Série: Histórias reais que parecem mentira · Parte 4/5\n\nJá imaginou chover carne do céu sem nenhuma gota de chuva? Em mil oitocentos e setenta e seis, pedaços misteriosos caíram em Kentucky e surpreenderam a todos. Você comeria essa carne se caísse na sua rua? Deixa nos comentários e segue o @binoteexplica pra não perder nenhuma curiosidade.\n\nFontes: Wikipédia: Banho de carne de Kentucky\n\nA parte 5 sai amanhã 👀\n\n#curiosidades #historia #misterio #fatosturistas #binoteexplica",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Invers%C3%A3o_geomagn%C3%A9tica",
-        "https://pt.wikipedia.org/wiki/Campo_magn%C3%A9tico_terrestre"
+        "https://pt.wikipedia.org/wiki/Banho_de_carne_de_Kentucky"
       ],
-      "arquivo": "04 - O polo norte é o polo sul.mp4",
-      "capa": "04 - O polo norte é o polo sul - capa.jpg",
-      "asset_mp4": "IG-04-o-polo-norte-e-o-polo-sul.mp4",
-      "asset_capa": "IG-04-o-polo-norte-e-o-polo-sul-capa.jpg"
+      "arquivo": "04 - Choveu carne do céu!.mp4",
+      "capa": "04 - Choveu carne do céu! - capa.jpg",
+      "asset_mp4": "IG-04-choveu-carne-do-ceu.mp4",
+      "asset_capa": "IG-04-choveu-carne-do-ceu-capa.jpg"
     },
     {
       "plataforma": "instagram",
       "n": 5,
-      "tema": "Como os animais usam a magnetorreceção para navegar pelo planeta sentindo o campo magnético invisível",
-      "titulo": "O Pássaro que Venceu o Correio",
+      "tema": "A Operação Mincemeat, a estratégia da Segunda Guerra Mundial em que os britânicos usaram um cadáver vestido de oficial com documentos falsos para enganar Hitler sobre a invasão da Sicília.",
+      "titulo": "O espião que nunca existiu",
       "duracao": 43.0,
       "qualidade": 100,
       "abertura": "afirmacao",
-      "gancho": "Um passarinho viajou cinco mil quilometros e chegou antes de uma carta.",
-      "legenda": "📌 Série: 5 fenômenos que a ciência ainda estuda · Parte 5/5\n\nUm passarinho viajou quase cinco mil quilometros pelo Atlantico e chegou antes da carta que o avisava. Alem disso, aves usam o campo magnetico para navegar, mas o mecanismo exato ainda e um misterio. Qual parte dessa historia te deixou mais impressionado? Segue o @binoteexplica para nao perder nada.\n\nFontes: Wikipédia: Migração de aves\n\nÚltima parte! Qual das 5 partes foi a melhor? 👇\n\n#ciencia #curiosidades #aves #misterio #biologia #natureza #fatoshistoricos",
+      "gancho": "A Inglaterra enganou Hitler usando um cadáver na praia.",
+      "legenda": "📌 Série: Histórias reais que parecem mentira · Parte 5/5\n\nA Inglaterra enganou Hitler usando um cadáver na praia. Essa história maluca envolve espionagem e documentos falsos. Qual das cinco partes mais te impressionou? Segue o @binoteexplica pra mais curiosidades\n\nFontes: Wikipédia: Operação Carne Moída\n\nÚltima parte! Qual das 5 partes foi a melhor? 👇\n\n#segundaguerra #historia #curiosidades #espiao #fatoshistoricos #bingexplica",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Migra%C3%A7%C3%A3o_de_aves"
+        "https://pt.wikipedia.org/wiki/Opera%C3%A7%C3%A3o_Carne_Mo%C3%ADda"
       ],
-      "arquivo": "05 - O Pássaro que Venceu o Correio.mp4",
-      "capa": "05 - O Pássaro que Venceu o Correio - capa.jpg",
-      "asset_mp4": "IG-05-o-passaro-que-venceu-o-correio.mp4",
-      "asset_capa": "IG-05-o-passaro-que-venceu-o-correio-capa.jpg"
+      "arquivo": "05 - O espião que nunca existiu.mp4",
+      "capa": "05 - O espião que nunca existiu - capa.jpg",
+      "asset_mp4": "IG-05-o-espiao-que-nunca-existiu.mp4",
+      "asset_capa": "IG-05-o-espiao-que-nunca-existiu-capa.jpg"
     },
     {
       "plataforma": "tiktok",
       "n": 1,
-      "tema": "O efeito placebo e como a pura crença do cérebro em um tratamento falso consegue alterar sintomas físicos reais.",
-      "titulo": "O poder secreto do placebo",
-      "duracao": 74.4,
+      "tema": "O plano da CIA durante a Guerra Fria de usar pombos equipados com minicâmeras fotográficas para espionagem aérea.",
+      "titulo": "Espiões com penas na história",
+      "duracao": 74.3,
       "qualidade": 100,
       "abertura": "historia",
-      "gancho": "No século quatorze cantores de funerais fingiam conexão com o falecido para ganhar dinheiro e o nome daquela farsa era apenas placebo mesmo.",
-      "legenda": "📌 Série: 5 fenômenos que a ciência ainda estuda · Parte 1/5\n\nJá tomou um remédio de mentira e melhorou? Conta aqui nos comentários!\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\nA parte 2 sai amanhã 👀\n\n#efeitoplacebo #curiosidadesmedicas #ciencia #curiosidades #vocesabia #aprendanotiktok",
+      "gancho": "Em mil novecentos e trinta e dois, um bando de pombos militares voava com câmeras presas ao peito fazendo duas centenas de fotos.",
+      "legenda": "📌 Série: Histórias reais que parecem mentira · Parte 1/5\n\nJá imaginou pombos tirando fotos para missões secretas? Qual animal seria um bom espião hoje?\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\nA parte 2 sai amanhã 👀\n\n#curiosidades #historia #espiões #vocesabia #aprendanotiktok",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Placebo"
+        "https://pt.wikipedia.org/wiki/Fotografia_com_pombos"
       ],
-      "arquivo": "01 - O poder secreto do placebo.mp4",
-      "capa": "01 - O poder secreto do placebo - capa.jpg",
-      "asset_mp4": "TT-01-o-poder-secreto-do-placebo.mp4",
-      "asset_capa": "TT-01-o-poder-secreto-do-placebo-capa.jpg"
+      "arquivo": "01 - Espiões com penas na história.mp4",
+      "capa": "01 - Espiões com penas na história - capa.jpg",
+      "asset_mp4": "TT-01-espioes-com-penas-na-historia.mp4",
+      "asset_capa": "TT-01-espioes-com-penas-na-historia-capa.jpg"
     },
     {
       "plataforma": "tiktok",
       "n": 2,
-      "tema": "A origem do gosto umami e como o cérebro humano identifica esse quinto sabor através de receptores específicos.",
-      "titulo": "O Segredo do Sabor",
-      "duracao": 62.2,
+      "tema": "A Corrida de Balões da Cleveland em 1986 que liberou um milhão e meio de balões de festa e causou o caos total na cidade.",
+      "titulo": "A Chuva de Balões que Deu Ruim",
+      "duracao": 69.6,
       "qualidade": 100,
       "abertura": "desafio",
-      "gancho": "Aposto que você erra onde sente o gosto umami na boca todos os dias da sua vida agora mesmo.",
-      "legenda": "📌 Série: 5 fenômenos que a ciência ainda estuda · Parte 2/5\n\nAposto que você erra onde sente o gosto umami na boca! Qual sua comida favorita com esse sabor?\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\nA parte 3 sai amanhã 👀\n\n#umami #ciencia #curiosidades #vocesabia #aprendanotiktok",
+      "gancho": "Aposto que você não consegue imaginar uma chuva de quase um milhão e meio de balões de festa caindo do céu de Cleveland.",
+      "legenda": "📌 Série: Histórias reais que parecem mentira · Parte 2/5\n\nAposto que você não sabia que uma soltura de balões causou um desastre em Cleveland! O que você achou dessa história toda?\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\nA parte 3 sai amanhã 👀\n\n#curiosidades #fatoshistoricos #cleveland #vocesabia #aprendanotiktok",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Umami"
+        "https://pt.wikipedia.org/wiki/Balloonfest_%2786"
       ],
-      "arquivo": "02 - O Segredo do Sabor.mp4",
-      "capa": "02 - O Segredo do Sabor - capa.jpg",
-      "asset_mp4": "TT-02-o-segredo-do-sabor.mp4",
-      "asset_capa": "TT-02-o-segredo-do-sabor-capa.jpg"
+      "arquivo": "02 - A Chuva de Balões que Deu Ruim.mp4",
+      "capa": "02 - A Chuva de Balões que Deu Ruim - capa.jpg",
+      "asset_mp4": "TT-02-a-chuva-de-baloes-que-deu-ruim.mp4",
+      "asset_capa": "TT-02-a-chuva-de-baloes-que-deu-ruim-capa.jpg"
     },
     {
       "plataforma": "tiktok",
       "n": 3,
-      "tema": "O mistério da matéria escura e por que ela mantém as galáxias unidas sem que os cientistas consigam detectá-la diretamente.",
-      "titulo": "O Mistério da Matéria Escura",
-      "duracao": 67.6,
+      "tema": "O dia em que o Parlamento Britânico teve que ser evacuado em 1858 devido ao 'Grande Fedor' causado pelo rio Tâmisa poluído.",
+      "titulo": "O dia em que o rio fedia tanto que o governo fugiu",
+      "duracao": 67.9,
       "qualidade": 100,
       "abertura": "numero",
-      "gancho": "Oitenta e quatro por cento de toda a matéria do nosso universo é totalmente invisível para nós e ninguém sabe explicar isso direito.",
-      "legenda": "📌 Série: 5 fenômenos que a ciência ainda estuda · Parte 3/5\n\nOitenta e quatro por cento do universo é matéria escura invisível e um módulo de dois bilhões de dólares foi caçar isso no espaço. Você acha que vamos descobrir? Segue o @binoteexplica\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\nA parte 4 sai amanhã 👀\n\n#materiaescura #universo #ciencia #curiosidades #vocesabia #aprendanotiktok",
+      "gancho": "Quarenta e oito graus no sol marcaram as sombras de Londres no ano de dezoitocentos e cinquenta e oito quando o calor subiu.",
+      "legenda": "📌 Série: Histórias reais que parecem mentira · Parte 3/5\n\nO dia em que o rio de Londres fedia tanto que o governo quase fugiu! Você aguentaria esse cheiro?\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\nA parte 4 sai amanhã 👀\n\n#londres #historia #curiosidades #vocesabia #aprendanotiktok",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Mat%C3%A9ria_escura"
+        "https://pt.wikipedia.org/wiki/Grande_Fedor"
       ],
-      "arquivo": "03 - O Mistério da Matéria Escura.mp4",
-      "capa": "03 - O Mistério da Matéria Escura - capa.jpg",
-      "asset_mp4": "TT-03-o-misterio-da-materia-escura.mp4",
-      "asset_capa": "TT-03-o-misterio-da-materia-escura-capa.jpg"
+      "arquivo": "03 - O dia em que o rio fedia tanto que o governo fugiu.mp4",
+      "capa": "03 - O dia em que o rio fedia tanto que o governo fugiu - capa.jpg",
+      "asset_mp4": "TT-03-o-dia-em-que-o-rio-fedia-tanto-que-o-gov.mp4",
+      "asset_capa": "TT-03-o-dia-em-que-o-rio-fedia-tanto-que-o-gov-capa.jpg"
     },
     {
       "plataforma": "tiktok",
       "n": 4,
-      "tema": "O misterioso mecanismo da regeneração celular da salamandra axolote, que reconstrói órgãos inteiros e membros sem deixar cicatrizes, desafiando a medicina.",
-      "titulo": "O bicho que engana a morte",
-      "duracao": 78.9,
+      "tema": "O plano da CIA durante a Guerra Fria de criar um gato espião que acabou atropelado no primeiro dia",
+      "titulo": "O gato espião da CIA",
+      "duracao": 72.7,
       "qualidade": 100,
       "abertura": "pergunta",
-      "gancho": "Por que o nome axolote significa monstro aquático na antiga língua asteca e remete diretamente ao poderoso deus Xolotl na mitologia?",
-      "legenda": "📌 Série: 5 fenômenos que a ciência ainda estuda · Parte 4/5\n\nPor que o axolote é considerado um monstro aquático cheio de superpoderes? Qual animal você queria ser igual?\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\nA parte 5 sai amanhã 👀\n\n#axolote #biologia #ciencia #curiosidades #vocesabia #aprendanotiktok",
+      "gancho": "Por que a CIA gastou vinte milhões de dólares para transformar um gato inocente em um super espião secreto na década de sessenta?",
+      "legenda": "📌 Série: Histórias reais que parecem mentira · Parte 4/5\n\nA CIA realmente tentou usar gatos espiões na guerra fria? Qual animal você acha que seria pior para espionagem?\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\nA parte 5 sai amanhã 👀\n\n#cia #gatos #curiosidades #vocesabia #aprendanotiktok",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/Ambystoma_mexicanum",
-        "https://pt.wikipedia.org/wiki/Regenera%C3%A7%C3%A3o_(biologia)"
+        "https://pt.wikipedia.org/wiki/Acoustic_Kitty"
       ],
-      "arquivo": "04 - O bicho que engana a morte.mp4",
-      "capa": "04 - O bicho que engana a morte - capa.jpg",
-      "asset_mp4": "TT-04-o-bicho-que-engana-a-morte.mp4",
-      "asset_capa": "TT-04-o-bicho-que-engana-a-morte-capa.jpg"
+      "arquivo": "04 - O gato espião da CIA.mp4",
+      "capa": "04 - O gato espião da CIA - capa.jpg",
+      "asset_mp4": "TT-04-o-gato-espiao-da-cia.mp4",
+      "asset_capa": "TT-04-o-gato-espiao-da-cia-capa.jpg"
     },
     {
       "plataforma": "tiktok",
       "n": 5,
-      "tema": "O mecanismo neurológico do déjà vu e as teorias da neurociência sobre por que o cérebro gera essa falsa sensação de memória instantânea.",
-      "titulo": "O mistério do déjà vu",
-      "duracao": 68.2,
+      "tema": "A estranha tradição histórica em que tribunais da Europa medieval julgavam e condenavam animais criminosos por assassinato e roubo",
+      "titulo": "Animais no Tribunal",
+      "duracao": 62.6,
       "qualidade": 100,
       "abertura": "afirmacao",
-      "gancho": "Essa sensação de que você já viveu esse exato momento é uma falha mental bizarra que a ciência resolveu investigar fundo agora mesmo.",
-      "legenda": "📌 Série: 5 fenômenos que a ciência ainda estuda · Parte 5/5\n\nJá teve essa sensação estranha? Comenta aqui embaixo e segue o Bino Explica para mais curiosidades.\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\nÚltima parte! Qual das 5 partes foi a melhor? 👇\n\n#dejavu #ciencia #curiosidades #vocesabia #aprendanotiktok",
+      "gancho": "Na antiguidade bichos eram julgados em tribunais.",
+      "legenda": "📌 Série: Histórias reais que parecem mentira · Parte 5/5\n\nVocê sabia que animais já foram julgados em tribunais na história? Qual animal você acha que seria o pior réu?\n\nSegue o @bino.explica1 pra mais curiosidades 👀\n\nÚltima parte! Qual das 5 partes foi a melhor? 👇\n\n#curiosidades #historia #fatos #vocesabia #aprendanotiktok",
       "fontes": [
-        "https://pt.wikipedia.org/wiki/D%C3%A9j%C3%A0_vu"
+        "https://pt.wikipedia.org/wiki/Julgamento_de_animais"
       ],
-      "arquivo": "05 - O mistério do déjà vu.mp4",
-      "capa": "05 - O mistério do déjà vu - capa.jpg",
-      "asset_mp4": "TT-05-o-misterio-do-deja-vu.mp4",
-      "asset_capa": "TT-05-o-misterio-do-deja-vu-capa.jpg"
+      "arquivo": "05 - Animais no Tribunal.mp4",
+      "capa": "05 - Animais no Tribunal - capa.jpg",
+      "asset_mp4": "TT-05-animais-no-tribunal.mp4",
+      "asset_capa": "TT-05-animais-no-tribunal-capa.jpg"
     }
   ],
   "fechado": true,
   "total": 5,
-  "serie": "ciencia",
-  "numero": 1,
-  "inicio_postagem": "2026-11-19",
-  "fim_postagem": "2026-11-23"
+  "serie": "mentira",
+  "numero": 2,
+  "inicio_postagem": "2026-11-24",
+  "fim_postagem": "2026-11-28"
 }

@@ -1,6 +1,6 @@
 # 🎛️ Painel do Bino Explica — Reels
 
-Atualizado em 06/11/2026 às 03:33 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
+Atualizado em 07/11/2026 às 01:38 (horário de Brasília) · automação **▶️ ATIVA** · horários 12:30, 19:30
 
 ## Visão geral
 
@@ -14,13 +14,13 @@ Atualizado em 06/11/2026 às 03:33 (horário de Brasília) · automação **▶�
 
 | Dia | Reels (horário · status · título) |
 |---|---|
-| qui 05/11 | — |
-| sex 06/11 (hoje) | 12:30 — livre · 19:30 — livre |
-| sáb 07/11 | 12:30 — livre · 19:30 — livre |
+| sex 06/11 | — |
+| sáb 07/11 (hoje) | 12:30 — livre · 19:30 — livre |
 | dom 08/11 | 12:30 — livre · 19:30 — livre |
 | seg 09/11 | 12:30 — livre · 19:30 — livre |
 | ter 10/11 | 12:30 — livre · 19:30 — livre |
 | qua 11/11 | 12:30 — livre · 19:30 — livre |
+| qui 12/11 | 12:30 — livre · 19:30 — livre |
 
 ## 🛠️ Produção
 
@@ -59,6 +59,16 @@ Nada em produção agora.
 
 ## 📝 Registro de atividades
 
+- 2026-11-07 01:38 · pacote: TikTok 5/5 pronto (63s, 100/100): Animais no Tribunal
+- 2026-11-07 01:30 · pacote: TikTok 4/5 pronto (73s, 100/100): O gato espião da CIA
+- 2026-11-07 01:21 · pacote: TikTok 3/5 pronto (68s, 100/100): O dia em que o rio fedia tanto que o governo fugiu
+- 2026-11-07 01:14 · pacote: TikTok 2/5 pronto (70s, 100/100): A Chuva de Balões que Deu Ruim
+- 2026-11-07 01:08 · pacote: TikTok 1/5 pronto (74s, 100/100): Espiões com penas na história
+- 2026-11-07 00:58 · pacote: Instagram 5/5 pronto (43s, 100/100): O espião que nunca existiu
+- 2026-11-07 00:49 · pacote: Instagram 4/5 pronto (45s, 100/100): Choveu carne do céu!
+- 2026-11-07 00:14 · pacote: Instagram 3/5 pronto (54s, 100/100): O plano secreto para explodir uma bomba na Lua
+- 2026-11-07 00:06 · pacote: Instagram 2/5 pronto (51s, 100/100): A guerra real que começou por causa de um porco
+- 2026-11-06 23:56 · pacote: Instagram 1/5 pronto (48s, 100/100): O bizarro gato espião de 20 milhões de dólares
 - 2026-11-06 03:33 · pacote: TikTok 5/5 pronto (68s, 100/100): O mistério do déjà vu
 - 2026-11-06 03:29 · pacote: TikTok 4/5 pronto (79s, 100/100): O bicho que engana a morte
 - 2026-11-06 03:21 · pacote: TikTok 3/5 pronto (68s, 100/100): O Mistério da Matéria Escura
@@ -74,13 +84,3 @@ Nada em produção agora.
 - 2026-11-05 00:38 · pacote: TikTok 3/5 pronto (75s, 100/100): O cemitério espacial da Terra
 - 2026-11-05 00:21 · pacote: TikTok 2/5 pronto (73s, 100/100): O lago escondido sob o gelo
 - 2026-11-05 00:11 · pacote: TikTok 1/5 pronto (74s, 100/100): A internet secreta da floresta
-- 2026-11-04 23:51 · pacote: Instagram 5/5 pronto (52s, 100/100): A escada rolante de dentes do tubarão
-- 2026-11-04 23:32 · pacote: Instagram 4/5 pronto (42s, 100/100): Navio fantasma e sol adiantado
-- 2026-11-04 23:27 · pacote: Instagram 3/5 pronto (42s, 100/100): O Segredo do Pescoço da Coruja
-- 2026-11-04 23:19 · pacote: Instagram 2/5 pronto (37s, 100/100): A lua que joga água no espaço
-- 2026-11-04 23:10 · pacote: Instagram 1/5 pronto (51s, 100/100): O Metal que Lembra do Passado
-- 2026-11-03 23:09 · pacote: TikTok 5/5 pronto (66s, 100/100): O osso solto no pescoço
-- 2026-11-03 22:55 · pacote: TikTok 4/5 pronto (63s, 100/100): Por que o corpo treme no perigo
-- 2026-11-03 22:47 · pacote: TikTok 3/5 pronto (72s, 95/100): O Resgate Secreto da CIA
-- 2026-11-03 22:40 · pacote: TikTok 2/5 pronto (73s, 95/100): O experimento proibido de Milgram
-- 2026-11-03 22:34 · pacote: TikTok 1/5 pronto (68s, 100/100): O Monstro Que Prevê Terremotos

@@ -4337,5 +4337,799 @@
     },
     "visto": "2026-11-06T03:24-03:00",
     "status": "na reserva"
+  },
+  {
+    "tema": "O Projeto Acoustic Kitty, o plano da CIA durante a Guerra Fria para implantar cirurgicamente microfones em um gato real e transformá-lo em um espião secreto.",
+    "categoria": "Espionagem",
+    "pontuacao": 97.1,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T23:50-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A Guerra do Porco de 1859, um confronto militar entre os Estados Unidos e o Reino Unido desencadeado após um porco ser abatido por comer batatas em uma horta disputada.",
+    "categoria": "Conflitos Históricos",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T23:50-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O Projeto A119, o plano secreto dos Estados Unidos para explodir uma bomba atômica na Lua apenas para demonstrar poderio militar aos soviéticos durante a corrida espacial.",
+    "categoria": "Guerra Fria",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T23:50-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A Chuva de carne do Kentucky em 1876, o dia em que pedaços de carne caíram do céu limpo sobre uma cidade inteira, desafiando moradores e cientistas da época.",
+    "categoria": "Fenômenos Naturais Históricos",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 10,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T23:50-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A Operação Mincemeat, a estratégia da Segunda Guerra Mundial em que os britânicos usaram um cadáver vestido de oficial com documentos falsos para enganar Hitler sobre a invasão da Sicília.",
+    "categoria": "Segunda Guerra Mundial",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T23:50-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O Incidente de Petrich em 1925, a crise diplomática e invasão militar entre Grécia e Bulgária desencadeada porque um soldado grego atravessou a fronteira correndo atrás de seu cachorro.",
+    "categoria": "Diplomacia e Relações Internacionais",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T23:50-03:00",
+    "status": "escolhido"
+  },
+  {
+    "tema": "A Epidemia de dança de 1518 em Estrasburgo, quando centenas de pessoas dançaram incontrolavelmente nas ruas por semanas até o colapso físico sem causa médica explicada.",
+    "categoria": "Medicina Histórica",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T23:50-03:00",
+    "status": "escolhido"
+  },
+  {
+    "tema": "A inacreditável trajetória de Timothy Dexter, o comerciante que ficou milionário por acidente ao fazer os piores investimentos possíveis, como enviar aquecedores de cama para ilhas tropicais.",
+    "categoria": "Biografia Histórica",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 10,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-06T23:50-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O caso de Wojtek, o urso pardo adotado por soldados poloneses na Segunda Guerra Mundial que carregava caixas de munição no front.",
+    "categoria": "Heróis Inusitados",
+    "pontuacao": 97.1,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 9,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-07T00:59-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O plano da CIA durante a Guerra Fria de usar pombos equipados com minicâmeras fotográficas para espionagem aérea.",
+    "categoria": "Tecnologia Bizarra",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-07T00:59-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A Corrida de Balões da Cleveland em 1986 que liberou um milhão e meio de balões de festa e causou o caos total na cidade.",
+    "categoria": "Desastres Cômicos",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-07T00:59-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A Grande Guerra do Mel em 1838, um conflito sem derramamento de sangue entre os Estados Unidos e o Canadá britânico causado por uma árvore cheia de mel.",
+    "categoria": "História Inusitada",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-07T00:59-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O Incidente do Voo 9 da British Airways em 1982, quando um avião voou por uma nuvem de cinzas vulcânicas e parou todos os quatro motores no ar.",
+    "categoria": "Sobrevivência Extrema",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-07T00:59-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O dia em que a cidade de Nova York foi declarada em estado de sítio por causa de um pinguim fujão do aquário em 1957.",
+    "categoria": "Cotidiano Absurdo",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-07T00:59-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "A Operação Paul Bunyan realizada pelo exército dos EUA na Zona Desmilitarizada da Coreia em 1976 para podar uma árvore.",
+    "categoria": "Conflitos Incomuns",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-07T00:59-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O dia em que um ladrão devolveu um banco roubado pelo correio com um pedido de desculpas após perceber que a agência estava falida.",
+    "categoria": "Crimes Cômicos",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-07T00:59-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O dia em que o exército de Liechtenstein foi para a guerra com 80 homens em 1866 e voltou com 81 após fazer um amigo italiano no caminho.",
+    "categoria": "Casos Militares",
+    "pontuacao": 95.7,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-07T01:15-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "A Grande Guerra do Mel em 1838, um conflito de fronteira entre os Estados Unidos e o Canadá que começou por causa de árvores cheias de mel e terminou sem nenhuma morte.",
+    "categoria": "História Inusitada",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-07T01:15-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O roubo da Mona Lisa em 1911 só foi solucionado porque o ladrão tentou vender o quadro para um antiquário usando seu nome verdadeiro.",
+    "categoria": "Crimes Inacreditáveis",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-07T01:15-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O dia em que o Parlamento Britânico teve que ser evacuado em 1858 devido ao 'Grande Fedor' causado pelo rio Tâmisa poluído.",
+    "categoria": "Curiosidades Históricas",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-07T01:15-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A Grande Corrida de Corta-Mato de Boston de 1904 teve um maratonista que pegou carona de carro, dormiu no meio da prova e quase perdeu o primeiro lugar.",
+    "categoria": "Esportes e Competições",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-07T01:15-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O plano da Marinha dos Estados Unidos na Segunda Guerra Mundial de usar sorvete como arma secreta de moral para as tropas, construindo navios fábricas de sorvete.",
+    "categoria": "Invenções e Planos",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-07T01:15-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A Guerra de 33 Minutos entre o Reino Unido e Zanzibar em 1896, considerada a guerra mais curta da história mundial.",
+    "categoria": "Conflitos Históricos",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-07T01:15-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A Grande Corrida de Barcos de Lama de Hong Kong em 1934 que parou a cidade inteira após um mal-entendido burocrático hilário.",
+    "categoria": "Fatos Urbanos",
+    "pontuacao": 84.3,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-07T01:15-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A estranha eleição em que um macaco chamado Tião ficou em terceiro lugar para prefeito no Rio de Janeiro",
+    "categoria": "Política Cômica",
+    "pontuacao": 97.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 10,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-07T01:21-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O plano da CIA durante a Guerra Fria de criar um gato espião que acabou atropelado no primeiro dia",
+    "categoria": "Planos Malucos",
+    "pontuacao": 94.3,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-07T01:21-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "A Grande Corrida de Pneus de 1986 em Cleveland que terminou em caos",
+    "categoria": "História Insólita",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-07T01:21-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "A Guerra dos Trinta Anos e o exército de Liechtenstein que foi para a guerra com 80 homens e voltou com 81",
+    "categoria": "Guerras Absurdas",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-07T01:21-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O roubo da Mona Lisa em 1911 por um funcionário que escondeu o quadro embaixo do casaco",
+    "categoria": "Crimes Bizarros",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-07T01:21-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O dia em que um motorista de ônibus saltou uma ponte levadiça em movimento para salvar passageiros nos EUA",
+    "categoria": "Atos Heroicos",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-07T01:21-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O dia em que um navio carregado de dinamite explodiu no Canadá e causou uma das maiores detonações artificiais da história",
+    "categoria": "Desastres Históricos",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-07T01:21-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O dia em que a marinha da Nova Zelândia usou fumaça falsa para fingir que um barco de guerra estava pegando fogo em exercício",
+    "categoria": "Marinha e Acidentes",
+    "pontuacao": 82.9,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 6,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-07T01:21-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O roubo da Mona Lisa em 1911 cometido por um funcionário do Louvre que simplesmente escondeu o quadro debaixo do casaco e foi embora de bonde.",
+    "categoria": "Crimes Históricos",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-07T01:30-03:00",
+    "status": "descartado",
+    "motivo": "roteiro reprovado na revisão"
+  },
+  {
+    "tema": "O dia em que o farol de uma ilha remota continuou funcionando perfeitamente por meses após o misterioso desaparecimento inexplicável de todos os seus três faroleiros.",
+    "categoria": "Mistérios Históricos",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-07T01:30-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "O dia em que um homem sobreviveu a uma queda de avião sem paraquedas porque a aeronave inteira aterrissou em cima de uma árvore gigante na Sibéria.",
+    "categoria": "Sobrevivência",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-07T01:30-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "A invenção do gramofone de chocolate na década de 1950, discos comestíveis que tocavam música de verdade antes de derreterem ou serem comidos.",
+    "categoria": "Tecnologia e Invenção",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 8
+    },
+    "visto": "2026-11-07T01:30-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A construção do primeiro hotel de gelo do mundo na Suécia, que derrete todos os anos no verão e precisa ser refeito do zero do tamanho de um castelo.",
+    "categoria": "Arquitetura e Engenharia",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-07T01:30-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A Grande Guerra do Pé de Melão de 1914, quando o exército do Império Otomano mobilizou tropas para conter uma suposta invasão que na verdade eram milhares de melões rolando de uma colina.",
+    "categoria": "História Inusitada",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 8
+    },
+    "visto": "2026-11-07T01:30-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O protesto pacífico em que um grupo de monges budistas usou gatos com chapéus de palha para assustar espíritos malignos em um vilarejo no século XIX.",
+    "categoria": "Cultura e Tradição",
+    "pontuacao": 88.6,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 7
+    },
+    "visto": "2026-11-07T01:30-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A expedição científica do século XVIII em que botânicos franceses passaram dez anos navegando pelo Rio Amazonas apenas para catalogar plantas venenosas.",
+    "categoria": "Exploração",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 9,
+      "compartilhamento": 8,
+      "interesse_brasil": 10,
+      "ilustravel": 9,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-07T01:30-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O dia em que um navio carregado com blocos de Lego naufragou e começou a espalhar pecinhas idênticas pelas praias do mundo por décadas",
+    "categoria": "Acidentes Curiosos",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 8,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-07T01:32-03:00",
+    "status": "descartado",
+    "motivo": "as fontes não comprovam a ideia principal do tema"
+  },
+  {
+    "tema": "A estranha tradição histórica em que tribunais da Europa medieval julgavam e condenavam animais criminosos por assassinato e roubo",
+    "categoria": "Curiosidades Históricas",
+    "pontuacao": 92.9,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 10,
+      "compartilhamento": 10,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-07T01:32-03:00",
+    "status": "produzido",
+    "motivo": ""
+  },
+  {
+    "tema": "O plano do exército britânico na Segunda Guerra para construir um porta-aviões gigantesco feito inteiramente de gelo misturado com serragem de madeira",
+    "categoria": "Planos Malucos",
+    "pontuacao": 91.4,
+    "criterios": {
+      "curiosidade": 10,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 10
+    },
+    "visto": "2026-11-07T01:32-03:00",
+    "status": "escolhido"
+  },
+  {
+    "tema": "O prisioneiro da Segunda Guerra que construiu sua própria moto de fuga usando peças roubadas de um campo de concentração nazista",
+    "categoria": "Histórias Reais",
+    "pontuacao": 90.0,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 8,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-07T01:32-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A bizarra disputa territorial do século XIX em que uma ilha deserta mudava de dono a cada seis meses por causa de uma confusão cartográfica",
+    "categoria": "Geografia Curiosa",
+    "pontuacao": 87.1,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-07T01:32-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "A Grande Guerra do Esgoto e a invenção bizarra do selo hídrico na China antiga para enganar imperadores",
+    "categoria": "História Inusitada",
+    "pontuacao": 85.7,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 9,
+      "compartilhamento": 9,
+      "interesse_brasil": 7,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 8
+    },
+    "visto": "2026-11-07T01:32-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O plano maluco do exército americano na Guerra Fria de mapear a superfície da Terra usando milhares de balões meteorológicos gigantes",
+    "categoria": "Tecnologia Antiga",
+    "pontuacao": 85.7,
+    "criterios": {
+      "curiosidade": 9,
+      "facilidade": 8,
+      "compartilhamento": 8,
+      "interesse_brasil": 7,
+      "ilustravel": 10,
+      "originalidade": 9,
+      "credibilidade": 9
+    },
+    "visto": "2026-11-07T01:32-03:00",
+    "status": "na reserva"
+  },
+  {
+    "tema": "O dia em que um protesto pacífico contra a escassez de batatas na Irlanda levou soldados britânicos a atirarem... contra focas brincalhonas",
+    "categoria": "Coincidências Históricas",
+    "pontuacao": 80.0,
+    "criterios": {
+      "curiosidade": 8,
+      "facilidade": 8,
+      "compartilhamento": 8,
+      "interesse_brasil": 6,
+      "ilustravel": 9,
+      "originalidade": 9,
+      "credibilidade": 8
+    },
+    "visto": "2026-11-07T01:32-03:00",
+    "status": "na reserva"
   }
 ]
